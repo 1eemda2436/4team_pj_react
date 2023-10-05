@@ -1,9 +1,15 @@
 import styled from "styled-components";
 
-export default function mainSideMenu() {
+export default function MainSideMenu() {
     return (
-        <fixedContent />
+        <SideMenu>
+            test
+        </SideMenu>
     )
 }
 
-const fixedContent = styled.div``;
+const SideMenu = styled.div`
+    width: 80px;
+    height: 100vh;
+    background-color: #005FC5;
+`;
