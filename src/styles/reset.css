@@ -25,6 +25,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+    font-family: Pretendard;
 }
 ol, ul {
 	list-style: none;
@@ -40,4 +41,10 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+
+@font-face {
+    font-family: "Pretendard";
+    font-weight: 500;
+    src: url(/fonts/PretendardVariable.ttf) format("truetype");
 }
