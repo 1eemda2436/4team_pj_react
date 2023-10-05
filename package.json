@@ -9,9 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "next": "latest"
+    "styled-components": "^6.0.8"
   },
   "devDependencies": {
     "eslint": "latest",
