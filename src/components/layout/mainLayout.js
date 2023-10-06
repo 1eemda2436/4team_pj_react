@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import MainSideMenu from '@/components/sideMenu/mainSideMenu';
 
-const MainLayout = () => {
+const MainLayout = ({ children }) => {
 
     return (
         <MainComponent>
             <MainSideMenu />
+            <>{children}</>
         </MainComponent>
     )
 }

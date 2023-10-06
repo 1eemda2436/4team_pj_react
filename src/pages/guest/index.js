@@ -1,8 +1,11 @@
+import GuestMain from "@/components/guestMain/geustMain";
 import MainLayout from "@/components/layout/mainLayout";
 
 const Guest = () => {
     return(
-        <MainLayout />
+        <MainLayout>
+            <GuestMain />
+        </MainLayout>
     )
 }
 
