@@ -1,15 +1,18 @@
 import styled from "styled-components"
 import ArrowL from '../../../public/asset/icons/arrowLeft.svg'
+import { useRouter } from "next/navigation";
 
 export default function Join() {
+    const router = useRouter();
+
     return(
         <MainComponent>
             <Component>
                 <Header>
-                    <ArrowL />
-                    <StapBox>
+                    <ArrowL onClick={() => router.back()} />
+                    <StepBox>
                         1 / 3
-                    </StapBox>
+                    </StepBox>
                 </Header>
 
                 <NextBtn>다음</NextBtn>
@@ -30,6 +33,7 @@ const MainComponent = styled.div`
 const Component = styled.div`
     width: 550px;
     height: 100%;
+    box-sizing: border-box;
     background: white;
     display: flex;
     flex-direction: column;
@@ -45,7 +49,7 @@ const Header = styled.div`
     align-items: center;
 `;
 
-const StapBox = styled.div`
+const StepBox = styled.div`
     width: 50px;
     border-radius: 30px;
     background: #007BFF;
@@ -59,12 +63,19 @@ const StapBox = styled.div`
 `;
 
 const NextBtn = styled.div`
-    width: 600px;
+    width: 550px;
     height: 70px;
     border-radius: 8px 8px 0px 0px;
     background: #DEDEDE;
     position: absolute;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%);
     bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    cursor: pointer;
 `
