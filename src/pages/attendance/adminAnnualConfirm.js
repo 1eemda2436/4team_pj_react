@@ -1,42 +1,69 @@
 import AdminLayout from "@/components/layout/adminLayout";
 
-// 연차 신청[관리자]
+// 연차 승인/반려[관리자]
 const AdminAnnualConfirm = () => {
     return (
         <div>
-            <h1>연차 신청 내역</h1>
+            <div>
+                <button>PDF 다운</button>
+                <button>결제 취소</button>
+            </div>
             <br/><br/><hr/><br/><br/>
-            <table>
-                <tr>
-                    <th>문서번호</th>
-                    <th>문서 제목</th>
-                    <th>승인여부</th>
-                </tr>
+            <div>
+                <table >
+                    <tr>
+                        <th>결재 번호 : </th>
+                        <td>null</td>
+                    </tr>
 
-                <tr>
-                    <td>NULL</td>
-                    <td>NULL</td>
-                    <td>NULL</td>
-                </tr>
+                    <tr>
+                        <th>결재 명 : </th>
+                        <td>null</td>
+                    </tr>
 
-                <tr>
-                    <td>NULL</td>
-                    <td>NULL</td>
-                    <td>NULL</td>
-                </tr>
+                    <tr>
+                        <th>문서 번호 : </th>
+                        <td>null</td>
+                    </tr>
+                </table>
 
-                <tr>
-                    <td>NULL</td>
-                    <td>NULL</td>
-                    <td>NULL</td>
-                </tr>
+                <table>
+                    <tr>
+                        <th>제목</th>
+                        <td>문서제목~~</td>
+                    </tr>
 
-                <tr>
-                    <td>NULL</td>
-                    <td>NULL</td>
-                    <td>NULL</td>
-                </tr>
-            </table>
+                    <tr>
+                        <td colSpan={2}>
+                            <input type="text" width={500} height={500} placeholder="문서내용~"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br/><br/><hr/><br/><br/>
+            <div>
+                <table>
+                    <tr>
+                        <th>구분</th>
+                        <td>---</td>
+                    </tr>
+
+                    <tr>
+                        <th>첨부파일</th>
+                        <td>
+                            <input type="file"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br/><br/><hr/><br/><br/>
+            <div>
+                <h1>결재의견</h1>
+                <input type="text" placeholder="반려시 필수 작성"/>
+                <br/><br/>
+                <button>승인</button>
+                <button>반려</button>
+            </div>
         </div>
     );
 }
