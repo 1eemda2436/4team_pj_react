@@ -59,6 +59,17 @@ const Doc = () => {
                         </TableTr>
                 </Table>
             </Docstyle2>
+            <ButtonStyle>
+                <button type="button" onClick={handleComplete}>작성 완료</button>
+                <button type="button" onClick={handleCancel}>취소</button>
+            </ButtonStyle>
+            <CategoryTable>
+                <Table>
+                    <TableTr>
+                        <TableTh2>카테고리 선택</TableTh2>
+                    </TableTr>
+                </Table>
+            </CategoryTable>
         </Container>
     )
 }
@@ -136,3 +147,46 @@ const TableTd2 = styled.td`
     padding-left: 10px;
     padding-right: 10px;
 `;
+
+const ButtonStyle = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    button {
+        border: solid 1px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: gray;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin: 1px;
+    }
+
+    button:last-child {
+        border: solid 1px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: gray;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin: 1px;
+    }
+`;
+
+const CategoryTable = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
+
+const handleComplete = () => {
+
+    console.log('문서 작성이 완료되었습니다.');
+}
+
+const handleCancel = () => {
+
+    console.log('문서 작성이 취소되었습니다.');
+}
