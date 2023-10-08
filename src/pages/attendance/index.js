@@ -7,7 +7,7 @@ const Attendance = () => {
         <AttenContainer>
             <AttenBoxTop>
                 <AttenBoxUser>
-                    [ user ]
+                    [ user! ]
                 </AttenBoxUser>
                 
                 <AttenBoxInfo>
