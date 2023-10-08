@@ -1,12 +1,15 @@
-import GuestMain from "@/components/guestMain/geustMain";
-import MainLayout from "@/components/layout/mainLayout";
+import MainLayout from "@/components/layout/mainLayout"
 
 const Guest = () => {
     return(
-        <MainLayout>
-            <GuestMain />
-        </MainLayout>
+        <div>
+            test
+        </div>
     )
-}
+};
 
 export default Guest;
+
+Guest.getLayout = function getLayout(page) {
+    return <MainLayout>{page}</MainLayout>;
+};

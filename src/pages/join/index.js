@@ -31,13 +31,13 @@ const MainComponent = styled.div`
 `;
 
 const Component = styled.div`
-    width: 550px;
+    width: 600px;
     height: 100%;
     box-sizing: border-box;
     background: white;
     display: flex;
     flex-direction: column;
-    padding: 25px;
+    padding: 0px 25px;
 `;
 
 const Header = styled.div`
@@ -63,7 +63,7 @@ const StepBox = styled.div`
 `;
 
 const NextBtn = styled.div`
-    width: 550px;
+    width: 600px;
     height: 70px;
     border-radius: 8px 8px 0px 0px;
     background: #DEDEDE;
