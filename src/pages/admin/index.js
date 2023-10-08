@@ -3,7 +3,7 @@ import AdminLayout from "@/components/layout/adminLayout"
 const Guest = () => {
     return(
         <div>
-            test
+            admin test
         </div>
     )
 };
