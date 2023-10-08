@@ -1,6 +1,7 @@
 import MainLayout from "@/components/layout/mainLayout";
 import styled from "styled-components";
 
+// main
 const Attendance = () => {
     return (
         <AttenContainer>
@@ -66,8 +67,8 @@ Attendance.getLayout = function getLayout(page) {
 };
 
 const AttenContainer = styled.div`
-width: 100%;
-height: 100vh;
+    width: 100%;
+    height: 100vh;
     align-items: center;
     justify-content: center;
     display: flex;
@@ -109,7 +110,7 @@ const AttenWeekWork = styled.div`
 `;
 
 const AttenBoxUser = styled.div`
-border: 3px solid black;
+    border: 3px solid black;
     border-radius: 20px;
     width: 20%;
     background-color: #17a1fa;
