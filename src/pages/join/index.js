@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 export default function Join() {
     const router = useRouter();
 
+    const step = [
+        {page: "step1", component: }
+    ]
+
     return(
         <MainComponent>
             <Component>
