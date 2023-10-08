@@ -124,9 +124,7 @@ const MenuIconDiv = styled.div`
     }
 `;
 
-const MenuIcon = styled.div`
-
-`;
+const MenuIcon = styled.div``;
 
 const MenuName = styled.div`
     font-size: 10px;
