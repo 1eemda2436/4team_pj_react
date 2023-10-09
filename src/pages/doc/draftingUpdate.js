@@ -54,12 +54,6 @@ const Doc = () => {
                         </TableTr>
                     </Table>
                 </DocstyleLeft>
-                <DocstyleRight>
-                    <ButtonStyle>
-                        <button type="button" onClick={TemporarySave}>임시 저장</button>
-                        <button type="button" onClick={Approval}>결재 요청</button>
-                    </ButtonStyle>
-                </DocstyleRight>
             </Docstyle1>
             <Docstyle2>
                 <Table>
@@ -92,7 +86,7 @@ const Doc = () => {
                 </select>
             </CategoryTable>
             <ButtonStyle>
-                <button type="button" onClick={Complete}>완료</button>
+                <button type="button" onClick={Complete}>수정</button>
                 <button type="button" onClick={Cancel}>취소</button>
             </ButtonStyle>
         </Container>
