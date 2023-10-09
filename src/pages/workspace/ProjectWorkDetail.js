@@ -1,6 +1,6 @@
 
 import styled from "styled-components";
-const ProjectDetail = () => {
+const ProjectWorkDetail = () => {
     return (
         <Component>
             <div>
@@ -9,15 +9,20 @@ const ProjectDetail = () => {
                     <div>프로젝트명</div>
                     <div>프로젝트명</div>
                 </div>
+                {/* 담당업무 */}
+                <div>
+                    <div>담당업무</div>
+                    <div>담당업무</div>
+                </div>
                 {/* 기한 */}
                 <div>
                     <div>기한</div>
                     <div>기한</div>
                 </div>
-                {/* 프로젝트명 */}
+                {/* 진행상황 */}
                 <div>
-                    <div>팀원</div>
-                    <div>팀원</div>
+                    <div>진행상황</div>
+                    <div>진행상황</div>
                 </div>
                 <div>내용</div>
             </div>
@@ -34,4 +39,4 @@ const ProjectDetail = () => {
 
 const Component = styled.div``;
 
-export default ProjectDetail;
+export default ProjectWorkDetail;
