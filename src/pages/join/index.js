@@ -1,13 +1,18 @@
 import styled from "styled-components"
 import ArrowL from '../../../public/asset/icons/arrowLeft.svg'
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Join() {
     const router = useRouter();
+    const [step, setStep] = useState(1);
 
-    // const step = [
-    //     {page: "step1", component: }
-    // ]
+    const handleNextStep = () => {
+        if (step < 3) {
+            // 다음 단계 이동
+            setStep(step + 1);
+        }
+    };
 
     return(
         <MainComponent>
@@ -15,14 +20,35 @@ export default function Join() {
                 <Header>
                     <ArrowL onClick={() => router.back()} />
                     <StepBox>
-                        1 / 3
+                        {step} / 3
                     </StepBox>
                 </Header>
 
-                <NextBtn>다음</NextBtn>
+                <JoinContent>
+                    {step === 1 && <Step1Content />}
+                    {step === 2 && <Step2Content />}
+                    {step === 3 && <Step3Content />}
+                </JoinContent>
+
+                {/* 마지막 단계에서 버튼 안보이게 */}
+                {step < 3 && (
+                    <NextBtn onClick={handleNextStep}>다음</NextBtn>
+                )}
             </Component>
         </MainComponent>
     )
+}
+
+function Step1Content() {
+    return <div>Step 1 내용</div>;
+}
+
+function Step2Content() {
+    return <div>Step 2 내용</div>;
+}
+
+function Step3Content() {
+    return <div>Step 3 내용</div>;
 }
 
 const MainComponent = styled.div`
@@ -65,6 +91,8 @@ const StepBox = styled.div`
     justify-content: center;
     padding: 6px 3px;
 `;
+
+const JoinContent = styled.div``;
 
 const NextBtn = styled.div`
     width: 600px;
