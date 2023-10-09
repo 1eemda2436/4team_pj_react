@@ -1,0 +1,192 @@
+import MainLayout from "@/components/layout/mainLayout"
+import styled from "styled-components";
+
+
+
+const Doc = () => {
+    return(
+        <Container>
+            <Title>
+                <H1>업무 기안서</H1>
+            </Title>
+            <Docstyle1>
+                <DocstyleLeft>
+                    <Table>
+                        <TableTr>
+                            <TableTh>문서번호</TableTh>
+                            <TableTd>1</TableTd>
+                        </TableTr>
+                        <TableTr>
+                            <TableTh>기안일</TableTh>
+                            <TableTd>1</TableTd>
+                        </TableTr>
+                        <TableTr>
+                            <TableTh>기안자</TableTh>
+                            <TableTd>1</TableTd>
+                        </TableTr>
+                    </Table>
+                </DocstyleLeft>
+                <DocstyleRight>
+                    <Table>
+                        <TableTr>
+                            <TableTh>임시 저장</TableTh>
+                        </TableTr>
+                        <TableTr>
+                            <TableTh>결재 요청</TableTh>
+                        </TableTr>
+                    </Table>
+                </DocstyleRight>
+            </Docstyle1>
+            <Docstyle2>
+                <Table>
+                        <TableTr>
+                            <TableTh2>제목</TableTh2>
+                            <TableTh2>여기에 문서 제목</TableTh2>
+                        </TableTr>
+                        <TableTr>
+                                <TableTd2 colSpan={2}>문서 내용</TableTd2>
+                        </TableTr>
+                </Table>
+                <br></br>
+                <Table>
+                        <TableTr>
+                            <TableTh2>구분</TableTh2>
+                            <TableTd2> </TableTd2>
+                        </TableTr>
+                        <TableTr>
+                            <TableTh2>첨부파일</TableTh2>
+                            <TableTd2>여기에 첨부파일</TableTd2>
+                        </TableTr>
+                </Table>
+            </Docstyle2>
+            <ButtonStyle>
+                <button type="button" onClick={handleComplete}>작성 완료</button>
+                <button type="button" onClick={handleCancel}>취소</button>
+            </ButtonStyle>
+            <CategoryTable>
+                <Table>
+                    <TableTr>
+                        <TableTh2>카테고리 선택</TableTh2>
+                    </TableTr>
+                </Table>
+            </CategoryTable>
+        </Container>
+    )
+}
+
+export default Doc;
+
+Doc.getLayout = function getLayout(page) {
+    return <MainLayout>{page}</MainLayout>;
+};
+
+const Container = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`;
+
+const Title = styled.div`
+    text-align: center;
+    margin-bottom: 20px;
+`;
+const Docstyle1 = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+`;
+
+const Docstyle2 = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+`;
+
+const DocstyleLeft = styled.div`
+    margin-left: 10px;
+`;
+
+const DocstyleRight = styled.div`
+    margin-right: 10px;
+`;
+
+const H1 = styled.h1`
+    font-size: 30px;
+`;
+
+const Table = styled.table`
+    border: 1px solid;
+`;
+
+const TableTr = styled.tr`
+    border: 1px solid;
+`;
+
+const TableTh = styled.th`
+    border: 1px solid;
+    padding: 5px;
+`;
+
+const TableTh2 = styled.th`
+    border: 1px solid;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100px;
+`;
+
+const TableTd = styled.td`
+    border: 1px solid;
+    width: 100px;
+`;
+
+const TableTd2 = styled.td`
+    border: 1px solid;
+    padding-left: 10px;
+    padding-right: 10px;
+`;
+
+const ButtonStyle = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    button {
+        border: solid 1px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: gray;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin: 1px;
+    }
+
+    button:last-child {
+        border: solid 1px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: gray;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin: 1px;
+    }
+`;
+
+const CategoryTable = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
+
+const handleComplete = () => {
+
+    console.log('문서 작성이 완료되었습니다.');
+}
+
+const handleCancel = () => {
+
+    console.log('문서 작성이 취소되었습니다.');
+}
