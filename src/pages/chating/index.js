@@ -1,7 +1,7 @@
 import MainLayout from "@/components/layout/mainLayout"
 
 const Chating = () => {
-
+ 
 }
 
 export default Chating;

@@ -59,28 +59,33 @@ export default function adminSideMenu() {
     return (
         <SideMenu>
             <AdminMinaSideHeader>
-                <CompanyLogoDiv />
+                <CompanyManageName>담당자명</CompanyManageName>
+                <CompanyBox>
+                    <CompanyLogo />
+                    <CompanyName>회사명</CompanyName>
+                </CompanyBox>
             </AdminMinaSideHeader>
             <MenuIcons>
                 {menus.map((menu) => (
                     <MenuToggle menus={menu} key={menu.id} />
                 ))}
             </MenuIcons>
+            <BottomSpan>사원 페이지 이동</BottomSpan>
         </SideMenu>
     )
 }
 
 const MenuIcon = styled.div`
-    margin-right: 10px;
+    margin: 0px 12px;
 `;
 
 
 const MenuName = styled.div`
     color: #000;
     font-family: Inter;
-    font-size: 16px;
+    font-size: 18px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
     line-height: normal;
 `;
 
@@ -88,12 +93,24 @@ const MenuIconDiv = styled.div`
     display: flex;
     width: 200px;
     border-bottom: 1px solid #DEDEDE;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+        border-bottom: 1px solid #007BFF;
+        transition: 0.5s;
+
+        ${MenuName} {
+            color: #007BFF;
+        }
+    }
 `;
 
 const SideMenu = styled.div`
     background: #F6F8FA;
-    
+    position: relative;
 `;
 
 const MenuIcons = styled.div`
@@ -104,16 +121,53 @@ const MenuIcons = styled.div`
 
 const AdminMinaSideHeader = styled.div`
     width: 100%;
-    height: 200px;
+    height: 210px;
     background: #007BFF;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    position: relative;
 `;
 
-const CompanyLogoDiv = styled.div`
-    width: 80px;
-    height: 80px;
-    
+const CompanyManageName = styled.div`
+    padding: 8px;
+    color: #fff;
+    font-size: 14px;
+`;
+
+const CompanyBox = styled.div`
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const CompanyLogo = styled.div`
+    width: 90px;
+    height: 90px;
     background: #fff;
     border-radius: 100%;
-    
+`;
+
+const CompanyName = styled.span`
+    color: #EFF1F6;
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 30px;
+`;
+
+const BottomSpan = styled.div`
+    color: #007BFF;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration-line: underline;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+
+    &:hover {
+        color: red;
+    }
 `;
