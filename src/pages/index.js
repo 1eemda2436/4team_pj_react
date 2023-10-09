@@ -2,12 +2,12 @@ import styled from "styled-components";
 import Logo2 from '../../public/asset/icons/logo2.svg';
 import { useRouter } from "next/router";
 
-export default function Home() {
+export default function Login() {
   const router = useRouter();
 
   return (
     <Component>
-      <Logo2Icon />
+      <Logo2 />
       <LoginInputBox>
         <LoginInput placeholder="ID" type="text" />
         <LoginInput placeholder="PASSWORD" type="password" />
@@ -25,10 +25,7 @@ const Component = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const Logo2Icon = styled(Logo2)`
-  margin-top: 117px;
+  justify-content: center;
 `;
 
 const LoginInputBox = styled.div`

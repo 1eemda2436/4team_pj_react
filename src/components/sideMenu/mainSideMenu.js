@@ -12,6 +12,7 @@ import Video_Conference from '../../../public/asset/icons/Video_Conference.svg';
 import Working_Together from '../../../public/asset/icons/Working_Together.svg';
 import Logout from '../../../public/asset/icons/logout.svg'
 
+//menu 아이콘, 제목 스타일 함수
 function MenuToggle({ menus }) {
     return (
       <MenuIconDiv>
@@ -22,6 +23,7 @@ function MenuToggle({ menus }) {
   }
 
 export default function MainSideMenu() {
+    //메뉴 요소 배열 
     const menus = [
         {   
             id: 1,
@@ -122,9 +124,7 @@ const MenuIconDiv = styled.div`
     }
 `;
 
-const MenuIcon = styled.div`
-
-`;
+const MenuIcon = styled.div``;
 
 const MenuName = styled.div`
     font-size: 10px;
