@@ -1,6 +1,6 @@
-const { Component } = require("react")
+import styled from "styled-components";
 
-const Chatting = () => {
+const ChattingContent = () => {
     return (
         <Component>
             {/* 수신div */}
@@ -21,3 +21,7 @@ const Chatting = () => {
         </Component>
     )
 }
+
+const Component = styled.div``;
+
+export default ChattingContent;

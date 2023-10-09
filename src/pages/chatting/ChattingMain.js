@@ -13,8 +13,8 @@ const ChattingMain = () => {
                 </div>
                 <div>
                     <div>
-                   <div>QnA</div>
-                   <div>관리자에게 질문하기</div>
+                    <div>QnA</div>
+                    <div>관리자에게 질문하기</div>
                     </div>
                     <ArrowRight/>
                 </div>
