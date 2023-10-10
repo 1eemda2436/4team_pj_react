@@ -90,10 +90,11 @@ SecurityManagement.getLayout = function getLayout(page) {
 };
 
 const MainComponent = styled.div`
-  width: 100%;
+  width: 60%;
   height: 100%;
   padding: 40px;
   box-sizing: border-box;
+  margin: 0 auto;
 `;
 
 const Title = styled.div`
@@ -106,7 +107,7 @@ const TopBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 100px;
   padding: 0px 10px;
   box-sizing: border-box;
 `;
