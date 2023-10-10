@@ -32,7 +32,7 @@ export default function adminSideMenu() {
             id: 2,
             icon: <CyberSecurity />,
             value: '보안관리',
-            path: '/admin'
+            path: '/admin/security'
         },
         {   
             id: 3,
