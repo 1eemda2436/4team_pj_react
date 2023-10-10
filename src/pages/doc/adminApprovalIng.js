@@ -1,4 +1,4 @@
-import MainLayout from "@/components/layout/mainLayout"
+import AdminLayout from "@/components/layout/adminLayout";
 import styled from "styled-components";
 
 
@@ -50,7 +50,7 @@ const Doc = () => {
 export default Doc;
 
 Doc.getLayout = function getLayout(page) {
-    return <MainLayout>{page}</MainLayout>;
+    return <AdminLayout>{page}</AdminLayout>;
 };
 
 const Container = styled.div`
