@@ -49,7 +49,7 @@ export default function MainSideMenu() {
             id: 4,
             icon: <Calendar />,
             value: '캘린더',
-            path: '/guest'
+            path: '/guest/calendar'
         },
         {
             id: 5,
