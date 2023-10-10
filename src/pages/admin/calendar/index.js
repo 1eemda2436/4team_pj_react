@@ -1,10 +1,9 @@
 import MainLayout from "@/components/layout/mainLayout"
-import MyCalendar from './MyCalendar';
 
 const Calendar = () => {
     return (
         <div>
-        <MyCalendar />
+            test
         </div>
     );
 }
