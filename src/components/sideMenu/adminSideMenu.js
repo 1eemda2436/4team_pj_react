@@ -6,10 +6,13 @@ import People from '../../../public/asset/icons/People.svg';
 import MaintenanceDate from '../../../public/asset/icons/MaintenanceDate.svg';
 import SelectiveHighlighting from '../../../public/asset/icons/SelectiveHighlighting.svg';
 import DocumentHeader from '../../../public/asset/icons/DocumentHeader.svg';
+import { useRouter } from 'next/router';
 
 function MenuToggle({ menus }) {
+    const router = useRouter();
+
     return (
-    <MenuIconDiv>
+    <MenuIconDiv onClick={() => router.push(menus.path)}>
         <MenuIcon>{menus.icon}</MenuIcon>
         <MenuName>{menus.value}</MenuName>
     </MenuIconDiv>
@@ -22,37 +25,44 @@ export default function adminSideMenu() {
         {   
             id: 1,
             icon: <AdminMain />,
-            value: '메인'
+            value: '메인',
+            path: '/admin'
         },
         {   
             id: 2,
             icon: <CyberSecurity />,
-            value: '보안관리'
+            value: '보안관리',
+            path: '/admin/security'
         },
         {   
             id: 3,
             icon: <SalaryMale />,
-            value: '급여관리'
+            value: '급여관리',
+            path: '/admin/salary'
         },
         {   
             id: 4,
             icon: <People />,
-            value: '인사관리'
+            value: '인사관리',
+            path: '/admin'
         },
         {   
             id: 5,
             icon: <MaintenanceDate />,
-            value: '근태관리'
+            value: '근태관리',
+            path: '/admin'
         },
         {   
             id: 6,
             icon: <SelectiveHighlighting />,
-            value: '전자결재'
+            value: '전자결재',
+            path: '/admin'
         },
         {   
             id: 7,
             icon: <DocumentHeader />,
-            value: '게시판관리'
+            value: '게시판관리',
+            path: '/admin'
         },
     ];
 

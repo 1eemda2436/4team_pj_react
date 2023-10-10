@@ -2,7 +2,7 @@ import styled from "styled-components";
 import AdminSideMenu from '@/components/sideMenu/adminSideMenu';
 
 //자식 컴포넌트를 받아 원하는 위치에 출력
-const MainLayout = ({children}) => {
+const AdminLayout = ({children}) => {
     return (
         <MainComponent>
             <AdminSideMenu />
@@ -12,9 +12,9 @@ const MainLayout = ({children}) => {
 }
 
 const MainComponent = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: flex;
+    width: 100%;
+    height: 100vh;
+    display: flex;
 `;
 
-export default MainLayout;
+export default AdminLayout;

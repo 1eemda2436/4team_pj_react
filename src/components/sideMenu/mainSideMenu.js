@@ -11,14 +11,18 @@ import Time from '../../../public/asset/icons/Time.svg';
 import Video_Conference from '../../../public/asset/icons/Video_Conference.svg';
 import Working_Together from '../../../public/asset/icons/Working_Together.svg';
 import Logout from '../../../public/asset/icons/logout.svg'
+import { useRouter } from "next/router";
+
+const router = useRouter();
 
 //menu 아이콘, 제목 스타일 함수
 function MenuToggle({ menus }) {
+    const router = useRouter();
     return (
-      <MenuIconDiv>
-        <MenuIcon>{menus.icon}</MenuIcon>
-        <MenuName>{menus.value}</MenuName>
-      </MenuIconDiv>
+        <MenuIconDiv onClick={() => router.push(menus.path)}>
+            <MenuIcon>{menus.icon}</MenuIcon>
+            <MenuName>{menus.value}</MenuName>
+        </MenuIconDiv>
     );
   }
 
@@ -28,52 +32,62 @@ export default function MainSideMenu() {
         {   
             id: 1,
             icon: <Alerts />,
-            value: '알림'
+            value: '알림',
+            path: '/guest'
         },
         {
             id: 2,
             icon: <Video_Conference />,
-            value: '워크스페이스'
+            value: '워크스페이스',
+            path: '/guest'
         },
         {
             id: 3,
             icon: <Time />,
-            value: '근태관리'
+            value: '근태관리',
+            path: '/guest'
         },
         {   
             id: 4,
             icon: <Calendar />,
-            value: '캘린더'
+            value: '캘린더',
+            path: '/guest'
         },
         {
             id: 5,
             icon: <Chat />,
-            value: '메신저'
+            value: '메신저',
+            path: '/guest'
         },
         {
             id: 6,
             icon: <Megaphone />,
-            value: '공지사항'
+            value: '공지사항',
+            path: '/guest'
         },
         {
             id: 7,
             icon: <Forms />,
-            value: '전자결재'
+            value: '전자결재',
+            path: '/guest'
         },
         {
             id: 8,
             icon: <Badge />,
-            value: '인사관리'
+            value: '인사관리',
+            path: '/guest'
         },
         {
             id: 9,
             icon: <Bank />,
-            value: '급여관리'
+            value: '급여관리',
+            path: '/guest'
         },
         {
             id: 10,
             icon: <Working_Together />,
-            value: '커뮤니티'
+            value: '커뮤니티',
+            path: '/guest'
         },
     ];
 

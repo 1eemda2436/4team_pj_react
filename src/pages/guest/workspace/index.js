@@ -1,6 +1,13 @@
 import MainLayout from "@/components/layout/mainLayout"
+import WorkspaceMain from "./WorkspaceMain";
 
 const Workspace = () => {
+    return (
+        <div>
+            <WorkspaceMain/>
+        </div>
+       
+    )
 
 }
 
