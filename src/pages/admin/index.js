@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Logo2 from '../../public/asset/icons/logo2.svg';
+import Logo2 from '../../../public/asset/icons/logo2.svg';
 import { useRouter } from "next/router";
 
 export default function Login() {
