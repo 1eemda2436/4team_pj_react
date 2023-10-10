@@ -1,11 +1,11 @@
 import MainLayout from "@/components/layout/mainLayout"
 
-const Community = () => {
+const Notice = () => {
 
 }
 
-export default Community;
+export default Notice;
 
-Community.getLayout = function getLayout(page) {
+Notice.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
