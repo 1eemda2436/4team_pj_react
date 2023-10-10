@@ -17,6 +17,18 @@ const Doc = () => {
         console.log('임시저장함클릭')
     }
 
+    const ApprovalEnd = () => {
+        console.log('결재완료문서함클릭')
+    }
+
+    const ApprovalIng = () => {
+        console.log('결재진행문서함클릭')
+    }
+
+    const ApprovalBack = () => {
+        console.log('결재반려문서함클릭')
+    }
+
     return(
         <Container>
             <Title>
@@ -24,7 +36,9 @@ const Doc = () => {
             </Title>
             <PersonalMenu>
                 <tr>
-                    <td>개인문서함</td>
+                    <td>
+                        개인문서함
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -42,6 +56,28 @@ const Doc = () => {
                     </td>
                 </tr>
             </PersonalMenu>
+            <AdminMenu>
+                <tr>
+                    <td>
+                        결재문서함
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" onClick={ApprovalEnd}>결재 완료 문서함</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" onClick={ApprovalIng}>결재 예정 문서함</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" onClick={ApprovalBack}>결재 반려 문서함</button>
+                    </td>
+                </tr>
+            </AdminMenu>
             <DocList>
                 <tr>
                     <td>
@@ -83,6 +119,15 @@ const PersonalMenu = styled.div`
     height: 100%;
     left: auto;
     top: auto;
+`;
+
+const AdminMenu = styled.div`
+    width: 200px;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    left: auto;
+    top: 50%;
 `;
 
 const DocList = styled.div`

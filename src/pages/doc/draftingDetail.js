@@ -34,6 +34,15 @@ const Doc = () => {
 
     return(
         <Container>
+            <ApprovalLine>
+                <table>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </ApprovalLine>
             <Title>
                 <H1>업무 기안서</H1>
             </Title>
@@ -110,6 +119,21 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+`;
+
+const ApprovalLine = styled.div`
+    text-align: right;
+    margin-bottom: 20px;
+    margin-left: auto;
+    tr {
+        border: solid 1px;
+    };
+
+    td {
+        border: solid 1px;
+        width: 100px;
+        height: 100px;
+    }
 `;
 
 const Title = styled.div`
