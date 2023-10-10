@@ -6,27 +6,27 @@ import styled from "styled-components";
 const Doc = () => {
 
     const ApprovalList = () => {
-
+        console.log('기안문서함클릭')
     }
 
     const CircularList = () => {
-
+        console.log('회람문서함클릭')
     }
 
     const TemporarySave = () => {
-
+        console.log('임시저장함클릭')
     }
 
     const ApprovalEnd = () => {
-
+        console.log('결재완료문서함클릭')
     }
 
     const ApprovalIng = () => {
-
+        console.log('결재진행문서함클릭')
     }
 
     const ApprovalBack = () => {
-        
+        console.log('결재반려문서함클릭')
     }
 
     return(
@@ -37,35 +37,44 @@ const Doc = () => {
             <PersonalMenu>
                 <tr>
                     <td>
-                        <input type="button" onClick={ApprovalList}>기안 문서함</input>
+                        <button type="button" onClick={ApprovalList}>기안 문서함</button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="button" onClick={CircularList}>회람 문서함</input>
+                        <button type="button" onClick={CircularList}>회람 문서함</button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="button" onClick={TemporarySave}>임시 저장목록</input>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="button" onClick={ApprovalEnd}>결재 완료 문서함</input>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="button" onClick={ApprovalIng}>결재 예정 문서함</input>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="button" onClick={ApprovalBack}>결재 반려 문서함</input>
+                        <button type="button" onClick={TemporarySave}>임시 저장목록</button>
                     </td>
                 </tr>
             </PersonalMenu>
+            <AdminMenu>
+                <tr>
+                    <td>
+                        <button type="button" onClick={ApprovalEnd}>결재 완료 문서함</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" onClick={ApprovalIng}>결재 예정 문서함</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" onClick={ApprovalBack}>결재 반려 문서함</button>
+                    </td>
+                </tr>
+            </AdminMenu>
+            <DocList>
+                <tr>
+                    <td>
+                        이곳에 ajax를 사용해서 각 문서함 리스트 출력
+                    </td>
+                </tr>
+            </DocList>
             
         </Container>
     )
@@ -94,5 +103,24 @@ const H1 = styled.h1`
 `;
 
 const PersonalMenu = styled.div`
+    width: 200px;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    left: auto;
+    top: auto;
+`;
 
+const AdminMenu = styled.div`
+    width: 200px;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
+    left: auto;
+    top: 50%;
+`;
+
+const DocList = styled.div`
+    margin-left: 220px;
+    padding: 20px;
 `;
