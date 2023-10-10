@@ -13,7 +13,6 @@ const Doc = () => {
                 <Table>
                     <thead>
                         <TableTr>
-                            <TableTh2>상태</TableTh2>
                             <TableTh2>문서번호</TableTh2>
                             <TableTh2>카테고리</TableTh2>
                             <TableTh2 isTitle>문서 제목</TableTh2>
@@ -23,7 +22,6 @@ const Doc = () => {
                     </thead>
                     <tbody>
                         <TableTr>
-                                <TableTd2>1</TableTd2>
                                 <TableTd2>1</TableTd2>
                                 <TableTd2>1</TableTd2>
                                 <TableTd2 isTitle>1</TableTd2>
