@@ -1,11 +1,11 @@
 import MainLayout from "@/components/layout/mainLayout"
 
-const Salary = () => {
+const Personnel = () => {
 
 }
 
-export default Salary;
+export default Personnel;
 
-Salary.getLayout = function getLayout(page) {
+Personnel.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
