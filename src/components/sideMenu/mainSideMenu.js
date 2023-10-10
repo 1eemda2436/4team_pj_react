@@ -13,8 +13,6 @@ import Working_Together from '../../../public/asset/icons/Working_Together.svg';
 import Logout from '../../../public/asset/icons/logout.svg'
 import { useRouter } from "next/router";
 
-const router = useRouter();
-
 //menu 아이콘, 제목 스타일 함수
 function MenuToggle({ menus }) {
     const router = useRouter();

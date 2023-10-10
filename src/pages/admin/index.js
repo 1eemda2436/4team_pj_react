@@ -1,80 +1,85 @@
 import styled from "styled-components";
-import Logo2 from '../../../public/asset/icons/logo2.svg';
-import { useRouter } from "next/router";
-
-export default function Login() {
-  const router = useRouter();
-
-  return (
-    <Component>
-      <Logo2 />
-      <LoginInputBox>
-        <LoginInput placeholder="ID" type="text" />
-        <LoginInput placeholder="PASSWORD" type="password" />
-
-        <LoginBtn> login </LoginBtn>
-        <JoinBtn onClick={() => router.push('/join')}>사업자 등록</JoinBtn>
-      </LoginInputBox>
-    </Component>
-  )
-}
-
-const Component = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+import AdminLayout from "@/components/layout/adminLayout"
+const admin = () => {
+    return(
+        <MainComponent>
+            <CompanyInfoBox>
+                <InfoDiv>
+                    <InfoTitle>License</InfoTitle>
+                    <InfoValue>FORBIDDEN</InfoValue>
+                </InfoDiv>
+                <InfoDiv>
+                    <InfoTitle>Location</InfoTitle>
+                    <InfoValue>서울</InfoValue>
+                </InfoDiv>
+                <InfoDiv>
+                    <InfoTitle>Business number</InfoTitle>
+                    <InfoValue>사업자 번호</InfoValue>
+                </InfoDiv>
+            </CompanyInfoBox>
+            <ControllerBox>
+                <ContentBox>프로젝트</ContentBox>
+                <ContentBox>직원수</ContentBox>
+                <ContentBox>근태 현황</ContentBox>
+                <ContentBox>권한 권리</ContentBox>
+            </ControllerBox>
+        </MainComponent>
+    )
+};
+export default admin;
+/**
+ * 컴포넌트명.getLayout 으로 _app.js에 있는 함수 선언
+ * 리턴 값에 사용할 레이아웃 태그 선언 후 매개변수로 받은 page값 선언해서 사용
+ */
+admin.getLayout = function getLayout(page) {
+    return <AdminLayout>{page}</AdminLayout>;
+};
+const MainComponent = styled.div`
+    width: 100%;
+    height: 100vh;
+    padding: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `;
 
-const LoginInputBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 600px;
-  margin-top: 48px;
+const CompanyInfoBox = styled.div`
+    width: 80%;
+    max-width: 700px;
 `;
-
-const LoginInput = styled.input`
-  border-radius: 5px;
-  border: 1px solid #CBCBCB;
-  background: #F8F8F8;
-  width: 100%;
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  margin-bottom: 15px;
-  font-size: 18px;
-  padding-left: 22px;
-
-  ::placeholder {
-    margin-left: 22px;
-    color: #D9D9D9;
-  }
+const InfoDiv = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 38px;
+    margin-bottom: 45px;
 `;
-
-const LoginBtn = styled.div`
-  border-radius: 5px;
-  border: 1px solid #CBCBCB;
-  background: #007BFF;
-  width: 100%;
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 28px;
-  font-weight: 600;
-  margin-top: 28px;
-  cursor: pointer;
-  padding: 0px 11px;
+const InfoTitle = styled.div`
+    font-weight: 700;
+    display: flex;
+    justify-self: start;
 `;
-
-const JoinBtn = styled.div`
-  color: #5C9DFF;
-  font-size: 18px;
-  font-weight: 700;
-  margin-top: 21px;
-  cursor: pointer;
+const InfoValue = styled.div`
+    font-size: 30px;
+    word-wrap: break-word;
+`;
+const ControllerBox = styled.div`
+    width: 80%;
+    max-width: 700px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 20px;
+    row-gap: 20px;
+    margin-top: 60px;
+`;
+const ContentBox = styled.div`
+    height: 60px;
+    background: #F6F8FA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
 `;
