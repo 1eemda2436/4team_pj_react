@@ -5,52 +5,57 @@ import styled from "styled-components";
 const AttendanceDetail = () => {
     return (
         <div>
-            {/* 적용한 스타일을 가진 테이블 사용 */}
-            <StyledTable>
-                <tr>
-                    <ColspanCell colSpan="2">나의 근태 현황</ColspanCell>
-                </tr>
+            <Title>나의 근태 현황</Title>
+            <div>
 
-                <tr>
-                    <StyledTableCell>사원번호</StyledTableCell>
-                    <StyledTableCell>null</StyledTableCell>
-                </tr>
+            <TblComponent>
+                <PayTableBottom>
+                    <tbody>
+                    <tr>
+                        <th>사원번호</th>
+                        <td>null</td>
+                    </tr>
 
-                <tr>
-                    <StyledTableCell>부서번호</StyledTableCell>
-                    <StyledTableCell>null</StyledTableCell>
-                </tr>
+                    <tr>
+                        <th>부서번호</th>
+                        <td>null</td>
+                    </tr>
 
-                <tr>
-                    <StyledTableCell>부서명</StyledTableCell>
-                    <StyledTableCell>null</StyledTableCell>
-                </tr>
+                    <tr>
+                        <th>부서 명</th>
+                        <td>null</td>
+                    </tr>
 
-                <tr>
-                    <StyledTableCell>성명</StyledTableCell>
-                    <StyledTableCell>null</StyledTableCell>
-                </tr>
+                    <tr>
+                        <th>성명</th>
+                        <td>null</td>
+                    </tr>
 
-                <tr>
-                    <StyledTableCell>금일 출근시간</StyledTableCell>
-                    <StyledTableCell>null</StyledTableCell>
-                </tr>
+                    <tr>
+                        <th>금일 출근시간</th>
+                        <td>null</td>
+                    </tr>
 
-                <tr>
-                    <StyledTableCell>금일 퇴근시간</StyledTableCell>
-                    <StyledTableCell>null</StyledTableCell>
-                </tr>
+                    <tr>
+                        <th>금일 퇴근시간</th>
+                        <td>null</td>
+                    </tr>
 
-                <tr>
-                    <StyledTableCell>금일 추가근무 시간</StyledTableCell>
-                    <StyledTableCell>null</StyledTableCell>
-                </tr>
+                    <tr>
+                        <th>금일 추가근무시간</th>
+                        <td>null</td>
+                    </tr>
 
-                <tr>
-                    <StyledTableCell>총 근무 시간</StyledTableCell>
-                    <StyledTableCell>null</StyledTableCell>
-                </tr>
-            </StyledTable>
+                    <tr>
+                        <th>총 근무시간</th>
+                        <td>null</td>
+                    </tr>
+                        
+                    </tbody>
+                </PayTableBottom>
+            </TblComponent>
+
+            </div>
 
             <AnnualRest>
                 [ 총 연차 합계 ]
@@ -75,23 +80,37 @@ const AttendanceDetail = () => {
             </AnnualRest>
 
             <div>
-                <table border={(3)} align="center">
-                    <tr>
-                        <th>지각 시간</th>
-                        <th>지각 횟수</th>
-                        <th>결근 시간</th>
-                        <th>휴가 기간</th>
-                        <th>휴가 사유</th>
-                    </tr>
+                <TblComponent>
+                    <TblHeader>
+                        <PayTableTop>
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>지각 시간</th>
+                                <th>지각 횟수</th>
+                                <th>결근 시간</th>
+                                <th>휴가 기간</th>
+                                <th>휴가 사유</th>
+                            </tr>
+                            </thead>
+                        </PayTableTop>
+                    </TblHeader>
 
-                    <tr>
-                        <th>null</th>
-                        <th>null</th>
-                        <th>null</th>
-                        <th>null</th>
-                        <th>null</th>
-                    </tr>
-                </table>
+                    <TblContent>
+                        <PayTableBottom>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                                <td>null</td>
+                                <td>null</td>
+                                <td>null</td>
+                                <td>null</td>
+                                <td>null</td>
+                            </tr>
+                            </tbody>
+                        </PayTableBottom>
+                    </TblContent>
+                </TblComponent>
             </div>
         </div>
     );
@@ -103,20 +122,100 @@ AttendanceDetail.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-// 스타일을 적용할 테이블 컴포넌트 생성
-const StyledTable = styled.table`
-    width: 100%; /* 테이블 너비 100%로 설정 */
-    text-align: center; /* 텍스트 가운데 정렬 */
+const MainComponent = styled.div`
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    box-sizing: border-box;
 `;
 
-// 각 셀에 테두리 추가
-const StyledTableCell = styled.td`
-    border: 1px solid black; /* 각 셀의 테두리 설정 */
-    padding: 8px; /* 셀 안의 여백 설정 */
+const Title = styled.div`
+    font-size: 26px;
+    font-weight: 700;
+    color: #007bff;
 `;
 
-const ColspanCell = styled(StyledTableCell)`
-    colspan: 2;
+const TblComponent = styled.div`
+    border: 1px solid #E5E5E5;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.10);
+    box-sizing: border-box;
+    margin-top: 40px;
+`;
+
+const TblHeader = styled.div`
+    padding: 0px 15px;
+    background: #F6F8FA;
+    border-radius: 5px 5px 0px 0px;
+`;
+
+const TblContent = styled.div`
+    height: 550px;
+    overflow-x: auto;
+    padding: 0px 15px;
+
+&::-webkit-scrollbar {
+    width: 4px;
+} 
+
+&::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}
+
+&::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}
+`;
+
+const Table = styled.table`
+    width:100%;
+    table-layout: fixed;
+    font-size: .9em;
+    width: 800px;
+    min-width: 650px;
+    border-collapse: collapse;
+
+    th {
+    padding: 20px 15px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    }
+
+    td {
+    padding: 15px;
+    vertical-align: middle;
+    font-size: 13px;
+    border-bottom: solid 1px #E5E5E5;
+    text-align: center;
+    word-wrap: break-word;
+    }
+`;
+
+const PayTableTop = styled(Table)``;
+
+const PayTableBottom = styled(Table)`
+    margin-top: 20px;
+`;
+
+const TotalBox = styled.div`
+    display: flex;
+    margin: 50px 30px 20px 30px;
+    justify-content: flex-end;
+    align-items: flex-end;
+    box-sizing: border-box;
+`;
+
+const TotalTitle = styled.div`
+    color: #007bff;
+    font-weight: 700;
+    font-size: 20px;
+`;
+
+const TotalResult = styled.span`
+    margin-left: 15px;
 `;
 
 const AnnualRest = styled.div`
