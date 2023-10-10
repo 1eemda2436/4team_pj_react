@@ -47,10 +47,10 @@ const MainComponent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 `;
 
 const CompanyInfoBox = styled.div`
-    margin-top: 240px;
     width: 80%;
     max-width: 700px;
 `;
