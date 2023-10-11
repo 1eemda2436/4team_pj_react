@@ -4,7 +4,7 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useState } from "react";
 
-const SecurityManagement = () => {
+const AdminSecurityManagement = () => {
   const [authorityStatus, setAuthorityStatus] = useState({
     security: false,
     attendance: false,
@@ -83,9 +83,9 @@ const SecurityManagement = () => {
   );
 }
 
-export default SecurityManagement;
+export default AdminSecurityManagement;
 
-SecurityManagement.getLayout = function getLayout(page) {
+AdminSecurityManagement.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
 

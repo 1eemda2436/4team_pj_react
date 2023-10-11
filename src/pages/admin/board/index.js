@@ -1,11 +1,12 @@
 import AdminLayout from "@/components/layout/adminLayout";
 
-const Personnel = () => {
+
+const Notice = () => {
 
 }
 
-export default Personnel;
+export default Notice;
 
-Personnel.getLayout = function getLayout(page) {
+Notice.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };

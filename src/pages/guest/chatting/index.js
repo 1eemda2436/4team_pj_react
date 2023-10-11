@@ -6,7 +6,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { useState } from "react";
 
 const Chatting = () => {
-    const [showMessage, setShowMessage] = useState(true);
+    const [showMessage, setShowMessage] = useState(false);
 
     const handleUserBoxClick = () => {
         setShowMessage(!showMessage);
@@ -74,7 +74,6 @@ Chatting.getLayout = function getLayout(page) {
 };
 
 const MainCompoenet = styled.div`
-    width: 100%;
     height: 100%;
     padding: 50px 30px;
     box-sizing: border-box;

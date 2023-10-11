@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout";
 
-const PayManagement = () => {
+const AdminPayManagement = () => {
   return (
     <MainComponent>
         <Title>급여관리</Title>
@@ -229,9 +229,9 @@ const PayManagement = () => {
   );
 }
 
-export default PayManagement;
+export default AdminPayManagement;
 
-PayManagement.getLayout = function getLayout(page) {
+AdminPayManagement.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
 
