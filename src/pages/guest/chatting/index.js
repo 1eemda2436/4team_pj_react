@@ -34,7 +34,7 @@ const Chatting = () => {
 
                     <ChattingContent>
                         <UserBox onClick={handleUserBoxClick}>
-                            <User/>
+                            <User width="42" height="42" />
 
                             <UserDiv>
                                 <Users>
@@ -54,7 +54,7 @@ const Chatting = () => {
             {showMessage && 
                 <MessageMainComponent>
                     <UserHeader>
-                        <User/>
+                    <User width="42" height="42" />
                         <UserName>사원명</UserName>
                     </UserHeader>
 
