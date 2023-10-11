@@ -55,7 +55,7 @@ export default function MainSideMenu() {
             id: 5,
             icon: <Chat />,
             value: '메신저',
-            path: '/guest'
+            path: '/guest/chatting'
         },
         {
             id: 6,
@@ -128,7 +128,7 @@ const MenuIconDiv = styled.div`
     padding: 11px 0px;
     margin-bottom: 10px;
     cursor: pointer;
-   
+
     &:hover {
         background: rgba(255, 255, 255, 0.2);
         color: white;
