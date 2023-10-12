@@ -1,77 +1,78 @@
 import MainLayout from "@/components/layout/mainLayout";
 import styled from "styled-components";
 import User from '../../../../public/asset/icons/user.svg'
+import Header from "@/components/common/header";
 
 // main
 const Attendance = () => {
     return (
-        <AttenComponent>
-            <AttenBoxTop>
-                <AttenBoxUser>
-                    <UserIconBox>
-                        <UserIcon width='70' height='70' />
-                        <span>사원명</span>
-                    </UserIconBox>
-                    <UserContent>
-                        부가설명
-                    </UserContent>
-                </AttenBoxUser>
+        <MainComponent>
+            <Header />
+            <AttenComponent>
+                <AttenBoxTop>
+                    <AttenBoxUser>
+                        <UserIconBox>
+                            <UserIcon width='70' height='70' />
+                            <span>사원명</span>
+                        </UserIconBox>
+                        <UserContent>
+                            부가설명
+                        </UserContent>
+                    </AttenBoxUser>
+                    
+                    <AttenBoxInfo>
+                        <div className="circle-container">
+                            <CircleBox>
+                                <div className="circle">4</div>
+                                총 연차
+                            </CircleBox>
+
+                            <CircleBox>
+                                <div className="circle">1</div>
+                                사용 연차
+                            </CircleBox>
+                            
+                            <CircleBox>
+                                <div className="circle">3</div>
+                                잔여 연차
+                            </CircleBox>
+                            
+                            <CircleBox>
+                                <div className="circle">1</div>
+                                지각계
+                            </CircleBox>
+
+                            <CircleBox>
+                                <div className="circle">1</div>
+                                결근계
+                            </CircleBox>
+
+                            <CircleBox>
+                                <div className="circle">1</div>
+                                조퇴계
+                            </CircleBox>
+                        </div>
+                    </AttenBoxInfo>
+                </AttenBoxTop>
                 
-                <AttenBoxInfo>
-                    <div className="circle-container">
-                        <CircleBox>
-                            <div className="circle">4</div>
-                            총 연차
-                        </CircleBox>
-
-                        <CircleBox>
-                            <div className="circle">1</div>
-                            사용 연차
-                        </CircleBox>
-                        
-                        <CircleBox>
-                            <div className="circle">3</div>
-                            잔여 연차
-                        </CircleBox>
-                        
-                        <CircleBox>
-                            <div className="circle">1</div>
-                            지각계
-                        </CircleBox>
-
-                        <CircleBox>
-                            <div className="circle">1</div>
-                            결근계
-                        </CircleBox>
-
-                        <CircleBox>
-                            <div className="circle">1</div>
-                            조퇴계
-                        </CircleBox>
-
-
-                        
-                    </div>
-                </AttenBoxInfo>
-            </AttenBoxTop>
-            
-            <AttenBoxBottom>
-                <AttenCal>
-                    <div className="calendar">
-                        [ 캘린더 자리 ]
-                    </div>
-                </AttenCal>
-                
-                <AttenWeekWork>
-                    <div className="work-hours">
-                        [ 주간 근무 현황 ]
-                    </div>
-                    <div>[ 총 근무 시간 ]</div>
-                    <div>[ 총 연장 근무 시간 ]</div>
-                    <div>[ 남은 최소 근무 시간 ]</div>
-                </AttenWeekWork>
-            </AttenBoxBottom>
-        </AttenComponent>
+                <AttenBoxBottom>
+                    <AttenCal>
+                        <div className="calendar">
+                            [ 캘린더 자리 ]
+                        </div>
+                    </AttenCal>
+                    
+                    <AttenWeekWork>
+                        <div className="work-hours">
+                            [ 주간 근무 현황 ]
+                        </div>
+                        <div>[ 총 근무 시간 ]</div>
+                        <div>[ 총 연장 근무 시간 ]</div>
+                        <div>[ 남은 최소 근무 시간 ]</div>
+                    </AttenWeekWork>
+                </AttenBoxBottom>
+            </AttenComponent>
+        </MainComponent>
     );
 }
 
@@ -81,14 +82,18 @@ Attendance.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-const AttenComponent = styled.div`
+const MainComponent = styled.div`
     height: 100%;
+`;
+
+const AttenComponent = styled.div`
+    height: 90%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     box-sizing: border-box;
-    padding: 200px 5% 20px 5%;
+    padding: 50px 5%;
 `;
 
 const AttenBoxTop = styled.div`
