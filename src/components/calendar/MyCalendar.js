@@ -7,6 +7,7 @@ const MyCalendar = () => {
         <Caldiv>
             <FullCalendar 
                 plugins={[ dayGridPlugin ]}
+                aspectRatio={2.5}
             />
         </Caldiv>
     );
@@ -15,6 +16,7 @@ const MyCalendar = () => {
 export default MyCalendar;
 
 const Caldiv = styled.div `
-    width: 1000px;
-    height: 500px;
+    width: 2300px;
+    height: 400px;
+    
 `;
