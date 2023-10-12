@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout";
+import { useRouter } from 'next/router';
 
 const PayStatement = () => {
+    const router = useRouter();
   return (
     <div>
         <h2>급여관리 - 명세서</h2>
@@ -65,7 +67,9 @@ const PayStatement = () => {
                 <td></td>
             </tr>
         </table>
+        <button>수정</button>
         <button>발송</button>
+        <button onClick={() => router.back()}>이전</button>
     </div>
   );
 }

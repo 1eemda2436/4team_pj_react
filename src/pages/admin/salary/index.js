@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout";
+import { useRouter } from 'next/router';
 
 const AdminPayManagement = () => {
+  const router = useRouter();
   return (
     <MainComponent>
         <Title>급여관리</Title>
@@ -21,6 +23,7 @@ const AdminPayManagement = () => {
                   <th>직무</th>
                   <th>재직여부</th>
                   <th>월급</th>
+                  <th>명세서</th>
                 </tr>
               </thead>
             </PayTableTop>
@@ -40,6 +43,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -52,6 +56,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -64,6 +69,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -76,6 +82,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -88,6 +95,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -100,6 +108,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr><tr>
                   <td>1</td>
                   <td>1</td>
@@ -111,6 +120,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr><tr>
                   <td>1</td>
                   <td>1</td>
@@ -122,6 +132,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr><tr>
                   <td>1</td>
                   <td>1</td>
@@ -133,6 +144,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -145,6 +157,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -157,6 +170,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -169,6 +183,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -181,6 +196,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -193,6 +209,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr><tr>
                   <td>1</td>
                   <td>1</td>
@@ -204,6 +221,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr><tr>
                   <td>1</td>
                   <td>1</td>
@@ -215,6 +233,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
+                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
               </tbody>
             </PayTableBottom>

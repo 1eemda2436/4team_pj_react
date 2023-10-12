@@ -16,6 +16,7 @@ const EmployeeRegistration = () => {
         </div> 
 
         <div>
+            <button>업로드</button> 
             <button>등록</button> 
         </div>
         
