@@ -1,8 +1,32 @@
 import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from 'next/router';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 const AdminPayManagement = () => {
+
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
+    axios.get('http://localhost:8081/salary/salaryMain')
+      .then(response => {
+        setData(response.data); // 응답 데이터를 상태에 저장
+      })
+      .catch(err => {
+        if (axios.isAxiosError(err)) {
+          // AxiosError 처리
+          setError(err.response.data.message);
+        } else {
+          // 일반 오류 처리
+          setError('데이터를 가져오는 중 오류 발생');
+        }
+      });
+  }, []);
+
+
   const router = useRouter();
   return (
     <MainComponent>
@@ -32,20 +56,22 @@ const AdminPayManagement = () => {
           <TblContent>
             <PayTableBottom>
               <tbody>
-              <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
+              {data.map(item => (
+                <tr key={item.s_id}>
+                  <td>{item.s_id}</td>
+                  <td>{item.id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.resident}</td>
+                  <td>{item.contract}</td>
+                  <td>{item.depart_id}</td>
+                  <td>{item.rank}</td>
+                  <td>{item.state}</td>
+                  <td>{item.estate}</td>
+                  <td>{item.salary}</td>
                   <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
-                <tr>
+              ))}
+                {/* <tr>
                   <td>1</td>
                   <td>1</td>
                   <td>1</td>
@@ -57,184 +83,7 @@ const AdminPayManagement = () => {
                   <td>1</td>
                   <td>1</td>
                   <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr><tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr><tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr><tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr><tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr><tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr>
+                </tr> */}
               </tbody>
             </PayTableBottom>
           </TblContent>

@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 
 const community = () => {
     const router = useRouter();
-    
     return(
         <MainComponent>
             <h1>자유게시판</h1>
