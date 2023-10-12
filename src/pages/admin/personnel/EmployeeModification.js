@@ -2,7 +2,9 @@ import AdminLayout from "@/components/layout/adminLayout";
 import styled from "styled-components";
 import { useRouter } from 'next/router';
 
-const AdminPersonnel = () => {
+
+
+const EmployeeModification = () => {
     const router = useRouter();
     return (
         <div>
@@ -16,7 +18,6 @@ const AdminPersonnel = () => {
                     <th>사번</th>
                     <th>이름</th>
                     <th>전화번호</th>
-                    <th colSpan={2}>수정 / 삭제</th>
                 </tr>
                 <tr>
                     <td></td>
@@ -25,18 +26,18 @@ const AdminPersonnel = () => {
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td><button onClick={() => router.push('/admin/personnel/EmployeeModification')}>수정</button></td>
-                    <td><button>삭제</button></td>
                 </tr>
             </table>
              
+            <button onClick={() => router.push('/admin/personnel')}></button>
+
         </div>
       );
 }
 
-export default AdminPersonnel;
+export default EmployeeModification;
 
-AdminPersonnel.getLayout = function getLayout(page) {
+EmployeeModification.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
 

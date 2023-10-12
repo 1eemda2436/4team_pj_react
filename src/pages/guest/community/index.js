@@ -1,18 +1,39 @@
-import styled from "styled-components";
 import MainLayout from "@/components/layout/mainLayout"
-import Header from "@/components/common/header";
+import styled from "styled-components";
+import { useRouter } from 'next/router';
 
-const Community = () => {
+const community = () => {
+    const router = useRouter();
+    
     return(
         <MainComponent>
-            <Header />
+            <h1>자유게시판</h1>
+            <div>카테고리</div>
+            
+            <div onClick={() => router.push('community/BoardWrite')}>글쓰기</div>
+
+            <div>
+                <div>
+                    <div>작성자</div>
+                    <div>조회수</div>
+                </div>
+                <div>사진</div>
+                <div>
+                    <div onClick={() => router.push('community/BoardDetails')} >제목</div>
+                    <div>글내용</div>
+                </div>
+            </div>
+
+            <div>
+                뉴스 api
+            </div>
         </MainComponent>
     )
 }
 
-export default Community;
+export default community;
 
-Community.getLayout = function getLayout(page) {
+community.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
