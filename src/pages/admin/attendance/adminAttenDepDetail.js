@@ -1,8 +1,12 @@
 import AdminLayout from "@/components/layout/adminLayout";
+import { useRouter } from "next/router";
 
 // 관리자 부서별 근태 현황(상세)
 const AdminAttenDepDetail = () => {
     // 테두리 스타일을 정의합니다.
+
+    const router = useRouter();
+
     const tableBorderStyle = {
         border: "3px solid black",
         borderRadius: "20px",
@@ -13,6 +17,10 @@ const AdminAttenDepDetail = () => {
         <div>
             <div>
                 <table style={tableBorderStyle}>
+                    <tr>
+                        <th colSpan={2} onClick={() => router.push('/admin/attendance/adminAttenAnnualDetail')}>부서별 근태 현황</th>
+                    </tr>
+
                     <tr>
                         <th style={tableBorderStyle}>금일 출근률</th>
                         <td style={tableBorderStyle}>null%</td>
