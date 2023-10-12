@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import MainLayout from "@/components/layout/mainLayout"
 
 const Workspace = () => {
