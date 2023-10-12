@@ -1,7 +1,11 @@
 import MainLayout from "@/components/layout/mainLayout";
+import { useRouter } from "next/router";
 
 // 연차 신청
 const AnnualRegister = () => {
+
+    const router = useRouter();
+
     return (
         <div>
             <div>
@@ -58,7 +62,7 @@ const AnnualRegister = () => {
 
                     <tr>
                         <td colSpan="2">
-                            <input type="button" value={"신청하기"} />
+                            <input type="button" value={"신청하기"} onClick={() => router.push('/guest/attendance/detail/')}/>
                         </td>
                     </tr>
                 </table>

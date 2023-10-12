@@ -1,7 +1,7 @@
 import AdminLayout from "@/components/layout/adminLayout";
 
 // 관리자 부서별 근태 통계(상세)
-const AdminAttenAnnalDetail = () => {
+const AdminAttenAnnualDetail = () => {
     // 테두리 스타일을 정의합니다.
     const tableBorderStyle = {
         border: "3px solid black",
@@ -37,8 +37,8 @@ const AdminAttenAnnalDetail = () => {
     );
 }
 
-export default AdminAttenAnnalDetail;
+export default AdminAttenAnnualDetail;
 
-AdminAttenAnnalDetail.getLayout = function getLayout(page) {
+AdminAttenAnnualDetail.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };

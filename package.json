@@ -17,6 +17,7 @@
     "@mui/icons-material": "^5.14.12",
     "@mui/material": "^5.14.12",
     "axios": "^1.5.1",
+    "http-proxy-middleware": "^2.0.6",
     "next": "^13.5.4",
     "react": "latest",
     "react-dom": "latest",

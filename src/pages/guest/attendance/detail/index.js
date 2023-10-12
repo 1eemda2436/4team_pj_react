@@ -1,8 +1,12 @@
 import MainLayout from "@/components/layout/mainLayout";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 // 내 근태 현황(상세)
 const AttendanceDetail = () => {
+
+    const router = useRouter();
+
     return (
         <div>
             <Title>나의 근태 현황</Title>
@@ -57,26 +61,39 @@ const AttendanceDetail = () => {
 
             </div>
 
+            <AnnualRequest onClick={() => router.push('/guest/attendance/register/annualRegister')}>
+                [ 연차 신청 ]
+            </AnnualRequest>
+
+            <AnnualRequest onClick={() => router.push('/guest/attendance/register/vacationRegister')}>
+                [ 휴가 신청 ]
+            </AnnualRequest>
+            <br />
+
             <AnnualRest>
                 [ 총 연차 합계 ]
             </AnnualRest>
 
             <AnnualRest>
-                [ 총 연차 합계 ]
+                [ 15 ]
             </AnnualRest>
             <br />
+
             <AnnualRest>
-                [ 총 연차 합계 ]
+                [ 사용한 연차]
             </AnnualRest>
+
             <AnnualRest>
-                [ 총 연차 합계 ]
+                [ 3 ]
             </AnnualRest>
             <br />
+
             <AnnualRest>
-                [ 총 연차 합계 ]
+                [ 미사용 연차 ]
             </AnnualRest>
+
             <AnnualRest>
-                [ 총 연차 합계 ]
+                [ 12 ]
             </AnnualRest>
 
             <div>
@@ -176,6 +193,7 @@ const Table = styled.table`
     border-collapse: collapse;
 
     th {
+    width: 150px;
     padding: 20px 15px;
     text-align: center;
     font-weight: 500;
@@ -229,5 +247,20 @@ const AnnualRest = styled.div`
     align-items: center;
     justify-content: center;
     font-size: 18px;
+    margin-right: 10px;
+`;
+
+const AnnualRequest = styled.div`
+    border: 3px solid black;
+    border-radius: 20px;
+    width: 20%;
+    background-color: #9AFBA9;
+    height: 103px;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
     margin-right: 10px;
 `;
