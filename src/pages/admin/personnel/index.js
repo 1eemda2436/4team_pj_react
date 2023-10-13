@@ -1,9 +1,32 @@
 import AdminLayout from "@/components/layout/adminLayout";
 import styled from "styled-components";
 import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const AdminPersonnel = () => {
     const router = useRouter();
+
+    const [data, setData] = useState([]);
+    const [error, setError] = useState(null);
+  
+    useEffect(() => {
+      // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
+      axios.get('http://localhost:8081/salary/personnel')
+        .then(response => {
+          setData(response.data); // 응답 데이터를 상태에 저장
+        })
+        .catch(err => {
+          if (axios.isAxiosError(err)) {
+            // AxiosError 처리
+            setError(err.response.data.message);
+          } else {
+            // 일반 오류 처리
+            setError('데이터를 가져오는 중 오류 발생');
+          }
+        });
+    }, []);
+
     return (
         <MainComponent>
         <Title>인사 관리 - 사원 관리</Title>
@@ -11,7 +34,6 @@ const AdminPersonnel = () => {
         <TblHeader>
             <Table>
             <tr>
-                <th>순번</th>
                 <th>부서</th>
                 <th>팀</th>
                 <th>사번</th>
@@ -24,20 +46,21 @@ const AdminPersonnel = () => {
         <TblContent>
             <PayTableTop>
             <Table>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                <Button onClick={() => router.push('/admin/personnel/EmployeeModification')}>수정</Button>
-                </td>
-                <td>
-                <Button>삭제</Button>
-                </td>
-            </tr>
+            {data.map(item => (
+                <tr key={item.id}>
+                  <td>{item.depart_id}</td>
+                  <td>{item.team_id}</td>
+                  <td>{item.id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.tel}</td>
+                  <td>
+                  <Button onClick={() => router.push('/admin/personnel/EmployeeModification')}>수정</Button>
+                  </td>
+                  <td>
+                  <Button>삭제</Button>
+                  </td>
+                </tr>
+              ))}
             </Table>
             </PayTableTop>
             {/* 다른 데이터 로우들 */}
