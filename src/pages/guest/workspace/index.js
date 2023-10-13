@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import MainLayout from "@/components/layout/mainLayout"
-import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from "react";
 // import ApiService from "./ApiService";

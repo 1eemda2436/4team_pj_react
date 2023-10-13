@@ -198,3 +198,4 @@ const TotalTitle = styled.div`
 const TotalResult = styled.span`
   margin-left: 15px;
 `;
+
