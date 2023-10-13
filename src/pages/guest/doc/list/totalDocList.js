@@ -1,21 +1,12 @@
 import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 
 
 const Doc = () => {
 
-    const ApprovalList = () => {
-        console.log('기안문서함클릭')
-    }
-
-    const CircularList = () => {
-        console.log('회람문서함클릭')
-    }
-
-    const TemporarySave = () => {
-        console.log('임시저장함클릭')
-    }
+    const router = useRouter();
 
     return(
         <Container>
@@ -28,24 +19,24 @@ const Doc = () => {
                 </tr>
                 <tr>
                     <td>
-                        <button type="button" onClick={ApprovalList}>기안 문서함</button>
+                        <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <button type="button" onClick={CircularList}>회람 문서함</button>
+                        <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <button type="button" onClick={TemporarySave}>임시 저장목록</button>
+                        <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
                     </td>
                 </tr>
             </PersonalMenu>
             <DocList>
                 <tr>
                     <td>
-                        이곳에 ajax를 사용해서 각 문서함 리스트 출력
+                        버튼을 누르면 페이지가 넘어가지 않고 여기에 뜨게 만들기
                     </td>
                 </tr>
             </DocList>
@@ -82,7 +73,7 @@ const PersonalMenu = styled.div`
     position: fixed;
     height: 100%;
     left: auto;
-    top: auto;
+    top: 100px;
 `;
 
 const DocList = styled.div`

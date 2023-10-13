@@ -19,9 +19,9 @@ const Doc = () => {
             <ApprovalLine>
                 <table>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
                     </tr>
                 </table>
             </ApprovalLine>
