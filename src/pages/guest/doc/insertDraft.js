@@ -1,7 +1,8 @@
 import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 
 const Doc = () => {
@@ -9,6 +10,25 @@ const Doc = () => {
     const router = useRouter();
 
     const [selectedCategory, setSelectedCategory] = useState('');
+
+    const [samples, setSamples] = useState([]);
+
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        axios
+        .post("http://localhost:8081/doc/insert")
+        .then((response) => {
+            setSamples(response.data);
+        })
+        .catch((error) => {
+            if(axios.isAxiosError(error)) {
+                setError(error.response.data.message);
+            } else {
+                setError('데이터를 가져오는 중 오류 발생')
+            }
+        });
+    }, []);
 
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
@@ -31,18 +51,20 @@ const Doc = () => {
             <Docstyle1>
                 <DocstyleLeft>
                     <Table>
+                        {samples.map(insert =>
+                            <div key={insert.doc_id}>
                         <TableTr>
                             <TableTh>문서번호</TableTh>
-                            <TableTd>1</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>기안일</TableTh>
-                            <TableTd>1</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>기안자</TableTh>
-                            <TableTd>1</TableTd>
-                        </TableTr>
+                            <TableTd component="" scope="insert">{insert.doc_id}</TableTd>
+                        </TableTr><TableTr>
+                                <TableTh>기안일</TableTh>
+                                <TableTd>{insert.doc_date}</TableTd>
+                            </TableTr><TableTr>
+                                <TableTh>기안자</TableTh>
+                                <TableTd>{insert.name}</TableTd>
+                            </TableTr>
+                            </div>
+                        )}
                     </Table>
                 </DocstyleLeft>
                 <DocstyleRight>
@@ -54,13 +76,17 @@ const Doc = () => {
             </Docstyle1>
             <Docstyle2>
                 <Table>
-                        <TableTr>
-                            <TableTh3>제목</TableTh3>
-                            <TableTh2>여기에 문서 제목</TableTh2>
-                        </TableTr>
-                        <TableTr>
-                                <TableTd2 colSpan={2}>문서 내용</TableTd2>
-                        </TableTr>
+                    {samples.map(insert =>
+                    <div key={insert.doc_id}>
+                    <TableTr>
+                        <TableTh3>제목</TableTh3>
+                        <TableTh2>{insert.doc_title}</TableTh2>
+                    </TableTr>
+                    <TableTr>
+                        <TableTd2 colSpan={2}>{insert.doc_content}</TableTd2>
+                    </TableTr>
+                    </div>
+                    )}
                 </Table>
                 <br></br>
                 <Table>
