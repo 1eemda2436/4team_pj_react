@@ -13,12 +13,17 @@
     "@emotion/styled": "^11.11.0",
     "@fullcalendar/core": "^6.1.9",
     "@fullcalendar/daygrid": "^6.1.9",
+<<<<<<< HEAD
     "@fullcalendar/list": "^6.1.9",
     "@fullcalendar/react": "^6.1.9",
     "@fullcalendar/timegrid": "^6.1.9",
+=======
+    "@fullcalendar/react": "^6.1.9",
+>>>>>>> a77121fffdf440218d62d6e9a3708d1a557408fb
     "@mui/icons-material": "^5.14.12",
     "@mui/material": "^5.14.12",
     "axios": "^1.5.1",
+    "http-proxy-middleware": "^2.0.6",
     "next": "^13.5.4",
     "react": "latest",
     "react-dom": "latest",

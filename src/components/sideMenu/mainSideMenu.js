@@ -11,69 +11,83 @@ import Time from '../../../public/asset/icons/Time.svg';
 import Video_Conference from '../../../public/asset/icons/Video_Conference.svg';
 import Working_Together from '../../../public/asset/icons/Working_Together.svg';
 import Logout from '../../../public/asset/icons/logout.svg'
+import { useRouter } from "next/router";
 
 //menu 아이콘, 제목 스타일 함수
 function MenuToggle({ menus }) {
+    const router = useRouter();
     return (
-      <MenuIconDiv>
-        <MenuIcon>{menus.icon}</MenuIcon>
-        <MenuName>{menus.value}</MenuName>
-      </MenuIconDiv>
+        <MenuIconDiv onClick={() => router.push(menus.path)}>
+            <MenuIcon>{menus.icon}</MenuIcon>
+            <MenuName>{menus.value}</MenuName>
+        </MenuIconDiv>
     );
   }
 
 export default function MainSideMenu() {
+    const router = useRouter();
+
     //메뉴 요소 배열 
     const menus = [
         {   
             id: 1,
             icon: <Alerts />,
-            value: '알림'
+            value: '알림',
+            path: '/guest'
         },
         {
             id: 2,
             icon: <Video_Conference />,
-            value: '워크스페이스'
+            value: '워크스페이스',
+            path: '/guest/workspace'
         },
         {
             id: 3,
             icon: <Time />,
-            value: '근태관리'
+            value: '근태관리',
+            path: '/guest/attendance'
         },
         {   
             id: 4,
             icon: <Calendar />,
-            value: '캘린더'
+            value: '캘린더',
+            path: '/guest/calendar'
         },
         {
             id: 5,
             icon: <Chat />,
-            value: '메신저'
+            value: '메신저',
+            path: '/guest/chatting'
         },
         {
             id: 6,
             icon: <Megaphone />,
-            value: '공지사항'
+            value: '공지사항',
+            path: '/guest/notice'
         },
         {
             id: 7,
             icon: <Forms />,
-            value: '전자결재'
+            value: '전자결재',
+            path: '/guest/doc'
         },
         {
             id: 8,
             icon: <Badge />,
-            value: '인사관리'
+            value: '인사관리',
+            path: '/guest/personnel'
         },
         {
             id: 9,
             icon: <Bank />,
-            value: '급여관리'
+            value: '급여관리',
+            path: '/guest/salary'
         },
         {
             id: 10,
             icon: <Working_Together />,
-            value: '커뮤니티'
+            value: '커뮤니티',
+            path: '/guest/community'
         },
     ];
 
@@ -85,14 +99,13 @@ export default function MainSideMenu() {
                     <MenuToggle menus={menu} key={menu.id} />
                 ))}
             </MenuIcons>
-            <LogoutIcon />
+            <LogoutIcon onClick={() => router.push('/')} />
         </SideMenu>
     )
 }
 
 const SideMenu = styled.div`
-    width: 80px;
-    height: 100vh;
+    width: 110px;
     background-color: #005FC5;
     display: flex;
     flex-direction: column;
@@ -116,7 +129,7 @@ const MenuIconDiv = styled.div`
     padding: 11px 0px;
     margin-bottom: 10px;
     cursor: pointer;
-   
+
     &:hover {
         background: rgba(255, 255, 255, 0.2);
         color: white;

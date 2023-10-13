@@ -6,15 +6,19 @@ const MainLayout = ({children}) => {
     return (
         <MainComponent>
             <MainSideMenu />
-            <>{children}</>
+            <Content>{children}</Content>
         </MainComponent>
     )
 }
 
 const MainComponent = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: flex;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+`;
+
+const Content = styled.div`
+    width: 100%;
 `;
 
 export default MainLayout;
