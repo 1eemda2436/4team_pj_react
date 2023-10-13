@@ -8,7 +8,7 @@ const AttendanceDetail = () => {
     const router = useRouter();
 
     return (
-        <div>
+        <div align="center">
             <Title>나의 근태 현황</Title>
             <div>
 
@@ -16,7 +16,7 @@ const AttendanceDetail = () => {
                 <PayTableBottom>
                     <tbody>
                     <tr>
-                        <th>사원번호</th>
+                        <th style={{width: "150px"}}>사원번호</th>
                         <td>null</td>
                     </tr>
 
@@ -61,40 +61,49 @@ const AttendanceDetail = () => {
 
             </div>
 
-            <AnnualRequest onClick={() => router.push('/guest/attendance/register/annualRegister')} style={{ cursor: 'pointer' }}>
-                [ 연차 신청 ]
-            </AnnualRequest>
+            <div align="center" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gridGap: "10px" }}>
 
-            <AnnualRequest onClick={() => router.push('/guest/attendance/register/vacationRegister')} style={{ cursor: 'pointer' }}>
-                [ 휴가 신청 ]
-            </AnnualRequest>
-            <br />
+                <AnnualRequest onClick={() => router.push('/guest/attendance/register/annualRegister')} style={{ cursor: 'pointer' }}>
+                    [ 연차 신청 ]
+                </AnnualRequest>
 
-            <AnnualRest>
-                [ 총 연차 합계 ]
-            </AnnualRest>
+                <AnnualRequest onClick={() => router.push('/guest/attendance/register/vacationRegister')} style={{ cursor: 'pointer' }}>
+                    [ 휴가 신청 ]
+                </AnnualRequest>
 
-            <AnnualRest>
-                [ 15 ]
-            </AnnualRest>
-            <br />
+                <AnnualRest>
+                    [ 총 연차 합계 ]
+                </AnnualRest>
 
-            <AnnualRest>
-                [ 사용한 연차]
-            </AnnualRest>
+                <AnnualRest>
+                    [ 15 ]
+                </AnnualRest>
 
-            <AnnualRest>
-                [ 3 ]
-            </AnnualRest>
-            <br />
+                <AnnualRest>
+                    [ 사용한 연차]
+                </AnnualRest>
 
-            <AnnualRest>
-                [ 미사용 연차 ]
-            </AnnualRest>
+                <AnnualRest>
+                    [ 3 ]
+                </AnnualRest>
 
-            <AnnualRest>
-                [ 12 ]
-            </AnnualRest>
+                <AnnualRest>
+                    [ 미사용 연차 ]
+                </AnnualRest>
+
+                <AnnualRest>
+                    [ 12 ]
+                </AnnualRest>
+
+                <AnnualRest>
+                    [ 연차 목록 ]
+                </AnnualRest>
+
+                <AnnualRest onClick={() => router.push('/guest/attendance/annual')} style={{ cursor: 'pointer' }}>
+                    [ 2 ]
+                </AnnualRest>
+
+            </div>
 
             <div>
                 <TblComponent>
@@ -102,7 +111,6 @@ const AttendanceDetail = () => {
                         <PayTableTop>
                             <thead>
                             <tr>
-                                <th></th>
                                 <th>지각 시간</th>
                                 <th>지각 횟수</th>
                                 <th>결근 시간</th>
@@ -117,7 +125,6 @@ const AttendanceDetail = () => {
                         <PayTableBottom>
                             <tbody>
                             <tr>
-                                <td></td>
                                 <td>null</td>
                                 <td>null</td>
                                 <td>null</td>
@@ -147,6 +154,7 @@ const MainComponent = styled.div`
 `;
 
 const Title = styled.div`
+    padding: 40px;
     font-size: 26px;
     font-weight: 700;
     color: #007bff;
@@ -158,10 +166,11 @@ const TblComponent = styled.div`
     box-shadow: 0 2px 5px rgba(0,0,0,.10);
     box-sizing: border-box;
     margin-top: 40px;
+    width: 800px;
 `;
 
 const TblHeader = styled.div`
-    padding: 0px 15px;
+    padding: px 15px;
     background: #F6F8FA;
     border-radius: 5px 5px 0px 0px;
 `;
@@ -169,7 +178,7 @@ const TblHeader = styled.div`
 const TblContent = styled.div`
     height: 550px;
     overflow-x: auto;
-    padding: 0px 15px;
+    padding: px 15px;
 
 &::-webkit-scrollbar {
     width: 4px;
@@ -193,7 +202,6 @@ const Table = styled.table`
     border-collapse: collapse;
 
     th {
-    width: 150px;
     padding: 20px 15px;
     text-align: center;
     font-weight: 500;
@@ -239,28 +247,32 @@ const TotalResult = styled.span`
 const AnnualRest = styled.div`
     border: 3px solid black;
     border-radius: 20px;
-    width: 20%;
+    width: 300px;
     background-color: #17a1fa;
-    height: 103px;
+    height: 100px;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    margin-right: 10px;
+    margin-right: -35%;
+    margin-left: 35%;
 `;
 
 const AnnualRequest = styled.div`
     border: 3px solid black;
     border-radius: 20px;
-    width: 20%;
+    width: 300px;
     background-color: #9AFBA9;
-    height: 103px;
+    height: 100px;
     color: black;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 18px;
     font-weight: bold;
-    margin-right: 10px;
+    //margin-right: 10px;
+    margin-left: 35%;
+    margin-top: 30px;
+    margin-right: -35%;
 `;

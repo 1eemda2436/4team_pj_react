@@ -1,63 +1,76 @@
 import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from "next/router";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+
+const cellStyle = {
+    border: "2px solid black",
+    padding: "8px",
+    textAlign: "center",
+};
+
+const tableStyle = {
+    borderCollapse: "collapse",
+    width: "800px",
+};
 
 // 연차 승인/반려[관리자]
-const AdminAnnualConfirm = () => {
 
+function AdminAnnualConfirm() {
+    const [attendance, setAttendance] = useState([]);
     const router = useRouter();
+    useEffect(() => {
+        const annual_id = router.query.annual_id;
+        axios
+            .get("http://localhost:8081/attendance/annualDetail/",{annual_id})
+            .then((response) => {
+                setAttendance(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [router.query.annual_id]);
     
     return (
-        <div>
+        <div align="center">
             <div>
                 <button>PDF 다운</button>
                 <button>결제 취소</button>
             </div>
             <br/><br/><hr/><br/><br/>
             <div>
-                <table >
-                    <tr>
-                        <th>결재 번호 : </th>
-                        <td>null</td>
-                    </tr>
+                <table style={tableStyle}>
+                    <tbody>
+                        {attendance.map((annual) => (
+                            <tr key={annual.annual_id}>
+                                <th style={cellStyle}>문서 번호</th>
+                                <td style={cellStyle}>{annual.annual_id}</td>
+                            </tr>
+                        ))}
+                        {attendance.map((annual) => (
+                            <tr key={annual.annual_id}>
+                                <th style={cellStyle}>제목</th>
+                                <td style={cellStyle}>{annual.annual_title}</td>
+                            </tr>
+                        ))}
+                        <tr>
+                            <td colSpan={2} style={cellStyle}>
+                                <input type="text" width={500} height={500} placeholder="문서내용~"/>
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <th>결재 명 : </th>
-                        <td>null</td>
-                    </tr>
+                        <tr>
+                            <th style={cellStyle}>구분</th>
+                            <td style={cellStyle}>---</td>
+                        </tr>
 
-                    <tr>
-                        <th>문서 번호 : </th>
-                        <td>null</td>
-                    </tr>
-                </table>
-
-                <table>
-                    <tr>
-                        <th>제목</th>
-                        <td>문서제목~~</td>
-                    </tr>
-
-                    <tr>
-                        <td colSpan={2}>
-                            <input type="text" width={500} height={500} placeholder="문서내용~"/>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <br/><br/><hr/><br/><br/>
-            <div>
-                <table>
-                    <tr>
-                        <th>구분</th>
-                        <td>---</td>
-                    </tr>
-
-                    <tr>
-                        <th>첨부파일</th>
-                        <td>
-                            <input type="file"/>
-                        </td>
-                    </tr>
+                        <tr>
+                            <th style={cellStyle}>첨부파일</th>
+                            <td style={cellStyle}>
+                                <input type="file"/>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
             <br/><br/><hr/><br/><br/>

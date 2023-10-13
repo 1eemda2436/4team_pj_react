@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import AdminLayout from "@/components/layout/adminLayout";
+import MainLayout from "@/components/layout/mainLayout";
 import axios from "axios";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -16,14 +16,14 @@ const tableStyle = {
     borderRadius: "20px",
 };
 
-function AdminAnnualList() {
-    const [attendance, setAttendance] = useState([]);
+function GuestVacationList() {
+    const [vacation, setVacation] = useState([]);
 
     useEffect(() => {
         axios
-            .get("http://localhost:8081/attendance/annualRequestsList")
+            .get("http://localhost:8081/attendance/vacationRequestsList")
             .then((response) => {
-                setAttendance(response.data);
+                setVacation(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -34,12 +34,11 @@ function AdminAnnualList() {
 
     return (
         <div align="center">
-            <h1>연차 신청 내역</h1>
-            <br />
-            <br />
+            <TextTitle>휴가 신청 내역</TextTitle>
+
             <hr />
-            <br />
-            <br />
+            <br/>
+            <br/>
             <table style={tableStyle}>
                 <thead>
                     <tr>
@@ -50,13 +49,11 @@ function AdminAnnualList() {
                 </thead>
 
                 <tbody>
-                    {attendance.map((annual) => (
-                        <tr key={annual.annual_id}>
-                            <td style={cellStyle}>{annual.annual_id}</td>
-                            <td style={cellStyle}>
-                                <a style={{ cursor: 'pointer' }} onClick={() => router.push(`/admin/attendance/adminAnnualConfirm/${annual.annual_id}`)}>{annual.annual_title}</a>
-                            </td>
-                            <td style={cellStyle}>{annual.confirm}</td>
+                    {vacation.map((vacat) => (
+                        <tr key={vacat.vacation_id}>
+                            <td style={cellStyle}>{vacat.vacation_id}</td>
+                            <td style={cellStyle}><a style={{ cursor: 'pointer' }}>{vacat.vacation_title}</a></td>
+                            <td style={cellStyle}>{vacat.confirm}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -65,8 +62,14 @@ function AdminAnnualList() {
     );
 }
 
-export default AdminAnnualList;
+export default GuestVacationList;
 
-AdminAnnualList.getLayout = function getLayout(page) {
-    return <AdminLayout>{page}</AdminLayout>;
+GuestVacationList.getLayout = function getLayout(page) {
+    return <MainLayout>{page}</MainLayout>;
 };
+
+const TextTitle = styled.div`
+    font-size: 36px;
+    font-weight: bold;
+    padding: 30px 30px;
+`;
