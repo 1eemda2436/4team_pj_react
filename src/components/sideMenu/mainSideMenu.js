@@ -69,7 +69,7 @@ export default function MainSideMenu() {
             id: 7,
             icon: <Forms />,
             value: '전자결재',
-            path: '/guest/doc/list/totalDocList'
+            path: '/guest/doc'
         },
         {
             id: 8,
