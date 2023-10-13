@@ -1,8 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import AdminLayout from "@/components/layout/adminLayout";
 import axios from "axios";
-import { useRouter } from "next/router";
-import styled from "styled-components";
 
 const cellStyle = {
     border: "2px solid black",
@@ -13,28 +11,25 @@ const cellStyle = {
 const tableStyle = {
     borderCollapse: "collapse",
     width: "800px",
-    borderRadius: "20px",
 };
 
 function AdminAnnualList() {
-    const [attendance, setAttendance] = useState([]);
+    const [vacation, setVacation] = useState([]);
 
     useEffect(() => {
         axios
-            .get("http://localhost:8081/attendance/annualRequestsList")
+            .get("http://localhost:8081/attendance/vacationRequestsList")
             .then((response) => {
-                setAttendance(response.data);
+                setVacation(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
     }, []);
 
-    const router = useRouter();
-
     return (
-        <div align="center">
-            <h1>연차 신청 내역</h1>
+        <div>
+            <h1>휴가 신청 내역</h1>
             <br />
             <br />
             <hr />
@@ -50,13 +45,11 @@ function AdminAnnualList() {
                 </thead>
 
                 <tbody>
-                    {attendance.map((annual) => (
-                        <tr key={annual.annual_id}>
-                            <td style={cellStyle}>{annual.annual_id}</td>
-                            <td style={cellStyle}>
-                                <a style={{ cursor: 'pointer' }} onClick={() => router.push(`/admin/attendance/adminAnnualConfirm/${annual.annual_id}`)}>{annual.annual_title}</a>
-                            </td>
-                            <td style={cellStyle}>{annual.confirm}</td>
+                    {vacation.map((vacat) => (
+                        <tr key={vacat.vacation_id}>
+                            <td style={cellStyle}>{vacat.vacation_id}</td>
+                            <td style={cellStyle}><a style={{ cursor: 'pointer' }}>{vacat.vacation_title}</a></td>
+                            <td style={cellStyle}>{vacat.confirm}</td>
                         </tr>
                     ))}
                 </tbody>
