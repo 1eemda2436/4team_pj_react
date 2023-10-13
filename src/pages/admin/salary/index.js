@@ -71,19 +71,6 @@ const AdminPayManagement = () => {
                   <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
                 </tr>
               ))}
-                {/* <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr> */}
               </tbody>
             </PayTableBottom>
           </TblContent>

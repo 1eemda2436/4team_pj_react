@@ -10,11 +10,11 @@ const EmployeeRegistration = () => {
 
       <FormSection>
         <Label>사원코드</Label>
-        <div>1</div>
+        <div><input type="text"></input></div>
         <Label>사원명</Label>
-        <div>FORBIDDEN</div>
+        <div><input type="text"></input></div>
         <Label>전화번호</Label>
-        <div>010-5159-6523</div>
+        <div><input type="text"></input></div>
       </FormSection>
 
       <ButtonContainer>

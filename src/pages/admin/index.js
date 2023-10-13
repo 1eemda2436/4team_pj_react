@@ -1,12 +1,28 @@
 import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout"
+import axios from "axios";
+import React, {useEffect ,useState } from "react";
+
 const admin = () => {
+    const [CompanyData, setData] = useState();
+    
+    const getCompanyByID = (company_id) => {
+        axios.get(`http://localhost:8081/company/${company_id}`)
+        .then(response => {
+            const data = response.data;
+            setData(data); // 받은 데이터를 상태에 저장
+        })
+        .catch(err => {
+            console.log("getSampleByID Error", err);
+        });
+    }
+
     return(
         <MainComponent>
             <CompanyInfoBox>
                 <InfoDiv>
                     <InfoTitle>License</InfoTitle>
-                    <InfoValue>FORBIDDEN</InfoValue>
+                    <InfoValue>Forbidden</InfoValue>
                 </InfoDiv>
                 <InfoDiv>
                     <InfoTitle>Location</InfoTitle>
@@ -34,6 +50,8 @@ export default admin;
 admin.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
+
+
 const MainComponent = styled.div`
     width: 100%;
     height: 100vh;
