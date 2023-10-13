@@ -8,7 +8,7 @@ const AdminAttendanceDep = () => {
 
     return (
         <div>
-            <div style={{ /*display: "flex",*/ cursor: 'pointer'}}>
+            <div style={{ display: "flex", cursor: 'pointer'}}>
                 {/* 50%를 차지하는 세로 직사각형 */}
                 <div
                     style={{

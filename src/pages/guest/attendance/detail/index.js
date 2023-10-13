@@ -61,7 +61,7 @@ const AttendanceDetail = () => {
 
             </div>
 
-            <div align="center" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gridGap: "10px" }}>
+            <div align="center" style={{ display: "grid", gridTemplateColumns: "repeat(2, 300px)", gridGap: "10px" }}>
 
                 <AnnualRequest onClick={() => router.push('/guest/attendance/register/annualRegister')} style={{ cursor: 'pointer' }}>
                     [ 연차 신청 ]
@@ -166,7 +166,7 @@ const TblComponent = styled.div`
     box-shadow: 0 2px 5px rgba(0,0,0,.10);
     box-sizing: border-box;
     margin-top: 40px;
-    width: 800px;
+    width: 800px
 `;
 
 const TblHeader = styled.div`
