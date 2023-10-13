@@ -105,7 +105,7 @@ export default function MainSideMenu() {
 }
 
 const SideMenu = styled.div`
-    width: 80px;
+    width: 110px;
     background-color: #005FC5;
     display: flex;
     flex-direction: column;
