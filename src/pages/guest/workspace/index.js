@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import MainLayout from "@/components/layout/mainLayout"
-import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from "react";
 // import ApiService from "./ApiService";
@@ -129,4 +128,10 @@ Workspace.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-const Component = styled.div``;
+const Component = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
