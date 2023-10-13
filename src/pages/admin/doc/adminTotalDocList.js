@@ -28,28 +28,6 @@ const Doc = () => {
             <Title>
                 <H1>통합 문서함</H1>
             </Title>
-            <PersonalMenu>
-                <tr>
-                    <td>
-                        개인문서함
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
-                    </td>
-                </tr>
-            </PersonalMenu>
             <AdminMenu>
                 <tr>
                     <td>
