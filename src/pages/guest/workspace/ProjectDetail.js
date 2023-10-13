@@ -36,7 +36,13 @@ const ProjectDetail = () => {
 
 }
 
-const Component = styled.div``;
+const Component = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
 
 
 export default ProjectDetail;
