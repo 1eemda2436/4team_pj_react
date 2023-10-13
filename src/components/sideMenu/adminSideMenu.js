@@ -20,6 +20,8 @@ function MenuToggle({ menus }) {
   }
 
 export default function adminSideMenu() {
+    const router = useRouter();
+
     //메뉴 요소 배열 
     const menus = [
         {   
@@ -44,25 +46,25 @@ export default function adminSideMenu() {
             id: 4,
             icon: <People />,
             value: '인사관리',
-            path: '/admin'
+            path: '/admin/personnel'
         },
         {   
             id: 5,
             icon: <MaintenanceDate />,
             value: '근태관리',
-            path: '/admin'
+            path: '/admin/attendance'
         },
         {   
             id: 6,
             icon: <SelectiveHighlighting />,
             value: '전자결재',
-            path: '/admin'
+            path: '/admin/doc'
         },
         {   
             id: 7,
             icon: <DocumentHeader />,
             value: '게시판관리',
-            path: '/admin'
+            path: '/admin/board'
         },
     ];
 
@@ -80,7 +82,7 @@ export default function adminSideMenu() {
                     <MenuToggle menus={menu} key={menu.id} />
                 ))}
             </MenuIcons>
-            <BottomSpan>사원 페이지 이동</BottomSpan>
+            <BottomSpan onClick={() => router.push('/guest')}>사원 페이지 이동</BottomSpan>
         </SideMenu>
     )
 }

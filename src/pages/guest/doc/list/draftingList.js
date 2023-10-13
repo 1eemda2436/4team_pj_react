@@ -1,10 +1,41 @@
 import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
-
-
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 const Doc = () => {
-    return(
+
+    const router = useRouter();
+
+    // const [samples, setSamples] = useState([]);
+
+    // useEffect(() => {
+    //     fetch("http://localhost:8081/draft", {
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setSamples(data);
+    //         })
+    //         .catch(error => {
+    //             console.error("API 호출 오류:", error);
+    //         });
+    // }, []);
+
+    const [samples, setSamples] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8081/draft")
+            .then((response) => {
+                setSamples(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    return (
         <Container>
             <Title>
                 <H1>기안 문서함</H1>
@@ -15,25 +46,32 @@ const Doc = () => {
                         <TableTr>
                             <TableTh2>문서번호</TableTh2>
                             <TableTh2>카테고리</TableTh2>
-                            <TableTh2 isTitle>문서 제목</TableTh2>
+                            <TableTh2 >문서 제목</TableTh2>
                             <TableTh2>작성자</TableTh2>
                             <TableTh2>기안일</TableTh2>
                         </TableTr>
                     </thead>
                     <tbody>
-                        <TableTr>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2 isTitle>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                        </TableTr>
+                        {samples.map(draft =>
+                            <TableTr key={draft.doc_id}>
+                                <TableTd2 component="" scope="draft">{draft.doc_id}</TableTd2>
+                                <TableTd2>{draft.category_id}</TableTd2>
+                                <TableTd2 >{draft.doc_title}</TableTd2>
+                                <TableTd2>{draft.name}</TableTd2>
+                                <TableTd2>{draft.doc_date}</TableTd2>
+                            </TableTr>
+                        )}
                     </tbody>
+                </Table>
+                <Table>
+                    <TableTd2>
+                    <button type="button" onClick={() => router.push('/guest/doc/insertDraft')}>문서 작성</button>
+                    </TableTd2>
                 </Table>
             </Docstyle2>
         </Container>
-    )
-}
+    );
+};
 
 export default Doc;
 

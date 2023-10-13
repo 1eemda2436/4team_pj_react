@@ -25,6 +25,8 @@ function MenuToggle({ menus }) {
   }
 
 export default function MainSideMenu() {
+    const router = useRouter();
+
     //메뉴 요소 배열 
     const menus = [
         {   
@@ -37,13 +39,13 @@ export default function MainSideMenu() {
             id: 2,
             icon: <Video_Conference />,
             value: '워크스페이스',
-            path: '/guest'
+            path: '/guest/workspace'
         },
         {
             id: 3,
             icon: <Time />,
             value: '근태관리',
-            path: '/guest'
+            path: '/guest/attendance'
         },
         {   
             id: 4,
@@ -55,37 +57,37 @@ export default function MainSideMenu() {
             id: 5,
             icon: <Chat />,
             value: '메신저',
-            path: '/guest'
+            path: '/guest/chatting'
         },
         {
             id: 6,
             icon: <Megaphone />,
             value: '공지사항',
-            path: '/guest'
+            path: '/guest/notice'
         },
         {
             id: 7,
             icon: <Forms />,
             value: '전자결재',
-            path: '/guest'
+            path: '/guest/doc'
         },
         {
             id: 8,
             icon: <Badge />,
             value: '인사관리',
-            path: '/guest'
+            path: '/guest/personnel'
         },
         {
             id: 9,
             icon: <Bank />,
             value: '급여관리',
-            path: '/guest'
+            path: '/guest/salary'
         },
         {
             id: 10,
             icon: <Working_Together />,
             value: '커뮤니티',
-            path: '/guest'
+            path: '/guest/community'
         },
     ];
 
@@ -97,14 +99,13 @@ export default function MainSideMenu() {
                     <MenuToggle menus={menu} key={menu.id} />
                 ))}
             </MenuIcons>
-            <LogoutIcon />
+            <LogoutIcon onClick={() => router.push('/')} />
         </SideMenu>
     )
 }
 
 const SideMenu = styled.div`
-    width: 80px;
-    height: 100vh;
+    width: 110px;
     background-color: #005FC5;
     display: flex;
     flex-direction: column;
@@ -128,7 +129,7 @@ const MenuIconDiv = styled.div`
     padding: 11px 0px;
     margin-bottom: 10px;
     cursor: pointer;
-   
+
     &:hover {
         background: rgba(255, 255, 255, 0.2);
         color: white;

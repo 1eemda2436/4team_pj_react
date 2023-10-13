@@ -1,9 +1,13 @@
 import AdminLayout from "@/components/layout/adminLayout";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 
 
 const Doc = () => {
+
+    const router = useRouter();
+
     return(
         <Container>
             <Title>
@@ -12,9 +16,15 @@ const Doc = () => {
             <Docstyle1>
                 <Table>
                     <TableTr>
-                        <TableTh>완료문서함</TableTh>
-                        <TableTh>진행문서함</TableTh>
-                        <TableTh>반려문서함</TableTh>
+                        <TableTh>
+                            <button type="button" onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재 완료 문서함</button>
+                        </TableTh>
+                        <TableTh>
+                            <button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 예정 문서함</button>
+                        </TableTh>
+                        <TableTh>
+                            <button type="button" onClick={() => router.push('/admin/doc/adminApprovalBack')}>결재 반려 문서함</button>
+                        </TableTh>
                     </TableTr>
                 </Table>
             </Docstyle1>
