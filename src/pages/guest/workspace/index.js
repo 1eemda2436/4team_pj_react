@@ -17,6 +17,8 @@ const tableStyle = {
 
 function Workspace() {
     const [project, setProject] = useState([]);
+    const [projectwork, setProjectwork] = useState([]);
+    const router = useRouter();
 
     useEffect(() => {
         axios
@@ -27,11 +29,7 @@ function Workspace() {
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
 
-    const [projectwork, setProjectwork] = useState([]);
-
-    useEffect(() => {
         axios
             .get("http://localhost:8081/projectwork")
             .then((response) => {
@@ -42,7 +40,7 @@ function Workspace() {
             });
     }, []);
 
-    const router = useRouter();
+    
     return (
         <Component>
             {/* 부서별 사원 */}
@@ -85,7 +83,7 @@ function Workspace() {
                     </tr>
                 </thead>
                 <tbody>
-                    {projectwork.map((pj) => (
+                    {project.map((pj) => (
                     <tr key={pj.pj_id}>
                         <td style={cellStyle}>{pj.pj_id}</td>
                         <td style={cellStyle} onClick={() => router.push('/guest/workspace/ProjectDetail')}>{pj.pj_name}</td>
@@ -110,28 +108,13 @@ function Workspace() {
                     </tr>
                 </thead>
                 <tbody>
-                    {project.map((pjw) => (
+                    {projectwork.map((pjw) => (
                     <tr key={pjw.pw_id}>
                         <td style={cellStyle}>{pjw.pw_id}</td>
                         <td style={cellStyle} onClick={() => router.push('/guest/workspace/ProjectDetail')}>{pjw.pw_name}</td>
                         <td style={cellStyle}>{pjw.pw_deadline_s} - {pjw.pw_deadline_e}</td>
                     </tr>
                     ))}
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle} onClick={() => router.push('/guest/workspace/ProjectWorkDetail')}>클릭시 상세페이지 이동</td>
-                        <td style={cellStyle}>null</td>
-                    </tr>
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle} onClick={() => router.push('/guest/workspace/ProjectWorkDetail')}>클릭시 상세페이지 이동</td>
-                        <td style={cellStyle}>null</td>
-                    </tr>
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle} onClick={() => router.push('/guest/workspace/ProjectWorkDetail')}>클릭시 상세페이지 이동</td>
-                        <td style={cellStyle}>null</td>
-                    </tr>
                 </tbody>
             </table>
             <div>
