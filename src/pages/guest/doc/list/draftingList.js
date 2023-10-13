@@ -2,6 +2,7 @@ import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 
 const Doc = () => {
@@ -11,15 +12,14 @@ const Doc = () => {
     const [samples, setSamples] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:8081/draft", {
+        axios
+        .get("http://localhost:8081/doc/draft")
+        .then((response) => {
+            setSamples(response.data);
         })
-            .then(response => response.json())
-            .then(data => {
-                setSamples(data);
-            })
-            .catch(error => {
-                console.error("API 호출 오류:", error);
-            });
+        .catch((error) => {
+            console.log(error);
+        });
     }, []);
 
     return (

@@ -9,6 +9,10 @@ const Doc = () => {
 
     const router = useRouter();
 
+    const Modal = ({isOpen, onclose, children}) => {
+        if (!isOpen) return null;
+    }
+
     const [selectedCategory, setSelectedCategory] = useState('');
 
     const CategoryChange = (event) => {

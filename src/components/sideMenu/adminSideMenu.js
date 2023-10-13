@@ -58,7 +58,7 @@ export default function adminSideMenu() {
             id: 6,
             icon: <SelectiveHighlighting />,
             value: '전자결재',
-            path: '/admin/doc/adminTotalDocList'
+            path: '/admin/doc/'
         },
         {   
             id: 7,
