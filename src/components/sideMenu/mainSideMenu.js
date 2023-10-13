@@ -93,7 +93,7 @@ export default function MainSideMenu() {
 
     return (
         <SideMenu>
-            <Logo1 />
+            <Logo1Icon onClick={() => router.push('/guest')}/>
             <MenuIcons>
                 {menus.map((menu) => (
                     <MenuToggle menus={menu} key={menu.id} />
@@ -111,6 +111,10 @@ const SideMenu = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 15px 0px;
+`;
+
+const Logo1Icon = styled(Logo1)`
+    cursor: pointer;
 `;
 
 const MenuIcons = styled.div`
