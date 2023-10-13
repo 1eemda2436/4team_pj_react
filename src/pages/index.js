@@ -1,18 +1,62 @@
 import styled from "styled-components";
 import Logo2 from '../../public/asset/icons/logo2.svg';
 import { useRouter } from "next/router";
+import { useState } from "react";
+import axios from "axios";
+
 
 export default function Login() {
+  const [state, setState] = useState({
+    id: "",
+    pwd: "",
+  });
+
+  const onChangeHandler = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const onSubmitLogin = (e) => {
+    e.preventDefault();
+
+    const { id, pwd } = state;
+
+    // API 엔드포인트 URL
+    const apiUrl = 'http://localhost:8081/'; // 백엔드 API 엔드포인트 URL로 수정
+
+    // 요청 본문 데이터
+    const data = {
+      id,
+      pwd,
+    };
+
+    axios.post(apiUrl, data)
+      .then((response) => {
+        alert("로그인 성공")
+        console.log('로그인 성공:', response.data);
+
+        localStorage.setItem('token', response.data.token);
+        router.push('/guest');
+      })
+      .catch((error) => {
+        console.error('로그인 실패:', error);
+    });
+  }
+
   const router = useRouter();
 
   return (
     <Component>
       <Logo2 />
       <LoginInputBox>
-        <LoginInput placeholder="ID" type="text" />
-        <LoginInput placeholder="PASSWORD" type="password" />
+        <LoginInput name="id" placeholder="ID" type="text" onChange={onChangeHandler} />
+        <LoginInput name="pwd" placeholder="PASSWORD" type="password" onChange={onChangeHandler} />
 
-        <LoginBtn> login </LoginBtn>
+        <LoginBtn onClick={(e) => onSubmitLogin(e)}> login </LoginBtn>
         <JoinBtn onClick={() => router.push('/join')}>사업자 등록</JoinBtn>
       </LoginInputBox>
     </Component>
