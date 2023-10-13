@@ -8,7 +8,7 @@ const AdminAttendanceDep = () => {
 
     return (
         <div>
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", cursor: 'pointer'}}>
                 {/* 50%를 차지하는 세로 직사각형 */}
                 <div
                     style={{
@@ -29,6 +29,7 @@ const AdminAttendanceDep = () => {
                         border: "3px solid black",
                         width: "10%", // 너비를 추가합니다.
                         marginLeft: "10px", // 간격을 줄 때 사용할 수 있습니다.
+                        cursor: 'pointer'
                     }}
                 >여기는 부서별 조회</div>
             </div>
@@ -41,10 +42,14 @@ const AdminAttendanceDep = () => {
                     borderRadius: "50%", // 원 모양을 만들기 위해 50%로 설정
                     border: "3px solid black",
                     marginTop: "10px", // 간격을 줄 때 사용할 수 있습니다.
-                    textAlign: "center"
+                    textAlign: "center",
+                    cursor: 'pointer'
                 }}
                 onClick={() => router.push('/admin/attendance/adminAttenDepDetail')}
             >부서별 근태 통계 원형 그래프</div>
+            <div>
+                <button type="button" onClick={() => router.push('/admin/attendance/adminAnnualList')} style={{ cursor: 'pointer' }}>연차 요청 목록</button>
+            </div>
         </div>
     );
 }

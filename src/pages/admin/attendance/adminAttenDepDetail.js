@@ -18,7 +18,7 @@ const AdminAttenDepDetail = () => {
             <div>
                 <table style={tableBorderStyle}>
                     <tr>
-                        <th colSpan={2} onClick={() => router.push('/admin/attendance/adminAttenAnnualDetail')}>부서별 근태 현황</th>
+                        <th colSpan={2} onClick={() => router.push('/admin/attendance/adminAttenAnnualDetail')} style={{ cursor: 'pointer' }}>부서별 근태 현황</th>
                     </tr>
 
                     <tr>

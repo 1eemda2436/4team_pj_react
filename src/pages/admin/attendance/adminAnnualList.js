@@ -48,7 +48,7 @@ function AdminAnnualList() {
                     {attendance.map((annual) => (
                         <tr key={annual.annual_id}>
                             <td style={cellStyle}>{annual.annual_id}</td>
-                            <td style={cellStyle}>{annual.annual_title}</td>
+                            <td style={cellStyle}><a style={{ cursor: 'pointer' }}>{annual.annual_title}</a></td>
                             <td style={cellStyle}>{annual.confirm}</td>
                         </tr>
                     ))}

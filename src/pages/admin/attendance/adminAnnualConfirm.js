@@ -1,7 +1,11 @@
 import AdminLayout from "@/components/layout/adminLayout";
+import { useRouter } from "next/router";
 
 // 연차 승인/반려[관리자]
 const AdminAnnualConfirm = () => {
+
+    const router = useRouter();
+    
     return (
         <div>
             <div>
@@ -61,8 +65,8 @@ const AdminAnnualConfirm = () => {
                 <h1>결재의견</h1>
                 <input type="text" placeholder="반려시 필수 작성"/>
                 <br/><br/>
-                <button>승인</button>
-                <button>반려</button>
+                <button style={{ cursor: 'pointer' }} onClick={() => router.push('/admin/attendance/adminAnnualList')} >승인</button>
+                <button style={{ cursor: 'pointer' }} onClick={() => router.push('/admin/attendance/adminAnnualList')} >반려</button>
             </div>
         </div>
     );

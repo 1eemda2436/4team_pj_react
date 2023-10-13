@@ -61,11 +61,11 @@ const AttendanceDetail = () => {
 
             </div>
 
-            <AnnualRequest onClick={() => router.push('/guest/attendance/register/annualRegister')}>
+            <AnnualRequest onClick={() => router.push('/guest/attendance/register/annualRegister')} style={{ cursor: 'pointer' }}>
                 [ 연차 신청 ]
             </AnnualRequest>
 
-            <AnnualRequest onClick={() => router.push('/guest/attendance/register/vacationRegister')}>
+            <AnnualRequest onClick={() => router.push('/guest/attendance/register/vacationRegister')} style={{ cursor: 'pointer' }}>
                 [ 휴가 신청 ]
             </AnnualRequest>
             <br />

@@ -68,7 +68,7 @@ const Attendance = () => {
                     
                     <AttenWeekWork>
                         <div className="work-hours">
-                            <a onClick={() => router.push('/guest/attendance/detail/')}>[ 주간 근무 현황 ]</a>
+                            <a onClick={() => router.push('/guest/attendance/detail/')} style={{ cursor: 'pointer' }}>[ 주간 근무 현황 ]</a>
                         </div>
                         <br/>
                         <div>[ 총 근무 시간 ]</div>

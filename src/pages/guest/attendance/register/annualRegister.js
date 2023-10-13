@@ -62,7 +62,7 @@ const AnnualRegister = () => {
 
                     <tr>
                         <td colSpan="2">
-                            <input type="button" value={"신청하기"} onClick={() => router.push('/guest/attendance/detail/')}/>
+                            <input type="button" value={"신청하기"} onClick={() => router.push('/guest/attendance/detail/')} style={{ cursor: 'pointer' }}/>
                         </td>
                     </tr>
                 </table>
