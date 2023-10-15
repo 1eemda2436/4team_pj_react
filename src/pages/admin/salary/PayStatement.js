@@ -1,9 +1,50 @@
 import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from 'next/router';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
 const PayStatement = () => {
     const router = useRouter();
+    const id = router.query.id; // ID를 추출
+
+    const [PayStatementData, setPayStatementData] = useState([]);
+
+    useEffect(() => {
+      if (id) {
+        console.log(id)
+        axios.get(`http://localhost:8081/salary/PayStatement/${id}`)
+        .then((response) => {
+            setPayStatementData(response.data);
+        })
+        .catch((error) => {
+            console.error("Error fetching data", error);
+        });
+      }
+    }, [id]);
+  
+
+    // 공제계 합계 계산
+    const deductionTotal = (
+      PayStatementData.income_tax +
+      PayStatementData.local_tax +
+      PayStatementData.national_pension +
+      PayStatementData.health_insurance +
+      PayStatementData.c_health_insurance +
+      PayStatementData.employment_insurance
+    );
+
+  // 지급계 합계 계산
+  const paymentTotal = (
+      PayStatementData.salary +
+      PayStatementData.bonus +
+      PayStatementData.overtime_pay +
+      PayStatementData.allowance +
+      PayStatementData.food_pay +
+      PayStatementData.t_pay
+    );
+
+
     return (
         <Container>
         <Title>급여관리 - 명세서</Title>
@@ -12,9 +53,9 @@ const PayStatement = () => {
 
         <SubTitle>2023년 10월 명세서</SubTitle>
         <HeaderRow>
-            <div>지급일자</div>
-            <div>이메일</div>
-            <div>직책/이름</div>
+            <div>{PayStatementData.email}</div>
+            <div>{PayStatementData.rank}</div>
+            <div>{PayStatementData.name}</div>
         </HeaderRow>
         <Table>
             <TableHeader>
@@ -31,14 +72,14 @@ const PayStatement = () => {
                 <TableCell>식비</TableCell>
                 <TableCell>교통비</TableCell>
             </tr>
-            {/* 나머지 테이블 로우들 */}
             <tr>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
+                <TableCell>{PayStatementData.salary}</TableCell>
+                <TableCell>{PayStatementData.bonus}</TableCell>
+                <TableCell>{PayStatementData.overtime_pay}</TableCell>
+                <TableCell>{PayStatementData.allowance}</TableCell>
+                <TableCell>{PayStatementData.food_pay}</TableCell>
+                <TableCell>{PayStatementData.t_pay}</TableCell>
+                <TableCell>{paymentTotal}</TableCell>
             </tr>
             <tr>
                 <TableCell colSpan={6}>공제내역</TableCell>
@@ -53,16 +94,17 @@ const PayStatement = () => {
                 <TableCell>고용보험</TableCell>
             </tr>
             <tr>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
+                <TableCell>{PayStatementData.income_tax}</TableCell>
+                <TableCell>{PayStatementData.local_tax}</TableCell>
+                <TableCell>{PayStatementData.national_pension}</TableCell>
+                <TableCell>{PayStatementData.health_insurance}</TableCell>
+                <TableCell>{PayStatementData.c_health_insurance}</TableCell>
+                <TableCell>{PayStatementData.employment_insurance}</TableCell>
+                <TableCell>{deductionTotal}</TableCell>
             </tr>
             <tr>
-                <TableCell colSpan={7}>합 계</TableCell>
+                <TableCell colSpan={6}>합 계</TableCell>
+                <TableCell>{paymentTotal - deductionTotal}</TableCell>
             </tr>
         </Table>
         <ButtonContainer>

@@ -37,7 +37,7 @@ const AdminPayManagement = () => {
             <PayTableTop>
               <thead>
                 <tr>
-                  <th></th>
+                  <th>+</th>
                   <th>사번</th>
                   <th>이름</th>
                   <th>주민번호</th>
@@ -68,7 +68,7 @@ const AdminPayManagement = () => {
                   <td>{item.state}</td>
                   <td>{item.estate}</td>
                   <td>{item.salary}</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
+                  <td onClick={() => router.push(`/admin/salary/PayStatement?id=${item.id}`)}>상세</td>
                 </tr>
               ))}
               </tbody>
