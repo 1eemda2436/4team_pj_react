@@ -2,7 +2,7 @@ import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import React, {useState, useEffect} from "react";
-
+import axios from "axios";
 
 
 const Doc = () => {
@@ -12,15 +12,14 @@ const Doc = () => {
     const [samples, setSamples] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:8081/total", {
+        axios
+        .get("http://localhost:8081/doc/adminTotal")
+        .then((response) => {
+            setSamples(response.data);
         })
-            .then(response => response.json())
-            .then(data => {
-                setSamples(data);
-            })
-            .catch(error => {
-                console.error("API 호출 오류:", error);
-            });
+        .catch((error) => {
+            console.log(error);
+        });
     }, []);
 
     return(

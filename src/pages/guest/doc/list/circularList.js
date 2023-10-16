@@ -1,9 +1,27 @@
 import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
-
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 
 const Doc = () => {
+
+    const router = useRouter();
+
+    const [samples, setSamples] = useState([]);
+
+    useEffect(() => {
+        axios
+        .get("http://localhost:8081/doc/view")
+        .then((response) => {
+            setSamples(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
     return(
         <Container>
             <Title>
@@ -14,16 +32,19 @@ const Doc = () => {
                     <thead>
                         <TableTr>
                             <TableTh2>문서번호</TableTh2>
-                            <TableTh2 isTitle>문서 제목</TableTh2>
+                            <TableTh2>문서 제목</TableTh2>
                             <TableTh2>조회여부</TableTh2>
                         </TableTr>
                     </thead>
                     <tbody>
-                        <TableTr>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2 isTitle>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                        </TableTr>
+                        {samples.map(view =>
+                            <TableTr key={view.doc_id}>
+                            <TableTd2 component="" scope="view">{view.doc_id}</TableTd2>
+                            <TableTd2>{view.doc_title}</TableTd2>
+                            <TableTd2>{view.doc_read}</TableTd2>
+                            </TableTr>
+                            )}
+                        
                     </tbody>
                 </Table>
             </Docstyle2>
@@ -84,7 +105,7 @@ const TableTh2 = styled.th`
     border: 1px solid;
     padding-left: 10px;
     padding-right: 10px;
-    width: ${(props) => (props.isTitle ? '60%' : 'auto%')};
+    /* width: ${(props) => (props.isTitle ? '60%' : 'auto%')}; */
     width: 100px;
 `;
 
@@ -96,5 +117,5 @@ const TableTd2 = styled.td`
     border: 1px solid;
     padding-left: 10px;
     padding-right: 10px;
-    width: ${(props) => (props.isTitle ? '60%' : 'auto%')};
+    /* width: ${(props) => (props.isTitle ? '60%' : 'auto%')}; */
 `;
