@@ -1,5 +1,7 @@
 import AdminLayout from "@/components/layout/adminLayout";
+import axios from "axios";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 
@@ -7,6 +9,23 @@ import styled from "styled-components";
 const Doc = () => {
 
     const router = useRouter();
+
+    const [samples, setSamples] = useState([]);
+    const [filteredSamples, setFilteredSamples] = useState([]);
+
+    // useEffect(() => {
+    //     axios
+    //     .get("http://localhost:8081/doc/approvalEnd")
+    //     .then((response) => {
+    //         setSamples(response.data);
+    //         const filteredData = response.data.filter(approvalEnd => approvalEnd.doc_status === 'E');
+    //         setFilteredSamples(filteredData);
+    //         console.log(filteredData)
+    //     })
+    //     .catch((error) => {
+    //         console.log(error);
+    //     });
+    // }, []);
 
     return(
         <Container>
@@ -36,20 +55,22 @@ const Doc = () => {
                             <TableTh2>상태</TableTh2>
                             <TableTh2>문서번호</TableTh2>
                             <TableTh2>카테고리</TableTh2>
-                            <TableTh2 isTitle>문서 제목</TableTh2>
+                            <TableTh2>문서 제목</TableTh2>
                             <TableTh2>작성자</TableTh2>
-                            <TableTh2>기안일</TableTh2>
+                            <TableTh2>결재일</TableTh2>
                         </TableTr>
                     </thead>
                     <tbody>
-                        <TableTr>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2 isTitle>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                        </TableTr>
+                        {/* {samples.map(approvalEnd =>
+                            <TableTr key = {approvalEnd.approval_id}>
+                                    <TableTd2 component="" scope="approvalEnd">{approvalEnd.doc_status}</TableTd2>
+                                    <TableTd2>{approvalEnd.doc_id}</TableTd2>
+                                    <TableTd2>{approvalEnd.category_id}</TableTd2>
+                                    <TableTd2 isTitle>{approvalEnd.doc_title}</TableTd2>
+                                    <TableTd2>{approvalEnd.name}</TableTd2>
+                                    <TableTd2>{approvalEnd.approval_endDate}</TableTd2>
+                            </TableTr>
+                        )} */}
                     </tbody>
                 </Table>
             </Docstyle2>

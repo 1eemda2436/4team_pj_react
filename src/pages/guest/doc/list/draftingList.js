@@ -26,13 +26,13 @@ const Doc = () => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8081/draft")
-            .then((response) => {
-                setSamples(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        .get("http://localhost:8081/doc/draft")
+        .then((response) => {
+            setSamples(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }, []);
 
     return (
@@ -53,7 +53,7 @@ const Doc = () => {
                     </thead>
                     <tbody>
                         {samples.map(draft =>
-                            <TableTr key={draft.doc_id}>
+                            <TableTr key={draft.save_id}>
                                 <TableTd2 component="" scope="draft">{draft.doc_id}</TableTd2>
                                 <TableTd2>{draft.category_id}</TableTd2>
                                 <TableTd2 >{draft.doc_title}</TableTd2>

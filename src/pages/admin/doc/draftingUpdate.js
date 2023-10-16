@@ -1,34 +1,32 @@
 import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
-import React, {useEffect, useState} from "react";
-import { useRouter } from "next/router";
-import axios from "axios";
+import React, {useState} from "react";
+
 
 
 const Doc = () => {
 
-    const router = useRouter();
+    const TemporarySave = () => {
+
+        console.log('임시 저장이 완료되었습니다.');
+    }
+    
+    const Approval = () => {
+    
+        console.log('결재 요청이 완료되었습니다.');
+    }
+
+    const Complete = () => {
+
+        console.log('문서 작성이 완료되었습니다.');
+    }
+    
+    const Cancel = () => {
+    
+        console.log('문서 작성이 취소되었습니다.');
+    }
 
     const [selectedCategory, setSelectedCategory] = useState('');
-
-    const [samples, setSamples] = useState([]);
-
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        axios
-        .post("http://localhost:8081/doc/insert")
-        .then((response) => {
-            setSamples(response.data);
-        })
-        .catch((error) => {
-            if(axios.isAxiosError(error)) {
-                setError(error.response.data.message);
-            } else {
-                setError('데이터를 가져오는 중 오류 발생')
-            }
-        });
-    }, []);
 
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
@@ -39,9 +37,9 @@ const Doc = () => {
             <ApprovalLine>
                 <table>
                     <tr>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </table>
             </ApprovalLine>
@@ -51,42 +49,30 @@ const Doc = () => {
             <Docstyle1>
                 <DocstyleLeft>
                     <Table>
-                        {samples.map(insert =>
-                            <div key={insert.doc_id}>
                         <TableTr>
                             <TableTh>문서번호</TableTh>
-                            <TableTd component="" scope="insert">{insert.doc_id}</TableTd>
-                        </TableTr><TableTr>
-                                <TableTh>기안일</TableTh>
-                                <TableTd>{insert.doc_date}</TableTd>
-                            </TableTr><TableTr>
-                                <TableTh>기안자</TableTh>
-                                <TableTd>{insert.name}</TableTd>
-                            </TableTr>
-                            </div>
-                        )}
+                            <TableTd>1</TableTd>
+                        </TableTr>
+                        <TableTr>
+                            <TableTh>기안일</TableTh>
+                            <TableTd>1</TableTd>
+                        </TableTr>
+                        <TableTr>
+                            <TableTh>기안자</TableTh>
+                            <TableTd>1</TableTd>
+                        </TableTr>
                     </Table>
                 </DocstyleLeft>
-                <DocstyleRight>
-                    <ButtonStyle>
-                        <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장</button>
-                        <button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 요청</button>
-                    </ButtonStyle>
-                </DocstyleRight>
             </Docstyle1>
             <Docstyle2>
                 <Table>
-                    {samples.map(insert =>
-                    <div key={insert.doc_id}>
-                    <TableTr>
-                        <TableTh3>제목</TableTh3>
-                        <TableTh2>{insert.doc_title}</TableTh2>
-                    </TableTr>
-                    <TableTr>
-                        <TableTd2 colSpan={2}>{insert.doc_content}</TableTd2>
-                    </TableTr>
-                    </div>
-                    )}
+                        <TableTr>
+                            <TableTh3>제목</TableTh3>
+                            <TableTh2>여기에 문서 제목</TableTh2>
+                        </TableTr>
+                        <TableTr>
+                                <TableTd2 colSpan={2}>문서 내용</TableTd2>
+                        </TableTr>
                 </Table>
                 <br></br>
                 <Table>
@@ -109,8 +95,8 @@ const Doc = () => {
                 </select>
             </CategoryTable>
             <ButtonStyle>
-                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>완료</button>
-                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>취소</button>
+                <button type="button" onClick={Complete}>수정</button>
+                <button type="button" onClick={Cancel}>취소</button>
             </ButtonStyle>
         </Container>
     )
