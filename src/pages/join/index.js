@@ -40,7 +40,13 @@ export default function Join() {
 }
 
 function Step1Content() {
-    return <div>Step 1 내용</div>;
+    return (
+        <StepMainComponent>
+            <TitleBox>
+
+            </TitleBox>
+        </StepMainComponent>
+    );
 }
 
 function Step2Content() {
@@ -111,3 +117,6 @@ const NextBtn = styled.div`
     color: white;
     cursor: pointer;
 `
+const StepMainComponent = styled.div``;
+
+const TitleBox = styled.div``;
