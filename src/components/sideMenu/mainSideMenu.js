@@ -22,7 +22,7 @@ function MenuToggle({ menus }) {
             <MenuName>{menus.value}</MenuName>
         </MenuIconDiv>
     );
-  }
+}
 
 export default function MainSideMenu() {
     const router = useRouter();
@@ -89,6 +89,7 @@ export default function MainSideMenu() {
             value: '커뮤니티',
             path: '/guest/community'
         },
+
     ];
 
     return (

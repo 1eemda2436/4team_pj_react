@@ -6,7 +6,7 @@ import axios from "axios";
 import { observer } from "mobx-react";
 import rootStore from "@/stores/rootStore";
 
-const Login = observer(() => {
+const Login = () => {
   const [loginData, setLoginData] = useState({
     id: "",
     pwd: "",
@@ -40,6 +40,7 @@ const Login = observer(() => {
 
         // MemberStore의 setMemberData 메서드를 호출하여 멤버 데이터를 업데이트
         rootStore.MemberStore.setMemberData(response.data);
+        console.log(rootStore.MemberStore.member.id);
 
         localStorage.setItem('token', response.data.token);
         router.push('/guest');
@@ -63,9 +64,9 @@ const Login = observer(() => {
         </LoginInputBox>
       </Component>
   )
-})
+}
 
-export default Login;
+export default observer(Login);
 
 const Component = styled.div`
   width: 100%;

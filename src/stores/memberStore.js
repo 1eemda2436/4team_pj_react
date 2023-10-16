@@ -31,7 +31,8 @@ export class MemberStore {
         enabled: null // 인증여부 (Y/N)
     };
     
-    constructor() {
+    constructor(root) {
+        this.root = root;
         makeAutoObservable(this);
     }
     
