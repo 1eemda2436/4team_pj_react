@@ -1,17 +1,16 @@
 import AdminLayout from "@/components/layout/adminLayout";
 import styled from "styled-components";
 import React, {useState} from "react";
+import { useRouter } from "next/router";
 
 
 
 const Doc = () => {
 
-    const Approval = () => {
+    const router = useRouter();
 
-    }
-
-    const Return = () => {
-        
+    const Modal = ({isOpen, onclose, children}) => {
+        if (!isOpen) return null;
     }
 
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -25,9 +24,9 @@ const Doc = () => {
             <ApprovalLine>
                 <table>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
                     </tr>
                 </table>
             </ApprovalLine>
@@ -51,8 +50,8 @@ const Doc = () => {
                 <DocstyleRight>
                     <Comment placeholder="결재 의견을 입력하세요" />
                     <ButtonStyle>
-                        <button type="button" onClick={Approval}>결재</button>
-                        <button type="button" onClick={Return}>반려</button>
+                    <button type="button" onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재</button>
+                    <button type="button" onClick={() => router.push('/admin/doc/adminApprovalBack')}>반려</button>
                     </ButtonStyle>
                 </DocstyleRight>
             </Docstyle1>
