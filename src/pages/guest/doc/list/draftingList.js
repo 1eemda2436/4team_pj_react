@@ -40,7 +40,7 @@ const Doc = () => {
                     </thead>
                     <tbody>
                         {samples.map(draft =>
-                            <TableTr key={draft.doc_id}>
+                            <TableTr key={draft.save_id}>
                                 <TableTd2 component="" scope="draft">{draft.doc_id}</TableTd2>
                                 <TableTd2>{draft.category_id}</TableTd2>
                                 <TableTd2 >{draft.doc_title}</TableTd2>

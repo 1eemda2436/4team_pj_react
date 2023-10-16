@@ -1,9 +1,27 @@
 import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
-
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 
 const Doc = () => {
+
+    const router = useRouter();
+
+    const [samples, setSamples] = useState([]);
+
+    useEffect(() => {
+        axios
+        .get("http://localhost:8081/doc/view")
+        .then((response) => {
+            setSamples(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
     return(
         <Container>
             <Title>
@@ -19,11 +37,14 @@ const Doc = () => {
                         </TableTr>
                     </thead>
                     <tbody>
-                        <TableTr>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2 isTitle>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                        </TableTr>
+                        {samples.map(view =>
+                            <TableTr key={view.doc_id}>
+                            <TableTd2 component="" scope="view">{view.doc_id}</TableTd2>
+                            <TableTd2 isTitle>{view.doc_title}</TableTd2>
+                            <TableTd2>{view.doc_read}</TableTd2>
+                            </TableTr>
+                            )}
+                        
                     </tbody>
                 </Table>
             </Docstyle2>
