@@ -1,6 +1,7 @@
 import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import AttenCalendar from "@/components/calendar/AttenCalendar";
 
 // 관리자 부서별 근태 현황(상세)
 const AdminAttenDepDetail = () => {
@@ -41,10 +42,8 @@ const AdminAttenDepDetail = () => {
             </TblComponent>
             </div>
             <br/><br/><hr/><br/><br/>
-            <div style={{border: "3px solid black", borderRadius: "20px", height: "80px", textAlign: "center", width: "800px"}}>
-                <span style={{ lineHeight: "80px" }}>
-                    캘린더자리
-                </span>
+            <div style={{ border: "3px solid black", borderRadius: "20px", width: "400px", height: "465px", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <AttenCalendar />
             </div>
             <br/><br/><hr/><br/><br/>
             <TblComponent>
@@ -61,7 +60,7 @@ const AdminAttenDepDetail = () => {
                         <td>null</td>
                         <td>null</td>
                         <td>null</td>
-                    </tr>
+                    </tr>   
                 </PayTableBottom>
             </TblComponent>
         </div>
