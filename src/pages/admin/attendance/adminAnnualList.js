@@ -19,6 +19,8 @@ const tableStyle = {
 function AdminAnnualList() {
     const [attendance, setAttendance] = useState([]);
 
+    const router = useRouter();
+
     useEffect(() => {
         axios
             .get("http://localhost:8081/attendance/annualRequestsList")
@@ -29,8 +31,6 @@ function AdminAnnualList() {
                 console.log(error);
             });
     }, []);
-
-    const router = useRouter();
 
     return (
         <div align="center">
@@ -54,7 +54,7 @@ function AdminAnnualList() {
                         <tr key={annual.annual_id}>
                             <td style={cellStyle}>{annual.annual_id}</td>
                             <td style={cellStyle}>
-                                <a style={{ cursor: 'pointer' }} onClick={() => router.push(`/admin/attendance/adminAnnualConfirm/${annual.annual_id}`)}>{annual.annual_title}</a>
+                                <a style={{ cursor: 'pointer' }} onClick={() => router.push(`/admin/attendance/annualDetail/${annual.annual_id}`)}>{annual.annual_title}</a>
                             </td>
                             <td style={cellStyle}>{annual.confirm}</td>
                         </tr>
