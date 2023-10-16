@@ -1,18 +1,37 @@
 import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 
 const Doc = () => {
 
     const router = useRouter();
-
+    const doc_id = router.query.id; // ID를 추출
+    console.log(doc_id);
     const [selectedCategory, setSelectedCategory] = useState('');
+
+    const [samples, setSamples] = useState([]);
 
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
     };
+
+    useEffect(() => {
+        if (doc_id) {
+            console.log(doc_id)
+            axios
+            .get(`http://localhost:8081/doc/detail/${doc_id}`)
+            .then((response) => {
+                setSamples(response.data);
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }
+    }, [doc_id]);
 
     return(
         <Container>
@@ -31,18 +50,20 @@ const Doc = () => {
             <Docstyle1>
                 <DocstyleLeft>
                     <Table>
+                        <div>
                         <TableTr>
                             <TableTh>문서번호</TableTh>
-                            <TableTd>1</TableTd>
+                            <TableTd component="" scope="detail">{samples.doc_id}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>기안일</TableTh>
-                            <TableTd>1</TableTd>
+                            <TableTd>{samples.doc_date}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>기안자</TableTh>
-                            <TableTd>1</TableTd>
+                            <TableTd>{samples.name}</TableTd>
                         </TableTr>
+                        </div>
                     </Table>
                 </DocstyleLeft>
                 <DocstyleRight>
@@ -54,24 +75,28 @@ const Doc = () => {
             </Docstyle1>
             <Docstyle2>
                 <Table>
+                    <div>
                         <TableTr>
                             <TableTh3>제목</TableTh3>
-                            <TableTh2>여기에 문서 제목</TableTh2>
+                            <TableTh2>{samples.doc_title}</TableTh2>
                         </TableTr>
                         <TableTr>
-                                <TableTd2 colSpan={2}>문서 내용</TableTd2>
+                                <TableTd2 colSpan={2}>{samples.doc_content}</TableTd2>
                         </TableTr>
+                     </div>
                 </Table>
                 <br></br>
                 <Table>
+                    <div>
                         <TableTr>
                             <TableTh3>구분</TableTh3>
                             <TableTd3> </TableTd3>
                         </TableTr>
                         <TableTr>
                             <TableTh3>첨부파일</TableTh3>
-                            <TableTd3>여기에 첨부파일</TableTd3>
+                            <TableTd3>{samples.doc_attachment}</TableTd3>
                         </TableTr>
+                    </div>
                 </Table>
             </Docstyle2>
             <CategoryTable>

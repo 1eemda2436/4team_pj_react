@@ -8,20 +8,6 @@ const Doc = () => {
 
     const router = useRouter();
 
-    // const [samples, setSamples] = useState([]);
-
-    // useEffect(() => {
-    //     fetch("http://localhost:8081/draft", {
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setSamples(data);
-    //         })
-    //         .catch(error => {
-    //             console.error("API 호출 오류:", error);
-    //         });
-    // }, []);
-
     const [samples, setSamples] = useState([]);
 
     useEffect(() => {
@@ -52,8 +38,8 @@ const Doc = () => {
                         </TableTr>
                     </thead>
                     <tbody>
-                        {samples.map(draft =>
-                            <TableTr key={draft.save_id}>
+                        {samples.map((draft) =>
+                            <TableTr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/${draft.doc_id}`)}>
                                 <TableTd2 component="" scope="draft">{draft.doc_id}</TableTd2>
                                 <TableTd2>{draft.category_id}</TableTd2>
                                 <TableTd2 >{draft.doc_title}</TableTd2>
@@ -65,7 +51,7 @@ const Doc = () => {
                 </Table>
                 <Table>
                     <TableTd2>
-                    <button type="button" onClick={() => router.push('/guest/doc/insertDraft')}>문서 작성</button>
+                    <button type="button" onClick={() => router.push(`/guest/doc/insertDraft`)}>문서 작성</button>
                     </TableTd2>
                 </Table>
             </Docstyle2>
