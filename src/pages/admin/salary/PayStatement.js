@@ -4,7 +4,10 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
+
+
 const PayStatement = () => {
+    
     const router = useRouter();
     const id = router.query.id; // ID를 추출
 

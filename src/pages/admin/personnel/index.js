@@ -40,6 +40,7 @@ const AdminPersonnel = () => {
                 <th>이름</th>
                 <th>전화번호</th>
                 <th colSpan={2}>수정 / 삭제</th>
+                <th>급여</th>
             </tr>
             </Table>
         </TblHeader>
@@ -54,10 +55,13 @@ const AdminPersonnel = () => {
                   <td>{item.name}</td>
                   <td>{item.tel}</td>
                   <td>
-                  <Button onClick={() => router.push('/admin/personnel/EmployeeModification')}>수정</Button>
+                  <Button onClick={() => router.push(`/admin/personnel/EmployeeModification`)}>수정</Button>
                   </td>
                   <td>
                   <Button>삭제</Button>
+                  </td>
+                  <td>
+                  <Button onClick={() => router.push(`/admin/salary/SalaryCalculator?id=${item.id}`)}>상세</Button>
                   </td>
                 </tr>
               ))}
