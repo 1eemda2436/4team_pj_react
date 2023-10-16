@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 const Doc = () => {
-  
+
     const router = useRouter();
 
     const [samples, setSamples] = useState([]);
@@ -21,7 +21,7 @@ const Doc = () => {
             console.log(error);
         });
     }, []);
-  
+
     return(
         <Container>
             <Title>

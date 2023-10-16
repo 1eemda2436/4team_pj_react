@@ -2,8 +2,7 @@ import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import React, {useState, useEffect} from "react";
-
-
+import axios from "axios";
 
 const Doc = () => {
 
@@ -12,15 +11,14 @@ const Doc = () => {
     const [samples, setSamples] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:8081/total", {
+        axios
+        .get("http://localhost:8081/doc/adminTotal")
+        .then((response) => {
+            setSamples(response.data);
         })
-            .then(response => response.json())
-            .then(data => {
-                setSamples(data);
-            })
-            .catch(error => {
-                console.error("API 호출 오류:", error);
-            });
+        .catch((error) => {
+            console.log(error);
+        });
     }, []);
 
     return(
@@ -28,28 +26,6 @@ const Doc = () => {
             <Title>
                 <H1>통합 문서함</H1>
             </Title>
-            <PersonalMenu>
-                <tr>
-                    <td>
-                        개인문서함
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
-                    </td>
-                </tr>
-            </PersonalMenu>
             <AdminMenu>
                 <tr>
                     <td>
