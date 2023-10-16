@@ -4,10 +4,23 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 
-
 const Doc = () => {
 
     const router = useRouter();
+
+    // const [samples, setSamples] = useState([]);
+
+    // useEffect(() => {
+    //     fetch("http://localhost:8081/draft", {
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setSamples(data);
+    //         })
+    //         .catch(error => {
+    //             console.error("API 호출 오류:", error);
+    //         });
+    // }, []);
 
     const [samples, setSamples] = useState([]);
 
