@@ -1,7 +1,9 @@
 import AdminLayout from "@/components/layout/adminLayout";
+
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
 import styled from "styled-components";
 
 
@@ -9,6 +11,7 @@ import styled from "styled-components";
 const Doc = () => {
 
     const router = useRouter();
+
 
     const [samples, setSamples] = useState([]);
     const [filteredSamples, setFilteredSamples] = useState([]);
@@ -26,6 +29,7 @@ const Doc = () => {
     //         console.log(error);
     //     });
     // }, []);
+
 
     return(
         <Container>

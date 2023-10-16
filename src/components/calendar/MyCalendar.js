@@ -1,12 +1,14 @@
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import styled from "styled-components";
+import Header from '../common/header';
 
 const MyCalendar = () => {
     return (
         <Caldiv>
             <FullCalendar 
                 plugins={[ dayGridPlugin ]}
+                aspectRatio={2.5}
             />
         </Caldiv>
     );
@@ -15,6 +17,7 @@ const MyCalendar = () => {
 export default MyCalendar;
 
 const Caldiv = styled.div `
-    width: 1000px;
-    height: 500px;
+    width: 100%;
+    height: 100%;
+    
 `;

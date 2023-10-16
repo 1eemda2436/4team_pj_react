@@ -13,6 +13,7 @@ const Doc = () => {
         if (!isOpen) return null;
     }
 
+
     const [selectedCategory, setSelectedCategory] = useState('');
 
     const CategoryChange = (event) => {

@@ -22,7 +22,7 @@ function MenuToggle({ menus }) {
             <MenuName>{menus.value}</MenuName>
         </MenuIconDiv>
     );
-  }
+}
 
 export default function MainSideMenu() {
     const router = useRouter();
@@ -89,11 +89,12 @@ export default function MainSideMenu() {
             value: '커뮤니티',
             path: '/guest/community'
         },
+
     ];
 
     return (
         <SideMenu>
-            <Logo1 />
+            <Logo1Icon onClick={() => router.push('/guest')}/>
             <MenuIcons>
                 {menus.map((menu) => (
                     <MenuToggle menus={menu} key={menu.id} />
@@ -105,12 +106,16 @@ export default function MainSideMenu() {
 }
 
 const SideMenu = styled.div`
-    width: 80px;
+    width: 110px;
     background-color: #005FC5;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 15px 0px;
+`;
+
+const Logo1Icon = styled(Logo1)`
+    cursor: pointer;
 `;
 
 const MenuIcons = styled.div`

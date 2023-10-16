@@ -4,7 +4,6 @@ import styled from "styled-components";
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 
-
 const Doc = () => {
 
     const router = useRouter();

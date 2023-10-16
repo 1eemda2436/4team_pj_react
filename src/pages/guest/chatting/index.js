@@ -4,8 +4,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import User from "../../../../public/asset/icons/user.svg"
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { useState } from "react";
+import { useRouter } from 'next/router'
+
 
 const Chatting = () => {
+    const router = useRouter();
     const [showMessage, setShowMessage] = useState(false);
 
     const handleUserBoxClick = () => {
@@ -57,8 +60,51 @@ const Chatting = () => {
                     <User width="42" height="42" />
                         <UserName>사원명</UserName>
                     </UserHeader>
+                    <br/>
 
                     <MessageComponent>
+                        <Message1>
+                        <Message>
+                            카톡카톡카톡
+                        </Message>
+                        <ReadTime>
+                            20:20
+                        </ReadTime>
+                        <Read>
+                            읽음
+                        </Read>
+                        </Message1>
+                        <br/><br/>
+                        
+                        <Message1>
+                        <Message>
+                            카톡카톡카톡
+                        </Message>
+                        <ReadTime>
+                            20:20
+                        </ReadTime>
+                        <Read>
+                            읽음
+                        </Read>
+                        </Message1>
+                        <br/><br/>
+                        <Send1>
+                        <SendTime>
+                            20:20
+                        </SendTime>
+                        <SendMessage>
+                            톡톡톡톡톡톡
+                        </SendMessage>
+                        </Send1>
+                        <Text1>
+                        <Text>
+                            텍스트를 입력하세요
+                        </Text>
+                            <button>전송</button>
+                        </Text1>
+
+
+                        
 
                     </MessageComponent>
                 </MessageMainComponent>
@@ -250,4 +296,76 @@ const UserName = styled.div`
     margin-left: 10px;
 `;
 
-const MessageComponent = styled.div``;
+
+const MessageComponent = styled.div`
+    
+`;
+
+
+const Message = styled.div`
+    border-radius: 30px;
+    background: #FFff03;
+    padding: 4px 7px;
+    height: 30px;
+    width: 200px;
+    font-size: 20px;
+    color: black;
+`;
+
+const ReadTime = styled.div`
+    font-size: 20px;
+    margin-left: 10px;
+`;
+
+const Read = styled.div`
+    font-size: 15px;
+    margin-left: 10px;
+`;
+
+const Message1 = styled.div`
+    display: flex;
+`;
+
+const SendMessage = styled.div`
+    border-radius: 30px;
+    background: #EAEAEA;
+    padding: 4px 7px;
+    height: 30px;
+    width: 200px;
+    font-size: 20px;
+    color: black;
+    float: right;
+    
+`;
+
+const SendTime = styled.div`
+    font-size: 20px;
+    margin-left: 10px;
+    
+`;
+
+const Text = styled.div`
+    background: #EAEAEA;
+    border-radius: 30px;
+    padding: 4px 7px;
+    height: 30px;
+    font-size: 20px;
+    margin-left: 10px;
+    width: 100%; /* 부모 컴포넌트의 80% 너비를 차지하도록 설정 */
+`;
+
+const Text1 = styled.div`
+    display: flex;
+    position: fixed;
+    bottom: 50px; /* 화면 하단에 고정 */
+    width: 50%; /* 화면 가로 길이를 모두 차지하도록 설정 */
+    justify-content: space-between; /* 자식 요소 사이의 공간을 최대화합니다 */
+    align-items: center; /* 세로 중앙 정렬 */
+`;
+
+const Send1 = styled.div`
+    right: 700px; /* 화면 오른쪽에 고정 */
+    position: fixed;    
+    display: flex;
+`;
+

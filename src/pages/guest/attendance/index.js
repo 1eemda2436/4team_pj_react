@@ -2,9 +2,13 @@ import MainLayout from "@/components/layout/mainLayout";
 import styled from "styled-components";
 import User from '../../../../public/asset/icons/user.svg'
 import Header from "@/components/common/header";
+import { useRouter } from "next/router";
 
 // main
 const Attendance = () => {
+
+    const router = useRouter();
+
     return (
         <MainComponent>
             <Header />
@@ -64,8 +68,9 @@ const Attendance = () => {
                     
                     <AttenWeekWork>
                         <div className="work-hours">
-                            [ 주간 근무 현황 ]
+                            <a onClick={() => router.push('/guest/attendance/detail/')} style={{ cursor: 'pointer' }}>[ 주간 근무 현황 ]</a>
                         </div>
+                        <br/>
                         <div>[ 총 근무 시간 ]</div>
                         <div>[ 총 연장 근무 시간 ]</div>
                         <div>[ 남은 최소 근무 시간 ]</div>

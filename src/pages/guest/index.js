@@ -1,9 +1,10 @@
+import Header from "@/components/common/header";
 import MainLayout from "@/components/layout/mainLayout"
 
 const Guest = () => {
     return(
         <div>
-            test
+            <Header />
         </div>
     )
 };

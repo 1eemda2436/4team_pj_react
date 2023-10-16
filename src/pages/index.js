@@ -1,23 +1,72 @@
 import styled from "styled-components";
 import Logo2 from '../../public/asset/icons/logo2.svg';
 import { useRouter } from "next/router";
+import { useState } from "react";
+import axios from "axios";
+import { observer } from "mobx-react";
+import rootStore from "@/stores/rootStore";
 
-export default function Login() {
+const Login = () => {
+  const [loginData, setLoginData] = useState({
+    id: "",
+    pwd: "",
+  });
+
+  const onChangeHandler = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setLoginData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const onSubmitLogin = (e) => {
+    e.preventDefault();
+
+    const { id, pwd } = loginData;
+    const apiUrl = 'http://localhost:8081/'; // 백엔드 API 엔드포인트 URL로 수정
+
+    // 요청 본문 데이터
+    const data = { id, pwd };
+
+    axios.post(apiUrl, data)
+      .then((response) => {
+        alert("로그인 성공")
+        console.log('로그인 성공:', response.data);
+
+        // RootStore의 login 메서드를 호출하여 로그인 상태 및 토큰을 업데이트
+        rootStore.login(response.data.token);
+
+        // MemberStore의 setMemberData 메서드를 호출하여 멤버 데이터를 업데이트
+        rootStore.MemberStore.setMemberData(response.data);
+        console.log(rootStore.MemberStore.member.id);
+
+        localStorage.setItem('token', response.data.token);
+        router.push('/guest');
+      })
+      .catch((error) => {
+        console.error('로그인 실패:', error);
+    });
+  }
+
   const router = useRouter();
 
   return (
-    <Component>
-      <Logo2 />
-      <LoginInputBox>
-        <LoginInput placeholder="ID" type="text" />
-        <LoginInput placeholder="PASSWORD" type="password" />
+      <Component>
+        <Logo2 />
+        <LoginInputBox>
+          <LoginInput name="id" placeholder="ID" type="text" onChange={onChangeHandler} />
+          <LoginInput name="pwd" placeholder="PASSWORD" type="password" onChange={onChangeHandler} />
 
-        <LoginBtn> login </LoginBtn>
-        <JoinBtn onClick={() => router.push('/join')}>사업자 등록</JoinBtn>
-      </LoginInputBox>
-    </Component>
+          <LoginBtn onClick={(e) => onSubmitLogin(e)}> login </LoginBtn>
+          <JoinBtn onClick={() => router.push('/join')}>사업자 등록</JoinBtn>
+        </LoginInputBox>
+      </Component>
   )
 }
+
+export default observer(Login);
 
 const Component = styled.div`
   width: 100%;
@@ -59,7 +108,7 @@ const LoginBtn = styled.div`
   border: 1px solid #CBCBCB;
   background: #007BFF;
   width: 100%;
-  height: 72px;
+  height: 72px; 
   display: flex;
   align-items: center;
   justify-content: center;

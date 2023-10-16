@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import AdminLayout from "@/components/layout/adminLayout";
+import MainLayout from "@/components/layout/mainLayout";
 import axios from "axios";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -16,7 +16,7 @@ const tableStyle = {
     borderRadius: "20px",
 };
 
-function AdminAnnualList() {
+function GuestAnnualList() {
     const [attendance, setAttendance] = useState([]);
 
     useEffect(() => {
@@ -34,12 +34,11 @@ function AdminAnnualList() {
 
     return (
         <div align="center">
-            <h1>연차 신청 내역</h1>
-            <br />
-            <br />
+            <TextTitle>연차 신청 내역</TextTitle>
+
             <hr />
-            <br />
-            <br />
+            <br/>
+            <br/>
             <table style={tableStyle}>
                 <thead>
                     <tr>
@@ -54,7 +53,7 @@ function AdminAnnualList() {
                         <tr key={annual.annual_id}>
                             <td style={cellStyle}>{annual.annual_id}</td>
                             <td style={cellStyle}>
-                                <a style={{ cursor: 'pointer' }} onClick={() => router.push(`/admin/attendance/adminAnnualConfirm/${annual.annual_id}`)}>{annual.annual_title}</a>
+                                <a>{annual.annual_title}</a>
                             </td>
                             <td style={cellStyle}>{annual.confirm}</td>
                         </tr>
@@ -65,8 +64,14 @@ function AdminAnnualList() {
     );
 }
 
-export default AdminAnnualList;
+export default GuestAnnualList;
 
-AdminAnnualList.getLayout = function getLayout(page) {
-    return <AdminLayout>{page}</AdminLayout>;
+GuestAnnualList.getLayout = function getLayout(page) {
+    return <MainLayout>{page}</MainLayout>;
 };
+
+const TextTitle = styled.div`
+    font-size: 36px;
+    font-weight: bold;
+    padding: 30px 30px;
+`;

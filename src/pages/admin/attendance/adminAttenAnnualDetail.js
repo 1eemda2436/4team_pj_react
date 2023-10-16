@@ -1,42 +1,29 @@
 import AdminLayout from "@/components/layout/adminLayout";
-import { useRouter } from "next/router";
 import styled from "styled-components";
 
-// 관리자 부서별 근태 현황(상세)
-const AdminAttenDepDetail = () => {
+// 관리자 부서별 근태 통계(상세)
+const AdminAttenAnnualDetail = () => {
     // 테두리 스타일을 정의합니다.
-
-    const router = useRouter();
-
+    
     return (
-        <div align="center">
+        <div>
             <div>
             <TblComponent>
                 <PayTableBottom>
                     <tbody>
                         <tr>
-                            <th colSpan={2} onClick={() => router.push('/admin/attendance/adminAttenAnnualDetail')} style={{ cursor: 'pointer' }}>부서별 근태 현황</th>
+                            <th>사번</th>
+                            <th>이름</th>
+                            <th>지각계</th>
+                            <button>정렬</button>
                         </tr>
 
                         <tr>
-                            <th colSpan={2}><hr/></th>
-                        </tr>
-
-                        <tr>
-                            <th>금일 출근률</th>
+                            <td>null%</td>
+                            <td>null%</td>
                             <td>null%</td>
                         </tr>
-
-                        <tr>
-                            <th>금일 지각률</th>
-                            <td>null%</td>
-                        </tr>
-
-                        <tr>
-                            <th>금일 연차률</th>
-                            <td>null%</td>
-                        </tr>
-                    </tbody>
+                        </tbody>
                 </PayTableBottom>
             </TblComponent>
             </div>
@@ -46,36 +33,17 @@ const AdminAttenDepDetail = () => {
                     캘린더자리
                 </span>
             </div>
-            <br/><br/><hr/><br/><br/>
-            <TblComponent>
-                <PayTableBottom>
-                    <tr>
-                        <th>지각자 수</th>
-                        <th>지각자 통계</th>
-                        <th>연차 및 휴가 자</th>
-                        <th>연차 및 휴가 자 통계</th>
-                    </tr>
-
-                    <tr>
-                        <td>null</td>
-                        <td>null</td>
-                        <td>null</td>
-                        <td>null</td>
-                    </tr>
-                </PayTableBottom>
-            </TblComponent>
         </div>
 
 
     );
 }
 
-export default AdminAttenDepDetail;
+export default AdminAttenAnnualDetail;
 
-AdminAttenDepDetail.getLayout = function getLayout(page) {
+AdminAttenAnnualDetail.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
-
 
 const TblComponent = styled.div`
     border: 1px solid #E5E5E5;
