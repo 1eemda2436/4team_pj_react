@@ -27,48 +27,66 @@ const AdminPersonnel = () => {
         });
     }, []);
 
+    const onInsertHandle = (item) => {
+      router.push({
+        pathname: `/admin/salary/AddPayStatement`,
+        query: { 
+          id: item.id, 
+          name: item.name,
+          rank: item.rank
+        }
+      });
+    };
+
     return (
         <MainComponent>
         <Title>인사 관리 - 사원 관리</Title>
         <TblComponent>
-        <TblHeader>
+          <TblHeader>
             <Table>
-            <tr>
-                <th>부서</th>
-                <th>팀</th>
-                <th>사번</th>
-                <th>이름</th>
-                <th>전화번호</th>
-                <th colSpan={2}>수정 / 삭제</th>
-            </tr>
-            </Table>
-        </TblHeader>
-        <TblContent>
-            <PayTableTop>
-            <Table>
-            {data.map(item => (
-                <tr key={item.id}>
-                  <td>{item.depart_id}</td>
-                  <td>{item.team_id}</td>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.tel}</td>
-                  <td>
-                  <Button onClick={() => router.push('/admin/personnel/EmployeeModification')}>수정</Button>
-                  </td>
-                  <td>
-                  <Button>삭제</Button>
-                  </td>
+              <thead>
+                <tr>
+                    <th>부서</th>
+                    <th>팀</th>
+                    <th>사번</th>
+                    <th>이름</th>
+                    <th>전화번호</th>
+                    <th>급여</th>
+                    <th colSpan={2}>수정 / 삭제</th>
                 </tr>
-              ))}
+              </thead>
             </Table>
-            </PayTableTop>
-            {/* 다른 데이터 로우들 */}
-        </TblContent>
-        <TotalBox>
+          </TblHeader>
+
+          <TblContent>
+            <PersonnelTableTop>
+                <tbody>
+                  {data.map(item => (
+                      <tr key={item.id}>
+                        <td>{item.depart_id}</td>
+                        <td>{item.team_id}</td>
+                        <td>{item.id}</td>
+                        <td>{item.name}</td>
+                        <td>{item.tel}</td>
+                        <td>
+                        <Button onClick={() => onInsertHandle(item)}>등록</Button>  
+                        </td>
+                        <td>
+                        <Button onClick={() => router.push(`/admin/personnel/EmployeeModification`)}>수정</Button>
+                        </td>
+                        <td>
+                        <Button>삭제</Button>
+                        </td>
+                      </tr>
+                  ))}
+                </tbody>
+            </PersonnelTableTop>
+          </TblContent>
+
+          <TotalBox>
             <TotalTitle>합계</TotalTitle>
             <TotalResult>999999</TotalResult>
-        </TotalBox>
+          </TotalBox>
         </TblComponent>
         <div>
             <Button onClick={() => router.push('/admin/personnel/EmployeeRegistration')}>사원등록</Button>
@@ -158,7 +176,7 @@ const Table = styled.table`
   }
 `;
 
-const PayTableTop = styled(Table)``;
+const PersonnelTableTop = styled(Table)``;
 
 const PayTableBottom = styled(Table)`
   margin-top: 20px;
