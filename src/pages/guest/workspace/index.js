@@ -27,6 +27,16 @@ function Workspace() {
             .catch((error) => {
                 console.log(error);
             });
+
+        axios
+            .get("http://localhost:8081/projectwork")
+            .then((response) => {
+                console.log(response.data);
+                setProjectwork(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, []);
 
     const router = useRouter();
