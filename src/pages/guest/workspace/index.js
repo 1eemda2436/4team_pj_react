@@ -113,11 +113,14 @@ const Workspace = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {projectworkList.map((pwj) => (
-                    <tr key={pwj.pw_id}>
-                        <td style={cellStyle}>{pwj.pw_id}</td>
-                        <td style={cellStyle} onClick={() => router.push('/guest/workspace/ProjectWorkDetail')}>{pwj.pw_name}</td>
-                        <td style={cellStyle}>{moment(pwj.pw_deadline_s).format('YYYY-MM-DD')} ~ {moment(pwj.pw_deadline_e).format('YYYY-MM-DD')}</td>
+                    {projectworkList.map((pjw) => (
+                    <tr key={pjw.pw_id}>
+                        <td style={cellStyle}>{pjw.pw_id}</td>
+                        <td style={cellStyle}>
+                            <Link href="/guest/workspace/ProjectWorkDetail/[id]" as={`/guest/workspace/ProjectWorkDetail/${pjw.pw_id}`}>
+                                {pjw.pw_name}
+                            </Link></td>
+                        <td style={cellStyle}>{moment(pjw.pw_deadline_s).format('YYYY-MM-DD')} ~ {moment(pjw.pw_deadline_e).format('YYYY-MM-DD')}</td>
                     </tr>
                     ))}
                 </tbody>

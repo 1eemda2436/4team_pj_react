@@ -20,14 +20,15 @@ const Component = styled.div`
     align-items: center;
 `;
 
-function ProjectWorkAdd() {
+const ProjectWorkAdd = () => {
     const [projectwork, setProjectwork] = useState({
-        complete: 'N'
+        complete: 'N' //default 'N'
     })
     const [project, setProject] = useState([])
     const router = useRouter();
     
     useEffect(() => {
+        //프로젝트ID 불러오기 위함
         axios
             .get("http://localhost:8081/project")
             .then((response) => {
@@ -36,11 +37,11 @@ function ProjectWorkAdd() {
             .catch((error) => {
                 console.log(error);
             });
-        }, []);
+        }, []); 
 
     const ProjectworkChange = (event) => {
         setProjectwork(prevProjectwork => ({
-            ...prevProjectwork,
+            ...prevProjectwork, 
             [event.target.name] : event.target.value
         }));
     };
@@ -60,7 +61,7 @@ function ProjectWorkAdd() {
             })
             .catch((error) => {
                 console.log(error);
-            })
+            });
     }
 
     return (
@@ -75,7 +76,7 @@ function ProjectWorkAdd() {
                         {project.map((pj) => (
                         <option key={pj.pj_id} value={pj.pj_id}>{pj.pj_name}</option>
                         ))}
-                </select>
+                        </select>
                         </td>
                     </tr>
 
@@ -89,7 +90,7 @@ function ProjectWorkAdd() {
                             label="프로젝트 업무명"
                             type="text"
                             name="pw_name"
-                            placeholder="프로젝트 업무명을 적어주세요"
+                            placeholder="프로젝트 업무명을 입력해주세요"
                             onChange={ProjectworkChange}
                             />
                         </td>
@@ -103,7 +104,7 @@ function ProjectWorkAdd() {
                             label="담당업무"
                             type="text"
                             name="duties"
-                            placeholder="담당업무를 적어주세요"
+                            placeholder="담당업무를 입력해주세요"
                             onChange={ProjectworkChange}
                             />
                         </td>
@@ -117,7 +118,7 @@ function ProjectWorkAdd() {
                             label="기한일(시작)"
                             type="text"
                             name="pw_deadline_s"
-                            placeholder="프로젝트 시작일을 적어주세요"
+                            placeholder="프로젝트 시작일을 입력해주세요"
                             onChange={ProjectworkChange}
                             />
                         </td>

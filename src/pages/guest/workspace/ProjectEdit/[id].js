@@ -20,8 +20,9 @@ const Component = styled.div`
     align-items: center;
 `;
 
-function ProjectEdit() {
+const ProjectEdit = () => {
     const [project, setProject] = useState({})
+    
     const router = useRouter();
 
     const { id } = router.query;
@@ -88,10 +89,10 @@ function ProjectEdit() {
                             id="standard-required"
                             value={project.pj_name || ''}
                             variant="standard"
-                            label="프로젝트 이름"
+                            label="프로젝트명"
                             type="text"
                             name="pj_name"
-                            placeholder="프로젝트 이름을 적어주세요"
+                            placeholder="프로젝트명을 입력해주세요"
                             onChange={ProjectChange}
                             />
                         </td>
@@ -160,8 +161,8 @@ function ProjectEdit() {
                 </thead>
             </table>
 
-            <button onClick={saveProject}>수정</button>
-            <button onClick={() => router.push('/guest/workspace')}>목록</button>
+            <button onClick = {saveProject}>수정</button>
+            <button onClick = {() => router.push('/guest/workspace')}>목록</button>
         </Component>
     )
 }
