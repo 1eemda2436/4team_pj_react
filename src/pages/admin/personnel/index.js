@@ -19,7 +19,8 @@ const AdminPersonnel = () => {
         .catch(err => {
           if (axios.isAxiosError(err)) {
             // AxiosError 처리
-            setError(err.response.data.message);
+            setError(err.message);
+            //console.log(err.message)
           } else {
             // 일반 오류 처리
             setError('데이터를 가져오는 중 오류 발생');
@@ -37,6 +38,24 @@ const AdminPersonnel = () => {
         }
       });
     };
+
+    // 리액트 프론트엔드에서 "사원 등록" 버튼 클릭 핸들러
+    const handleEmployeeRegistration = async () => {
+      try {
+        const response = await axios.get('http://localhost:8081/personnel/maxId');
+        const maxId = response.data;
+        // 이제 maxId를 사용하여 사원 등록 페이지로 이동하거나 입력 필드에 값을 설정할 수 있습니다.
+        router.push({
+          pathname: `/admin/personnel/EmployeeRegistration`,
+          query: { 
+            maxId: maxId, 
+          }
+        });
+      } catch (error) {
+        console.error('ID를 검색하는 중 오류 발생', error);
+      }
+
+    }
 
     return (
         <MainComponent>
@@ -89,7 +108,7 @@ const AdminPersonnel = () => {
           </TotalBox>
         </TblComponent>
         <div>
-            <Button onClick={() => router.push('/admin/personnel/EmployeeRegistration')}>사원등록</Button>
+            <Button onClick={handleEmployeeRegistration}>사원등록</Button>
         </div>
         <div>
             <Button onClick={() => router.push('/admin/personnel/DepartmentManagement')}>부서등록</Button>

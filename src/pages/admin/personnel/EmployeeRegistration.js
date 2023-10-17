@@ -1,14 +1,19 @@
 import AdminLayout from "@/components/layout/adminLayout";
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import styled from "styled-components";
 
 const EmployeeRegistration = () => {
+  const router = useRouter();
+  const maxId = parseInt(router.query.maxId) + 1;
+
   // Define state to hold form data
   const [formData, setFormData] = useState({
-    employeeName: '',
-    phoneNumber: '',
-    hireDate: '',
+    id : maxId,
+    name: '',
+    tel: '',
+    hireday: '',
   });
 
   // Handle input changes and update form data
@@ -21,14 +26,15 @@ const EmployeeRegistration = () => {
   const handleSubmit = async () => {
     try {
       // Make a POST request to your Spring Boot API
-      await axios.post('http://localhost:8080/employeeInsert', formData);
+      await axios.post('http://localhost:8081/personnel/employeeInsert', formData);
 
       // Optionally, you can handle success or show a message to the user
-      alert('Employee registered successfully');
+      alert('사원 등록에 성공 했습니다.');
+      router.push(`/admin/personnel`);
     } catch (error) {
       // Handle any errors, e.g., network issues or server errors
       console.error('Error:', error);
-      alert('Failed to register employee');
+      alert('사원 등록에 실패 했습니다.');
     }
   };
 
@@ -36,33 +42,42 @@ const EmployeeRegistration = () => {
     <Container>
       <Title>인사 관리 - 사원 등록</Title>
       <FormSection>
+        <Label>사원코드</Label>
+        <Input
+          type="text"
+          name="id"
+          value={formData.id}
+          onChange={handleChange}
+          readOnly
+        />
         <Label>사원명</Label>
         <Input
           type="text"
-          name="employeeName"
-          value={formData.employeeName}
+          name="name"
+          value={formData.name}
           onChange={handleChange}
           placeholder="사원명"
         />
         <Label>전화번호</Label>
         <Input
           type="text"
-          name="phoneNumber"
-          value={formData.phoneNumber}
+          name="tel"
+          value={formData.tel}
           onChange={handleChange}
           placeholder="전화번호"
         />
         <Label>입사일</Label>
         <Input
           type="date"
-          name="hireDate"
-          value={formData.hireDate}
+          name="hireday"
+          value={formData.hireday}
           onChange={handleChange}
         />
+      </FormSection>
+
       <ButtonContainer>
         <Button onClick={handleSubmit}>등록</Button>
       </ButtonContainer>
-      </FormSection>
     </Container>
   );
 };
