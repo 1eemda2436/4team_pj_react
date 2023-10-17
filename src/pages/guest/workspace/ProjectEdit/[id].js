@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/common/header';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { RadioButtonChecked } from "@mui/icons-material";
+import moment from "moment";
 
 const tableStyle = {
     borderCollapse: "collapse",
@@ -20,14 +20,40 @@ const Component = styled.div`
     align-items: center;
 `;
 
-const ProjectAdd = () => {
+function ProjectEdit() {
     const [project, setProject] = useState({})
-
     const router = useRouter();
 
+    const { id } = router.query;
+
+    useEffect(() => {
+        if (id) {
+            axios
+                .get(`http://localhost:8081/project/${id}`)
+                .then((response) => {
+                    console.log('[ProjectEdit] project', response.data)
+                    const formattedProject = {
+                        ...response.data,
+                        deadline_s: response.data.deadline_s
+                          ? moment(response.data.deadline_s).format('YYYY-MM-DD')
+                          : '', // 날짜 포맷 변경
+                        deadline_e: response.data.deadline_e
+                          ? moment(response.data.deadline_e).format('YYYY-MM-DD')
+                          : '', // 날짜 포맷 변경
+                      };
+                      setProject(formattedProject);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [id]);
+
     const ProjectChange = (event) => {
+        console.log(event.target.value)
+
         setProject(prevProject => ({
-            ...prevProject,
+            ...prevProject, //... => 객체에 사용하면 이전 객체 복사
             [event.target.name]: event.target.value
         }));
     };
@@ -41,13 +67,13 @@ const ProjectAdd = () => {
         console.log('[saveProject] project', project)
 
         axios
-            .post("http://localhost:8081/project", project)
-            .then((response) => {
-                router.push('/guest/workspace');
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        .post("http://localhost:8081/project", project)
+        .then((response) => {
+            router.push('/guest/workspace');
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     return (
@@ -60,6 +86,7 @@ const ProjectAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={project.pj_name || ''}
                             variant="standard"
                             label="프로젝트 이름"
                             type="text"
@@ -74,6 +101,7 @@ const ProjectAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={project.content || ''}
                             variant="standard"
                             label="내용"
                             type="text"
@@ -88,6 +116,7 @@ const ProjectAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={project.deadline_s || ''}
                             variant="standard"
                             label="기한일(시작)"
                             type="text"
@@ -102,6 +131,7 @@ const ProjectAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={project.deadline_e || ''}
                             variant="standard"
                             label="기한일(종료)"
                             type="text"
@@ -116,6 +146,7 @@ const ProjectAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={project.depart_id || ''}
                             variant="standard"
                             label="부서ID"
                             type="text"
@@ -125,6 +156,7 @@ const ProjectAdd = () => {
                             />
                         </td>
                     </tr>
+                    
                 </thead>
             </table>
 
@@ -134,8 +166,8 @@ const ProjectAdd = () => {
     )
 }
 
-export default ProjectAdd;
+export default ProjectEdit;
 
-ProjectAdd.getLayout = function getLayout(page) {
+ProjectEdit.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
