@@ -26,6 +26,20 @@ const ProjectDetail = () => {
                 });
         }
     }, [id]);
+
+    const deleteProject = (event) => {
+        event.preventDefault();
+
+        axios
+            .delete(`http://localhost:8081/project/${id}`)
+            .then((response) => {
+                router.push('/guest/workspace');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        
+    };
         
     return (
         <Component>
@@ -52,7 +66,7 @@ const ProjectDetail = () => {
             </div>
             <div>
                 <Link href="/guest/workspace/ProjectEdit/[id]" as={`/guest/workspace/ProjectEdit/${project.pj_id}`}><button>수정</button></Link>
-                <button onClick={() => router.push('/guest/workspace')}>삭제</button>
+                <button onClick={deleteProject}>삭제</button>
                 <button onClick={() => router.push('/guest/workspace')}>목록</button>
             </div>
         </Component>

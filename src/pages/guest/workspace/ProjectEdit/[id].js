@@ -67,13 +67,13 @@ function ProjectEdit() {
         console.log('[saveProject] project', project)
 
         axios
-        .post("http://localhost:8081/project", project)
-        .then((response) => {
-            router.push('/guest/workspace');
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            .post("http://localhost:8081/project", project)
+            .then((response) => {
+                router.push('/guest/workspace');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     return (
@@ -160,7 +160,7 @@ function ProjectEdit() {
                 </thead>
             </table>
 
-            <button onClick={saveProject}>추가</button>
+            <button onClick={saveProject}>수정</button>
             <button onClick={() => router.push('/guest/workspace')}>목록</button>
         </Component>
     )
