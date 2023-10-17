@@ -8,31 +8,39 @@ const PayStatement = () => {
     const router = useRouter();
     const { id, name, rank } = router.query; // ID를 추출
 
-    const [PayStatementData, setPayStatementData] = useState([]);
+    // const [PayStatementData, setPayStatementData] = useState([]);
 
-    useEffect(() => {
-        console.log(id)
-        if ({id}) {
-            console.log("!!!!",id)
-            axios.get(`http://localhost:8081/salary/PayStatement/${id}`)
-            .then((response) => {
-                setPayStatementData(response.data);
-                console.log(response.data)
-            })
-            .catch((error) => {
-                console.error("Error fetching data", error);
-            });
-        }
-    }, [id]);
+    const [PayStatementData, setPayStatementData] = useState({
+        incomeTax: 0,
+        localTax: 0,
+        nationalPension: 0,
+        healthInsurance: 0,
+        cHealthInsurance: 0,
+        employmentInsurance: 0,
+    });
 
+    // 입력 항목의 상태를 관리
     const [basicSalary, setBasicSalary] = useState(0);
     const [bonus, setBonus] = useState(0);
     const [overtimePay, setOvertimePay] = useState(0);
     const [allowance, setAllowance] = useState(0);
     const [foodPay, setFoodPay] = useState(0);
     const [transportationPay, setTransportationPay] = useState(0);
-
     
+    // 입력 항목의 합계 계산
+    const totalEarnings = basicSalary + bonus + overtimePay + allowance + foodPay + transportationPay;
+    
+    // // 각 항목의 공제를 나타내는 상태
+    // const [incomeTax, setIncomeTax] = useState(0);
+    // const [localTax, setLocalTax] = useState(0);
+    // const [nationalPension, setNationalPension] = useState(0);
+    // const [healthInsurance, setHealthInsurance] = useState(0);
+    // const [cHealthInsurance, setCHealthInsurance] = useState(0);
+    // const [employmentInsurance, setEmploymentInsurance] = useState(0);
+
+    // 각 항목의 공제 합계 계산
+    const totalDeductions = PayStatementData.incomeTax + PayStatementData.localTax + PayStatementData.nationalPension + PayStatementData.healthInsurance + PayStatementData.cHealthInsurance + PayStatementData.employmentInsurance;
+
     const handleCalculate = () => {
         // 계산에 필요한 데이터를 담은 객체를 생성합니다
         const calculationData = {
@@ -50,7 +58,7 @@ const PayStatement = () => {
                 // 서버에서의 응답을 처리하고 필요하면 업데이트합니다
                 console.log('계산이 성공했습니다', response.data);
                 // 서버가 데이터를 반환한다면 로컬 상태를 업데이트할 수도 있습니다
-                // setPayStatementData(response.data);
+                setPayStatementData(response.data);
             })
             .catch((error) => {
                 console.error('세금 계산 중 오류 발생', error);
@@ -133,7 +141,7 @@ const PayStatement = () => {
                         placeholder="교통비를 입력하세요"
                     />
                 </TableCell>
-                <TableCell></TableCell>
+                <TableCell>{totalEarnings}</TableCell>
             </tr>
             <tr>
                 <TableCell colSpan={6}>공제내역</TableCell>
@@ -148,17 +156,17 @@ const PayStatement = () => {
                 <TableCell>고용보험</TableCell>
             </tr>
             <tr>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
+                <TableCell>{PayStatementData.income_tax}</TableCell>
+                <TableCell>{PayStatementData.local_tax}</TableCell>
+                <TableCell>{PayStatementData.national_pension}</TableCell>
+                <TableCell>{PayStatementData.health_insurance}</TableCell>
+                <TableCell>{PayStatementData.c_health_insurance}</TableCell>
+                <TableCell>{PayStatementData.employment_insurance}</TableCell>
+                <TableCell>{totalDeductions}</TableCell>
             </tr>
             <tr>
                 <TableCell colSpan={6}>합 계</TableCell>
-                <TableCell></TableCell>
+                <TableCell>합계</TableCell>
             </tr>
         </Table>
         <ButtonContainer>

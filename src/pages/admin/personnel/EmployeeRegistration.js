@@ -1,30 +1,71 @@
-import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout";
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import axios from 'axios';
+import styled from "styled-components";
 
 const EmployeeRegistration = () => {
-  const router = useRouter();
+  // Define state to hold form data
+  const [formData, setFormData] = useState({
+    employeeName: '',
+    phoneNumber: '',
+    hireDate: '',
+  });
+
+  // Handle input changes and update form data
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    try {
+      // Make a POST request to your Spring Boot API
+      await axios.post('http://localhost:8080/employeeInsert', formData);
+
+      // Optionally, you can handle success or show a message to the user
+      alert('Employee registered successfully');
+    } catch (error) {
+      // Handle any errors, e.g., network issues or server errors
+      console.error('Error:', error);
+      alert('Failed to register employee');
+    }
+  };
+
   return (
     <Container>
       <Title>인사 관리 - 사원 등록</Title>
-
       <FormSection>
-        <Label>사원코드</Label>
-        <div><input type="text"></input></div>
         <Label>사원명</Label>
-        <div><input type="text"></input></div>
+        <Input
+          type="text"
+          name="employeeName"
+          value={formData.employeeName}
+          onChange={handleChange}
+          placeholder="사원명"
+        />
         <Label>전화번호</Label>
-        <div><input type="text"></input></div>
-      </FormSection>
-
+        <Input
+          type="text"
+          name="phoneNumber"
+          value={formData.phoneNumber}
+          onChange={handleChange}
+          placeholder="전화번호"
+        />
+        <Label>입사일</Label>
+        <Input
+          type="date"
+          name="hireDate"
+          value={formData.hireDate}
+          onChange={handleChange}
+        />
       <ButtonContainer>
-        <Button>업로드</Button>
-        <Button>등록</Button>
-        <Button onClick={() => router.back()}>이전</Button>
+        <Button onClick={handleSubmit}>등록</Button>
       </ButtonContainer>
+      </FormSection>
     </Container>
   );
-} 
+};
 
 export default EmployeeRegistration;
 
@@ -66,11 +107,12 @@ const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-top: 5px;
+  width: 100%;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 20px;
 `;
 

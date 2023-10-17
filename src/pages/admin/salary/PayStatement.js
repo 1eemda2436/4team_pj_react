@@ -60,10 +60,10 @@ const PayStatement = () => {
         <Table>
             <thead>
               <TableHeader>
-              <TableCell colSpan={4}>지급내역(과세)</TableCell>
-              <TableCell colSpan={2}>지급내역(비과세)</TableCell>
-              <TableCell rowSpan={2}>지급액</TableCell>
-              <TableCell rowSpan={7}>지급총액</TableCell>
+                <TableCell colSpan={4}>지급내역(과세)</TableCell>
+                <TableCell colSpan={2}>지급내역(비과세)</TableCell>
+                <TableCell rowSpan={2}>지급액</TableCell>
+                <TableCell rowSpan={7}>지급총액</TableCell>
               </TableHeader>
             </thead>
             <tbody>
