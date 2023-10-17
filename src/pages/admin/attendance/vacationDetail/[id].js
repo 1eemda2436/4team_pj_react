@@ -15,6 +15,17 @@ const tableStyle = {
     width: "800px",
 };
 
+const buttonStyle = {
+    cursor: 'pointer',
+    backgroundColor: "#007BFF",
+    color: "white",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "20px",
+    fontSize: "1rem",
+    margin: "10px",
+};
+
 // 연차 승인/반려[관리자] 상세페이지
 
 function AdminVacationConfirm() {
@@ -81,8 +92,16 @@ function AdminVacationConfirm() {
     return (
         <div align="center">
             <div>
-                <button>PDF 다운</button>
-                <button>결제 취소</button>
+                <button style={buttonStyle}>PDF 다운</button>
+                <button
+                    style={{
+                        ...buttonStyle,
+                        backgroundColor: "#6c757d",
+                    }}
+                    onClick={() => router.push('/admin/attendance/adminAnnualList')}
+                    >
+                    돌아가기
+                </button>
             </div>
             <br/><br/><hr/><br/><br/>
             <div>
