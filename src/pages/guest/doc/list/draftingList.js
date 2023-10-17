@@ -39,9 +39,9 @@ const Doc = () => {
                     </thead>
                     <tbody>
                         {samples.map((draft) =>
-                            <TableTr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/${draft.doc_id}`)}>
+                            <TableTr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${draft.doc_id}`)}>
                                 <TableTd2 component="" scope="draft">{draft.doc_id}</TableTd2>
-                                <TableTd2>{draft.category_id}</TableTd2>
+                                <TableTd2>{draft.category_name}</TableTd2>
                                 <TableTd2 >{draft.doc_title}</TableTd2>
                                 <TableTd2>{draft.name}</TableTd2>
                                 <TableTd2>{draft.doc_date}</TableTd2>

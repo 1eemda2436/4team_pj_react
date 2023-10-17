@@ -8,8 +8,8 @@ import axios from "axios";
 const Doc = () => {
 
     const router = useRouter();
-    const doc_id = router.query.id; // ID를 추출
-    console.log(doc_id);
+    const id = router.query.id; // ID를 추출
+    console.log(id)
     const [selectedCategory, setSelectedCategory] = useState('');
 
     const [samples, setSamples] = useState([]);
@@ -19,10 +19,9 @@ const Doc = () => {
     };
 
     useEffect(() => {
-        if (doc_id) {
-            console.log(doc_id)
-            axios
-            .get(`http://localhost:8081/doc/detail/${doc_id}`)
+        if (id) {
+            console.log(id);
+            axios.get(`http://localhost:8081/doc/detail/${id}`)
             .then((response) => {
                 setSamples(response.data);
                 console.log(response.data);
@@ -31,7 +30,7 @@ const Doc = () => {
                 console.log(error);
             });
         }
-    }, [doc_id]);
+    }, [id]);
 
     return(
         <Container>
