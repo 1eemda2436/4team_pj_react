@@ -14,6 +14,8 @@ const AdminPayManagement = () => {
     axios.get('http://localhost:8081/salary/salaryMain')
       .then(response => {
         setData(response.data); // 응답 데이터를 상태에 저장
+
+        console.log(response.data.id)
       })
       .catch(err => {
         if (axios.isAxiosError(err)) {
@@ -27,10 +29,12 @@ const AdminPayManagement = () => {
   }, []);
 
   const onInsertHandle = (item) => {
+    console.log(item)
     router.push({
       pathname: `/admin/salary/AddPayStatement`,
       query: { 
         id: item.id, 
+        s_id: item.s_id,
         name: item.name,
         rank: item.rank
       }
@@ -56,7 +60,7 @@ const AdminPayManagement = () => {
                   <th>직원</th>
                   <th>직무</th>
                   <th>재직여부</th>
-                  <th>월급</th>
+                  <th>기본급</th>
                   <th>수정</th>
                   <th>명세서</th>
                 </tr>

@@ -8,6 +8,8 @@ const EmployeeRegistration = () => {
   const router = useRouter();
   const maxId = parseInt(router.query.maxId) + 1;
 
+  console.log('이동 후', maxId)
+
   // Define state to hold form data
   const [formData, setFormData] = useState({
     id : maxId,
@@ -77,6 +79,7 @@ const EmployeeRegistration = () => {
 
       <ButtonContainer>
         <Button onClick={handleSubmit}>등록</Button>
+        <Button onClick={() => router.back()}>이전</Button>
       </ButtonContainer>
     </Container>
   );
