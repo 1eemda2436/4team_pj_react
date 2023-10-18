@@ -32,46 +32,44 @@ const Doc = () => {
                 <H1>반려 문서함</H1>
             </Title>
             <Docstyle1>
-                <Table>
-                    <TableTr>
-                        <TableTh>
+                <tbody>
+                    <tr>
+                        <th>
                             <button type="button" onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재 완료 문서함</button>
-                        </TableTh>
-                        <TableTh>
+                        </th>
+                        <th>
                             <button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 예정 문서함</button>
-                        </TableTh>
-                        <TableTh>
+                        </th>
+                        <th>
                             <button type="button" onClick={() => router.push('/admin/doc/adminApprovalBack')}>결재 반려 문서함</button>
-                        </TableTh>
-                    </TableTr>
-                </Table>
+                        </th>
+                    </tr>
+                </tbody>
             </Docstyle1>
 
             <Docstyle2>
-                <Table>
                     <thead>
-                        <TableTr>
-                            <TableTh2>상태</TableTh2>
-                            <TableTh2>문서번호</TableTh2>
-                            <TableTh2>카테고리</TableTh2>
-                            <TableTh2 isTitle>문서 제목</TableTh2>
-                            <TableTh2>작성자</TableTh2>
-                            <TableTh2>결재일</TableTh2>
-                        </TableTr>
+                        <tr>
+                            <th>상태</th>
+                            <th>문서번호</th>
+                            <th>카테고리</th>
+                            <th>문서 제목</th>
+                            <th>작성자</th>
+                            <th>결재일</th>
+                        </tr>
                     </thead>
                     <tbody>
                     {samples.map(approvalBack =>
-                            <TableTr key = {approvalBack.approval_id}>
-                                    <TableTd2 component="" scope="approvalBack">{approvalBack.doc_status}</TableTd2>
-                                    <TableTd2>{approvalBack.doc_id}</TableTd2>
-                                    <TableTd2>{approvalBack.category_name}</TableTd2>
-                                    <TableTd2 isTitle>{approvalBack.doc_title}</TableTd2>
-                                    <TableTd2>{approvalBack.name}</TableTd2>
-                                    <tableTd2>{approvalBack.approval_date}</tableTd2>
-                            </TableTr>
+                            <tr key = {approvalBack.approval_id}>
+                                    <td component="" scope="approvalBack">{approvalBack.doc_status}</td>
+                                    <td>{approvalBack.doc_id}</td>
+                                    <td>{approvalBack.category_name}</td>
+                                    <td isTitle>{approvalBack.doc_title}</td>
+                                    <td>{approvalBack.name}</td>
+                                    <td>{approvalBack.approval_date}</td>
+                            </tr>
                         )}
                     </tbody>
-                </Table>
             </Docstyle2>
         </Container>
     )
@@ -84,63 +82,57 @@ Doc.getLayout = function getLayout(page) {
 };
 
 const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const Title = styled.div`
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+const Docstyle1 = styled.table`
+  width: 100%;
+  margin: 10px 0;
+  th {
     text-align: center;
-    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid black;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 1px;
+  }
 `;
 
-const Docstyle1 = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    margin: 10px;
-`;
-
-const Docstyle2 = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
+const Docstyle2 = styled.table`
+  width: 100%;
+  thead {
+    th {
+      text-align: center;
+      padding: 10px;
+      border: 1px solid black;
+    }
+  }
+  tbody {
+    tr {
+      cursor: pointer;
+      td {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid black;
+      }
+    }
+  }
 `;
 
 const H1 = styled.h1`
-    font-size: 30px;
-`;
-
-const Table = styled.table`
-    border: 1px solid;
-`;
-
-const TableTr = styled.tr`
-    border: 1px solid;
-`;
-
-const TableTh = styled.th`
-    border: 1px solid;
-    padding: 5px;
-`;
-
-const TableTh2 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: ${(props) => (props.isTitle ? '40%' : 'auto%')};
-    width: 100px;
-`;
-
-const TableTd = styled.td`
-    border: 1px solid;
-`;
-
-const TableTd2 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: ${(props) => (props.isTitle ? '40%' : 'auto%')};
+  font-size: 30px;
 `;

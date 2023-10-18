@@ -11,17 +11,12 @@ const Doc = () => {
     const id = router.query.id; // ID를 추출
     console.log(id)
 
-    const [selectedCategory, setSelectedCategory] = useState('');
     const [samples, setSamples] = useState([]);
-
-    const CategoryChange = (event) => {
-        setSelectedCategory(event.target.value);
-    };
 
     useEffect(() => {
         if (id) {
             console.log(id);
-            axios.get(`http://localhost:8081/doc/detail/${id}`)
+            axios.get(`http://localhost:8081/doc/adminDetail/${id}`)
             .then((response) => {
                 setSamples(response.data);
                 console.log(response.data);
@@ -47,16 +42,16 @@ const Doc = () => {
                 <DocstyleLeft>
                     <Table>
                         <TableTr>
-                            <TableTh>문서번호</TableTh>
-                            <TableTd component="" scope="detail">{samples.doc_id}</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>기안일</TableTh>
-                            <TableTd>{samples.doc_date}</TableTd>
+                            <TableTh>결재번호</TableTh>
+                            <TableTd component="" scope="adminDetail">{samples.approval_id}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>기안자</TableTh>
                             <TableTd>{samples.name}</TableTd>
+                        </TableTr>
+                        <TableTr>
+                            <TableTh>결재요청일</TableTh>
+                            <TableTd>{samples.approval_date}</TableTd>
                         </TableTr>
                     </Table>
                 </DocstyleLeft>
@@ -90,14 +85,6 @@ const Doc = () => {
                         </TableTr>
                 </Table>
             </Docstyle2>
-            <CategoryTable>
-                <select value={selectedCategory} onChange={CategoryChange}>
-                    <option value="">카테고리 선택</option>
-                    <option value="category1">카테고리 1</option>
-                    <option value="category2">카테고리 2</option>
-                    <option value="category3">카테고리 3</option>
-                </select>
-            </CategoryTable>
         </Container>
     )
 }
