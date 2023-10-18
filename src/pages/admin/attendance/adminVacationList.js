@@ -1,6 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
 import AdminLayout from "@/components/layout/adminLayout";
 import axios from "axios";
+import { useRouter } from "next/router";
+import styled from "styled-components";
 
 const cellStyle = {
     border: "2px solid black",
@@ -13,8 +15,10 @@ const tableStyle = {
     width: "800px",
 };
 
-function AdminAnnualList() {
+function AdminVacationList() {
     const [vacation, setVacation] = useState([]);
+
+    const router = useRouter();
 
     useEffect(() => {
         axios
@@ -28,7 +32,7 @@ function AdminAnnualList() {
     }, []);
 
     return (
-        <div>
+        <div align="center">
             <h1>휴가 신청 내역</h1>
             <br />
             <br />
@@ -48,7 +52,9 @@ function AdminAnnualList() {
                     {vacation.map((vacat) => (
                         <tr key={vacat.vacation_id}>
                             <td style={cellStyle}>{vacat.vacation_id}</td>
-                            <td style={cellStyle}><a style={{ cursor: 'pointer' }}>{vacat.vacation_title}</a></td>
+                                <td style={cellStyle}>
+                                    <a style={{ cursor: 'pointer' }} onClick={() => router.push(`/admin/attendance/vacationDetail/${vacat.vacation_id}`)}>{vacat.vacation_title}</a>
+                                </td>
                             <td style={cellStyle}>{vacat.confirm}</td>
                         </tr>
                     ))}
@@ -58,8 +64,8 @@ function AdminAnnualList() {
     );
 }
 
-export default AdminAnnualList;
+export default AdminVacationList;
 
-AdminAnnualList.getLayout = function getLayout(page) {
+AdminVacationList.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
