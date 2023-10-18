@@ -1,12 +1,30 @@
 import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 const Doc = () => {
 
     const router = useRouter();
+
+    const [samples, setSamples] = useState([]);
+    const [filteredSamples, setFilteredSamples] = useState([]);
+
+    useEffect(() => {
+        axios
+        .get("http://localhost:8081/doc/approvalIng")
+        .then((response) => {
+            setSamples(response.data);
+            const filteredData = response.data.filter(approvalIng => approvalIng.doc_status === 'G');
+            setFilteredSamples(filteredData);
+            console.log(filteredData)
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     return(
         <Container>
@@ -38,18 +56,20 @@ const Doc = () => {
                             <TableTh2>카테고리</TableTh2>
                             <TableTh2 isTitle>문서 제목</TableTh2>
                             <TableTh2>작성자</TableTh2>
-                            <TableTh2>기안일</TableTh2>
+                            <TableTh2>결재일</TableTh2>
                         </TableTr>
                     </thead>
                     <tbody>
-                        <TableTr>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2 isTitle>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                        </TableTr>
+                    {samples.map(approvalIng =>
+                            <TableTr key = {approvalIng.approval_id}>
+                                    <TableTd2 component="" scope="approvalIng">{approvalIng.doc_status}</TableTd2>
+                                    <TableTd2>{approvalIng.doc_id}</TableTd2>
+                                    <TableTd2>{approvalIng.category_name}</TableTd2>
+                                    <TableTd2 isTitle>{approvalIng.doc_title}</TableTd2>
+                                    <TableTd2>{approvalIng.name}</TableTd2>
+                                    <tableTd2>{approvalIng.approval_date}</tableTd2>
+                            </TableTr>
+                        )}
                     </tbody>
                 </Table>
             </Docstyle2>

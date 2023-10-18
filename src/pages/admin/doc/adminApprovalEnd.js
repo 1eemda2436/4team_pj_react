@@ -13,19 +13,19 @@ const Doc = () => {
     const [samples, setSamples] = useState([]);
     const [filteredSamples, setFilteredSamples] = useState([]);
 
-    // useEffect(() => {
-    //     axios
-    //     .get("http://localhost:8081/doc/approvalEnd")
-    //     .then((response) => {
-    //         setSamples(response.data);
-    //         const filteredData = response.data.filter(approvalEnd => approvalEnd.doc_status === 'E');
-    //         setFilteredSamples(filteredData);
-    //         console.log(filteredData)
-    //     })
-    //     .catch((error) => {
-    //         console.log(error);
-    //     });
-    // }, []);
+    useEffect(() => {
+        axios
+        .get("http://localhost:8081/doc/approvalEnd")
+        .then((response) => {
+            setSamples(response.data);
+            const filteredData = response.data.filter(approvalEnd => approvalEnd.doc_status === 'E');
+            setFilteredSamples(filteredData);
+            console.log(filteredData)
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     return(
         <Container>
@@ -58,19 +58,21 @@ const Doc = () => {
                             <TableTh2>문서 제목</TableTh2>
                             <TableTh2>작성자</TableTh2>
                             <TableTh2>결재일</TableTh2>
+                            <TableTh2>결재완료일</TableTh2>
                         </TableTr>
                     </thead>
                     <tbody>
-                        {/* {samples.map(approvalEnd =>
+                        {samples.map(approvalEnd =>
                             <TableTr key = {approvalEnd.approval_id}>
                                     <TableTd2 component="" scope="approvalEnd">{approvalEnd.doc_status}</TableTd2>
                                     <TableTd2>{approvalEnd.doc_id}</TableTd2>
-                                    <TableTd2>{approvalEnd.category_id}</TableTd2>
+                                    <TableTd2>{approvalEnd.category_name}</TableTd2>
                                     <TableTd2 isTitle>{approvalEnd.doc_title}</TableTd2>
                                     <TableTd2>{approvalEnd.name}</TableTd2>
+                                    <tableTd2>{approvalEnd.approval_date}</tableTd2>
                                     <TableTd2>{approvalEnd.approval_endDate}</TableTd2>
                             </TableTr>
-                        )} */}
+                        )}
                     </tbody>
                 </Table>
             </Docstyle2>
