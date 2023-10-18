@@ -1,6 +1,6 @@
 
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   compiler: {
     styledComponents: true,
   },
