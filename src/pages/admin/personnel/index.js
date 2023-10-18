@@ -70,7 +70,6 @@ const AdminPersonnel = () => {
                     <th>사번</th>
                     <th>이름</th>
                     <th>전화번호</th>
-                    <th>급여</th>
                     <th colSpan={2}>수정 / 삭제</th>
                 </tr>
               </thead>
@@ -87,9 +86,9 @@ const AdminPersonnel = () => {
                         <td>{item.id}</td>
                         <td>{item.name}</td>
                         <td>{item.tel}</td>
-                        <td>
+                        {/* <td>
                         <Button onClick={() => onInsertHandle(item)}>등록</Button>  
-                        </td>
+                        </td> */}
                         <td>
                         <Button onClick={() => router.push(`/admin/personnel/EmployeeModification`)}>수정</Button>
                         </td>

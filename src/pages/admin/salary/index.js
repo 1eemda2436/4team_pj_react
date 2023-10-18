@@ -26,6 +26,16 @@ const AdminPayManagement = () => {
       });
   }, []);
 
+  const onInsertHandle = (item) => {
+    router.push({
+      pathname: `/admin/salary/AddPayStatement`,
+      query: { 
+        id: item.id, 
+        name: item.name,
+        rank: item.rank
+      }
+    });
+  };
 
   const router = useRouter();
   return (
@@ -47,6 +57,7 @@ const AdminPayManagement = () => {
                   <th>직무</th>
                   <th>재직여부</th>
                   <th>월급</th>
+                  <th>수정</th>
                   <th>명세서</th>
                 </tr>
               </thead>
@@ -68,6 +79,7 @@ const AdminPayManagement = () => {
                     <td>{item.state}</td>
                     <td>{item.estate}</td>
                     <td>{item.salary}</td>
+                    <td onClick={() => onInsertHandle(item)}>수정</td>
                     <td onClick={() => router.push(`/admin/salary/PayStatement?id=${item.id}`)}>상세</td>
                   </tr>
                 ))}

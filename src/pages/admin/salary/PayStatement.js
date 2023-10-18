@@ -112,7 +112,6 @@ const PayStatement = () => {
             </tbody>
         </Table>
         <ButtonContainer>
-            <Button>수정</Button>
             <Button>발송</Button>
             <Button onClick={() => router.back()}>이전</Button>
         </ButtonContainer>
