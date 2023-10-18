@@ -64,63 +64,50 @@ Doc.getLayout = function getLayout(page) {
 };
 
 const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const Docstyle1 = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    margin: 10px;
-`;
-
-const Docstyle2 = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
+  text-align: center;
+  margin-bottom: 20px;
 `;
 
 const H1 = styled.h1`
-    font-size: 30px;
+  font-size: 30px;
+  margin-bottom: 10px;
+`;
+
+const Docstyle2 = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Table = styled.table`
-    border: 1px solid;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 `;
 
 const TableTr = styled.tr`
-    border: 1px solid;
-`;
-
-const TableTh = styled.th`
-    border: 1px solid;
-    padding: 5px;
+  border: 1px solid #ddd;
+  &:hover {
+    background-color: #f5f5f5;
+  }
 `;
 
 const TableTh2 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    /* width: ${(props) => (props.isTitle ? '60%' : 'auto%')}; */
-    width: 100px;
-`;
-
-const TableTd = styled.td`
-    border: 1px solid;
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
 `;
 
 const TableTd2 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    /* width: ${(props) => (props.isTitle ? '60%' : 'auto%')}; */
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
 `;

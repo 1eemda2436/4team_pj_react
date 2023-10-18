@@ -69,31 +69,40 @@ Doc.getLayout = function getLayout(page) {
 };
 
 const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const H1 = styled.h1`
-    font-size: 30px;
+  text-align: center;
+  margin-bottom: 20px;
 `;
 
 const PersonalMenu = styled.table`
-    width: 200px;
-    padding: 20px;
-    position: fixed;
-    height: 100%;
-    left: auto;
-    top: 100px;
+  margin-bottom: 20px;
+  td {
+    padding: 10px;
+    button {
+      background-color: gray;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  }
 `;
 
 const DocList = styled.table`
-    margin-left: 220px;
-    padding: 20px;
+  td {
+    padding: 10px;
+    border: 1px solid black;
+  }
+`;
+
+const H1 = styled.h1`
+  font-size: 30px;
 `;

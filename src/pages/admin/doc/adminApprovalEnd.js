@@ -61,7 +61,7 @@ const Doc = () => {
                     </thead>
                     <tbody>
                         {samples.map((approvalEnd) =>
-                            <tr key = {approvalEnd.doc_id} onClick={() => router.push(`/guest/doc/draftDetail?id=${approvalEnd.doc_id}`)}>
+                            <tr key = {approvalEnd.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${approvalEnd.doc_id}`)}>
                                     <td component="" scope="approvalEnd">{approvalEnd.doc_status}</td>
                                     <td>{approvalEnd.doc_id}</td>
                                     <td>{approvalEnd.category_name}</td>
