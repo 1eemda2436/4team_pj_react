@@ -1,20 +1,37 @@
 import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout"
+import axios from "axios";
+import React, {useEffect ,useState } from "react";
+
 const admin = () => {
+    const [CompanyData, setData] = useState([]);
+
+    useEffect(() => {
+        // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
+        axios.get(`http://localhost:8081/company/1`)
+        .then(response => {
+            console.log(response.data)
+            setData(response.data); // 받은 데이터를 상태에 저장
+        })
+        .catch(err => {
+            console.log("getSampleByID Error", err);
+        });
+    }, []);
+
     return(
         <MainComponent>
             <CompanyInfoBox>
                 <InfoDiv>
                     <InfoTitle>License</InfoTitle>
-                    <InfoValue>FORBIDDEN</InfoValue>
+                    <InfoValue>{CompanyData.name}</InfoValue>
                 </InfoDiv>
                 <InfoDiv>
                     <InfoTitle>Location</InfoTitle>
-                    <InfoValue>서울</InfoValue>
+                    <InfoValue>{CompanyData.address}</InfoValue>
                 </InfoDiv>
                 <InfoDiv>
                     <InfoTitle>Business number</InfoTitle>
-                    <InfoValue>사업자 번호</InfoValue>
+                    <InfoValue>{}</InfoValue>
                 </InfoDiv>
             </CompanyInfoBox>
             <ControllerBox>
@@ -34,6 +51,8 @@ export default admin;
 admin.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
+
+
 const MainComponent = styled.div`
     width: 100%;
     height: 100vh;

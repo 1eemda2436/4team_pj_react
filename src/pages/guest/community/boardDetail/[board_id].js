@@ -2,8 +2,12 @@ import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
 import { useRouter } from 'next/router';
 
+
 const BoardDetails = () => {
     const router = useRouter();
+    const { board_id } = router.query.board_id;
+    console.log(board_id)
+    
     return(
         <Container>
             <Title>자유게시판 상세</Title>
@@ -33,6 +37,7 @@ const BoardDetails = () => {
                 <TableCell>일자</TableCell>
                 <TableCell>좋아요</TableCell>
                 </TableRow>
+                <TableCell></TableCell>
             </Table>
         </Container>
     )

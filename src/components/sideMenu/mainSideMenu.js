@@ -22,7 +22,7 @@ function MenuToggle({ menus }) {
             <MenuName>{menus.value}</MenuName>
         </MenuIconDiv>
     );
-  }
+}
 
 export default function MainSideMenu() {
     const router = useRouter();
@@ -41,35 +41,35 @@ export default function MainSideMenu() {
             value: '워크스페이스',
             path: '/guest/workspace'
         },
-        {
-            id: 3,
-            icon: <Time />,
-            value: '근태관리',
-            path: '/guest/attendance'
-        },
         {   
-            id: 4,
+            id: 3,
             icon: <Calendar />,
             value: '캘린더',
             path: '/guest/calendar'
         },
         {
-            id: 5,
+            id: 4,
             icon: <Chat />,
             value: '메신저',
             path: '/guest/chatting'
         },
         {
-            id: 6,
+            id: 5,
             icon: <Megaphone />,
             value: '공지사항',
             path: '/guest/notice'
         },
         {
-            id: 7,
+            id: 6,
             icon: <Forms />,
             value: '전자결재',
             path: '/guest/doc'
+        },
+        {
+            id: 7,
+            icon: <Time />,
+            value: '근태관리',
+            path: '/guest/attendance'
         },
         {
             id: 8,
@@ -93,7 +93,7 @@ export default function MainSideMenu() {
 
     return (
         <SideMenu>
-            <Logo1 />
+            <Logo1Icon onClick={() => router.push('/guest')}/>
             <MenuIcons>
                 {menus.map((menu) => (
                     <MenuToggle menus={menu} key={menu.id} />
@@ -111,6 +111,10 @@ const SideMenu = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 15px 0px;
+`;
+
+const Logo1Icon = styled(Logo1)`
+    cursor: pointer;
 `;
 
 const MenuIcons = styled.div`

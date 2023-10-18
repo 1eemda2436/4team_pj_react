@@ -1,9 +1,26 @@
 import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
-
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 
 const Doc = () => {
+
+    const router = useRouter();
+
+    const [samples, setSamples] = useState([]);
+
+    useEffect(() => {
+        axios
+        .get("http://localhost:8081/doc/temporary")
+        .then((response) => {
+            setSamples(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
     return(
         <Container>
             <Title>
@@ -19,11 +36,13 @@ const Doc = () => {
                         </TableTr>
                     </thead>
                     <tbody>
-                        <TableTr>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2 isTitle>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                        </TableTr>
+                        {samples.map(temporary => 
+                            <TableTr key={temporary.doc_id}>
+                            <TableTd2 component="" scope="temporary">{temporary.doc_id}</TableTd2>
+                            <TableTd2 isTitle>{temporary.doc_title}</TableTd2>
+                            <TableTd2>{temporary.save_date}</TableTd2>
+                            </TableTr>
+                            )}
                     </tbody>
                 </Table>
             </Docstyle2>

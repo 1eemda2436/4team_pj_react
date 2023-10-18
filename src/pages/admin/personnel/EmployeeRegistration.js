@@ -1,30 +1,89 @@
-import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout";
+import React, { useState } from 'react';
+import axios from 'axios';
 import { useRouter } from 'next/router';
+import styled from "styled-components";
 
 const EmployeeRegistration = () => {
   const router = useRouter();
+  const maxId = parseInt(router.query.maxId) + 1;
+
+  console.log('이동 후', maxId)
+
+  // Define state to hold form data
+  const [formData, setFormData] = useState({
+    id : maxId,
+    name: '',
+    tel: '',
+    hireday: '',
+  });
+
+  // Handle input changes and update form data
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    try {
+      // Make a POST request to your Spring Boot API
+      await axios.post('http://localhost:8081/personnel/employeeInsert', formData);
+
+      // Optionally, you can handle success or show a message to the user
+      alert('사원 등록에 성공 했습니다.');
+      router.push(`/admin/personnel`);
+    } catch (error) {
+      // Handle any errors, e.g., network issues or server errors
+      console.error('Error:', error);
+      alert('사원 등록에 실패 했습니다.');
+    }
+  };
+
   return (
     <Container>
       <Title>인사 관리 - 사원 등록</Title>
-
       <FormSection>
         <Label>사원코드</Label>
-        <div>1</div>
+        <Input
+          type="text"
+          name="id"
+          value={formData.id}
+          onChange={handleChange}
+          readOnly
+        />
         <Label>사원명</Label>
-        <div>FORBIDDEN</div>
+        <Input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="사원명"
+        />
         <Label>전화번호</Label>
-        <div>010-5159-6523</div>
+        <Input
+          type="text"
+          name="tel"
+          value={formData.tel}
+          onChange={handleChange}
+          placeholder="전화번호"
+        />
+        <Label>입사일</Label>
+        <Input
+          type="date"
+          name="hireday"
+          value={formData.hireday}
+          onChange={handleChange}
+        />
       </FormSection>
 
       <ButtonContainer>
-        <Button>업로드</Button>
-        <Button>등록</Button>
+        <Button onClick={handleSubmit}>등록</Button>
         <Button onClick={() => router.back()}>이전</Button>
       </ButtonContainer>
     </Container>
   );
-} 
+};
 
 export default EmployeeRegistration;
 
@@ -66,11 +125,12 @@ const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-top: 5px;
+  width: 100%;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 20px;
 `;
 

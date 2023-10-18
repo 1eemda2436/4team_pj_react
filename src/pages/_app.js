@@ -1,3 +1,5 @@
+import { Provider } from 'mobx-react';
+import { rootStore } from '@/stores/rootStore';
 import '@/styles/reset.css';
 
 export default function App({ Component, pageProps }) {
@@ -7,5 +9,9 @@ export default function App({ Component, pageProps }) {
    * 없으면 기본 page만 출력될 수 있도록
    */
   const getLayout = Component.getLayout || ((page) => page);
-  return getLayout(<Component {...pageProps} />);
+  return getLayout(
+    <Provider {...rootStore}>
+      <Component {...pageProps} />
+    </Provider>
+  );
 }

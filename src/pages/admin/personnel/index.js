@@ -1,54 +1,116 @@
 import AdminLayout from "@/components/layout/adminLayout";
 import styled from "styled-components";
 import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const AdminPersonnel = () => {
     const router = useRouter();
+
+    const [data, setData] = useState([]);
+    const [error, setError] = useState(null);
+  
+    useEffect(() => {
+      // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
+      axios.get('http://localhost:8081/salary/personnel')
+        .then(response => {
+          setData(response.data); // 응답 데이터를 상태에 저장
+
+          console.log(response.data)
+        })
+        .catch(err => {
+          if (axios.isAxiosError(err)) {
+            // AxiosError 처리
+            setError(err.message);
+            //console.log(err.message)
+          } else {
+            // 일반 오류 처리
+            setError('데이터를 가져오는 중 오류 발생');
+          }
+        });
+    }, []);
+
+    const onInsertHandle = (item) => {
+      router.push({
+        pathname: `/admin/salary/AddPayStatement`,
+        query: { 
+          id: item.id, 
+          name: item.name,
+          rank: item.rank
+        }
+      });
+    };
+
+    // 리액트 프론트엔드에서 "사원 등록" 버튼 클릭 핸들러
+    const handleEmployeeRegistration = async () => {
+      try {
+        const response = await axios.get('http://localhost:8081/personnel/maxId');
+        const maxId = response.data;
+        // 이제 maxId를 사용하여 사원 등록 페이지로 이동하거나 입력 필드에 값을 설정할 수 있습니다.
+        console.log('index' , maxId);
+        router.push({
+          pathname: `/admin/personnel/EmployeeRegistration`,
+          query: { 
+            maxId: maxId, 
+          }
+        });
+      } catch (error) {
+        console.error('ID를 검색하는 중 오류 발생', error);
+      }
+
+    }
+
     return (
         <MainComponent>
         <Title>인사 관리 - 사원 관리</Title>
         <TblComponent>
-        <TblHeader>
+          <TblHeader>
             <Table>
-            <tr>
-                <th>순번</th>
-                <th>부서</th>
-                <th>팀</th>
-                <th>사번</th>
-                <th>이름</th>
-                <th>전화번호</th>
-                <th colSpan={2}>수정 / 삭제</th>
-            </tr>
+              <thead>
+                <tr>
+                    <th>부서</th>
+                    <th>팀</th>
+                    <th>사번</th>
+                    <th>이름</th>
+                    <th>전화번호</th>
+                    <th colSpan={2}>수정 / 삭제</th>
+                </tr>
+              </thead>
             </Table>
-        </TblHeader>
-        <TblContent>
-            <PayTableTop>
-            <Table>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                <Button onClick={() => router.push('/admin/personnel/EmployeeModification')}>수정</Button>
-                </td>
-                <td>
-                <Button>삭제</Button>
-                </td>
-            </tr>
-            </Table>
-            </PayTableTop>
-            {/* 다른 데이터 로우들 */}
-        </TblContent>
-        <TotalBox>
+          </TblHeader>
+
+          <TblContent>
+            <PersonnelTableTop>
+                <tbody>
+                  {data.map(item => (
+                      <tr key={item.id}>
+                        <td>{item.depart_id}</td>
+                        <td>{item.team_id}</td>
+                        <td>{item.id}</td>
+                        <td>{item.name}</td>
+                        <td>{item.tel}</td>
+                        {/* <td>
+                        <Button onClick={() => onInsertHandle(item)}>등록</Button>  
+                        </td> */}
+                        <td>
+                        <Button onClick={() => router.push(`/admin/personnel/EmployeeModification`)}>수정</Button>
+                        </td>
+                        <td>
+                        <Button>삭제</Button>
+                        </td>
+                      </tr>
+                  ))}
+                </tbody>
+            </PersonnelTableTop>
+          </TblContent>
+
+          <TotalBox>
             <TotalTitle>합계</TotalTitle>
             <TotalResult>999999</TotalResult>
-        </TotalBox>
+          </TotalBox>
         </TblComponent>
         <div>
-            <Button onClick={() => router.push('/admin/personnel/EmployeeRegistration')}>사원등록</Button>
+            <Button onClick={handleEmployeeRegistration}>사원등록</Button>
         </div>
         <div>
             <Button onClick={() => router.push('/admin/personnel/DepartmentManagement')}>부서등록</Button>
@@ -135,7 +197,7 @@ const Table = styled.table`
   }
 `;
 
-const PayTableTop = styled(Table)``;
+const PersonnelTableTop = styled(Table)``;
 
 const PayTableBottom = styled(Table)`
   margin-top: 20px;

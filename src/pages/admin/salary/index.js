@@ -2,7 +2,7 @@ import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const AdminPayManagement = () => {
 
@@ -14,6 +14,8 @@ const AdminPayManagement = () => {
     axios.get('http://localhost:8081/salary/salaryMain')
       .then(response => {
         setData(response.data); // 응답 데이터를 상태에 저장
+
+        console.log(response.data.id)
       })
       .catch(err => {
         if (axios.isAxiosError(err)) {
@@ -26,6 +28,18 @@ const AdminPayManagement = () => {
       });
   }, []);
 
+  const onInsertHandle = (item) => {
+    console.log(item)
+    router.push({
+      pathname: `/admin/salary/AddPayStatement`,
+      query: { 
+        id: item.id, 
+        s_id: item.s_id,
+        name: item.name,
+        rank: item.rank
+      }
+    });
+  };
 
   const router = useRouter();
   return (
@@ -37,7 +51,7 @@ const AdminPayManagement = () => {
             <PayTableTop>
               <thead>
                 <tr>
-                  <th></th>
+                  <th>+</th>
                   <th>사번</th>
                   <th>이름</th>
                   <th>주민번호</th>
@@ -46,7 +60,8 @@ const AdminPayManagement = () => {
                   <th>직원</th>
                   <th>직무</th>
                   <th>재직여부</th>
-                  <th>월급</th>
+                  <th>기본급</th>
+                  <th>수정</th>
                   <th>명세서</th>
                 </tr>
               </thead>
@@ -56,34 +71,22 @@ const AdminPayManagement = () => {
           <TblContent>
             <PayTableBottom>
               <tbody>
-              {data.map(item => (
-                <tr key={item.s_id}>
-                  <td>{item.s_id}</td>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.resident}</td>
-                  <td>{item.contract}</td>
-                  <td>{item.depart_id}</td>
-                  <td>{item.rank}</td>
-                  <td>{item.state}</td>
-                  <td>{item.estate}</td>
-                  <td>{item.salary}</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr>
-              ))}
-                {/* <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td  onClick={() => router.push('salary/PayStatement')}>상세</td>
-                </tr> */}
+                {data.map(item => (
+                  <tr key={item.s_id}>
+                    <td>{item.s_id}</td>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td>{item.resident}</td>
+                    <td>{item.contract}</td>
+                    <td>{item.depart_id}</td>
+                    <td>{item.rank}</td>
+                    <td>{item.state}</td>
+                    <td>{item.estate}</td>
+                    <td>{item.salary}</td>
+                    <td onClick={() => onInsertHandle(item)}>수정</td>
+                    <td onClick={() => router.push(`/admin/salary/PayStatement?id=${item.id}`)}>상세</td>
+                  </tr>
+                ))}
               </tbody>
             </PayTableBottom>
           </TblContent>
