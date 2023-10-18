@@ -43,37 +43,37 @@ const AdminSecurityManagement = () => {
 
         <BottomBox>
           <AuthorityDiv
-            isactive={authorityStatus.security}
+            isActive={authorityStatus.security}
             onClick={() => toggleAuthority('security')}
           >
             보안관리
           </AuthorityDiv>
           <AuthorityDiv
-            isactive={authorityStatus.attendance}
+            isActive={authorityStatus.attendance}
             onClick={() => toggleAuthority('attendance')}
           >
             근태관리
           </AuthorityDiv>
           <AuthorityDiv
-            isactive={authorityStatus.salary}
+            isActive={authorityStatus.salary}
             onClick={() => toggleAuthority('salary')}
           >
             급여관리
           </AuthorityDiv>
           <AuthorityDiv
-            isactive={authorityStatus.approval}
+            isActive={authorityStatus.approval}
             onClick={() => toggleAuthority('approval')}
           >
             전자결재관리
           </AuthorityDiv>
           <AuthorityDiv
-            isactive={authorityStatus.personnel}
+            isActive={authorityStatus.personnel}
             onClick={() => toggleAuthority('personnel')}
           >
             인사관리
           </AuthorityDiv>
           <AuthorityDiv
-            isactive={authorityStatus.board}
+            isActive={authorityStatus.board}
             onClick={() => toggleAuthority('board')}
           >
             게시판관리
@@ -163,7 +163,7 @@ const AuthorityDiv = styled.div`
   padding: 20px 0px;
   cursor: pointer;
 
-  ${({ isactive }) => isactive && `
+  ${({ isActive }) => isActive && `
     background-color: #007BFF;
     color: #fff;
   `}
