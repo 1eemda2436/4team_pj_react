@@ -29,7 +29,7 @@ const Workspace = () => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8081/project")
+            .get("http://localhost:8081/guest/project")
             .then((response) => {
                 setProjectList(response.data);
             })
@@ -38,7 +38,7 @@ const Workspace = () => {
             });
 
         axios
-            .get("http://localhost:8081/projectwork")
+            .get("http://localhost:8081/guest/projectwork")
             .then((response) => {
                 setProjectworkList(response.data);
             })

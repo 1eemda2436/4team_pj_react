@@ -49,7 +49,7 @@ const ProjectWorkDetail = () => {
     useEffect(() => {
         if (id) {
             axios
-                .get(`http://localhost:8081/projectwork/${id}`)
+                .get(`http://localhost:8081/guest/projectwork/${id}`)
                 .then((response) => {
                     console.log('[ProjectWorkDetail] projectwork', response.data)
                     setProjectwork(response.data);
@@ -64,7 +64,7 @@ const ProjectWorkDetail = () => {
         event.preventDefault();
 
         axios
-            .delete(`http://localhost:8081/projectwork/${id}`)
+            .delete(`http://localhost:8081/guest/projectwork/${id}`)
             .then((response) => {
                 router.push('/guest/workspace');
             })

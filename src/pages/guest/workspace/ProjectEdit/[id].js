@@ -30,7 +30,7 @@ const ProjectEdit = () => {
     useEffect(() => {
         if (id) {
             axios
-                .get(`http://localhost:8081/project/${id}`)
+                .get(`http://localhost:8081/guest/project/${id}`)
                 .then((response) => {
                     console.log('[ProjectEdit] project', response.data)
                     const formattedProject = {
@@ -68,7 +68,7 @@ const ProjectEdit = () => {
         console.log('[saveProject] project', project)
 
         axios
-            .post("http://localhost:8081/project", project)
+            .post("http://localhost:8081/guest/project", project)
             .then((response) => {
                 router.push('/guest/workspace');
             })

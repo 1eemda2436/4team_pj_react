@@ -12,7 +12,7 @@ const MyCalendar = () => {
         // 비동기 함수를 이용해 데이터를 불러옴
         async function fetchData() {
             try {
-                const projectResponse = await fetch("http://localhost:8081/project");
+                const projectResponse = await fetch("http://localhost:8081/guest/project");
                 const projectData = await projectResponse.json();
                 setProjectList(projectData);
             } catch (error) {
