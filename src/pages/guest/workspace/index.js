@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import moment from 'moment';
+import Header from '@/components/common/header';
+import MyCalendar from "@/components/calendar/MyCalendar";
 
 const cellStyle = {
     border: "2px solid black",
@@ -44,6 +46,8 @@ const Workspace = () => {
 
     return (
         <Component>
+            <Header/>
+            <MyCalendar/>
             {/* 부서별 사원 */}
             <table style={tableStyle}>
                 <thead>

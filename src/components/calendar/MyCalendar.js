@@ -28,6 +28,7 @@ const MyCalendar = () => {
         title: pj.pj_name,
         start: moment(pj.deadline_s).format('YYYY-MM-DD'),
         end: moment(pj.deadline_e).format('YYYY-MM-DD'),
+        id: pj.pj_id
     }));
 
     const allEvents = [...projectEvents];
@@ -40,7 +41,7 @@ const MyCalendar = () => {
                 aspectRatio={2.5}
                 eventContent={(eventInfo) => (
                     <FullCalendarEventContent>
-                        <Link href={`/guest/workspace/ProjectDetail/${eventInfo.event.title}`}>
+                        <Link href={`/guest/workspace/ProjectDetail/${eventInfo.event.id}`}>
                                 {eventInfo.event.title}
                         </Link>
                     </FullCalendarEventContent>

@@ -5,27 +5,24 @@ import { useState, useEffect } from "react";
 import moment from 'moment';
 import axios from 'axios';
 import Link from "next/link";
+import Header from '@/components/common/header';
 
-const Component = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-
-const ContentContainer = styled.div`
+const Table = styled.table`
+    width: 80%;
+    border-collapse: collapse;
     margin-bottom: 20px;
 `;
 
-const Label = styled.div`
-    font-weight: bold;
-    margin-bottom: 5px;
+const TableRow = styled.tr`
+    &:nth-child(even) {
+        background-color: #f2f2f2;
+    }
 `;
 
-const ButtonContainer = styled.div`
-    display: flex;
-    gap: 10px;
+const TableCell = styled.td`
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
 `;
 
 const Button = styled.button`
@@ -77,38 +74,44 @@ const ProjectWorkDetail = () => {
     };
 
     return (
-        <Component>
-            <ContentContainer>
-                <div>
-                    <Label>프로젝트 업무명</Label>
-                    <div>{projectwork.pw_name}</div>
-                </div>
-                <div>
-                    <Label>담당업무</Label>
-                    <div>{projectwork.duties}</div>
-                </div>
-                <div>
-                    <Label>기한</Label>
-                    <div>{moment(projectwork.pw_deadline_s).format('YYYY-MM-DD')} ~ {moment(projectwork.pw_deadline_e).format('YYYY-MM-DD')}</div>
-                </div>
-                <div>
-                    <Label>완료여부</Label>
-                    <div>{projectwork.complete}</div>
-                </div>
-            </ContentContainer>
-            <ButtonContainer>
-                <Link href="/guest/workspace/ProjectWorkEdit/[id]" as={`/guest/workspace/ProjectWorkEdit/${projectwork.pw_id}`} passHref><Button>수정</Button></Link>
-                <Button onClick={deleteProjectWork}>삭제</Button>
-                <Button onClick={() => router.push('/guest/workspace')}>목록</Button>
-            </ButtonContainer>
-        </Component>
+        <MainLayout>
+            <Header/>
+            <Table>
+                <tbody>
+                    <TableRow>
+                        <TableCell>프로젝트 업무명</TableCell>
+                        <TableCell>{projectwork.pw_name}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>담당업무</TableCell>
+                        <TableCell>{projectwork.duties}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>기한</TableCell>
+                        <TableCell>
+                            {moment(projectwork.pw_deadline_s).format('YYYY-MM-DD')} ~{' '}
+                            {moment(projectwork.pw_deadline_e).format('YYYY-MM-DD')}
+                        </TableCell>
+                    </TableRow> 
+                    <TableRow>
+                        <TableCell>완료여부</TableCell>
+                        <TableCell>{projectwork.complete}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan="2">
+                            <Link href="/guest/workspace/ProjectWorkEdit/[id]" as={`/guest/workspace/ProjectWorkEdit/${projectwork.pw_id}`} passHref>
+                                <Button>수정</Button>
+                            </Link>
+                            <Button onClick={deleteProjectWork}>삭제</Button>
+                            <Button onClick={() => router.push('/guest/workspace')}>목록</Button>
+                        </TableCell>
+                    </TableRow>
+                </tbody>
+            </Table>
+        </MainLayout>
     );
 
 }
 
 
 export default ProjectWorkDetail;
-
-ProjectWorkDetail.getLayout = function getLayout(page) {
-    return <MainLayout>{page}</MainLayout>;
-};

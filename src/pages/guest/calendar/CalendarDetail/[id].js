@@ -7,7 +7,6 @@ import axios from 'axios';
 import Link from "next/link";
 import Header from '@/components/common/header';
 
-
 const Table = styled.table`
     width: 80%;
     border-collapse: collapse;
@@ -41,9 +40,10 @@ const Button = styled.button`
 `;
 
 
-const ProjectDetail = () => {
+const CalendarDetail = () => {
     const [project, setProject] = useState({});
     const [projectWorkList, setProjectWorkList] = useState([]); // 업무 목록 추가
+
 
     const router = useRouter();
 
@@ -66,10 +66,11 @@ const ProjectDetail = () => {
                 .then((response) => {
                     console.log('[ProjectDetail] projectWorkList', response.data);
                     setProjectWorkList(response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });             
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+            
         }
     }, [id]);
 
@@ -79,7 +80,7 @@ const ProjectDetail = () => {
         axios
             .delete(`http://localhost:8081/project/${id}`)
             .then((response) => {
-                router.push('/guest/workspace');
+                router.push('/guest/calendar');
             })
             .catch((error) => {
                 console.log(error);
@@ -113,11 +114,11 @@ const ProjectDetail = () => {
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan="2">
-                            <Link href="/guest/workspace/ProjectEdit/[id]" as={`/guest/workspace/ProjectEdit/${project.pj_id}`} passHref>
+                            <Link href="/guest/calendar/CalendarEdit/[id]" as={`/guest/calendar/CalendarEdit/${project.pj_id}`} passHref>
                                 <Button>수정</Button>
                             </Link>
                             <Button onClick={deleteProject}>삭제</Button>
-                            <Button onClick={() => router.push('/guest/workspace')}>목록</Button>
+                            <Button onClick={() => router.push('/guest/calendar')}>목록</Button>
                         </TableCell>
                     </TableRow>
                 </tbody>
@@ -147,4 +148,4 @@ const ProjectDetail = () => {
 }
 
 
-export default ProjectDetail;
+export default CalendarDetail;

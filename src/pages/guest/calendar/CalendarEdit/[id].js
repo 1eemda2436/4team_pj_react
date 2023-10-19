@@ -36,6 +36,8 @@ const ProjectEdit = () => {
                     const formattedProject = {
                         ...response.data,
                         deadline_s: response.data.deadline_s
+                        
+
                         ? moment(response.data.deadline_s).format('YYYY-MM-DD')
                           : '', // 날짜 포맷 변경
                         deadline_e: response.data.deadline_e
@@ -70,7 +72,7 @@ const ProjectEdit = () => {
         axios
             .post("http://localhost:8081/project", project)
             .then((response) => {
-                router.push('/guest/workspace');
+                router.push('/guest/calendar');
             })
             .catch((error) => {
                 console.log(error);
@@ -162,7 +164,7 @@ const ProjectEdit = () => {
             </table>
 
             <button onClick = {saveProject}>수정</button>
-            <button onClick = {() => router.push('/guest/workspace')}>목록</button>
+            <button onClick = {() => router.push('/guest/calendar')}>목록</button>
         </Component>
     )
 }
