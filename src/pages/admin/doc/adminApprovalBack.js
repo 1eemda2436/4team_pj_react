@@ -14,7 +14,7 @@ const Doc = () => {
 
     useEffect(() => {
         axios
-        .get("http://localhost:8081/doc/approvalBack")
+        .get("http://localhost:8081/admin/doc/approvalBack")
         .then((response) => {
             setSamples(response.data);
             const filteredData = response.data.filter(approvalBack => approvalBack.doc_status === 'N');
@@ -60,7 +60,7 @@ const Doc = () => {
                     </thead>
                     <tbody>
                     {samples.map(approvalBack =>
-                            <tr key = {approvalBack.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${approvalBack.doc_id}`)}>
+                            <tr key = {approvalBack.doc_id} onClick={() => router.push(`/admin/doc/adminApprovalBackDetail?id=${approvalBack.doc_id}`)}>
                                     <td component="" scope="approvalBack">{approvalBack.doc_status}</td>
                                     <td>{approvalBack.doc_id}</td>
                                     <td>{approvalBack.category_name}</td>

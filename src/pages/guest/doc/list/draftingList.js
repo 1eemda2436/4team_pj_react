@@ -12,7 +12,7 @@ const Doc = () => {
 
     useEffect(() => {
         axios
-        .get("http://localhost:8081/doc/draft")
+        .get("http://localhost:8081/guest/doc/draft")
         .then((response) => {
             setSamples(response.data);
         })
@@ -26,6 +26,21 @@ const Doc = () => {
             <Title>
                 <H1>기안 문서함</H1>
             </Title>
+            <Docstyle1>
+                <tbody>
+                    <tr>
+                        <th>
+                            <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
+                        </th>
+                        <th>
+                            <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
+                        </th>
+                        <th>
+                            <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
+                        </th>
+                    </tr>
+                </tbody>
+            </Docstyle1>
             <Docstyle2>
                 <Table>
                     <thead>
@@ -80,6 +95,25 @@ const Title = styled.div`
 const H1 = styled.h1`
   font-size: 30px;
   margin-bottom: 10px;
+`;
+
+const Docstyle1 = styled.table`
+  width: 100%;
+  margin: 10px 0;
+  th {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 1px;
+  }
 `;
 
 const Docstyle2 = styled.div`

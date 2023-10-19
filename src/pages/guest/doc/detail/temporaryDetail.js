@@ -44,7 +44,7 @@ const Doc = () => {
                 </table>
             </ApprovalLine>
             <Title>
-                <H1>업무 기안서</H1>
+                <H1>임시 저장 문서</H1>
             </Title>
             <Docstyle1>
                 <DocstyleLeft>
@@ -65,7 +65,11 @@ const Doc = () => {
                         </div>
                     </Table>
                 </DocstyleLeft>
-                    
+                <DocstyleRight>
+                    <ButtonStyle>
+                        <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장</button>
+                    </ButtonStyle>
+                </DocstyleRight>
             </Docstyle1>
             <Docstyle2>
                 <Table>
@@ -93,8 +97,17 @@ const Doc = () => {
                     </div>
                 </Table>
             </Docstyle2>
+            <CategoryTable>
+                <select value={selectedCategory} onChange={CategoryChange}>
+                    <option value="">카테고리 선택</option>
+                    <option value="category1">카테고리 1</option>
+                    <option value="category2">카테고리 2</option>
+                    <option value="category3">카테고리 3</option>
+                </select>
+            </CategoryTable>
             <ButtonStyle>
-                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>돌아가기</button>
+                <button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 요청</button>
+                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>취소</button>
             </ButtonStyle>
         </Container>
     )
