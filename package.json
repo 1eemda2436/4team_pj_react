@@ -19,6 +19,7 @@
     "@mui/icons-material": "^5.14.12",
     "@mui/material": "^5.14.12",
     "axios": "^1.5.1",
+    "html2canvas": "^1.4.1",
     "http-proxy-middleware": "^2.0.6",
     "mobx": "^6.10.2",
     "mobx-react": "^9.0.1",
