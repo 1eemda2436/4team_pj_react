@@ -1,4 +1,4 @@
-import AdminLayout from "@/components/layout/adminLayout";
+import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from "next/router";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -26,9 +26,9 @@ const buttonStyle = {
     margin: "10px",
 };
 
-// 연차 승인/반려[관리자] 상세페이지
+// 연차 상세페이지
 
-function AdminVacationConfirm() {
+function GuestVacationConfirm() {
     const router = useRouter();
     const vacation_id = router.query.id;
 
@@ -51,25 +51,11 @@ function AdminVacationConfirm() {
 
     const handleConfirm = () => {
         axios
-            .put(`http://localhost:8081/admin/attendance/vacationConfirm/${vacation_id}`)
+            .put(`http://localhost:8081/attendance/vacationConfirm/${vacation_id}`)
             .then((response) => {
                 setVacation(response.data);
                 // 승인 요청 처리 후 adminAnnualList 페이지로 이동
                 console.log("승인!!!");
-                router.push('/admin/attendance/adminVacationList');
-            })
-            .catch((error) => {
-                console.log("Error:", error);
-            });
-    };
-
-    const handleReturn = () => {
-        axios
-            .put(`http://localhost:8081/admin/attendance/vacationReturn/${vacation_id}`)
-            .then((response) => {
-                setVacation(response.data);
-                // 반려 요청 처리 후 adminAnnualList 페이지로 이동
-                console.log("반려!!!");
                 router.push('/admin/attendance/adminVacationList');
             })
             .catch((error) => {
@@ -135,29 +121,46 @@ function AdminVacationConfirm() {
                             <td style={cellStyle} colSpan={3}>---</td>
                         </tr>
 
-                        <tr>
-                            <th style={cellStyle}>첨부파일</th>
-                            <td style={cellStyle}  colSpan={3}>
-                                <input type="file"/>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
-            </div>
+                    <button
+                        style={{
+                            cursor: 'pointer',
+                            backgroundColor: "#007BFF",
+                            color: "white",
+                            border: "none",
+                            padding: "10px 20px",
+                            borderRadius: "20px",
+                            fontSize: "1rem",
+                            margin: "10px",
+                        }}
+                        onClick={handleConfirm}
+                    >
+                        수정
+                    </button>
+                    <button
+                        style={{
+                            cursor: 'pointer',
+                            backgroundColor: "#007BFF",
+                            color: "white",
+                            border: "none",
+                            padding: "10px 20px",
+                            borderRadius: "20px",
+                            fontSize: "1rem",
+                            margin: "10px",
+                        }}
+                        onClick={() => router.push('/guest/attendance/adminVactionList')}
+                    >
+                        취소
+                    </button>
+                </div>
             <br/><br/><hr/><br/><br/>
-            <div>
-                <h1>결재의견</h1>
-                <input type="text" placeholder="반려시 필수 작성"/>
-                <br/><br/>
-                <button style={{ cursor: 'pointer' }} onClick={handleConfirm} >승인</button>
-                <button style={{ cursor: 'pointer' }} onClick={handleReturn} >반려</button>
-            </div>
         </div>
     );
 }
 
-export default AdminVacationConfirm;
+export default GuestVacationConfirm;
 
-AdminVacationConfirm.getLayout = function getLayout(page) {
-    return <AdminLayout>{page}</AdminLayout>;
+GuestVacationConfirm.getLayout = function getLayout(page) {
+    return <MainLayout>{page}</MainLayout>;
 };

@@ -23,7 +23,7 @@ const AdminAttendanceDep = () => {
                     }}
                     onClick={() => router.push('/admin/attendance/adminAttenDepDetail')}
                 >
-                    부서별 근태 현황 그래프 (리눅스 예정)
+                    부서별 근태 현황 그래프
                 </div>
                 <div
                     style={{
