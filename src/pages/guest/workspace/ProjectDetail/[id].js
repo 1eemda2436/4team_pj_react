@@ -54,22 +54,25 @@ const ProjectDetail = () => {
             axios
                 .get(`http://localhost:8081/project/${id}`)
                 .then((response) => {
-                    console.log('[ProjectDetail] project', response.data)
+                    console.log('[ProjectDetail] project', response.data);
                     setProject(response.data);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
-
+    
             axios
-                .get(`http://localhost:8081/projectwork?pj_id=${id}`)
+                .get(`http://localhost:8081/projectwork`)
                 .then((response) => {
                     console.log('[ProjectDetail] projectWorkList', response.data);
-                    setProjectWorkList(response.data);
+    
+                    // 클라이언트 측에서 필터링
+                    const filteredProjectWorkList = response.data.filter(projectWork => projectWork.pj_id == id); // 타입 변환
+                    setProjectWorkList(filteredProjectWorkList);
                 })
                 .catch((error) => {
                     console.log(error);
-                });             
+                });
         }
     }, [id]);
 

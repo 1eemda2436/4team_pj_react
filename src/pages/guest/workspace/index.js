@@ -18,6 +18,11 @@ const tableStyle = {
     width: "800px",
 };
 
+const CalendarContainer = styled.div`
+  width: 1000px; /* 원하는 크기로 조절 */
+  height: 300px; /* 원하는 크기로 조절 */
+`;
+
 const Workspace = () => {
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
@@ -47,7 +52,9 @@ const Workspace = () => {
     return (
         <Component>
             <Header/>
-            <MyCalendar/>
+            <CalendarContainer>
+                <MyCalendar />
+            </CalendarContainer>
             {/* 부서별 사원 */}
             <table style={tableStyle}>
                 <thead>
