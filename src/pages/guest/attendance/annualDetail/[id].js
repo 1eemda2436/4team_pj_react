@@ -82,7 +82,7 @@ function GuestAnnualConfirm() {
     };
 
     const handlePdfDownload = () => {
-        window.print(); // 브라우저 인쇄 다이얼로그를 열기
+        window.print(); // 브라우저 인쇄 
     };
     
 
