@@ -5,27 +5,25 @@ import { useState, useEffect } from "react";
 import moment from 'moment';
 import axios from 'axios';
 import Link from "next/link";
+import Header from '@/components/common/header';
 
-const Component = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
 
-const ContentContainer = styled.div`
+const Table = styled.table`
+    width: 80%;
+    border-collapse: collapse;
     margin-bottom: 20px;
 `;
 
-const Label = styled.div`
-    font-weight: bold;
-    margin-bottom: 5px;
+const TableRow = styled.tr`
+    &:nth-child(even) {
+        background-color: #f2f2f2;
+    }
 `;
 
-const ButtonContainer = styled.div`
-    display: flex;
-    gap: 10px;
+const TableCell = styled.td`
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
 `;
 
 const Button = styled.button`
@@ -45,6 +43,7 @@ const Button = styled.button`
 
 const ProjectDetail = () => {
     const [project, setProject] = useState({});
+    const [projectWorkList, setProjectWorkList] = useState([]); // 업무 목록 추가
 
     const router = useRouter();
 
@@ -53,10 +52,23 @@ const ProjectDetail = () => {
     useEffect(() => {
         if (id) {
             axios
-                .get(`http://localhost:8081/project/${id}`)
+                .get(`http://localhost:8081/guest/project/${id}`)
                 .then((response) => {
-                    console.log('[ProjectDetail] project', response.data)
+                    console.log('[ProjectDetail] project', response.data);
                     setProject(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+    
+            axios
+                .get(`http://localhost:8081/guest/projectwork`)
+                .then((response) => {
+                    console.log('[ProjectDetail] projectWorkList', response.data);
+    
+                    // 클라이언트 측에서 필터링
+                    const filteredProjectWorkList = response.data.filter(projectWork => projectWork.pj_id == id); // 타입 변환
+                    setProjectWorkList(filteredProjectWorkList);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -68,7 +80,7 @@ const ProjectDetail = () => {
         event.preventDefault();
 
         axios
-            .delete(`http://localhost:8081/project/${id}`)
+            .delete(`http://localhost:8081/guest/project/${id}`)
             .then((response) => {
                 router.push('/guest/workspace');
             })
@@ -79,38 +91,63 @@ const ProjectDetail = () => {
     };
         
     return (
-        <Component>
-            <ContentContainer>
-                <div>
-                    <Label>프로젝트명</Label>
-                    <div>{project.pj_name}</div>
-                </div>
-                <div>
-                    <Label>기한</Label>
-                    <div>{moment(project.deadline_s).format('YYYY-MM-DD')} ~ {moment(project.deadline_e).format('YYYY-MM-DD')}</div>
-                </div>
-                <div>
-                    <Label>부서</Label>
-                    <div>{project.depart_id}</div>
-                </div>
-                <div>
-                    <Label>내용</Label>
-                    <div>{project.content}</div>
-                </div>
-            </ContentContainer>
-            <ButtonContainer>
-                <Link href="/guest/workspace/ProjectEdit/[id]" as={`/guest/workspace/ProjectEdit/${project.pj_id}`} passHref><Button>수정</Button></Link>
-                <Button onClick={deleteProject}>삭제</Button>
-                <Button onClick={() => router.push('/guest/workspace')}>목록</Button>
-            </ButtonContainer>
-        </Component>
+        <MainLayout>
+            <Header/>
+            <Table>
+                <tbody>
+                    <TableRow>
+                        <TableCell>프로젝트명</TableCell>
+                        <TableCell>{project.pj_name}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>기한</TableCell>
+                        <TableCell>
+                            {moment(project.deadline_s).format('YYYY-MM-DD')} ~{' '}
+                            {moment(project.deadline_e).format('YYYY-MM-DD')}
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>부서</TableCell>
+                        <TableCell>{project.depart_id}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>내용</TableCell>
+                        <TableCell>{project.content}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell colSpan="2">
+                            <Link href="/guest/workspace/ProjectEdit/[id]" as={`/guest/workspace/ProjectEdit/${project.pj_id}`} passHref>
+                                <Button>수정</Button>
+                            </Link>
+                            <Button onClick={deleteProject}>삭제</Button>
+                            <Button onClick={() => router.push('/guest/workspace')}>목록</Button>
+                        </TableCell>
+                    </TableRow>
+                </tbody>
+            </Table>
+
+            {/* 업무 목록 렌더링 */}
+            <Table>
+                <tbody>
+                    <TableRow>
+                    <TableCell>프로젝트 업무명</TableCell>
+                    <TableCell>기한(시작일/마감일)</TableCell>
+                    </TableRow>
+                    {projectWorkList.map((projectWork) => (
+                        <TableRow key={projectWork.pw_id}>
+                            <TableCell>{projectWork.pw_name}</TableCell>
+                            <TableCell>
+                                {moment(projectWork.pw_deadline_s).format('YYYY-MM-DD')} ~{' '}
+                                {moment(projectWork.pw_deadline_e).format('YYYY-MM-DD')}
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </tbody>
+            </Table>
+        </MainLayout>
     );
 
 }
 
 
 export default ProjectDetail;
-
-ProjectDetail.getLayout = function getLayout(page) {
-    return <MainLayout>{page}</MainLayout>;
-};

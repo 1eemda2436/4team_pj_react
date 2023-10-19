@@ -30,7 +30,7 @@ const ProjectWorkAdd = () => {
     useEffect(() => {
         //프로젝트ID 불러오기 위함
         axios
-            .get("http://localhost:8081/project")
+            .get("http://localhost:8081/guest/project")
             .then((response) => {
                 setProject(response.data);
             })
@@ -55,7 +55,7 @@ const ProjectWorkAdd = () => {
         console.log('[saveProjectwork] projectwork', projectwork)
 
         axios
-            .post("http://localhost:8081/projectwork", projectwork)
+            .post("http://localhost:8081/guest/projectwork", projectwork)
             .then((response) => {
                 router.push('/guest/workspace');
             })

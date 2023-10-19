@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import moment from 'moment';
+import Header from '@/components/common/header';
+import MyCalendar from "@/components/calendar/MyCalendar";
 
 const cellStyle = {
     border: "2px solid black",
@@ -16,13 +18,18 @@ const tableStyle = {
     width: "800px",
 };
 
+const CalendarContainer = styled.div`
+  width: 1000px; /* 원하는 크기로 조절 */
+  height: 300px; /* 원하는 크기로 조절 */
+`;
+
 const Workspace = () => {
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
 
     useEffect(() => {
         axios
-            .get("http://localhost:8081/project")
+            .get("http://localhost:8081/guest/project")
             .then((response) => {
                 setProjectList(response.data);
             })
@@ -31,7 +38,7 @@ const Workspace = () => {
             });
 
         axios
-            .get("http://localhost:8081/projectwork")
+            .get("http://localhost:8081/guest/projectwork")
             .then((response) => {
                 setProjectworkList(response.data);
             })
@@ -44,6 +51,10 @@ const Workspace = () => {
 
     return (
         <Component>
+            <Header/>
+            <CalendarContainer>
+                <MyCalendar />
+            </CalendarContainer>
             {/* 부서별 사원 */}
             <table style={tableStyle}>
                 <thead>
