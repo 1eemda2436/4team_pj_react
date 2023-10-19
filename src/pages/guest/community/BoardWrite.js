@@ -1,36 +1,76 @@
-import MainLayout from "@/components/layout/mainLayout"
+import MainLayout from "@/components/layout/mainLayout";
 import styled from "styled-components";
 import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const BoardWrite = () => {
+    const [formData, setFormData] = useState({
+        category_id: "",
+        id: "",
+        title: "",
+        content: "",
+        date: "",
+    });
+
     const router = useRouter();
-    return(
+
+    // 입력 폼의 값을 업데이트하는 함수
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    // 게시물을 서버에 등록하는 함수
+    const handlePostBoard = () => {
+        axios.post('http://localhost:8081/add', formData) // 게시물 데이터를 서버에 POST 요청으로 보냄
+            .then(response => {
+                console.log('게시물 등록 성공:', response.data);
+                router.push('/guest/community'); // 게시판 페이지로 이동
+            })
+            .catch(error => {
+                console.error('게시물 등록 오류:', error);
+            });
+    };
+
+    return (
         <Container>
-        <Title>자유게시판 등록</Title>
-        <Content>
-            <Row>
-                <div>
-                <div>제목</div>
-                <Input type="text" />
-                </div>
-                <div>
-                <div>작성일</div>
-                <Input type="date" />
-                </div>
-            </Row>
-            <Row>
-                <div>
-                <div>글내용</div>
-                <TextArea rows="6" />
-                </div>
-            </Row>
+            <Title>자유게시판 등록</Title>
+            <Content>
+                <Row>
+                    <div>
+                        <div>카테고리</div>
+                        <Input type="text" name="category_id" onchange={handleInputChange} value={formData.categoty_id} />
+                    </div>
+                    <div>
+                        <div>작성자</div>
+                        <Input type="text" name="id" onChange={handleInputChange} value={formData.id} />
+                    </div>
+                    <div>
+                        <div>제목</div>
+                        <Input type="text" name="title" onChange={handleInputChange} value={formData.title} />
+                    </div>
+                    <div>
+                        <div>작성일</div>
+                        <Input type="date" name="date" onChange={handleInputChange} value={formData.date} />
+                    </div>
+                </Row>
+                <Row>
+                    <div>
+                        <div>글내용</div>
+                        <TextArea name="content" onChange={handleInputChange} value={formData.content} />
+                    </div>
+                </Row>
             </Content>
             <ButtonContainer>
-            <Button onClick={() => router.push('/guest/community')}>등록</Button>
-            <Button onClick={() => router.back()}>이전</Button>
+                <Button onClick={handlePostBoard}>등록</Button>
+                <Button onClick={() => router.back()}>이전</Button>
             </ButtonContainer>
         </Container>
-    )
+    );
 }
 
 export default BoardWrite;

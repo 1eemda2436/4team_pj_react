@@ -22,7 +22,6 @@ const PayStatement = () => {
         });
       }
     }, [id]);
-  
 
     // 공제계 합계 계산
     const deductionTotal = (
@@ -44,6 +43,11 @@ const PayStatement = () => {
       PayStatementData.t_pay
     );
 
+    // 합계
+    const totalMathPayment = paymentTotal - deductionTotal;
+        
+    // 지급 총액 1000단위 올림
+    const totalPayment = Math.ceil(totalMathPayment / 10000) * 10000
 
     return (
         <Container>
@@ -107,7 +111,8 @@ const PayStatement = () => {
               </tr>
               <tr>
                   <TableCell colSpan={6}>합 계</TableCell>
-                  <TableCell>{paymentTotal - deductionTotal}</TableCell>
+                  <TableCell>{totalMathPayment}</TableCell>
+                  <TableCell>{totalPayment}</TableCell>
               </tr>
             </tbody>
         </Table>

@@ -15,6 +15,8 @@ const AdminPersonnel = () => {
       axios.get('http://localhost:8081/salary/personnel')
         .then(response => {
           setData(response.data); // 응답 데이터를 상태에 저장
+
+          console.log(response.data)
         })
         .catch(err => {
           if (axios.isAxiosError(err)) {
@@ -45,6 +47,7 @@ const AdminPersonnel = () => {
         const response = await axios.get('http://localhost:8081/personnel/maxId');
         const maxId = response.data;
         // 이제 maxId를 사용하여 사원 등록 페이지로 이동하거나 입력 필드에 값을 설정할 수 있습니다.
+        console.log('index' , maxId);
         router.push({
           pathname: `/admin/personnel/EmployeeRegistration`,
           query: { 

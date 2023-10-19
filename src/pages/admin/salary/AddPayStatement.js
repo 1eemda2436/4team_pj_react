@@ -6,17 +6,15 @@ import React, { useEffect, useState } from 'react';
 
 const PayStatement = () => {
     const router = useRouter();
-    const { id, name, rank } = router.query; // ID를 추출
-
-    // const [PayStatementData, setPayStatementData] = useState([]);
+    const { id, s_id, name, rank } = router.query; // ID를 추출
 
     const [PayStatementData, setPayStatementData] = useState({
-        incomeTax: 0,
-        localTax: 0,
-        nationalPension: 0,
-        healthInsurance: 0,
-        cHealthInsurance: 0,
-        employmentInsurance: 0,
+        income_tax: 0,
+        local_tax: 0,
+        national_pension: 0,
+        health_insurance: 0,
+        c_health_insurance: 0,
+        employment_insurance: 0,
     });
 
     // 입력 항목의 상태를 관리
@@ -30,20 +28,19 @@ const PayStatement = () => {
     // 입력 항목의 합계 계산
     const totalEarnings = basicSalary + bonus + overtimePay + allowance + foodPay + transportationPay;
     
-    // // 각 항목의 공제를 나타내는 상태
-    // const [incomeTax, setIncomeTax] = useState(0);
-    // const [localTax, setLocalTax] = useState(0);
-    // const [nationalPension, setNationalPension] = useState(0);
-    // const [healthInsurance, setHealthInsurance] = useState(0);
-    // const [cHealthInsurance, setCHealthInsurance] = useState(0);
-    // const [employmentInsurance, setEmploymentInsurance] = useState(0);
-
     // 각 항목의 공제 합계 계산
-    const totalDeductions = PayStatementData.incomeTax + PayStatementData.localTax + PayStatementData.nationalPension + PayStatementData.healthInsurance + PayStatementData.cHealthInsurance + PayStatementData.employmentInsurance;
+    const totalDeductions = PayStatementData.income_tax + PayStatementData.local_tax + PayStatementData.national_pension + PayStatementData.health_insurance + PayStatementData.c_health_insurance + PayStatementData.employment_insurance;
+    
+    // 합계
+    const totalMathPayment = totalEarnings - totalDeductions;
+    
+    // 지급 총액 1000단위 올림
+    const totalPayment = Math.ceil(totalMathPayment / 10000) * 10000
 
     const handleCalculate = () => {
         // 계산에 필요한 데이터를 담은 객체를 생성합니다
         const calculationData = {
+            s_id: s_id,
             id: id,
             salary: basicSalary,
             bonus: bonus,
@@ -53,12 +50,13 @@ const PayStatement = () => {
             t_pay: transportationPay,
         };
     
-        axios.put('http://localhost:8081/salary/calculateTaxes', calculationData)
+        axios.put(`http://localhost:8081/salary/calculateTaxes`, calculationData)
             .then((response) => {
                 // 서버에서의 응답을 처리하고 필요하면 업데이트합니다
                 console.log('계산이 성공했습니다', response.data);
                 // 서버가 데이터를 반환한다면 로컬 상태를 업데이트할 수도 있습니다
                 setPayStatementData(response.data);
+                alert('계산이 완료되었습니다.');
             })
             .catch((error) => {
                 console.error('세금 계산 중 오류 발생', error);
@@ -82,7 +80,7 @@ const PayStatement = () => {
             <TableCell colSpan={4}>지급내역(과세)</TableCell>
             <TableCell colSpan={2}>지급내역(비과세)</TableCell>
             <TableCell rowSpan={2}>지급액</TableCell>
-            <TableCell rowSpan={7}>지급총액</TableCell>
+            <TableCell rowSpan={6}>지급총액</TableCell>
             </TableHeader>
             <tr>
                 <TableCell>기본금</TableCell>
@@ -166,11 +164,11 @@ const PayStatement = () => {
             </tr>
             <tr>
                 <TableCell colSpan={6}>합 계</TableCell>
-                <TableCell>합계</TableCell>
+                <TableCell>{totalMathPayment}</TableCell>
+                <TableCell>{totalPayment}</TableCell>
             </tr>
         </Table>
         <ButtonContainer>
-            <Button>저장</Button>
             <Button onClick={handleCalculate}>계산</Button>
             <Button onClick={() => router.back()}>이전</Button>
         </ButtonContainer>

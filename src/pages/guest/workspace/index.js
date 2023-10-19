@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import MainLayout from "@/components/layout/mainLayout"
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { useState, useEffect } from "react";
-// import ApiService from "./ApiService";
 import axios from "axios";
+import moment from 'moment';
 
 const cellStyle = {
     border: "2px solid black",
@@ -15,14 +16,24 @@ const tableStyle = {
     width: "800px",
 };
 
-function Workspace() {
-    const [project, setProject] = useState([]);
+const Workspace = () => {
+    const [projectList, setProjectList] = useState([]);
+    const [projectworkList, setProjectworkList] = useState([]);
 
     useEffect(() => {
         axios
             .get("http://localhost:8081/project")
             .then((response) => {
-                setProject(response.data);
+                setProjectList(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        axios
+            .get("http://localhost:8081/projectwork")
+            .then((response) => {
+                setProjectworkList(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -30,6 +41,7 @@ function Workspace() {
     }, []);
 
     const router = useRouter();
+
     return (
         <Component>
             {/* 부서별 사원 */}
@@ -72,11 +84,15 @@ function Workspace() {
                     </tr>
                 </thead>
                 <tbody>
-                    {project.map((pj) => (
+                    {projectList.map((pj) => (
                     <tr key={pj.pj_id}>
-                        <td style={cellStyle}>{pj.pj_id}</td>
-                        <td style={cellStyle} onClick={() => router.push('/guest/workspace/ProjectDetail')}>{pj.pj_name}</td>
-                        <td style={cellStyle}>{pj.deadline_s} - {pj.deadline_e}</td>
+                        <td style={cellStyle}>{pj.pj_id}</td> 
+                        <td style={cellStyle}>
+                            <Link href="/guest/workspace/ProjectDetail/[id]" as={`/guest/workspace/ProjectDetail/${pj.pj_id}`}>
+                                {pj.pj_name}
+                            </Link>
+                        </td>
+                        <td style={cellStyle}>{moment(pj.deadline_s).format('YYYY-MM-DD')} ~ {moment(pj.deadline_e).format('YYYY-MM-DD')}</td>
                     </tr>
                     ))}
                 </tbody>
@@ -97,28 +113,23 @@ function Workspace() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle} onClick={() => router.push('/guest/workspace/ProjectWorkDetail')}>클릭시 상세페이지 이동</td>
-                        <td style={cellStyle}>null</td>
+                    {projectworkList.map((pjw) => (
+                    <tr key={pjw.pw_id}>
+                        <td style={cellStyle}>{pjw.pw_id}</td>
+                        <td style={cellStyle}>
+                            <Link href="/guest/workspace/ProjectWorkDetail/[id]" as={`/guest/workspace/ProjectWorkDetail/${pjw.pw_id}`}>
+                                {pjw.pw_name}
+                            </Link></td>
+                        <td style={cellStyle}>{moment(pjw.pw_deadline_s).format('YYYY-MM-DD')} ~ {moment(pjw.pw_deadline_e).format('YYYY-MM-DD')}</td>
                     </tr>
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle} onClick={() => router.push('/guest/workspace/ProjectWorkDetail')}>클릭시 상세페이지 이동</td>
-                        <td style={cellStyle}>null</td>
-                    </tr>
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle} onClick={() => router.push('/guest/workspace/ProjectWorkDetail')}>클릭시 상세페이지 이동</td>
-                        <td style={cellStyle}>null</td>
-                    </tr>
+                    ))}
                 </tbody>
             </table>
             <div>
             <button onClick={() => router.push('/guest/workspace/ProjectWorkAdd')}>추가</button>
             </div>
         </Component>
-        )
+    )
     
 }
 
