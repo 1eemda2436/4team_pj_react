@@ -3,16 +3,18 @@ import styled from "styled-components";
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import DepartmentRegistrationModal from './DepartmentRegistrationModal'; // 모달 컴포넌트 임포트
 
 const DepartmentManagement = () => {
   const router = useRouter();
 
   const [department, setData] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   //페이지 로드 → list
   useEffect(() => {
     // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-    axios.get('http://localhost:8081/department/DepartmentManagement')
+    axios.get('http://localhost:8081/admin/department/DepartmentManagement')
       .then(response => {
         setData(response.data); // 응답 데이터를 상태에 저장
         console.log(response.data)
@@ -20,7 +22,7 @@ const DepartmentManagement = () => {
       .catch(err => {
         if (axios.isAxiosError(err)) {
           // AxiosError 처리
-          setError(err.message);
+          //setError(err.message);
           //console.log(err.message)
         } else {
           // 일반 오류 처리
@@ -28,6 +30,21 @@ const DepartmentManagement = () => {
         }
       });
   }, []);
+
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+
+  const handleModalSave = () => {
+    // 모달에서 저장 버튼을 눌렀을 때의 로직 추가
+    setModalOpen(false); // 모달을 닫을 수도 있음
+    router.push('/admin/department-team/'); // 부서 현황 화면으로 리디렉션
+  };
+
 
   return (
     <MainComponent>
@@ -56,7 +73,7 @@ const DepartmentManagement = () => {
                     <td>{department[1]}</td>
                     <td>{department[2]}</td>
                     <td>
-                    <Button onClick={() => handleEmployeeDelete(department.depart_id)}>부서 수정</Button>
+                    <Button onClick={() => handleDepartmentEdit(department.depart_id)}>부서 수정</Button>
                     </td>
                     <td>
                     <Button>팀 현황</Button>
@@ -68,8 +85,15 @@ const DepartmentManagement = () => {
           </TblContent>
         </TblComponent>
 
-        <Button>등록</Button>
+        <Button onClick={handleModalOpen}>부서등록</Button>
         <Button onClick={() => router.back()}>이전</Button>
+
+        {isModalOpen && (
+          <DepartmentRegistrationModal
+            onClose={handleModalClose}
+            onSave={handleModalSave}
+          />
+        )}
     </MainComponent>
   );
 };

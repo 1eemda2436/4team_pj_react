@@ -19,7 +19,7 @@ const EmployeeModification = () => {
     useEffect(() => {
         if (id) {
             // id를 사용하여 해당 id에 해당하는 사원 데이터를 서버에서 가져옵니다.
-            axios.get(`http://localhost:8081/personnel/EmployeeModification/${id}`)
+            axios.get(`http://localhost:8081/admin/personnel/EmployeeModification/${id}`)
                 .then(response => {
                     // 서버에서 가져온 데이터를 employeeData 상태로 설정합니다.
                     setEmployeeData(response.data);
@@ -40,15 +40,15 @@ const EmployeeModification = () => {
 
     const handleUpdate = () => {
       // 사용자 입력을 가지고 서버로 PUT 또는 POST 요청을 보낼 수 있습니다.
-      const updatedData = {
-        depart_id: employeeData.depart_id,
-        team_id: employeeData.team_id,
-        id: employeeData.id,
-        name: employeeData.name,
-        tel: employeeData.tel,
-      };
+        const updatedData = {
+            depart_id: employeeData.depart_id,
+            team_id: employeeData.team_id,
+            id: employeeData.id,
+            name: employeeData.name,
+            tel: employeeData.tel,
+        };
 
-      axios.put(`http://localhost:8081/personnel/EmployeeUpdate/${id}`, updatedData)
+        axios.put(`http://localhost:8081/admin/personnel/EmployeeUpdate/${id}`, updatedData)
         .then(response => {
             alert('사원 정보가 업데이트되었습니다.');
             // 사원 목록 페이지로 돌아갈 수 있습니다.

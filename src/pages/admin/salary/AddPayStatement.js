@@ -50,7 +50,7 @@ const PayStatement = () => {
             t_pay: transportationPay,
         };
     
-        axios.put(`http://localhost:8081/salary/calculateTaxes`, calculationData)
+        axios.put(`http://localhost:8081/admin/salary/calculateTaxes`, calculationData)
             .then((response) => {
                 // 서버에서의 응답을 처리하고 필요하면 업데이트합니다
                 console.log('계산이 성공했습니다', response.data);

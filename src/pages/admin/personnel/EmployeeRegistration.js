@@ -28,7 +28,7 @@ const EmployeeRegistration = () => {
   const handleSubmit = async () => {
     try {
       // Make a POST request to your Spring Boot API
-      await axios.post('http://localhost:8081/personnel/employeeInsert', formData);
+      await axios.post('http://localhost:8081/admin/personnel/employeeInsert', formData);
 
       // Optionally, you can handle success or show a message to the user
       alert('사원 등록에 성공 했습니다.');
