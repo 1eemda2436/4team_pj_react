@@ -28,31 +28,35 @@ const Doc = () => {
                 <H1>통합 문서함</H1>
             </Title>
             <PersonalMenu>
-                <tr>
-                    <td>개인문서함</td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>개인문서함</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
+                        </td>
+                    </tr>
+                </tbody>
             </PersonalMenu>
             <DocList>
-                <tr>
-                    <td>
-                        버튼을 누르면 페이지가 넘어가지 않고 여기에 뜨게 만들기
-                    </td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                            버튼을 누르면 페이지가 넘어가지 않고 여기에 뜨게 만들기
+                        </td>
+                    </tr>
+                </tbody>
             </DocList>
             
         </Container>
@@ -81,7 +85,7 @@ const H1 = styled.h1`
     font-size: 30px;
 `;
 
-const PersonalMenu = styled.div`
+const PersonalMenu = styled.table`
     width: 200px;
     padding: 20px;
     position: fixed;
@@ -90,7 +94,7 @@ const PersonalMenu = styled.div`
     top: 100px;
 `;
 
-const DocList = styled.div`
+const DocList = styled.table`
     margin-left: 220px;
     padding: 20px;
 `;

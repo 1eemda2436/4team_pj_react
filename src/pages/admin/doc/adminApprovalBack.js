@@ -1,12 +1,30 @@
 import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from "next/router";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 
 const Doc = () => {
 
     const router = useRouter();
+
+    const [samples, setSamples] = useState([]);
+    const [filteredSamples, setFilteredSamples] = useState([]);
+
+    useEffect(() => {
+        axios
+        .get("http://localhost:8081/doc/approvalBack")
+        .then((response) => {
+            setSamples(response.data);
+            const filteredData = response.data.filter(approvalBack => approvalBack.doc_status === 'N');
+            setFilteredSamples(filteredData);
+            console.log(filteredData)
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     return(
         <Container>
@@ -38,18 +56,20 @@ const Doc = () => {
                             <TableTh2>카테고리</TableTh2>
                             <TableTh2 isTitle>문서 제목</TableTh2>
                             <TableTh2>작성자</TableTh2>
-                            <TableTh2>기안일</TableTh2>
+                            <TableTh2>결재일</TableTh2>
                         </TableTr>
                     </thead>
                     <tbody>
-                        <TableTr>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2 isTitle>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                                <TableTd2>1</TableTd2>
-                        </TableTr>
+                    {samples.map(approvalBack =>
+                            <TableTr key = {approvalBack.approval_id}>
+                                    <TableTd2 component="" scope="approvalBack">{approvalBack.doc_status}</TableTd2>
+                                    <TableTd2>{approvalBack.doc_id}</TableTd2>
+                                    <TableTd2>{approvalBack.category_name}</TableTd2>
+                                    <TableTd2 isTitle>{approvalBack.doc_title}</TableTd2>
+                                    <TableTd2>{approvalBack.name}</TableTd2>
+                                    <tableTd2>{approvalBack.approval_date}</tableTd2>
+                            </TableTr>
+                        )}
                     </tbody>
                 </Table>
             </Docstyle2>

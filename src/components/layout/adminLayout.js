@@ -19,6 +19,7 @@ const MainComponent = styled.div`
 
 const Content = styled.div`
     width: 100%;
+    overflow-x: auto;
 `;
 
 export default AdminLayout;

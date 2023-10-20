@@ -28,6 +28,7 @@ const EmployeeModification = () => {
             </TableRow>
         </Table>
         <Button onClick={() => router.push('/admin/personnel')}>수정</Button>
+        <Button onClick={() => router.back()}>이전</Button>
         </Container>
     );
 }

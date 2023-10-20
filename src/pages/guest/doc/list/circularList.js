@@ -32,7 +32,10 @@ const Doc = () => {
                     <thead>
                         <TableTr>
                             <TableTh2>문서번호</TableTh2>
+                            <TableTh2>카테고리</TableTh2>
                             <TableTh2>문서 제목</TableTh2>
+                            <TableTh2>작성자</TableTh2>
+                            <TableTh2>기안일</TableTh2>
                             <TableTh2>조회여부</TableTh2>
                         </TableTr>
                     </thead>
@@ -40,11 +43,13 @@ const Doc = () => {
                         {samples.map(view =>
                             <TableTr key={view.doc_id}>
                             <TableTd2 component="" scope="view">{view.doc_id}</TableTd2>
+                            <TableTd2>{view.category_name}</TableTd2>
                             <TableTd2>{view.doc_title}</TableTd2>
+                            <TableTd2>{view.name}</TableTd2>
+                            <TableTd2>{view.doc_date}</TableTd2>
                             <TableTd2>{view.doc_read}</TableTd2>
                             </TableTr>
                             )}
-                        
                     </tbody>
                 </Table>
             </Docstyle2>

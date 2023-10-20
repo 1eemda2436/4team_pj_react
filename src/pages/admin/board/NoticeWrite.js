@@ -1,5 +1,6 @@
 import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from 'next/router';
+import styled from "styled-components";
 
 const NoticeWrite = () => {
     const router = useRouter();
