@@ -21,7 +21,7 @@ function GuestVacationList() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8081/attendance/vacationRequestsList")
+            .get("http://localhost:8081/all/attendance/vacationRequestsList")
             .then((response) => {
                 setVacation(response.data);
             })
