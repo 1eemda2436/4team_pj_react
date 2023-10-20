@@ -17,11 +17,16 @@ const tableStyle = {
 };
 
 function GuestVacationList() {
+    const token = localStorage.getItem('token')
     const [vacation, setVacation] = useState([]);
 
     useEffect(() => {
         axios
-            .get("http://localhost:8081/all/attendance/vacationRequestsList")
+            .get("http://localhost:8081/all/attendance/vacationRequestsList",{
+                headers: {
+                    Authorization: token
+                }
+            })
             .then((response) => {
                 setVacation(response.data);
             })

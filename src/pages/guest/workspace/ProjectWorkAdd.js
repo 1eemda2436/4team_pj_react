@@ -21,6 +21,7 @@ const Component = styled.div`
 `;
 
 const ProjectWorkAdd = () => {
+    const token = localStorage.getItem('token')
     const [projectwork, setProjectwork] = useState({
         complete: 'N' //default 'N'
     })
@@ -30,7 +31,11 @@ const ProjectWorkAdd = () => {
     useEffect(() => {
         //프로젝트ID 불러오기 위함
         axios
-            .get("http://localhost:8081/guest/project")
+            .get("http://localhost:8081/guest/project",{
+                headers: {
+                    Authorization: token
+                }
+            })
             .then((response) => {
                 setProject(response.data);
             })
@@ -55,7 +60,11 @@ const ProjectWorkAdd = () => {
         console.log('[saveProjectwork] projectwork', projectwork)
 
         axios
-            .post("http://localhost:8081/guest/projectwork", projectwork)
+            .post("http://localhost:8081/guest/projectwork", projectwork,{
+                headers: {
+                    Authorization: token
+                }
+            })
             .then((response) => {
                 router.push('/guest/workspace');
             })

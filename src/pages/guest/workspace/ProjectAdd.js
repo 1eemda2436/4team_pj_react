@@ -20,6 +20,7 @@ const Component = styled.div`
 `;
 
 const ProjectAdd = () => {
+    const token = localStorage.getItem('token')
     const [project, setProject] = useState({})
 
     const router = useRouter();
@@ -40,7 +41,11 @@ const ProjectAdd = () => {
         console.log('[saveProject] project', project)
 
         axios
-            .post("http://localhost:8081/guest/project", project)
+            .post("http://localhost:8081/guest/project", project,{
+                headers: {
+                    Authorization: token
+                }
+            })
             .then((response) => {
                 router.push('/guest/workspace');
             })

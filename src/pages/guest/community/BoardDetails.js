@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useRouter } from 'next/router';
 
 const BoardDetails = () => {
+    const token = localStorage.getItem('token')
     const router = useRouter();
     return(
         <Container>

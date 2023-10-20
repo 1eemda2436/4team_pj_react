@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const BoardWrite = () => {
+    const token = localStorage.getItem('token')
     const [formData, setFormData] = useState({
         category_id: "",
         id: "",
@@ -26,7 +27,11 @@ const BoardWrite = () => {
 
     // 게시물을 서버에 등록하는 함수
     const handlePostBoard = () => {
-        axios.post('http://localhost:8081/add', formData) // 게시물 데이터를 서버에 POST 요청으로 보냄
+        axios.post('http://localhost:8081/add', formData, {
+            headers: {
+                Authorization: token
+            }
+        }) // 게시물 데이터를 서버에 POST 요청으로 보냄
             .then(response => {
                 console.log('게시물 등록 성공:', response.data);
                 router.push('/guest/community'); // 게시판 페이지로 이동

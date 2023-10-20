@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 const Doc = () => {
-
+    const token = localStorage.getItem('token')
     const router = useRouter();
     const {id} = router.query;
 
@@ -42,7 +42,11 @@ const Doc = () => {
       };
     
 
-        axios.post("http://localhost:8081/guest/doc/insert", insertSamples)
+        axios.post("http://localhost:8081/guest/doc/insert", insertSamples, {
+          headers: {
+            Authorization: token
+        }
+        })
         .then((response) => {
             alert('문서등록 완료');
             router.push('guest/doc/list/draftingList');

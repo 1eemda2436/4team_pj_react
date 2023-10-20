@@ -24,12 +24,17 @@ const CalendarContainer = styled.div`
 `;
 
 const Workspace = () => {
+    const token = localStorage.getItem('token')
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
 
     useEffect(() => {
         axios
-            .get("http://localhost:8081/guest/project")
+            .get("http://localhost:8081/guest/project",{
+                headers: {
+                    Authorization: token
+                }
+            })
             .then((response) => {
                 setProjectList(response.data);
             })
@@ -38,7 +43,11 @@ const Workspace = () => {
             });
 
         axios
-            .get("http://localhost:8081/guest/projectwork")
+            .get("http://localhost:8081/guest/projectwork",{
+                headers: {
+                    Authorization: token
+                }
+            })
             .then((response) => {
                 setProjectworkList(response.data);
             })

@@ -5,14 +5,18 @@ import { useRouter } from "next/router";
 import axios from "axios";
 
 const Doc = () => {
-
+    const token = localStorage.getItem('token')
     const router = useRouter();
 
     const [samples, setSamples] = useState([]);
 
     useEffect(() => {
         axios
-        .get("http://localhost:8081/guest/doc/draft")
+        .get("http://localhost:8081/guest/doc/draft",{
+          headers: {
+            Authorization: token
+        }
+        })
         .then((response) => {
             setSamples(response.data);
         })

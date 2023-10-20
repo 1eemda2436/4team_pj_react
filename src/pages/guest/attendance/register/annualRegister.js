@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 // 연차 신청
 const AnnualRegister = () => {
-
+    const token = localStorage.getItem('token')
     const router = useRouter();
 
     return (

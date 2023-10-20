@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 const Doc = () => {
-
+    const token = localStorage.getItem('token')
     const router = useRouter();
     const id = router.query.id; // ID를 추출
     console.log(id)
@@ -21,7 +21,11 @@ const Doc = () => {
     useEffect(() => {
         if (id) {
             console.log(id);
-            axios.get(`http://localhost:8081/guest/doc/detail/${id}`)
+            axios.get(`http://localhost:8081/guest/doc/detail/${id}`,{
+                headers: {
+                    Authorization: token
+                }
+            })
             .then((response) => {
                 setSamples(response.data);
                 console.log(response.data);

@@ -42,6 +42,7 @@ const Button = styled.button`
 
 
 const ProjectDetail = () => {
+    const token = localStorage.getItem('token')
     const [project, setProject] = useState({});
     const [projectWorkList, setProjectWorkList] = useState([]); // 업무 목록 추가
 
@@ -52,7 +53,11 @@ const ProjectDetail = () => {
     useEffect(() => {
         if (id) {
             axios
-                .get(`http://localhost:8081/guest/project/${id}`)
+                .get(`http://localhost:8081/guest/project/${id}`,{
+                    headers: {
+                        Authorization: token
+                    }
+                })
                 .then((response) => {
                     console.log('[ProjectDetail] project', response.data);
                     setProject(response.data);
@@ -62,7 +67,11 @@ const ProjectDetail = () => {
                 });
     
             axios
-                .get(`http://localhost:8081/guest/projectwork`)
+                .get(`http://localhost:8081/guest/projectwork`,{
+                    headers: {
+                        Authorization: token
+                    }
+                })
                 .then((response) => {
                     console.log('[ProjectDetail] projectWorkList', response.data);
     

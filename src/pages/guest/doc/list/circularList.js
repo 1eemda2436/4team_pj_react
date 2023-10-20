@@ -6,14 +6,18 @@ import axios from "axios";
 
 
 const Doc = () => {
-
+  const token = localStorage.getItem('token')
     const router = useRouter();
 
     const [samples, setSamples] = useState([]);
 
     useEffect(() => {
         axios
-        .get("http://localhost:8081/guest/doc/view")
+        .get("http://localhost:8081/guest/doc/view",{
+          headers: {
+            Authorization: token
+        }
+        })
         .then((response) => {
             setSamples(response.data);
         })

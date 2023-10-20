@@ -22,7 +22,7 @@ const WeeklyWorkButton = styled.a`
 
 // main
 const Attendance = () => {
-
+    const token = localStorage.getItem('token')
     const router = useRouter();
 
     return (

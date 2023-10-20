@@ -52,13 +52,18 @@ const TableHead3 = {
 function GuestAnnualConfirm() {
     const router = useRouter();
     const annual_id = router.query.id;
+    const token = localStorage.getItem('token')
 
     const [attendance, setAttendance] = useState({});
 
     useEffect(() => {
         if (annual_id) {
             axios
-                .get(`http://localhost:8081/all/attendance/annualDetail/${annual_id}`)
+                .get(`http://localhost:8081/all/attendance/annualDetail/${annual_id}`, {
+                    headers: {
+                        Authorization: token
+                    }
+                })
                 .then((response) => {
                     setAttendance(response.data);
                 })
@@ -70,7 +75,11 @@ function GuestAnnualConfirm() {
 
     const handleConfirm = () => {
         axios
-            .put(`http://localhost:8081/attendance/annualModify/${annual_id}`)
+            .put(`http://localhost:8081/attendance/annualModify/${annual_id}`,{
+                headers: {
+                    Authorization: token
+                }
+            })
             .then((response) => {
                 setAttendance(response.data);
                 console.log("승인!!!");
