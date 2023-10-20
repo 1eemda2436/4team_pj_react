@@ -11,7 +11,7 @@ const AdminPayManagement = () => {
 
   useEffect(() => {
     // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-    axios.get('http://localhost:8081/salary/salaryMain')
+    axios.get('http://localhost:8081/admin/salary/salaryMain')
       .then(response => {
         setData(response.data); // 응답 데이터를 상태에 저장
 

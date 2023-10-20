@@ -13,7 +13,7 @@ const PayStatement = () => {
     useEffect(() => {
       if (id) {
         console.log(id)
-        axios.get(`http://localhost:8081/salary/PayStatement/${id}`)
+        axios.get(`http://localhost:8081/admin/salary/PayStatement/${id}`)
         .then((response) => {
             setPayStatementData(response.data);
         })

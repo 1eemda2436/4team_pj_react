@@ -10,12 +10,12 @@ const AdminPersonnel = () => {
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
   
+    //페이지 로드 → list
     useEffect(() => {
       // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-      axios.get('http://localhost:8081/salary/personnel')
+      axios.get('http://localhost:8081/admin/personnel/employeeSelectAll')
         .then(response => {
           setData(response.data); // 응답 데이터를 상태에 저장
-
           console.log(response.data)
         })
         .catch(err => {
@@ -30,21 +30,10 @@ const AdminPersonnel = () => {
         });
     }, []);
 
-    const onInsertHandle = (item) => {
-      router.push({
-        pathname: `/admin/salary/AddPayStatement`,
-        query: { 
-          id: item.id, 
-          name: item.name,
-          rank: item.rank
-        }
-      });
-    };
-
     // 리액트 프론트엔드에서 "사원 등록" 버튼 클릭 핸들러
     const handleEmployeeRegistration = async () => {
       try {
-        const response = await axios.get('http://localhost:8081/personnel/maxId');
+        const response = await axios.get('http://localhost:8081/admin/personnel/maxId');
         const maxId = response.data;
         // 이제 maxId를 사용하여 사원 등록 페이지로 이동하거나 입력 필드에 값을 설정할 수 있습니다.
         console.log('index' , maxId);
@@ -57,20 +46,42 @@ const AdminPersonnel = () => {
       } catch (error) {
         console.error('ID를 검색하는 중 오류 발생', error);
       }
-
     }
+
+    //사원 삭제
+    const handleEmployeeDelete = (id) => {
+      if (window.confirm('사원을 삭제하시겠습니까?')) {
+        axios.delete(`http://localhost:8081/admin/personnel/delete/${id}`)
+          .then(response => {
+            if (response.status === 200) {
+              alert('사원이 삭제되었습니다.');
+              // 사원 목록을 다시 불러오거나 다른 처리를 수행할 수 있습니다.
+              window.location.reload();
+            }
+          })
+          .catch(error => {
+            console.error('사원 삭제 오류', error);
+          });
+      }
+    };
 
     return (
         <MainComponent>
         <Title>인사 관리 - 사원 관리</Title>
+        <div>
+            <Button onClick={handleEmployeeRegistration}>사원등록</Button>
+        </div>
+        <div>
+            <Button onClick={() => router.push('/admin/department-team/')}>부서현황</Button>
+        </div>
         <TblComponent>
           <TblHeader>
             <Table>
               <thead>
                 <tr>
+                    <th>사번</th>
                     <th>부서</th>
                     <th>팀</th>
-                    <th>사번</th>
                     <th>이름</th>
                     <th>전화번호</th>
                     <th colSpan={2}>수정 / 삭제</th>
@@ -84,37 +95,23 @@ const AdminPersonnel = () => {
                 <tbody>
                   {data.map(item => (
                       <tr key={item.id}>
-                        <td>{item.depart_id}</td>
-                        <td>{item.team_id}</td>
                         <td>{item.id}</td>
+                        <td>{item.depart_name}</td>
+                        <td>{item.team_name}</td>
                         <td>{item.name}</td>
                         <td>{item.tel}</td>
-                        {/* <td>
-                        <Button onClick={() => onInsertHandle(item)}>등록</Button>  
-                        </td> */}
                         <td>
-                        <Button onClick={() => router.push(`/admin/personnel/EmployeeModification`)}>수정</Button>
+                        <Button onClick={() => router.push(`/admin/personnel/EmployeeModification?id=${item.id}`)}>수정</Button>
                         </td>
                         <td>
-                        <Button>삭제</Button>
+                        <Button onClick={() => handleEmployeeDelete(item.id)}>삭제</Button>
                         </td>
                       </tr>
                   ))}
                 </tbody>
             </PersonnelTableTop>
           </TblContent>
-
-          <TotalBox>
-            <TotalTitle>합계</TotalTitle>
-            <TotalResult>999999</TotalResult>
-          </TotalBox>
         </TblComponent>
-        <div>
-            <Button onClick={handleEmployeeRegistration}>사원등록</Button>
-        </div>
-        <div>
-            <Button onClick={() => router.push('/admin/personnel/DepartmentManagement')}>부서등록</Button>
-        </div>
     </MainComponent>
     );
 }
