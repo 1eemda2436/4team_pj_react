@@ -55,32 +55,32 @@ const Doc = () => {
                 </tbody>
             </PersonalMenu>
             <Docstyle2>
-                <Table>
                     <thead>
-                        <TableTr>
-                            <TableTh2>문서번호</TableTh2>
-                            <TableTh2>카테고리</TableTh2>
-                            <TableTh2 >문서 제목</TableTh2>
-                            <TableTh2>작성자</TableTh2>
-                            <TableTh2>기안일</TableTh2>
-                        </TableTr>
+                        <tr>
+                            <th>문서번호</th>
+                            <th>카테고리</th>
+                            <th >문서 제목</th>
+                            <th>작성자</th>
+                            <th>기안일</th>
+                        </tr>
                     </thead>
                     <tbody>
                         {samples.map((draft) =>
-                            <TableTr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${draft.doc_id}`)}>
-                                <TableTd2 component="" scope="draft">{draft.doc_id}</TableTd2>
-                                <TableTd2>{draft.category_name}</TableTd2>
-                                <TableTd2 >{draft.doc_title}</TableTd2>
-                                <TableTd2>{draft.name}</TableTd2>
-                                <TableTd2>{draft.doc_date}</TableTd2>
-                            </TableTr>
+                            <tr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${draft.doc_id}`)}>
+                                <td component="" scope="draft">{draft.doc_id}</td>
+                                <td>{draft.category_name}</td>
+                                <td >{draft.doc_title}</td>
+                                <td>{draft.name}</td>
+                                <td>{draft.doc_date}</td>
+                            </tr>
                         )}
                     </tbody>
-                </Table>
                 <Table>
-                    <TableTd2>
-                    <button type="button" onClick={() => router.push(`/guest/doc/insertDraft`)}>문서 작성</button>
-                    </TableTd2>
+                    <tr>
+                        <td>
+                            <button type="button" onClick={() => router.push(`/guest/doc/insertDraft`)}>문서 작성</button>
+                        </td>
+                    </tr>
                 </Table>
             </Docstyle2>
         </Container>
@@ -125,38 +125,39 @@ const PersonalMenu = styled.table`
   }
 `;
 
-const Docstyle2 = styled.div`
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Table = styled.table`
+const Docstyle2 = styled.table`
   width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-`;
-
-const TableTr = styled.tr`
-  border: 1px solid #ddd;
-  &:hover {
-    background-color: #f5f5f5;
+  thead {
+    th {
+      text-align: center;
+      padding: 10px;
+      border: 1px solid black;
+    }
   }
-`;
-
-const TableTh2 = styled.th`
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
-`;
-
-const TableTd2 = styled.td`
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
+  tbody {
+    tr {
+      cursor: pointer;
+      td {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid black;
+      }
+    }
+  }
 `;
 
 const H1 = styled.h1`
   font-size: 30px;
+`;
+
+const Table = styled.table`
+    button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 1px;
+  }
 `;
