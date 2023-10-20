@@ -139,7 +139,7 @@ function AdminAnnualConfirm() {
                         <tr style={rowStyle}>
                             <th style={TableHead}>제목</th>
                             <td style={cellStyle} colSpan={3}>{attendance.annual_title}</td>
-                            <td style={cellStyle} rowSpan={5}>
+                            <td style={cellStyle} rowSpan={4}>
                                 <input type="text" placeholder="반려시 필수 작성" style={{}} />
                             </td>
                         </tr>
@@ -162,15 +162,7 @@ function AdminAnnualConfirm() {
                         <tr style={rowStyle}>
                             <th style={TableHead}>구분</th>
                             <td style={cellStyle} colSpan={3}>---</td>
-                        </tr>
-
-                        <tr style={rowStyle}>
-                            <th style={TableHead}>첨부파일</th>
-                            <td style={cellStyle} colSpan={3}>
-                                <input type="file" />
-                            </td>
-                            <td align="center">
-                                <button
+                            <button
                                     style={{
                                         cursor: 'pointer',
                                         backgroundColor: "#007BFF",
@@ -199,8 +191,7 @@ function AdminAnnualConfirm() {
                                     onClick={handleReturn}
                                 >
                                     반려
-                                </button>
-                            </td>
+                            </button>
                         </tr>
                     </tbody>
                 </table>

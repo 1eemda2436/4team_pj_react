@@ -4,16 +4,52 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-const cellStyle = {
-    border: "2px solid black",
-    padding: "8px",
-    textAlign: "center",
-};
+const PageContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+`;
 
-const tableStyle = {
-    borderCollapse: "collapse",
-    width: "800px",
-};
+const AnnualTitle = styled.h1`
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    margin-top: 30px;
+`;
+
+const Table = styled.table`
+    border-collapse: collapse;
+    width: 800px; /* 원래 크기 유지 */
+`;
+
+const TableHead = styled.thead`
+    background-color: #007bff;
+    color: #fff;
+`;
+
+const TableRow = styled.tr`
+    transition: background-color 0.3s;
+    &:hover {
+    background-color: #f5f5f5;
+}
+`;
+
+const TableHeaderCell = styled.th`
+    padding: 12px;
+    border: 1px solid #ccc;
+`;
+
+const TableCell = styled.td`
+    padding: 12px;
+    border: 1px solid #ccc;
+`;
+
+const DocumentLink = styled.a`
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+`;
 
 function AdminVacationList() {
     const [vacation, setVacation] = useState([]);
@@ -32,35 +68,36 @@ function AdminVacationList() {
     }, []);
 
     return (
-        <div align="center">
-            <h1>휴가 신청 내역</h1>
-            <br />
-            <br />
-            <hr />
-            <br />
-            <br />
-            <table style={tableStyle}>
-                <thead>
-                    <tr>
-                        <th style={cellStyle}>문서번호</th>
-                        <th style={cellStyle}>문서 제목</th>
-                        <th style={cellStyle}>승인여부</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {vacation.map((vacat) => (
-                        <tr key={vacat.vacation_id}>
-                            <td style={cellStyle}>{vacat.vacation_id}</td>
-                                <td style={cellStyle}>
-                                    <a style={{ cursor: 'pointer' }} onClick={() => router.push(`/admin/attendance/vacationDetail/${vacat.vacation_id}`)}>{vacat.vacation_title}</a>
-                                </td>
-                            <td style={cellStyle}>{vacat.confirm}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+        <PageContainer>
+            <AnnualTitle>휴가 신청 내역</AnnualTitle>
+            <Table>
+            <TableHead>
+                <TableRow>
+                <TableHeaderCell>문서번호</TableHeaderCell>
+                <TableHeaderCell>문서 제목</TableHeaderCell>
+                <TableHeaderCell>승인여부</TableHeaderCell>
+                </TableRow>
+            </TableHead>
+            <tbody>
+                {vacation.map((vacat) => (
+                <TableRow key={vacat.vacation_id}>
+                    <TableCell align="center">{vacat.vacation_id}</TableCell>
+                    <TableCell>
+                    <DocumentLink align="center"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() =>
+                        router.push(`/admin/attendance/vacationDetail/${vacat.vacation_id}`)
+                        }
+                    >
+                        {vacat.vacation_title}
+                    </DocumentLink>
+                    </TableCell>
+                    <TableCell align="center">{vacat.confirm}</TableCell>
+                </TableRow>
+                ))}
+            </tbody>
+            </Table>
+        </PageContainer>
     );
 }
 
@@ -69,3 +106,4 @@ export default AdminVacationList;
 AdminVacationList.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
+
