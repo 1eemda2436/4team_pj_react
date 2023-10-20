@@ -26,7 +26,7 @@ const BoardWrite = () => {
 
     // 게시물을 서버에 등록하는 함수
     const handlePostBoard = () => {
-        axios.post('http://localhost:8081/add', formData) // 게시물 데이터를 서버에 POST 요청으로 보냄
+        axios.post('http://localhost:8081/board/boardadd', formData) // 게시물 데이터를 서버에 POST 요청으로 보냄
             .then(response => {
                 console.log('게시물 등록 성공:', response.data);
                 router.push('/guest/community'); // 게시판 페이지로 이동
@@ -43,7 +43,7 @@ const BoardWrite = () => {
                 <Row>
                     <div>
                         <div>카테고리</div>
-                        <Input type="text" name="category_id" onchange={handleInputChange} value={formData.categoty_id} />
+                        <Input type="text" name="category_id" onChange={handleInputChange} value={formData.category_id} />
                     </div>
                     <div>
                         <div>작성자</div>
@@ -61,7 +61,7 @@ const BoardWrite = () => {
                 <Row>
                     <div>
                         <div>글내용</div>
-                        <TextArea name="content" onChange={handleInputChange} value={formData.content} />
+                        <TextArea name="content" onChange={handleInputChange} value={formData.content} rows="30" cols="100"/>
                     </div>
                 </Row>
             </Content>

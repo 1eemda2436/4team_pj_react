@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const handleDelete = () => {
     // id에 해당하는 게시물을 삭제
-    axios.delete(`http://localhost:8081/board/${board_id}`)
+    axios.delete(`http://localhost:8081/board/boardDelete/${board_id}`)
         .then(response => {
             // 성공적으로 삭제되면 상태를 업데이트하거나 필요한 작업 수행
             console.log(`ID가 ${board_id}인 항목이 성공적으로 삭제되었습니다.`);
