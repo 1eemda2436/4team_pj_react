@@ -4,6 +4,7 @@ import rootStore from "@/stores/rootStore";
 import Header from "@/components/common/header";
 
 const MyPage = () => {
+    const token = localStorage.getItem('token')
     console.log(rootStore)
 
     return(

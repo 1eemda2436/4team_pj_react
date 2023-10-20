@@ -52,13 +52,18 @@ const TableHead3 = {
 function AdminAnnualConfirm() {
     const router = useRouter();
     const annual_id = router.query.id;
-
+    
     const [attendance, setAttendance] = useState({});
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token');
         if (annual_id) {
             axios
-                .get(`http://localhost:8081/all/attendance/annualDetail/${annual_id}`)
+                .get(`http://localhost:8081/all/attendance/annualDetail/${annual_id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
                 .then((response) => {
                     setAttendance(response.data);
                 })
@@ -69,8 +74,13 @@ function AdminAnnualConfirm() {
     }, [annual_id]);
 
     const handleConfirm = () => {
+        const token = localStorage.getItem('token');
         axios
-            .put(`http://localhost:8081/admin/attendance/annualConfirm/${annual_id}`)
+            .put(`http://localhost:8081/admin/attendance/annualConfirm/${annual_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 setAttendance(response.data);
                 console.log("승인!!!");
@@ -82,8 +92,13 @@ function AdminAnnualConfirm() {
     };
 
     const handleReturn = () => {
+        const token = localStorage.getItem('token');
         axios
-            .put(`http://localhost:8081/admin/attendance/annualReturn/${annual_id}`)
+            .put(`http://localhost:8081/admin/attendance/annualReturn/${annual_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 setAttendance(response.data);
                 console.log("반려!!!");

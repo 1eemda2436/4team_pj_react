@@ -6,26 +6,46 @@ import axios from "axios";
 
 
 const Doc = () => {
-
-    const router = useRouter();
-
-    const [samples, setSamples] = useState([]);
-
-    useEffect(() => {
-        axios
-        .get("http://localhost:8081/doc/temporary")
-        .then((response) => {
-            setSamples(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+  const router = useRouter();
+  
+  const [samples, setSamples] = useState([]);
+  
+  useEffect(() => {
+      const token = localStorage.getItem('token')
+      
+      axios
+      .get("http://localhost:8081/guest/doc/temporary",{
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then((response) => {
+          setSamples(response.data);
+      })
+      .catch((error) => {
+          console.log(error);
+      });
     }, []);
     return(
         <Container>
             <Title>
                 <H1>임시 저장 목록</H1>
             </Title>
+            <Docstyle1>
+                <tbody>
+                    <tr>
+                        <th>
+                            <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
+                        </th>
+                        <th>
+                            <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
+                        </th>
+                        <th>
+                            <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
+                        </th>
+                    </tr>
+                </tbody>
+            </Docstyle1>
             <Docstyle2>
                 <Table>
                     <thead>
@@ -36,8 +56,8 @@ const Doc = () => {
                         </TableTr>
                     </thead>
                     <tbody>
-                        {samples.map(temporary => 
-                            <TableTr key={temporary.doc_id}>
+                        {samples.map((temporary) => 
+                            <TableTr key={temporary.doc_id} onClick={() => router.push(`/guest/doc/detail/temporaryDetail?id=${temporary.doc_id}`)}>
                             <TableTd2 component="" scope="temporary">{temporary.doc_id}</TableTd2>
                             <TableTd2 isTitle>{temporary.doc_title}</TableTd2>
                             <TableTd2>{temporary.save_date}</TableTd2>
@@ -57,63 +77,71 @@ Doc.getLayout = function getLayout(page) {
 };
 
 const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const Docstyle1 = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    margin: 10px;
-`;
-
-const Docstyle2 = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
+  text-align: center;
+  margin-bottom: 20px;
 `;
 
 const H1 = styled.h1`
-    font-size: 30px;
+  font-size: 30px;
+  margin-bottom: 10px;
+`;
+
+const Docstyle1 = styled.table`
+  width: 100%;
+  margin: 10px 0;
+  th {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 1px;
+  }
+`;
+
+const Docstyle2 = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Table = styled.table`
-    border: 1px solid;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 `;
 
 const TableTr = styled.tr`
-    border: 1px solid;
-`;
-
-const TableTh = styled.th`
-    border: 1px solid;
-    padding: 5px;
+  border: 1px solid #ddd;
+  &:hover {
+    background-color: #f5f5f5;
+  }
 `;
 
 const TableTh2 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: ${(props) => (props.isTitle ? '60%' : 'auto%')};
-    width: 100px;
-`;
-
-const TableTd = styled.td`
-    border: 1px solid;
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  ${(props) => props.isTitle && "width: 60%;"}
 `;
 
 const TableTd2 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: ${(props) => (props.isTitle ? '60%' : 'auto%')};
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  ${(props) => props.isTitle && "text-align: left;"}
 `;

@@ -5,7 +5,6 @@ import AttenCalendar from "@/components/calendar/AttenCalendar";
 
 // 연차 신청
 const AnnualRegister = () => {
-
     const router = useRouter();
 
     return (

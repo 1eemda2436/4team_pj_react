@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/common/header';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-
+import moment from "moment";
 
 const tableStyle = {
     borderCollapse: "collapse",
@@ -20,15 +20,15 @@ const Component = styled.div`
     align-items: center;
 `;
 
-const ProjectWorkAdd = () => {
-    const [projectwork, setProjectwork] = useState({
-        complete: 'N' //default 'N'
-    })
-    const [project, setProject] = useState([])
+const ProjectWorkEdit = () => {
+    const [projectwork, setProjectwork] = useState({});
+    const [project, setProject] = useState([]);
+
     const router = useRouter();
-    
+
     useEffect(() => {
         const token = localStorage.getItem('token')
+
         //프로젝트ID 불러오기 위함
         axios
             .get("http://localhost:8081/guest/project",{
@@ -44,22 +44,55 @@ const ProjectWorkAdd = () => {
             });
         }, []); 
 
-    const ProjectworkChange = (event) => {
-        setProjectwork(prevProjectwork => ({
-            ...prevProjectwork, 
-            [event.target.name] : event.target.value
+    const { id } = router.query;
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+
+        if (id) {
+            axios
+                .get(`http://localhost:8081/guest/projectwork/${id}`,{
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then((response) => {
+                    console.log('[ProjectWorkEdit] projectwork', response.data)
+                    const formattedProjectWork = {
+                        ...response.data,
+                        pw_deadline_s: response.data.pw_deadline_s
+                        ? moment(response.data.pw_deadline_s).format('YYYY-MM-DD')
+                        : '', //날짜 포맷 변경
+                        pw_deadline_e: response.data.pw_deadline_e
+                        ? moment(response.data.pw_deadline_e).format('YYYY-MM-DD')
+                        : '', //날짜 포맷 변경
+                    };
+                    setProjectwork(formattedProjectWork);
+                })
+                .catch((erorr) => {
+                    console.log(error);
+                });
+        }
+    }, [id]);
+
+    const ProjectWorkChange = (event) => {
+        console.log(event.target.value)
+
+        setProjectwork(prevProjectWork => ({
+            ...prevProjectWork,
+            [event.target.name]: event.target.value
         }));
     };
 
-    const saveProjectwork = (event) => {
+    const saveProjectWork = (event) => {
         event.preventDefault();
 
         projectwork.pw_deadline_s = new Date(projectwork.pw_deadline_s);
         projectwork.pw_deadline_e = new Date(projectwork.pw_deadline_e);
 
         const token = localStorage.getItem('token')
-        
-        console.log('[saveProjectwork] projectwork', projectwork)
+
+        console.log('[saveProjectWork] projectwork', projectwork)
 
         axios
             .post("http://localhost:8081/guest/projectwork", projectwork,{
@@ -72,7 +105,7 @@ const ProjectWorkAdd = () => {
             })
             .catch((error) => {
                 console.log(error);
-            });
+            })
     }
 
     return (
@@ -82,7 +115,7 @@ const ProjectWorkAdd = () => {
                 <thead>
                     <tr>
                         <td>
-                        <select name="pj_id" value={project.pj_id} onChange={ProjectworkChange}>
+                        <select name="pj_id" value={project.pj_id} onChange={ProjectWorkChange}>
                         <option value="">프로젝트 선택</option>
                         {project.map((pj) => (
                         <option key={pj.pj_id} value={pj.pj_id}>{pj.pj_name}</option>
@@ -90,19 +123,20 @@ const ProjectWorkAdd = () => {
                         </select>
                         </td>
                     </tr>
-
-                    
+                </thead>
+                <tbody>
                     <tr>
                         <td>
                             <TextField
                             required
                             id="standard-required"
+                            value={projectwork.pw_name || ''}
                             variant="standard"
                             label="프로젝트 업무명"
                             type="text"
                             name="pw_name"
                             placeholder="프로젝트 업무명을 입력해주세요"
-                            onChange={ProjectworkChange}
+                            onChange={ProjectWorkChange}
                             />
                         </td>
                     </tr>
@@ -111,12 +145,13 @@ const ProjectWorkAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={projectwork.duties || ''}
                             variant="standard"
                             label="담당업무"
                             type="text"
                             name="duties"
                             placeholder="담당업무를 입력해주세요"
-                            onChange={ProjectworkChange}
+                            onChange={ProjectWorkChange}
                             />
                         </td>
                     </tr>
@@ -125,12 +160,13 @@ const ProjectWorkAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={projectwork.pw_deadline_s || ''}
                             variant="standard"
                             label="기한일(시작)"
                             type="text"
                             name="pw_deadline_s"
                             placeholder="프로젝트 시작일을 입력해주세요"
-                            onChange={ProjectworkChange}
+                            onChange={ProjectWorkChange}
                             />
                         </td>
                     </tr>
@@ -139,12 +175,13 @@ const ProjectWorkAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={projectwork.pw_deadline_e || ''}
                             variant="standard"
                             label="기한일(종료)"
                             type="text"
                             name="pw_deadline_e"
-                            placeholder="프로젝트 종료일을 적어주세요"
-                            onChange={ProjectworkChange}
+                            placeholder="프로젝트 종료일을 입력해주세요"
+                            onChange={ProjectWorkChange}
                             />
                         </td>
                     </tr>
@@ -156,7 +193,7 @@ const ProjectWorkAdd = () => {
                                 type="radio"
                                 value="N"
                                 checked={projectwork.complete == 'N'}
-                                onChange={ProjectworkChange}
+                                onChange={ProjectWorkChange}
                             />
                             N
                             </label>
@@ -166,24 +203,24 @@ const ProjectWorkAdd = () => {
                                 type="radio"
                                 value="Y"
                                 checked={projectwork.complete == 'Y'}
-                                onChange={ProjectworkChange}
+                                onChange={ProjectWorkChange}
                             />
                             Y
                             </label>
                         </td>
                     </tr>
-                    
-                </thead>
+                </tbody>
             </table>
 
-            <button onClick = {saveProjectwork}>추가</button>
-            <button onClick={() => router.push('/guest/workspace')}>목록</button>
+            <button onClick = {saveProjectWork}>수정</button>
+            <button onClick = {() => router.push('/guest/workspace')}>목록</button>
         </Component>
     )
 }
 
-export default ProjectWorkAdd;
+export default ProjectWorkEdit;
 
-ProjectWorkAdd.getLayout = function getLayout(page) {
+ProjectWorkEdit.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
+

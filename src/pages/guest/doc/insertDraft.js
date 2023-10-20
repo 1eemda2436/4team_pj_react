@@ -6,29 +6,55 @@ import axios from "axios";
 
 
 const Doc = () => {
-
     const router = useRouter();
+    const {id} = router.query;
 
     const [selectedCategory, setSelectedCategory] = useState('');
 
-    const [samples, setSamples] = useState([]);
+    const [samples, setSamples] = useState({
+        doc_id: '',
+        doc_date: '',
+        name: '',
+        doc_title:'',
+        doc_content:'',
+        doc_attachment:'',
+        id:'',
+    });
 
-    const [error, setError] = useState(null);
+    const handleInputChange = (e) => {
+      const {name, value} = e.target;
+      setSamples((samples) => ({
+        ...samples,
+        [name]: value,
+      }));
+    };
 
-    useEffect(() => {
-        axios
-        .post("http://localhost:8081/doc/insert")
-        .then((response) => {
-            setSamples(response.data);
-        })
-        .catch((error) => {
-            if(axios.isAxiosError(error)) {
-                setError(error.response.data.message);
-            } else {
-                setError('데이터를 가져오는 중 오류 발생')
-            }
-        });
-    }, []);
+    const handleUpdate = () => {
+      const insertSamples = {
+        doc_id: samples.doc_id,
+        doc_date: samples.doc_date,
+        name: samples.name,
+        doc_title: samples.doc_title,
+        doc_content: samples.doc_content,
+        doc_attachment: samples.doc_attachment,
+        id: samples.id,
+      };
+      
+      const token = localStorage.getItem('token')
+
+      axios.post("http://localhost:8081/guest/doc/insert", insertSamples, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then((response) => {
+          alert('문서등록 완료');
+          router.push('guest/doc/list/draftingList');
+      })
+      .catch((error) => {
+        console.error('문서 등록 실패', error)
+      });
+    };
 
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
@@ -50,22 +76,26 @@ const Doc = () => {
             </Title>
             <Docstyle1>
                 <DocstyleLeft>
-                    <Table>
-                        {samples.map(insert =>
-                            <div key={insert.doc_id}>
-                        <TableTr>
-                            <TableTh>문서번호</TableTh>
-                            <TableTd component="" scope="insert">{insert.doc_id}</TableTd>
-                        </TableTr><TableTr>
-                                <TableTh>기안일</TableTh>
-                                <TableTd>{insert.doc_date}</TableTd>
-                            </TableTr><TableTr>
-                                <TableTh>기안자</TableTh>
-                                <TableTd>{insert.name}</TableTd>
-                            </TableTr>
-                            </div>
-                        )}
-                    </Table>
+                    <table>
+                            <tr>
+                                <th>문서번호</th>
+                                <td>
+                                  <input
+                                    type="text"
+                                    name="doc_id"
+                                    readOnly
+                                    value={samples.doc_id}
+                                    onChange={handleInputChange}
+                                  />
+                                </td>
+                            </tr><tr>
+                                <th>기안일</th>
+                                <td>{insert.doc_date}</td>
+                            </tr><tr>
+                                <th>기안자</th>
+                                <td>{insert.name}</td>
+                            </tr>
+                    </table>
                 </DocstyleLeft>
                 <DocstyleRight>
                     <ButtonStyle>
@@ -75,30 +105,34 @@ const Doc = () => {
                 </DocstyleRight>
             </Docstyle1>
             <Docstyle2>
-                <Table>
+                <table>
                     {samples.map(insert =>
                     <div key={insert.doc_id}>
-                    <TableTr>
-                        <TableTh3>제목</TableTh3>
-                        <TableTh2>{insert.doc_title}</TableTh2>
-                    </TableTr>
-                    <TableTr>
-                        <TableTd2 colSpan={2}>{insert.doc_content}</TableTd2>
-                    </TableTr>
+                    <tr>
+                        <th>제목</th>
+                        <th>{insert.doc_title}</th>
+                    </tr>
+                    <tr>
+                        <td colSpan={2}>{insert.doc_content}</td>
+                    </tr>
                     </div>
                     )}
-                </Table>
+                </table>
                 <br></br>
-                <Table>
-                        <TableTr>
-                            <TableTh3>구분</TableTh3>
-                            <TableTd3> </TableTd3>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh3>첨부파일</TableTh3>
-                            <TableTd3>여기에 첨부파일</TableTd3>
-                        </TableTr>
-                </Table>
+                <table>
+                    {samples.map(insert =>
+                        <div key={insert.doc_id}>
+                        <tr>
+                            <th>구분</th>
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <th>첨부파일</th>
+                            <td>{insert.doc_attachment}</td>
+                        </tr>
+                        </div>
+                    )}
+                </table>
             </Docstyle2>
             <CategoryTable>
                 <select value={selectedCategory} onChange={CategoryChange}>
@@ -123,123 +157,109 @@ Doc.getLayout = function getLayout(page) {
 };
 
 const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 `;
 
 const ApprovalLine = styled.div`
-    text-align: right;
-    margin-bottom: 20px;
-    margin-left: auto;
-    tr {
-        border: solid 1px;
-    };
-
+  margin-bottom: 20px;
+  table {
+    width: 100%;
     td {
-        border: solid 1px;
-        width: 100px;
-        height: 100px;
+      width: 33.33%;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      &:hover {
+        background-color: #f5f5f5;
+      }
     }
+  }
 `;
 
 const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-const Docstyle1 = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin: 10px;
-`;
-
-const Docstyle2 = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-`;
-
-const DocstyleLeft = styled.div`
-    margin-left: 10px;
-`;
-
-const DocstyleRight = styled.div`
-    margin-right: 10px;
+  text-align: center;
+  margin-bottom: 20px;
 `;
 
 const H1 = styled.h1`
-    font-size: 30px;
+  font-size: 30px;
+  margin-bottom: 10px;
 `;
 
-const Table = styled.table`
-    border: 1px solid;
+const Docstyle1 = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 `;
 
-const TableTr = styled.tr`
-    border: 1px solid;
-`;
-
-const TableTh = styled.th`
-    border: 1px solid;
-    padding: 5px;
-`;
-
-const TableTh2 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 600px;
-`;
-
-const TableTh3 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 60px;
-`;
-
-const TableTd = styled.td`
-    border: 1px solid;
-    width: 80px;
-`;
-
-const TableTd2 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 200px;
-    height: 300px;
-`;
-
-const TableTd3 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 600px;
-`;
-
-const ButtonStyle = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-
-    button {
-        border: solid 1px;
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: gray;
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin: 1px;
+const DocstyleLeft = styled.div`
+  width: 48%;
+  table {
+    width: 100%;
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
     }
+    th {
+      background-color: #f5f5f5;
+    }
+  }
+`;
 
+const DocstyleRight = styled.div`
+  width: 48%;
+  display: flex;
+  justify-content: space-between;
+  button {
+    width: 48%;
+    padding: 10px;
+    cursor: pointer;
+    &:first-child {
+      margin-right: 4%;
+    }
+  }
+`;
+
+const Docstyle2 = styled.div`
+  width: 80%;
+  margin-bottom: 20px;
+  table {
+    width: 100%;
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #f5f5f5;
+    }
+  }
 `;
 
 const CategoryTable = styled.div`
-    display: flex;
-    justify-content: flex-end;
+  margin-bottom: 20px;
+  select {
+    width: 100%;
+    padding: 10px;
+  }
+`;
+
+const ButtonStyle = styled.div`
+  button {
+    width: 48%;
+    padding: 10px;
+    cursor: pointer;
+    &:first-child {
+      margin-right: 4%;
+    }
+  }
 `;

@@ -18,7 +18,7 @@ const AttendanceDetail = () => {
                     <tr>
                         <th style={{width: "150px"}}>사원번호</th>
                         <td>null</td>
-                    </tr>
+                    </tr>  
 
                     <tr>
                         <th>부서번호</th>

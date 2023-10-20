@@ -31,14 +31,19 @@ const buttonStyle = {
 function GuestVacationConfirm() {
     const router = useRouter();
     const vacation_id = router.query.id;
-
+    
     const [vacation, setVacation] = useState([]);
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token')
         if (vacation_id) {
         console.log(vacation_id)
         axios
-            .get(`http://localhost:8081/all/attendance/vacationDetail/${vacation_id}`)
+            .get(`http://localhost:8081/all/attendance/vacationDetail/${vacation_id}`,{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 setVacation(response.data);
                 console.log(response.data);
@@ -50,8 +55,14 @@ function GuestVacationConfirm() {
     }, [vacation_id]);
 
     const handleConfirm = () => {
+        const token = localStorage.getItem('token')
+        
         axios
-            .put(`http://localhost:8081/attendance/vacationConfirm/${vacation_id}`)
+            .put(`http://localhost:8081/attendance/vacationConfirm/${vacation_id}`,{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 setVacation(response.data);
                 // 승인 요청 처리 후 adminAnnualList 페이지로 이동

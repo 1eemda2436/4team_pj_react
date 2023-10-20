@@ -1,4 +1,4 @@
-import MainLayout from "@/components/layout/mainLayout"
+import AdminLayout from "@/components/layout/adminLayout";
 import styled from "styled-components";
 import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
@@ -6,23 +6,20 @@ import axios from "axios";
 
 
 const Doc = () => {
+
     const router = useRouter();
     const id = router.query.id; // ID를 추출
     console.log(id)
-    const [selectedCategory, setSelectedCategory] = useState('');
-    
-    const [samples, setSamples] = useState([]);
-    
-    const CategoryChange = (event) => {
-        setSelectedCategory(event.target.value);
-    };
 
+    const [samples, setSamples] = useState([]);
+
+    
     useEffect(() => {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token');
         
         if (id) {
             console.log(id);
-            axios.get(`http://localhost:8081/guest/doc/detail/${id}`,{
+            axios.get(`http://localhost:8081/admin/doc/adminDetail/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -42,39 +39,39 @@ const Doc = () => {
             <ApprovalLine>
                 <table>
                     <tr>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                        <td onClick={() => router.push('/admin/doc/approvalLine')}></td>
+                        <td onClick={() => router.push('/admin/doc/approvalLine')}></td>
+                        <td onClick={() => router.push('/admin/doc/approvalLine')}></td>
                     </tr>
                 </table>
             </ApprovalLine>
-            <Title>
-                <H1>업무 기안서</H1>
-            </Title>
             <Docstyle1>
                 <DocstyleLeft>
                     <Table>
-                        <div>
                         <TableTr>
-                            <TableTh>문서번호</TableTh>
-                            <TableTd component="" scope="detail">{samples.doc_id}</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>기안일</TableTh>
-                            <TableTd>{samples.doc_date}</TableTd>
+                            <TableTh>결재번호</TableTh>
+                            <TableTd component="" scope="adminDetail">{samples.approval_id}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>기안자</TableTh>
                             <TableTd>{samples.name}</TableTd>
                         </TableTr>
-                        </div>
+                        <TableTr>
+                            <TableTh>결재요청일</TableTh>
+                            <TableTd>{samples.approval_date}</TableTd>
+                        </TableTr>
                     </Table>
                 </DocstyleLeft>
-                    
+                <DocstyleRight>
+                    <Comment placeholder="결재 의견을 입력하세요" />
+                    <ButtonStyle>
+                    <button type="button" onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재</button>
+                    <button type="button" onClick={() => router.push('/admin/doc/adminApprovalBack')}>반려</button>
+                    </ButtonStyle>
+                </DocstyleRight>
             </Docstyle1>
             <Docstyle2>
                 <Table>
-                    <div>
                         <TableTr>
                             <TableTh3>제목</TableTh3>
                             <TableTh2>{samples.doc_title}</TableTh2>
@@ -82,11 +79,9 @@ const Doc = () => {
                         <TableTr>
                                 <TableTd2 colSpan={2}>{samples.doc_content}</TableTd2>
                         </TableTr>
-                     </div>
                 </Table>
                 <br></br>
                 <Table>
-                    <div>
                         <TableTr>
                             <TableTh3>구분</TableTh3>
                             <TableTd3> </TableTd3>
@@ -95,12 +90,8 @@ const Doc = () => {
                             <TableTh3>첨부파일</TableTh3>
                             <TableTd3>{samples.doc_attachment}</TableTd3>
                         </TableTr>
-                    </div>
                 </Table>
             </Docstyle2>
-            <ButtonStyle>
-                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>돌아가기</button>
-            </ButtonStyle>
         </Container>
     )
 }
@@ -108,7 +99,7 @@ const Doc = () => {
 export default Doc;
 
 Doc.getLayout = function getLayout(page) {
-    return <MainLayout>{page}</MainLayout>;
+    return <AdminLayout>{page}</AdminLayout>;
 };
 
 const Container = styled.div`
@@ -132,11 +123,6 @@ const ApprovalLine = styled.div`
         height: 100px;
     }
 `;
-
-const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
 const Docstyle1 = styled.div`
     display: flex;
     justify-content: space-between;
@@ -157,10 +143,14 @@ const DocstyleLeft = styled.div`
 
 const DocstyleRight = styled.div`
     margin-right: 10px;
+    text-align: right;
 `;
 
-const H1 = styled.h1`
-    font-size: 30px;
+const Comment = styled.textarea`
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 10px;
+    resize: vertical;
 `;
 
 const Table = styled.table`

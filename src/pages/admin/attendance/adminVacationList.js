@@ -53,12 +53,16 @@ const DocumentLink = styled.a`
 
 function AdminVacationList() {
     const [vacation, setVacation] = useState([]);
-
     const router = useRouter();
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token');
         axios
-            .get("http://localhost:8081/all/attendance/vacationRequestsList")
+            .get("http://localhost:8081/all/attendance/vacationRequestsList", {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 setVacation(response.data);
             })
