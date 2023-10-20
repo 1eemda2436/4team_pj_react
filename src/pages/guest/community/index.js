@@ -5,11 +5,16 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Community = () => {
+    const token = localStorage.getItem('token')
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get('http://localhost:8081/board')
+        axios.get('http://localhost:8081/board', {
+            headers: {
+                Authorization: token
+            }
+        })
             .then(response => {
                 setData(response.data);
             })

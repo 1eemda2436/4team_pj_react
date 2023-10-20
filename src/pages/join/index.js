@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Input from "@/components/form/input";
 
 export default function Join() {
+    const token = localStorage.getItem('token')
     const router = useRouter();
     const [step, setStep] = useState(1);
 

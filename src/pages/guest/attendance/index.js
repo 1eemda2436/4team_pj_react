@@ -3,10 +3,26 @@ import styled from "styled-components";
 import User from '../../../../public/asset/icons/user.svg'
 import Header from "@/components/common/header";
 import { useRouter } from "next/router";
+import AttenCalendar from "@/components/calendar/AttenCalendar";
+
+const WeeklyWorkButton = styled.a`
+    cursor: pointer;
+    background-color: #005FC5;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+
+    &:hover {
+    background-color: #003F85;
+    }
+`;
+
 
 // main
 const Attendance = () => {
-
+    const token = localStorage.getItem('token')
     const router = useRouter();
 
     return (
@@ -61,14 +77,16 @@ const Attendance = () => {
                 
                 <AttenBoxBottom>
                     <AttenCal>
-                        <div className="calendar">
-                            [ 캘린더 자리 ]
+                        <div style={{ border: "3px solid black", borderRadius: "20px", width: "100%", height: "100%", display: "flex"}}>
+                            <AttenCalendar />
                         </div>
                     </AttenCal>
                     
                     <AttenWeekWork>
                         <div className="work-hours">
-                            <a onClick={() => router.push('/guest/attendance/detail/')} style={{ cursor: 'pointer' }}>[ 주간 근무 현황 ]</a>
+                            <WeeklyWorkButton onClick={() => router.push('/guest/attendance/detail/')}>
+                                주강 긍무 형황
+                            </WeeklyWorkButton>
                         </div>
                         <br/>
                         <div>[ 총 근무 시간 ]</div>

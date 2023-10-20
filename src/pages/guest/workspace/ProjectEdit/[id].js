@@ -24,13 +24,18 @@ const ProjectEdit = () => {
     const [project, setProject] = useState({})
     
     const router = useRouter();
-
+    
     const { id } = router.query;
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token')
         if (id) {
             axios
-                .get(`http://localhost:8081/guest/project/${id}`)
+                .get(`http://localhost:8081/guest/project/${id}`,{
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
                 .then((response) => {
                     console.log('[ProjectEdit] project', response.data)
                     const formattedProject = {
@@ -65,10 +70,16 @@ const ProjectEdit = () => {
         project.deadline_s = new Date(project.deadline_s);
         project.deadline_e = new Date(project.deadline_e);
 
+        const token = localStorage.getItem('token')
+
         console.log('[saveProject] project', project)
 
         axios
-            .post("http://localhost:8081/guest/project", project)
+            .post("http://localhost:8081/guest/project", project,{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 router.push('/guest/workspace');
             })

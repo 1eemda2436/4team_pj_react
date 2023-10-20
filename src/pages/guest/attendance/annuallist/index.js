@@ -1,5 +1,5 @@
-import AdminLayout from "@/components/layout/adminLayout";
-import React, { useEffect, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
+import MainLayout from "@/components/layout/mainLayout";
 import axios from "axios";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -51,12 +51,12 @@ const DocumentLink = styled.a`
     cursor: pointer;
 `;
 
-function AdminAnnualList() {
+function GuestAnnualList() {
     const [attendance, setAttendance] = useState([]);
     const router = useRouter();
     
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token')
         axios
             .get("http://localhost:8081/all/attendance/annualRequestsList", {
                 headers: {
@@ -89,7 +89,7 @@ return (
             <TableCell>
             <DocumentLink align="center"
                 onClick={() =>
-                router.push(`/admin/attendance/annualDetail/${annual.annual_id}`)
+                router.push(`/guest/attendance/annualDetail/${annual.annual_id}`)
                 }
             >
                 {annual.annual_title}
@@ -104,8 +104,14 @@ return (
 );
 }
 
-export default AdminAnnualList;
+export default GuestAnnualList;
 
-AdminAnnualList.getLayout = function getLayout(page) {
-    return <AdminLayout>{page}</AdminLayout>;
+GuestAnnualList.getLayout = function getLayout(page) {
+    return <MainLayout>{page}</MainLayout>;
 };
+
+const TextTitle = styled.div`
+    font-size: 36px;
+    font-weight: bold;
+    padding: 30px 30px;
+`;

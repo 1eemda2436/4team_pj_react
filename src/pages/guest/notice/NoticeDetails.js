@@ -6,17 +6,17 @@ const NoticeDetails = () => {
     const router = useRouter();
     return(
         <div>
-              <h1>공지사항 상세</h1>
+            <h1>공지사항 상세</h1>
 
-              <div>
+            <div>
                 <div>제목</div>
                 <div>프로필</div>
                 <div>작성자</div>
                 <div>글내용</div>
-              </div>
+            </div>
 
-              <div onClick={() => router.back()}>삭제 (관리자만 보이게)</div>
-              <div onClick={() => router.back()}>이전</div>
+            <div onClick={() => router.back()}>삭제 (관리자만 보이게)</div>
+            <div onClick={() => router.back()}>이전</div>
         </div>
     )
 }

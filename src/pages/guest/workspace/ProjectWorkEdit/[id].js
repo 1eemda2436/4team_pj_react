@@ -24,13 +24,18 @@ const ProjectWorkEdit = () => {
     const [projectwork, setProjectwork] = useState({});
     const [project, setProject] = useState([]);
 
-
     const router = useRouter();
 
     useEffect(() => {
+        const token = localStorage.getItem('token')
+
         //프로젝트ID 불러오기 위함
         axios
-            .get("http://localhost:8081/guest/project")
+            .get("http://localhost:8081/guest/project",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 setProject(response.data);
             })
@@ -42,9 +47,15 @@ const ProjectWorkEdit = () => {
     const { id } = router.query;
 
     useEffect(() => {
+        const token = localStorage.getItem('token')
+
         if (id) {
             axios
-                .get(`http://localhost:8081/guest/projectwork/${id}`)
+                .get(`http://localhost:8081/guest/projectwork/${id}`,{
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
                 .then((response) => {
                     console.log('[ProjectWorkEdit] projectwork', response.data)
                     const formattedProjectWork = {
@@ -79,10 +90,16 @@ const ProjectWorkEdit = () => {
         projectwork.pw_deadline_s = new Date(projectwork.pw_deadline_s);
         projectwork.pw_deadline_e = new Date(projectwork.pw_deadline_e);
 
+        const token = localStorage.getItem('token')
+
         console.log('[saveProjectWork] projectwork', projectwork)
 
         axios
-            .post("http://localhost:8081/guest/projectwork", projectwork)
+            .post("http://localhost:8081/guest/projectwork", projectwork,{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 router.push('/guest/workspace');
             })

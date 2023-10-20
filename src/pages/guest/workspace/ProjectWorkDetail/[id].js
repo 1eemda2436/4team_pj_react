@@ -47,9 +47,15 @@ const ProjectWorkDetail = () => {
     const { id } = router.query;
 
     useEffect(() => {
+        const token = localStorage.getItem('token')
+
         if (id) {
             axios
-                .get(`http://localhost:8081/guest/projectwork/${id}`)
+                .get(`http://localhost:8081/guest/projectwork/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
                 .then((response) => {
                     console.log('[ProjectWorkDetail] projectwork', response.data)
                     setProjectwork(response.data);
@@ -62,9 +68,14 @@ const ProjectWorkDetail = () => {
 
     const deleteProjectWork = (event) => {
         event.preventDefault();
+        const token = localStorage.getItem('token')
 
         axios
-            .delete(`http://localhost:8081/guest/projectwork/${id}`)
+            .delete(`http://localhost:8081/guest/projectwork/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 router.push('/guest/workspace');
             })

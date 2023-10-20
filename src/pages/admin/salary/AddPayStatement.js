@@ -38,6 +38,7 @@ const PayStatement = () => {
     const totalPayment = Math.ceil(totalMathPayment / 10000) * 10000
 
     const handleCalculate = () => {
+        const token = localStorage.getItem('token')
         // 계산에 필요한 데이터를 담은 객체를 생성합니다
         const calculationData = {
             s_id: s_id,
@@ -50,7 +51,11 @@ const PayStatement = () => {
             t_pay: transportationPay,
         };
     
-        axios.put(`http://localhost:8081/salary/calculateTaxes`, calculationData)
+        axios.put(`http://localhost:8081/admin/salary/calculateTaxes`, calculationData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
             .then((response) => {
                 // 서버에서의 응답을 처리하고 필요하면 업데이트합니다
                 console.log('계산이 성공했습니다', response.data);

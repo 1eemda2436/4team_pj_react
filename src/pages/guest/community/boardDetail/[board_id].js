@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 
 const BoardDetails = () => {
+    const token = localStorage.getItem('token')
     const router = useRouter();
     const { board_id } = router.query.board_id;
     console.log(board_id)

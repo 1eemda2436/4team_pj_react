@@ -18,7 +18,7 @@ const AttendanceDetail = () => {
                     <tr>
                         <th style={{width: "150px"}}>사원번호</th>
                         <td>null</td>
-                    </tr>
+                    </tr>  
 
                     <tr>
                         <th>부서번호</th>
@@ -61,8 +61,7 @@ const AttendanceDetail = () => {
 
             </div>
 
-            <div align="center" style={{ display: "grid", gridTemplateColumns: "repeat(2, 300px)", gridGap: "10px" }}>
-
+            <CenteredGrid>
                 <AnnualRequest onClick={() => router.push('/guest/attendance/register/annualRegister')} style={{ cursor: 'pointer' }}>
                     [ 연차 신청 ]
                 </AnnualRequest>
@@ -95,15 +94,14 @@ const AttendanceDetail = () => {
                     [ 12 ]
                 </AnnualRest>
 
-                <AnnualRest>
+                <AnnualRest onClick={() => router.push('/guest/attendance/annuallist')} style={{ cursor: 'pointer' }}>
                     [ 연차 목록 ]
                 </AnnualRest>
 
-                <AnnualRest onClick={() => router.push('/guest/attendance/annual')} style={{ cursor: 'pointer' }}>
+                <AnnualRest onClick={() => router.push('/guest/attendance/annuallist')} style={{ cursor: 'pointer' }}>
                     [ 2 ]
                 </AnnualRest>
-
-            </div>
+            </CenteredGrid>
 
             <div>
                 <TblComponent>
@@ -275,4 +273,12 @@ const AnnualRequest = styled.div`
     margin-left: 35%;
     margin-top: 30px;
     margin-right: -35%;
+`;
+
+const CenteredGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 350px);
+    grid-gap: 10px;
+    justify-content: center;
+    align-items: center;
 `;

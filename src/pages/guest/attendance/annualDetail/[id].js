@@ -1,4 +1,4 @@
-import AdminLayout from "@/components/layout/adminLayout";
+import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from "next/router";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -49,14 +49,15 @@ const TableHead3 = {
     height: "41px",
 };
 
-function AdminAnnualConfirm() {
+function GuestAnnualConfirm() {
     const router = useRouter();
     const annual_id = router.query.id;
     
     const [attendance, setAttendance] = useState({});
     
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token')
+
         if (annual_id) {
             axios
                 .get(`http://localhost:8081/all/attendance/annualDetail/${annual_id}`, {
@@ -74,9 +75,10 @@ function AdminAnnualConfirm() {
     }, [annual_id]);
 
     const handleConfirm = () => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token')
+
         axios
-            .put(`http://localhost:8081/admin/attendance/annualConfirm/${annual_id}`, {
+            .put(`http://localhost:8081/attendance/annualModify/${annual_id}`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -91,26 +93,8 @@ function AdminAnnualConfirm() {
             });
     };
 
-    const handleReturn = () => {
-        const token = localStorage.getItem('token');
-        axios
-            .put(`http://localhost:8081/admin/attendance/annualReturn/${annual_id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then((response) => {
-                setAttendance(response.data);
-                console.log("반려!!!");
-                router.push('/admin/attendance/adminAnnualList');
-            })
-            .catch((error) => {
-                console.log("Error:", error);
-            });
-    };
-
     const handlePdfDownload = () => {
-        window.print(); // 브라우저 인쇄 다이얼로그를 열기
+        window.print(); // 브라우저 인쇄 
     };
     
 
@@ -134,7 +118,7 @@ function AdminAnnualConfirm() {
                         ...buttonStyle,
                         backgroundColor: "#6c757d",
                     }}
-                    onClick={() => router.push('/admin/attendance/adminAnnualList')}
+                    onClick={() => router.push('/guest/attendance/annuallist')}
                     >
                     돌아가기
                 </button>
@@ -148,15 +132,11 @@ function AdminAnnualConfirm() {
                             <td style={cellStyle}>{attendance.annual_id}</td>
                             <th style={TableHead}>작성일자</th>
                             <td style={cellStyle}>{formattedWirte}</td>
-                            <th style={TableHead2}>결재의견</th>
                         </tr>
 
                         <tr style={rowStyle}>
                             <th style={TableHead}>제목</th>
                             <td style={cellStyle} colSpan={3}>{attendance.annual_title}</td>
-                            <td style={cellStyle} rowSpan={5}>
-                                <input type="text" placeholder="반려시 필수 작성" style={{}} />
-                            </td>
                         </tr>
 
                         <tr style={rowStyle}>
@@ -174,60 +154,46 @@ function AdminAnnualConfirm() {
                             </td>
                         </tr>
 
-                        <tr style={rowStyle}>
-                            <th style={TableHead}>구분</th>
-                            <td style={cellStyle} colSpan={3}>---</td>
-                        </tr>
-
-                        <tr style={rowStyle}>
-                            <th style={TableHead}>첨부파일</th>
-                            <td style={cellStyle} colSpan={3}>
-                                <input type="file" />
-                            </td>
-                            <td align="center">
-                                <button
-                                    style={{
-                                        cursor: 'pointer',
-                                        backgroundColor: "#007BFF",
-                                        color: "white",
-                                        border: "none",
-                                        padding: "10px 20px",
-                                        borderRadius: "20px",
-                                        fontSize: "1rem",
-                                        margin: "10px",
-                                    }}
-                                    onClick={handleConfirm}
-                                >
-                                    승인
-                                </button>
-                                <button
-                                    style={{
-                                        cursor: 'pointer',
-                                        backgroundColor: "red",
-                                        color: "white",
-                                        border: "none",
-                                        padding: "10px 20px",
-                                        borderRadius: "20px",
-                                        fontSize: "1rem",
-                                        margin: "10px",
-                                    }}
-                                    onClick={handleReturn}
-                                >
-                                    반려
-                                </button>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
-            </div>
-            <hr />
-            
+                    <button
+                        style={{
+                            cursor: 'pointer',
+                            backgroundColor: "#007BFF",
+                            color: "white",
+                            border: "none",
+                            padding: "10px 20px",
+                            borderRadius: "20px",
+                            fontSize: "1rem",
+                            margin: "10px",
+                        }}
+                        onClick={handleConfirm}
+                    >
+                        수정
+                    </button>
+                    <button
+                        style={{
+                            cursor: 'pointer',
+                            backgroundColor: "#007BFF",
+                            color: "white",
+                            border: "none",
+                            padding: "10px 20px",
+                            borderRadius: "20px",
+                            fontSize: "1rem",
+                            margin: "10px",
+                        }}
+                        onClick={() => router.push('/guest/attendance/annuallist')}
+                    >
+                        취소
+                    </button>
+                </div>
+            <hr/>
         </div>
     );
 }
 
-export default AdminAnnualConfirm;
+export default GuestAnnualConfirm;
 
-AdminAnnualConfirm.getLayout = function getLayout(page) {
-    return <AdminLayout>{page}</AdminLayout>;
+GuestAnnualConfirm.getLayout = function getLayout(page) {
+    return <MainLayout>{page}</MainLayout>;
 };
