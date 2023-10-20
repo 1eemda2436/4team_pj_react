@@ -13,7 +13,7 @@ const Doc = () => {
 
     useEffect(() => {
         axios
-        .get("http://localhost:8081/doc/adminTotal")
+        .get("http://localhost:8081/admin/doc/adminTotal")
         .then((response) => {
             setSamples(response.data);
         })
@@ -25,7 +25,7 @@ const Doc = () => {
     return(
         <Container>
             <Title>
-                <H1>통합 문서함</H1>
+                <H1>전자 결재</H1>
             </Title>
             <AdminMenu>
                 <tbody>
@@ -51,15 +51,32 @@ const Doc = () => {
                     </tr>
                 </tbody>
             </AdminMenu>
-            <DocList>
-                <tbody>
-                    <tr>
-                        <td>
-                            버튼을 누르면 페이지가 넘어가지 않고 여기에 뜨게 만들기
-                        </td>
-                    </tr>
-                </tbody>
-            </DocList>
+            <Docstyle2>
+                    <thead>
+                        <tr>
+                            <th>상태</th>
+                            <th>문서번호</th>
+                            <th>카테고리</th>
+                            <th>문서 제목</th>
+                            <th>작성자</th>
+                            <th>결재일</th>
+                            <th>결재완료일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {samples.map((adminTotal) =>
+                            <tr key = {adminTotal.doc_id} onClick={() => router.push(`/admin/doc/adminApprovalIngDetail?id=${adminTotal.doc_id}`)}>
+                                    <td component="" scope="adminTotal">{adminTotal.doc_status}</td>
+                                    <td>{adminTotal.doc_id}</td>
+                                    <td>{adminTotal.category_name}</td>
+                                    <td>{adminTotal.doc_title}</td>
+                                    <td>{adminTotal.name}</td>
+                                    <td>{adminTotal.approval_date}</td>
+                                    <td>{adminTotal.approval_endDate}</td>
+                            </tr>
+                        )}
+                    </tbody>
+            </Docstyle2>
             
         </Container>
     )
@@ -72,40 +89,58 @@ Doc.getLayout = function getLayout(page) {
 };
 
 const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const H1 = styled.h1`
-    font-size: 30px;
-`;
-
-const PersonalMenu = styled.div`
-    width: 200px;
-    padding: 20px;
-    position: fixed;
-    height: 100%;
-    left: auto;
-    top: 100px;
+  text-align: center;
+  margin-bottom: 20px;
 `;
 
 const AdminMenu = styled.table`
-    width: 200px;
-    padding: 20px;
-    position: fixed;
-    height: 100%;
-    left: auto;
-    top: 50%;
+  width: 100%;
+  margin: 10px 0;
+  th {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 1px;
+  }
 `;
 
-const DocList = styled.table`
-    margin-left: 220px;
-    padding: 20px;
+const Docstyle2 = styled.table`
+  width: 100%;
+  thead {
+    th {
+      text-align: center;
+      padding: 10px;
+      border: 1px solid black;
+    }
+  }
+  tbody {
+    tr {
+      cursor: pointer;
+      td {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid black;
+      }
+    }
+  }
+`;
+
+const H1 = styled.h1`
+  font-size: 30px;
 `;

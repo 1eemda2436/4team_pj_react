@@ -13,7 +13,7 @@ const Doc = () => {
 
     useEffect(() => {
         axios
-        .get("http://localhost:8081/doc/guestTotal")
+        .get("http://localhost:8081/guest/doc/guestTotal")
         .then((response) => {
             setSamples(response.data);
         })
@@ -25,7 +25,7 @@ const Doc = () => {
     return(
         <Container>
             <Title>
-                <H1>통합 문서함</H1>
+                <H1>전자 결재</H1>
             </Title>
             <PersonalMenu>
                 <tbody>
@@ -49,15 +49,35 @@ const Doc = () => {
                     </tr>
                 </tbody>
             </PersonalMenu>
-            <DocList>
-                <tbody>
-                    <tr>
-                        <td>
-                            버튼을 누르면 페이지가 넘어가지 않고 여기에 뜨게 만들기
-                        </td>
-                    </tr>
-                </tbody>
-            </DocList>
+            <Docstyle2>
+                <Table>
+                    <thead>
+                        <TableTr>
+                            <TableTh2>문서번호</TableTh2>
+                            <TableTh2>카테고리</TableTh2>
+                            <TableTh2 >문서 제목</TableTh2>
+                            <TableTh2>작성자</TableTh2>
+                            <TableTh2>기안일</TableTh2>
+                        </TableTr>
+                    </thead>
+                    <tbody>
+                        {samples.map((draft) =>
+                            <TableTr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${draft.doc_id}`)}>
+                                <TableTd2 component="" scope="draft">{draft.doc_id}</TableTd2>
+                                <TableTd2>{draft.category_name}</TableTd2>
+                                <TableTd2 >{draft.doc_title}</TableTd2>
+                                <TableTd2>{draft.name}</TableTd2>
+                                <TableTd2>{draft.doc_date}</TableTd2>
+                            </TableTr>
+                        )}
+                    </tbody>
+                </Table>
+                <Table>
+                    <TableTd2>
+                    <button type="button" onClick={() => router.push(`/guest/doc/insertDraft`)}>문서 작성</button>
+                    </TableTd2>
+                </Table>
+            </Docstyle2>
         </Container>
     )
 }
@@ -69,31 +89,69 @@ Doc.getLayout = function getLayout(page) {
 };
 
 const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const H1 = styled.h1`
-    font-size: 30px;
+  text-align: center;
+  margin-bottom: 20px;
 `;
 
 const PersonalMenu = styled.table`
-    width: 200px;
-    padding: 20px;
-    position: fixed;
-    height: 100%;
-    left: auto;
-    top: 100px;
+  width: 100%;
+  margin: 10px 0;
+  th {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 1px;
+  }
 `;
 
-const DocList = styled.table`
-    margin-left: 220px;
-    padding: 20px;
+const Docstyle2 = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+`;
+
+const TableTr = styled.tr`
+  border: 1px solid #ddd;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
+
+const TableTh2 = styled.th`
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+`;
+
+const TableTd2 = styled.td`
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+`;
+
+const H1 = styled.h1`
+  font-size: 30px;
 `;
