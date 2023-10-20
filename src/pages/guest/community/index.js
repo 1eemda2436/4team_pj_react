@@ -10,9 +10,9 @@ const Community = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get('http://localhost:8081/board', {
+        axios.get('http://localhost:8081/guest/community/list',{
             headers: {
-                Authorization: token
+                Authorization: 'Bearer '+token
             }
         })
             .then(response => {
@@ -35,9 +35,10 @@ const Community = () => {
 
     return (
         <Container>
+            
         <Section>
             <CommunityHeader>
-                <h3>자유게시판</h3>
+            <Title>자유게시판</Title>
                 <Button onClick={goToBoardWrite}>글쓰기</Button>
             </CommunityHeader>
 
@@ -133,4 +134,10 @@ const Button = styled.button`
     border: none;
     border-radius: 5px;
     cursor: pointer;
+`;
+const Title = styled.h1`
+    font-size: 24px;
+    margin: 0;
+    padding: 10px 0;
+    text-align: center;
 `;
