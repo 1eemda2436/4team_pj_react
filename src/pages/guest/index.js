@@ -2,7 +2,6 @@ import Header from "@/components/common/header";
 import MainLayout from "@/components/layout/mainLayout"
 
 const Guest = () => {
-    const token = localStorage.getItem('token')
     return(
         <div>
             <Header />

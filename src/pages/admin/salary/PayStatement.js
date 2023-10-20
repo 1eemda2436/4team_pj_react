@@ -7,13 +7,18 @@ import React, { useEffect, useState } from 'react';
 const PayStatement = () => {
     const router = useRouter();
     const id = router.query.id; // ID를 추출
-
+    
     const [PayStatementData, setPayStatementData] = useState([]);
-
+    
     useEffect(() => {
+      const token = localStorage.getItem('token')
       if (id) {
         console.log(id)
-        axios.get(`http://localhost:8081/admin/salary/PayStatement/${id}`)
+        axios.get(`http://localhost:8081/admin/salary/PayStatement/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
         .then((response) => {
             setPayStatementData(response.data);
         })

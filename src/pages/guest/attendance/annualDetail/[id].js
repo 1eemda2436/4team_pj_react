@@ -52,16 +52,17 @@ const TableHead3 = {
 function GuestAnnualConfirm() {
     const router = useRouter();
     const annual_id = router.query.id;
-    const token = localStorage.getItem('token')
-
+    
     const [attendance, setAttendance] = useState({});
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token')
+
         if (annual_id) {
             axios
                 .get(`http://localhost:8081/all/attendance/annualDetail/${annual_id}`, {
                     headers: {
-                        Authorization: token
+                        'Authorization': `Bearer ${token}`
                     }
                 })
                 .then((response) => {
@@ -74,10 +75,12 @@ function GuestAnnualConfirm() {
     }, [annual_id]);
 
     const handleConfirm = () => {
+        const token = localStorage.getItem('token')
+
         axios
             .put(`http://localhost:8081/attendance/annualModify/${annual_id}`,{
                 headers: {
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {
@@ -115,7 +118,7 @@ function GuestAnnualConfirm() {
                         ...buttonStyle,
                         backgroundColor: "#6c757d",
                     }}
-                    onClick={() => router.push('/guest/attendance/adminAnnualList')}
+                    onClick={() => router.push('/guest/attendance/annuallist')}
                     >
                     돌아가기
                 </button>
@@ -179,7 +182,7 @@ function GuestAnnualConfirm() {
                             fontSize: "1rem",
                             margin: "10px",
                         }}
-                        onClick={() => router.push('/guest/attendance/adminAnnualList')}
+                        onClick={() => router.push('/guest/attendance/annuallist')}
                     >
                         취소
                     </button>

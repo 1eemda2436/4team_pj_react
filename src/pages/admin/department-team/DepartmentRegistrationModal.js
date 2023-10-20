@@ -8,12 +8,18 @@ const DepartmentRegistrationModal = ({ onClose, onSave }) => {
         company_id : 1
     });
 
+    
     const handleFormSubmit = async (e) => {
+        const token = localStorage.getItem('token')
         e.preventDefault();
 
         try {
             console.log(formData.depart_name);
-            await axios.post(`http://localhost:8081/admin/department/DepartmentInsert`, formData);
+            await axios.post(`http://localhost:8081/admin/department/DepartmentInsert`, formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
         // 성공 처리
         onSave(); // 저장 후 처리
         } catch (error) {

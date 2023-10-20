@@ -29,19 +29,19 @@ const buttonStyle = {
 // 연차 상세페이지
 
 function GuestVacationConfirm() {
-    const token = localStorage.getItem('token')
     const router = useRouter();
     const vacation_id = router.query.id;
-
+    
     const [vacation, setVacation] = useState([]);
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token')
         if (vacation_id) {
         console.log(vacation_id)
         axios
             .get(`http://localhost:8081/all/attendance/vacationDetail/${vacation_id}`,{
                 headers: {
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {
@@ -55,10 +55,12 @@ function GuestVacationConfirm() {
     }, [vacation_id]);
 
     const handleConfirm = () => {
+        const token = localStorage.getItem('token')
+        
         axios
             .put(`http://localhost:8081/attendance/vacationConfirm/${vacation_id}`,{
                 headers: {
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {

@@ -8,31 +8,17 @@ import moment from 'moment';
 import Header from '@/components/common/header';
 import MyCalendar from "@/components/calendar/MyCalendar";
 
-const cellStyle = {
-    border: "2px solid black",
-    padding: "8px",
-};
-
-const tableStyle = {
-    borderCollapse: "collapse",
-    width: "800px",
-};
-
-const CalendarContainer = styled.div`
-  width: 1000px; /* 원하는 크기로 조절 */
-  height: 300px; /* 원하는 크기로 조절 */
-`;
-
 const Workspace = () => {
-    const token = localStorage.getItem('token')
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token')
+
         axios
             .get("http://localhost:8081/guest/project",{
                 headers: {
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {
@@ -45,7 +31,7 @@ const Workspace = () => {
         axios
             .get("http://localhost:8081/guest/projectwork",{
                 headers: {
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {
@@ -165,4 +151,20 @@ const Component = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+
+const cellStyle = {
+    border: "2px solid black",
+    padding: "8px",
+};
+
+const tableStyle = {
+    borderCollapse: "collapse",
+    width: "800px",
+    marginTop: "50px",
+};
+
+const CalendarContainer = styled.div`
+    margin-top: 350px;
+    width: 100% /* 원하는 크기로 조절 */
 `;

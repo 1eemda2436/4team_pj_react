@@ -12,9 +12,15 @@ const Doc = () => {
     const [samples, setSamples] = useState([]);
     const [filteredSamples, setFilteredSamples] = useState([]);
 
+    
     useEffect(() => {
-        axios
-        .get("http://localhost:8081/admin/doc/approvalIng")
+      const token = localStorage.getItem('token')
+      axios
+        .get("http://localhost:8081/admin/doc/approvalIng", {
+          headers: {
+            'Authorization': `Bearer ${token}`
+        }
+        })
         .then((response) => {
             setSamples(response.data);
             const filteredData = response.data.filter(approvalIng => approvalIng.doc_status === 'G');

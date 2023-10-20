@@ -8,10 +8,15 @@ const AdminPayManagement = () => {
 
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
-
+  
   useEffect(() => {
+    const token = localStorage.getItem('token')
     // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-    axios.get('http://localhost:8081/admin/salary/salaryMain')
+    axios.get('http://localhost:8081/admin/salary/salaryMain', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then(response => {
         setData(response.data); // 응답 데이터를 상태에 저장
 

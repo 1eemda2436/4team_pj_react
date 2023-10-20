@@ -6,24 +6,25 @@ import axios from "axios";
 
 
 const Doc = () => {
-    const token = localStorage.getItem('token')
     const router = useRouter();
     const id = router.query.id; // ID를 추출
     console.log(id)
     const [selectedCategory, setSelectedCategory] = useState('');
-
+    
     const [samples, setSamples] = useState([]);
-
+    
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
     };
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token')
+        
         if (id) {
             console.log(id);
             axios.get(`http://localhost:8081/guest/doc/detail/${id}`,{
                 headers: {
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {

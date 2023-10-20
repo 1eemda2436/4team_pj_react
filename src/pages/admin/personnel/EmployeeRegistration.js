@@ -26,9 +26,14 @@ const EmployeeRegistration = () => {
 
   // Handle form submission
   const handleSubmit = async () => {
+    const token = localStorage.getItem('token')
     try {
       // Make a POST request to your Spring Boot API
-      await axios.post('http://localhost:8081/admin/personnel/employeeInsert', formData);
+      await axios.post('http://localhost:8081/admin/personnel/employeeInsert', formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
       // Optionally, you can handle success or show a message to the user
       alert('사원 등록에 성공 했습니다.');

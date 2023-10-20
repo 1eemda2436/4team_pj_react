@@ -54,13 +54,13 @@ const DocumentLink = styled.a`
 function GuestAnnualList() {
     const [attendance, setAttendance] = useState([]);
     const router = useRouter();
-    const token = localStorage.getItem('token')
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token')
         axios
             .get("http://localhost:8081/all/attendance/annualRequestsList", {
                 headers: {
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {

@@ -2,7 +2,6 @@ import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
 
 const Salary = () => {
-    const token = localStorage.getItem('token')
     return(
         <Container>
             <Title>급여관리 - 명세서</Title>

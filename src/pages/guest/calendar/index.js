@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Header from "@/components/common/header";
 
 const Calendar = () => {
-    const token = localStorage.getItem('token')
     return (
         <MainComponent>
             <Header />

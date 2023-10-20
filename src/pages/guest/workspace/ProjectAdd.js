@@ -20,30 +20,31 @@ const Component = styled.div`
 `;
 
 const ProjectAdd = () => {
-    const token = localStorage.getItem('token')
     const [project, setProject] = useState({})
-
+    
     const router = useRouter();
-
+    
     const ProjectChange = (event) => {
         setProject(prevProject => ({
             ...prevProject,
             [event.target.name]: event.target.value
         }));
     };
-
+    
     const saveProject = (event) => {
         event.preventDefault();
-
+        
         project.deadline_s = new Date(project.deadline_s);
         project.deadline_e = new Date(project.deadline_e);
-
+        
+        const token = localStorage.getItem('token')
+        
         console.log('[saveProject] project', project)
 
         axios
             .post("http://localhost:8081/guest/project", project,{
                 headers: {
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {

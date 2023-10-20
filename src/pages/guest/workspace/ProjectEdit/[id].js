@@ -21,19 +21,19 @@ const Component = styled.div`
 `;
 
 const ProjectEdit = () => {
-    const token = localStorage.getItem('token')
     const [project, setProject] = useState({})
     
     const router = useRouter();
-
+    
     const { id } = router.query;
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token')
         if (id) {
             axios
                 .get(`http://localhost:8081/guest/project/${id}`,{
                     headers: {
-                        Authorization: token
+                        'Authorization': `Bearer ${token}`
                     }
                 })
                 .then((response) => {
@@ -70,12 +70,14 @@ const ProjectEdit = () => {
         project.deadline_s = new Date(project.deadline_s);
         project.deadline_e = new Date(project.deadline_e);
 
+        const token = localStorage.getItem('token')
+
         console.log('[saveProject] project', project)
 
         axios
             .post("http://localhost:8081/guest/project", project,{
                 headers: {
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {

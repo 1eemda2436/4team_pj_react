@@ -6,24 +6,25 @@ import axios from "axios";
 
 
 const Doc = () => {
-    const token = localStorage.getItem('token')
-    const router = useRouter();
-
-    const [samples, setSamples] = useState([]);
-
-    useEffect(() => {
-        axios
-        .get("http://localhost:8081/guest/doc/temporary",{
-          headers: {
-            Authorization: token
+  const router = useRouter();
+  
+  const [samples, setSamples] = useState([]);
+  
+  useEffect(() => {
+      const token = localStorage.getItem('token')
+      
+      axios
+      .get("http://localhost:8081/guest/doc/temporary",{
+        headers: {
+          'Authorization': `Bearer ${token}`
         }
-        })
-        .then((response) => {
-            setSamples(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+      })
+      .then((response) => {
+          setSamples(response.data);
+      })
+      .catch((error) => {
+          console.log(error);
+      });
     }, []);
     return(
         <Container>

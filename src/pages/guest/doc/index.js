@@ -6,16 +6,17 @@ import axios from "axios";
 
 
 const Doc = () => {
-    const token = localStorage.getItem('token')
     const router = useRouter();
 
     const [samples, setSamples] = useState([]);
 
     useEffect(() => {
+        const token = localStorage.getItem('token');
+
         axios
         .get("http://localhost:8081/guest/doc/guestTotal",{
             headers: {
-                Authorization: token
+                'Authorization': `Bearer ${token}`
             }
         })
         .then((response) => {

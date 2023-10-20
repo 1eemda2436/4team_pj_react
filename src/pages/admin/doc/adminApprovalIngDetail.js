@@ -13,10 +13,16 @@ const Doc = () => {
 
     const [samples, setSamples] = useState([]);
 
+    
     useEffect(() => {
+        const token = localStorage.getItem('token')
         if (id) {
             console.log(id);
-            axios.get(`http://localhost:8081/admin/doc/adminDetail/${id}`)
+            axios.get(`http://localhost:8081/admin/doc/adminDetail/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 setSamples(response.data);
                 console.log(response.data);

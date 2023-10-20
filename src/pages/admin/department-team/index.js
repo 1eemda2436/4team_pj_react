@@ -11,10 +11,16 @@ const DepartmentManagement = () => {
   const [department, setData] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
 
+  
   //페이지 로드 → list
   useEffect(() => {
+    const { token } = localStorage.getItem('token');
     // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-    axios.get('http://localhost:8081/admin/department/DepartmentManagement')
+    axios.get('http://localhost:8081/admin/department/DepartmentManagement', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then(response => {
         setData(response.data); // 응답 데이터를 상태에 저장
         console.log(response.data)

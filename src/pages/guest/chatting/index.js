@@ -8,7 +8,6 @@ import { useRouter } from 'next/router'
 
 
 const Chatting = () => {
-    const token = localStorage.getItem('token')
     const router = useRouter();
     const [showMessage, setShowMessage] = useState(false);
 

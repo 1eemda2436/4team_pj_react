@@ -9,10 +9,16 @@ const MyCalendar = () => {
     const [projectList, setProjectList] = useState([]);
 
     useEffect(() => {
+        const token = localStorage.getItem('token')
+        
         // 비동기 함수를 이용해 데이터를 불러옴
         async function fetchData() {
             try {
-                const projectResponse = await fetch("http://localhost:8081/guest/project");
+                const projectResponse = await fetch("http://localhost:8081/guest/project", {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 const projectData = await projectResponse.json();
                 setProjectList(projectData);
             } catch (error) {

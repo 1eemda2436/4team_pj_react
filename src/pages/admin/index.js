@@ -5,10 +5,15 @@ import React, {useEffect ,useState } from "react";
 
 const admin = () => {
     const [CompanyData, setData] = useState([]);
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token');
         // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-        axios.get(`http://localhost:8081/admin/company/1`)
+        axios.get(`http://localhost:8081/admin/company/1`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
         .then(response => {
             console.log(response.data)
             setData(response.data); // 받은 데이터를 상태에 저장

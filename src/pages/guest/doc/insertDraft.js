@@ -6,7 +6,6 @@ import axios from "axios";
 
 
 const Doc = () => {
-    const token = localStorage.getItem('token')
     const router = useRouter();
     const {id} = router.query;
 
@@ -40,20 +39,21 @@ const Doc = () => {
         doc_attachment: samples.doc_attachment,
         id: samples.id,
       };
-    
+      
+      const token = localStorage.getItem('token')
 
-        axios.post("http://localhost:8081/guest/doc/insert", insertSamples, {
-          headers: {
-            Authorization: token
+      axios.post("http://localhost:8081/guest/doc/insert", insertSamples, {
+        headers: {
+          'Authorization': `Bearer ${token}`
         }
-        })
-        .then((response) => {
-            alert('문서등록 완료');
-            router.push('guest/doc/list/draftingList');
-        })
-        .catch((error) => {
-          console.error('문서 등록 실패', error)
-        });
+      })
+      .then((response) => {
+          alert('문서등록 완료');
+          router.push('guest/doc/list/draftingList');
+      })
+      .catch((error) => {
+        console.error('문서 등록 실패', error)
+      });
     };
 
     const CategoryChange = (event) => {

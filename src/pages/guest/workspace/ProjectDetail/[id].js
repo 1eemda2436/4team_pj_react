@@ -42,20 +42,21 @@ const Button = styled.button`
 
 
 const ProjectDetail = () => {
-    const token = localStorage.getItem('token')
     const [project, setProject] = useState({});
     const [projectWorkList, setProjectWorkList] = useState([]); // 업무 목록 추가
-
+    
     const router = useRouter();
 
     const { id } = router.query;
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token')
+
         if (id) {
             axios
                 .get(`http://localhost:8081/guest/project/${id}`,{
                     headers: {
-                        Authorization: token
+                        'Authorization': `Bearer ${token}`
                     }
                 })
                 .then((response) => {
@@ -69,7 +70,7 @@ const ProjectDetail = () => {
             axios
                 .get(`http://localhost:8081/guest/projectwork`,{
                     headers: {
-                        Authorization: token
+                        'Authorization': `Bearer ${token}`
                     }
                 })
                 .then((response) => {
@@ -87,9 +88,14 @@ const ProjectDetail = () => {
 
     const deleteProject = (event) => {
         event.preventDefault();
+        const token = localStorage.getItem('token')
 
         axios
-            .delete(`http://localhost:8081/guest/project/${id}`)
+            .delete(`http://localhost:8081/guest/project/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 router.push('/guest/workspace');
             })

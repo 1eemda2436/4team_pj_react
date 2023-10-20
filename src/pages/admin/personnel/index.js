@@ -9,11 +9,16 @@ const AdminPersonnel = () => {
 
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
-  
+
     //페이지 로드 → list
     useEffect(() => {
+      const token = localStorage.getItem('token')
       // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-      axios.get('http://localhost:8081/admin/personnel/employeeSelectAll')
+      axios.get('http://localhost:8081/admin/personnel/employeeSelectAll', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
         .then(response => {
           setData(response.data); // 응답 데이터를 상태에 저장
           console.log(response.data)
@@ -32,8 +37,13 @@ const AdminPersonnel = () => {
 
     // 리액트 프론트엔드에서 "사원 등록" 버튼 클릭 핸들러
     const handleEmployeeRegistration = async () => {
+      const token = localStorage.getItem('token')
       try {
-        const response = await axios.get('http://localhost:8081/admin/personnel/maxId');
+        const response = await axios.get('http://localhost:8081/admin/personnel/maxId', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         const maxId = response.data;
         // 이제 maxId를 사용하여 사원 등록 페이지로 이동하거나 입력 필드에 값을 설정할 수 있습니다.
         console.log('index' , maxId);
@@ -50,8 +60,13 @@ const AdminPersonnel = () => {
 
     //사원 삭제
     const handleEmployeeDelete = (id) => {
+      const token = localStorage.getItem('token')
       if (window.confirm('사원을 삭제하시겠습니까?')) {
-        axios.delete(`http://localhost:8081/admin/personnel/delete/${id}`)
+        axios.delete(`http://localhost:8081/admin/personnel/delete/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
           .then(response => {
             if (response.status === 200) {
               alert('사원이 삭제되었습니다.');

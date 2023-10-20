@@ -17,14 +17,14 @@ const tableStyle = {
 };
 
 function GuestVacationList() {
-    const token = localStorage.getItem('token')
     const [vacation, setVacation] = useState([]);
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token')
         axios
             .get("http://localhost:8081/all/attendance/vacationRequestsList",{
                 headers: {
-                    Authorization: token
+                    'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {
