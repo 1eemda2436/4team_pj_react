@@ -39,14 +39,14 @@ const Doc = () => {
 
     const handleInsert = () => {
       const insertSamples = new FormData();
-      insertSamples.append('doc_id', samples.doc_id);
+      // insertSamples.append('doc_id', samples.doc_id);
       insertSamples.append('doc_date', samples.doc_date);
       insertSamples.append('name', samples.name);
       insertSamples.append('doc_title', samples.doc_title);
       insertSamples.append('doc_content', samples.doc_content);
-      insertSamples.append('doc_attachment', samples.doc_attachment);
-      // insertSamples.append('id', samples.id);
-
+      insertSamples.append('doc_attachment2', samples.doc_attachment);
+      insertSamples.append('id', "4");
+      insertSamples.append('category_id', selectedCategory);
       
       const token = localStorage.getItem('token')
 
@@ -175,9 +175,9 @@ const Doc = () => {
           <CategoryTable>
               <select value={selectedCategory} onChange={CategoryChange}>
                   <option value="">카테고리 선택</option>
-                  <option value="category1">카테고리 1</option>
-                  <option value="category2">카테고리 2</option>
-                  <option value="category3">카테고리 3</option>
+                  <option value="1">카테고리 1</option>
+                  <option value="2">카테고리 2</option>
+                  <option value="3">카테고리 3</option>
               </select>
           </CategoryTable>
           <ButtonStyle>
