@@ -2,21 +2,50 @@ import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import AttenCalendar from "@/components/calendar/AttenCalendar";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 // 관리자 부서별 근태 현황(상세)
-const AdminAttenDepDetail = () => {
+function AdminAttenDepDetail() {
     // 테두리 스타일을 정의합니다.
-
+    const [attendance, setAttendance] = useState([]);
+    const [selectedDepartment, setSelectedDepartment] = useState('');
     const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        console.log("131232131jfaj : ", token);
+        if(selectedDepartment == null)
+            setSelectedDepartment(1);
+
+        axios
+            .get(`http://localhost:8081/admin/attendance/departmentAtDetails/${selectedDepartment}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                setAttendance(response.data);
+            });
+    }, [selectedDepartment]);
 
     return (
         <div align="center">
+            <select value={selectedDepartment} onChange={(e) => setSelectedDepartment(e.target.value)}>
+                <option value="">부서 선택</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
             <div>
             <TblComponent>
                 <PayTableBottom>
-                    <tbody>
+                {attendance.map((atten) => (
+                    <tbody key={atten.depart_id}>
                         <tr>
-                            <th colSpan={2} onClick={() => router.push('/admin/attendance/adminAttenAnnualDetail')} style={{ cursor: 'pointer' }}>부서별 근태 현황</th>
+                            <th colSpan={2} style={{ cursor: 'pointer' }}>부서별 근태 현황</th>
                         </tr>
 
                         <tr>
@@ -25,19 +54,20 @@ const AdminAttenDepDetail = () => {
 
                         <tr>
                             <th>금일 출근률</th>
-                            <td>null%</td>
+                            <td>{atten.workinRate}</td>
                         </tr>
 
                         <tr>
                             <th>금일 지각률</th>
-                            <td>null%</td>
+                            <td>{atten.timelate}</td>
                         </tr>
 
                         <tr>
                             <th>금일 연차률</th>
-                            <td>null%</td>
+                            <td>{atten.annualRate}</td>
                         </tr>
                     </tbody>
+                ))}
                 </PayTableBottom>
             </TblComponent>
             </div>
@@ -47,25 +77,21 @@ const AdminAttenDepDetail = () => {
             </div>
             <br/><br/><hr/><br/><br/>
             <TblComponent>
-                <PayTableBottom>
+            {attendance.map((atten) => (
+                <PayTableBottom key={atten.depart_id}>
                     <tr>
                         <th>지각자 수</th>
-                        <th>지각자 통계</th>
                         <th>연차 및 휴가 자</th>
-                        <th>연차 및 휴가 자 통계</th>
                     </tr>
 
                     <tr>
-                        <td>null</td>
-                        <td>null</td>
-                        <td>null</td>
-                        <td>null</td>
+                        <td>{atten.latedCount}</td>
+                        <td>{atten.holidayCount}</td>
                     </tr>   
                 </PayTableBottom>
+            ))}
             </TblComponent>
         </div>
-
-
     );
 }
 
