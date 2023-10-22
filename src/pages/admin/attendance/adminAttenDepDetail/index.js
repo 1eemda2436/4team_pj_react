@@ -17,7 +17,7 @@ function AdminAttenDepDetail() {
         console.log("131232131jfaj : ", token);
         if(selectedDepartment == null)
             setSelectedDepartment(1);
-
+    
         axios
             .get(`http://localhost:8081/admin/attendance/departmentAtDetails/${selectedDepartment}`, {
                 headers: {
@@ -25,9 +25,11 @@ function AdminAttenDepDetail() {
                 }
             })
             .then((response) => {
+                console.log("서버 응답 데이터:", response.data);
                 setAttendance(response.data);
             });
     }, [selectedDepartment]);
+    
 
     return (
         <div align="center">
@@ -42,8 +44,8 @@ function AdminAttenDepDetail() {
             <div>
             <TblComponent>
                 <PayTableBottom>
-                {attendance.map((atten) => (
-                    <tbody key={atten.depart_id}>
+                {/* {attendance.map((atten) => ( */}
+                    <tbody >
                         <tr>
                             <th colSpan={2} style={{ cursor: 'pointer' }}>부서별 근태 현황</th>
                         </tr>
@@ -54,20 +56,30 @@ function AdminAttenDepDetail() {
 
                         <tr>
                             <th>금일 출근률</th>
-                            <td>{atten.workinRate}</td>
+                            <td>{selectedDepartment.workinRate}</td>
                         </tr>
 
                         <tr>
                             <th>금일 지각률</th>
-                            <td>{atten.timelate}</td>
+                            <td>{selectedDepartment.timelate}</td>
                         </tr>
 
                         <tr>
                             <th>금일 연차률</th>
-                            <td>{atten.annualRate}</td>
+                            <td>{selectedDepartment.annualRate}</td>
                         </tr>
+
+                        <tr>
+                            <th>지각자 수</th>
+                            <td>{selectedDepartment.latedCount}</td>
+                        </tr>
+
+                        <tr>
+                            <th>연차 및 휴가 자</th>
+                            <td>{attendance.holidayCount}</td>
+                        </tr>   
                     </tbody>
-                ))}
+                {/* ))} */}
                 </PayTableBottom>
             </TblComponent>
             </div>
@@ -75,22 +87,6 @@ function AdminAttenDepDetail() {
             <div style={{ border: "3px solid black", borderRadius: "20px", width: "400px", height: "465px", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <AttenCalendar />
             </div>
-            <br/><br/><hr/><br/><br/>
-            <TblComponent>
-            {attendance.map((atten) => (
-                <PayTableBottom key={atten.depart_id}>
-                    <tr>
-                        <th>지각자 수</th>
-                        <th>연차 및 휴가 자</th>
-                    </tr>
-
-                    <tr>
-                        <td>{atten.latedCount}</td>
-                        <td>{atten.holidayCount}</td>
-                    </tr>   
-                </PayTableBottom>
-            ))}
-            </TblComponent>
         </div>
     );
 }
