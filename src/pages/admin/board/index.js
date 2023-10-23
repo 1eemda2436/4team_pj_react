@@ -25,7 +25,6 @@ const handleDelete = () => {
 }
 
 const Notice = () => {
-  const token = localStorage.getItem('token');
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
     const BoardItemTitle = styled.div`
@@ -35,7 +34,8 @@ const Notice = () => {
 `;
   
     useEffect(() => {
-      axios.get('http://localhost:8081/board', {
+      const token = localStorage.getItem('token');
+      axios.get('http://localhost:8081/guest/community/list', {
         headers: {
           'Authorization': `Bearer ${token}`
         }

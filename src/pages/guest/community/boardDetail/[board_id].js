@@ -7,16 +7,23 @@ import { useRouter } from 'next/router';
 const BoardDetails = () => {
 
     const handleCommentSubmit = () => {
+        const token = localStorage.getItem('token')
         // formData를 이용하여 댓글 데이터를 서버로 전송
         axios.post(`http://localhost:8081/guest/comment/addComment`, {
             content: formData.content,
             board_id: board_id, // 게시물 ID를 전송
-        })
+        }, {headers: {
+            'Authorization': `Bearer ${token}`
+          }})
         .then(response => {
             console.log('댓글이 성공적으로 등록되었습니다.');
             console.log(board_id);
             // 댓글을 성공적으로 등록한 경우, 댓글 목록을 다시 불러옵니다.
-            axios.get(`http://localhost:8081/guest/comment/commentFind/${board_id}`)
+            axios.get(`http://localhost:8081/guest/comment/commentFind/${board_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                  }
+            })
                 .then(response => {
                     setComments(response.data);
                 })
@@ -43,8 +50,13 @@ const BoardDetails = () => {
 
     // 삭제 버튼을 클릭했을 때 게시물 삭제 요청을 보내는 핸들러
         const handleDelete = () => {
+            const token = localStorage.getItem('token')
             // 게시물 ID를 이용해 서버로 삭제 요청을 보냄
-            axios.delete(`http://localhost:8081/guest/community/boardDelete/${board_id}`)
+            axios.delete(`http://localhost:8081/guest/community/boardDelete/${board_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                  }
+            })
                 .then(response => {
                     console.log('게시물이 성공적으로 삭제되었습니다.');
                     // 게시물이 삭제되면 게시판 목록 페이지로 이동
@@ -64,18 +76,20 @@ const BoardDetails = () => {
     };
     
     const handleCommentDelete = (comment_id) => {
-        // 댓글 ID를 이용하여 서버로 댓글 삭제 요청을 보냄
-        axios.delete(`http://localhost:8081/guest/community/boardDelete/${comment_id}`)
+        const token = localStorage.getItem('token');
+        
+        // 해당 comment_id의 댓글만 삭제
+        axios
+            .delete(`http://localhost:8081/guest/comment/deleteComment/${comment_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then(response => {
                 console.log('댓글이 성공적으로 삭제되었습니다.');
-                // 댓글을 삭제한 후 댓글 목록을 다시 불러옵니다.
-                axios.get(`http://localhost:8081/guest/comment/commentFind/${comment_id}`)
-                    .then(response => {
-                        setComments(response.data);
-                    })
-                    .catch(error => {
-                        console.error('댓글을 가져오는 중 오류 발생:', error);
-                    });
+                
+                // 삭제한 댓글을 comments 상태에서 제거
+                setComments(prevComments => prevComments.filter(comment => comment.comment_id !== comment_id));
             })
             .catch(error => {
                 console.error('댓글 삭제 중 오류 발생:', error);
@@ -83,9 +97,15 @@ const BoardDetails = () => {
     };
 
     useEffect(() => {
+        const token = localStorage.getItem('token')
         if (board_id) { // board_id 값이 존재할 때만 실행
             // 게시물 데이터를 로드합니다
-            axios.get(`http://localhost:8081/guest/community/list/${board_id}`)
+            const token = localStorage.getItem('token')
+            axios.get(`http://localhost:8081/guest/community/list/${board_id}`,{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                  }
+            })
                 .then(response => {
                     setBoardData(response.data);
                 })
@@ -94,7 +114,11 @@ const BoardDetails = () => {
                 });
     
             // 해당 게시물의 댓글을 로드합니다
-            axios.get(`http://localhost:8081/guest/comment/commentFind/${board_id}`)
+            axios.get(`http://localhost:8081/guest/comment/commentFind/${board_id}`,{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                  }
+            })
                 .then(response => {
                     setComments(response.data);
                 })
