@@ -10,7 +10,7 @@ const handleDelete = () => {
   const token = localStorage.getItem('token');
 
     // id에 해당하는 게시물을 삭제
-    axios.delete(`http://localhost:8081/board/${board_id}`, {
+    axios.delete(`http://localhost:8081/guest/community//boardDelete/${board_id}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

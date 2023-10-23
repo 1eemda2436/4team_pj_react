@@ -1,47 +1,35 @@
-import MainLayout from "@/components/layout/mainLayout"
-import styled from "styled-components";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from 'next/router';
 
-const BoardDetails = () => {
+
+const NoticeDetails = () => {
     const token = localStorage.getItem('token')
+    const { notice_id } = router.query;
+    
     const router = useRouter();
     return(
-        <Container>
-            <Title>자유게시판 상세</Title>
-            <BackButton onClick={() => router.back()}>이전 아이콘</BackButton>
-            <Content>
-                <Row>
-                <div>
-                    <div>제목</div>
-                    <div>글내용</div>
-                </div>
-                <div>
-                    <div>프로필</div>
-                    <div>작성자</div>
-                    <Button onClick={() => router.push('/guest/community/BoardUpdate')}>수정</Button>
-                    <Button onClick={() => router.push('/guest/community')}>삭제</Button>
-                </div>
-                </Row>
-                <Row>
-                <Input type="text" placeholder="댓글 입력란" />
-                <Button>입력</Button>
-                </Row>
-            </Content>
-            <Table>
-                <TableRow>
-                <TableCell>작성자</TableCell>
-                <TableCell>글내용</TableCell>
-                <TableCell>일자</TableCell>
-                <TableCell>좋아요</TableCell>
-                </TableRow>
-            </Table>
-        </Container>
+        <div>
+            <h1>공지사항 상세</h1>
+
+            <div>
+                <div>제목</div>
+                <div>프로필</div>
+                <div>작성자</div>
+                <div>글내용</div>
+            </div>
+
+            <div onClick={() => router.back()}>삭제 (관리자만 보이게)</div>
+            <div onClick={() => router.back()}>이전</div>
+        </div>
     )
 }
 
-export default BoardDetails;
+export default NoticeDetails;
 
-BoardDetails.getLayout = function getLayout(page) {
+NoticeDetails.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
