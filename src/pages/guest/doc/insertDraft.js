@@ -8,7 +8,7 @@ import axios from "axios";
 const Doc = () => {
     const router = useRouter();
     const {id} = router.query;
-    console.log(id)
+    console.log(id);
 
     const [selectedCategory, setSelectedCategory] = useState('');
 
@@ -21,6 +21,23 @@ const Doc = () => {
       doc_attachment: null,
       doc_status: null,
     });
+
+    // useEffect(() => {
+    //   if(id) {
+    //     axios.get(`http://localhost:8081/guest/doc/guestTotal/${id}`)
+    //     .then((response) => {
+    //       const {id, name} = response.data;
+    //       setSamples((samples) => ({
+    //         ...samples,
+    //         doc_id: id,
+    //         name: name,
+    //       }));
+    //     })
+    //     .catch((error) => {
+    //       console.error('사용자 정보 호출 실패', error);
+    //     })
+    //   }
+    // }, [id]);
 
     const handleInputChange = (e) => {
       const {name, value} = e.target;
@@ -59,7 +76,7 @@ const Doc = () => {
       })
       .then((response) => {
           alert('문서등록 완료');
-          router.push('guest/doc/list/draftingList');
+          router.push('/guest/doc/list/draftingList');
       })
       .catch((error) => {
         console.error('문서 등록 실패', error)
@@ -135,7 +152,7 @@ const Doc = () => {
                                   value={samples.doc_date}
                                   onChange={handleInputChange}
                                 />
-                                </td>
+                              </td>
                           </tr>
                           <tr>
                               <th>기안자</th>
@@ -143,18 +160,19 @@ const Doc = () => {
                                 <input 
                                   type="text"
                                   name="name"
+                                  readOnly
                                   value={samples.name}
                                   onChange={handleInputChange}
                                 />
-                                </td>
-                                <td>
+                              </td>
+                              <td>
                                 <input 
                                   type="hidden"
                                   name="doc_status"
                                   value={samples.doc_status}
                                   onChange={handleInputChange}
                                 />
-                                </td>
+                              </td>
                           </tr>
                   </table>
               </DocstyleLeft>
@@ -168,14 +186,14 @@ const Doc = () => {
               <table>
                   <tr>
                     <th>제목</th>
-                    <th>
+                    <td>
                       <input 
                         type="text"
                         name="doc_title"
                         value={samples.doc_title}
                         onChange={handleInputChange}
                       />
-                    </th>
+                    </td>
                   </tr>
                   <tr>
                     <td colSpan={2}>

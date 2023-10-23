@@ -37,6 +37,14 @@ const Doc = () => {
         }
     }, [id]);
 
+    const handleComplete = () => {
+        const token = localStorage.getItem("token");
+
+        if(id) {
+            axios.put()
+        }
+    }
+
     const handleDelete = () => {
         const token = localStorage.getItem("token");
 

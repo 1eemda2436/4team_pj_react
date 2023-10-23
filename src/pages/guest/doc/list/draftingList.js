@@ -65,7 +65,7 @@ const Doc = () => {
                   <tr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${draft.doc_id}`)}>
                       <td component="" scope="draft">{draft.doc_id}</td>
                       <td>{draft.category_name}</td>
-                      <td >{draft.doc_title}</td>
+                      <td>{draft.doc_title}</td>
                       <td>{draft.name}</td>
                       <td>{draft.doc_date}</td>
                       <td>{draft.doc_status}</td>
