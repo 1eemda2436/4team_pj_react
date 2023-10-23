@@ -4,13 +4,18 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import DepartmentRegistrationModal from './DepartmentRegistrationModal'; // 모달 컴포넌트 임포트
+import EditDepartmentModal from './EditDepartmentModal';
 
 const DepartmentManagement = () => {
   const router = useRouter();
 
   const [department, setData] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
-
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [selectedDepartInfo, setSelectedDepartInfo] = useState({
+    depart_id: '',
+    depart_name: ''
+  });
   
   //페이지 로드 → list
   useEffect(() => {
@@ -37,6 +42,7 @@ const DepartmentManagement = () => {
       });
   }, []);
 
+  //부서 등록 모달
   const handleModalOpen = () => {
     setModalOpen(true);
   };
@@ -51,10 +57,46 @@ const DepartmentManagement = () => {
     router.push('/admin/department-team/'); // 부서 현황 화면으로 리디렉션
   };
 
+  //부서 수정 모달
+  const handleEditModalOpen = (depart_id, depart_name) => {
+    console.log(depart_id, depart_name)
+    setSelectedDepartInfo({
+      depart_id,
+      depart_name
+    });
+    console.log(selectedDepartInfo)
+    setEditModalOpen(true);
+  };
+
+const handleEditModalClose = () => {
+    setEditModalOpen(false);
+  };
+
+const handleEditModalSave = () => {
+    // Handle actions after editing and saving
+    setEditModalOpen(false);
+    // Perform any other necessary actions
+};
+
+  const handleDelete = async (depart_id) => {
+    console.log('!!!!!!!')
+    const token = localStorage.getItem('token');
+    console.log(token)
+      try {
+        await axios.put(`http://localhost:8081/admin/department/DepartmentDelete/${depart_id}`, null, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+        }})
+        // 성공 처리
+        window.location.reload();
+    } catch (error) {
+        console.log('!!!')
+    }
+  }
 
   return (
     <MainComponent>
-      <Title>인사 관리 - 부서 관리</Title>
+      <Title>인사 관리 - 부서 현황</Title>
 
       <TblComponent>
           <TblHeader>
@@ -64,7 +106,7 @@ const DepartmentManagement = () => {
                     <th>부서 ID</th>
                     <th>부서 명</th>
                     <th>소속팀</th>
-                    <th colSpan={2}>현황</th>
+                    <th colSpan={3}>현황</th>
                 </tr>
               </thead>
             </Table>
@@ -74,12 +116,15 @@ const DepartmentManagement = () => {
             <PersonnelTableTop>
                 <tbody>
                   {department.map(department => (
-                  <tr>
+                  <tr key={department[0]}>
                     <td>{department[0]}</td>
                     <td>{department[1]}</td>
                     <td>{department[2]}</td>
                     <td>
-                    <Button onClick={() => handleDepartmentEdit(department.depart_id)}>부서 수정</Button>
+                    <Button onClick={() => handleEditModalOpen(department[0], department[1])}>부서 수정</Button>
+                    </td>
+                    <td>
+                    <Button onClick={() => handleDelete(department[0])}>부서 삭제</Button>
                     </td>
                     <td>
                     <Button>팀 현황</Button>
@@ -98,6 +143,15 @@ const DepartmentManagement = () => {
           <DepartmentRegistrationModal
             onClose={handleModalClose}
             onSave={handleModalSave}
+          />
+        )}
+
+        {isEditModalOpen && (
+          <EditDepartmentModal
+              onClose={handleEditModalClose}
+              onSave={handleEditModalSave}
+              depart_id={selectedDepartInfo.depart_id}
+              depart_name={selectedDepartInfo.depart_name}
           />
         )}
     </MainComponent>
