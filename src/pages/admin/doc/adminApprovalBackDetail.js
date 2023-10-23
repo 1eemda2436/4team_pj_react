@@ -64,10 +64,6 @@ const Doc = () => {
                 </DocstyleLeft>
                 <DocstyleRight>
                     <Comment placeholder="결재 의견을 입력하세요" />
-                    <ButtonStyle>
-                    <button type="button" onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재</button>
-                    <button type="button" onClick={() => router.push('/admin/doc/adminApprovalBack')}>반려</button>
-                    </ButtonStyle>
                 </DocstyleRight>
             </Docstyle1>
             <Docstyle2>

@@ -37,6 +37,26 @@ const Doc = () => {
         }
     }, [id]);
 
+    const handleDelete = () => {
+        const token = localStorage.getItem("token");
+
+        if(id) {
+            axios.delete(`http://localhost:8081/guest/doc/delete/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(() => {
+                alert('문서삭제 완료')
+                // 문서 삭제 후 이동
+                router.push("/guest/doc/save/temporarySave");
+            })
+            .catch((error) => {
+                console.error("문서 삭제 실패:", error);
+            });
+        }
+    }
+
     return(
         <Container>
             <ApprovalLine>
@@ -70,11 +90,7 @@ const Doc = () => {
                         </div>
                     </Table>
                 </DocstyleLeft>
-                <DocstyleRight>
-                    <ButtonStyle>
-                        <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장</button>
-                    </ButtonStyle>
-                </DocstyleRight>
+                
             </Docstyle1>
             <Docstyle2>
                 <Table>
@@ -102,17 +118,10 @@ const Doc = () => {
                     </div>
                 </Table>
             </Docstyle2>
-            <CategoryTable>
-                <select value={selectedCategory} onChange={CategoryChange}>
-                    <option value="">카테고리 선택</option>
-                    <option value="category1">카테고리 1</option>
-                    <option value="category2">카테고리 2</option>
-                    <option value="category3">카테고리 3</option>
-                </select>
-            </CategoryTable>
             <ButtonStyle>
-                <button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 요청</button>
-                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>취소</button>
+                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>등록</button>
+                <button type="button" onClick={() => router.push('')}>수정</button>
+                <button type="button" onClick={handleDelete}>삭제</button>
             </ButtonStyle>
         </Container>
     )
