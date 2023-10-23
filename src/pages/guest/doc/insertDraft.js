@@ -8,6 +8,7 @@ import axios from "axios";
 const Doc = () => {
     const router = useRouter();
     const {id} = router.query;
+    console.log(id)
 
     const [selectedCategory, setSelectedCategory] = useState('');
 

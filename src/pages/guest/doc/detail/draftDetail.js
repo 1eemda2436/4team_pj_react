@@ -119,6 +119,7 @@ const Doc = () => {
                 </Table>
             </Docstyle2>
             <ButtonStyle>
+                <button type="button" onClick={() => router.push(`/guest/doc/draftingUpdate?id=${samples.doc_id}`)}>문서수정</button>
                 <button type="button" onClick={handleDelete}>문서삭제</button>
                 <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>돌아가기</button>
             </ButtonStyle>

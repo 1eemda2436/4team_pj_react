@@ -1,35 +1,75 @@
 import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
-import React, {useState} from "react";
-
+import React, {useEffect, useState} from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 
 const Doc = () => {
-
-    const TemporarySave = () => {
-
-        console.log('임시 저장이 완료되었습니다.');
-    }
-    
-    const Approval = () => {
-    
-        console.log('결재 요청이 완료되었습니다.');
-    }
-
-    const Complete = () => {
-
-        console.log('문서 작성이 완료되었습니다.');
-    }
-    
-    const Cancel = () => {
-    
-        console.log('문서 작성이 취소되었습니다.');
-    }
+    const router = useRouter();
+    const {id} = router.query.id; // ID를 추출
+    console.log(id);
 
     const [selectedCategory, setSelectedCategory] = useState('');
+    
+    const [samples, setSamples] = useState({
+        doc_id: '',
+        doc_date: '',
+        name: '',
+        doc_title: '',
+        doc_content: '',
+        doc_status: null,
+    });
 
-    const CategoryChange = (event) => {
-        setSelectedCategory(event.target.value);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8081/guest/doc/detail/${id}`);
+                setSamples(response.data);
+            } catch (error) {
+                console.error("문서 정보를 불러오는 중 오류 발생:", error);
+            }
+        };
+    
+        if (id) {
+            fetchData();
+        }
+    }, [id]);
+
+    const handleInputChange = (e) => {
+        const {name, value} = e.target;
+        setSamples((samples) => ({
+            ...samples,
+            [name]: value,
+        }));
+        };
+        
+        const CategoryChange = (event) => {
+            setSelectedCategory(event.target.value);
+        };
+
+    const hanldeUpdate = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const updateData = {
+            doc_date: samples.doc_date,
+            name: samples.name,
+            doc_title: samples.doc_title,
+            doc_content: samples.doc_content,
+            category_id: samples.category_id,
+            doc_status: samples.doc_status,
+        };
+        await axios.put(`http://localhost:8081/guest/doc/update/${id}`, updateData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+        alert("문서 업데이트 성공");
+        router.push(`/guest/doc/detail/${id}`);
+        } catch (error) {
+            console.error("업데이트 실패", error);
+        }
     };
 
     return(
@@ -37,9 +77,9 @@ const Doc = () => {
             <ApprovalLine>
                 <table>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
                     </tr>
                 </table>
             </ApprovalLine>
@@ -49,54 +89,75 @@ const Doc = () => {
             <Docstyle1>
                 <DocstyleLeft>
                     <Table>
+                        <div>
                         <TableTr>
                             <TableTh>문서번호</TableTh>
-                            <TableTd>1</TableTd>
+                            <TableTd component="" scope="detail">{samples.doc_id}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>기안일</TableTh>
-                            <TableTd>1</TableTd>
+                            <TableTd>{samples.doc_date}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>기안자</TableTh>
-                            <TableTd>1</TableTd>
+                            <TableTd>{samples.name}</TableTd>
                         </TableTr>
+                        </div>
                     </Table>
                 </DocstyleLeft>
+                    
             </Docstyle1>
             <Docstyle2>
                 <Table>
+                    <div>
                         <TableTr>
                             <TableTh3>제목</TableTh3>
-                            <TableTh2>여기에 문서 제목</TableTh2>
+                            <TableTh2>
+                                <input 
+                                    type="text"
+                                    name="doc_title"
+                                    value={samples.doc_title}
+                                    onChange={handleInputChange}
+                                />
+                            </TableTh2>
                         </TableTr>
                         <TableTr>
-                                <TableTd2 colSpan={2}>문서 내용</TableTd2>
+                                <TableTd2 colSpan={2}>
+                                    <input
+                                        type="text"
+                                        name="doc_content"
+                                        value={samples.doc_content}
+                                        onChange={handleInputChange}
+                                    />
+                                    </TableTd2>
                         </TableTr>
+                    </div>
                 </Table>
                 <br></br>
                 <Table>
+                    <div>
                         <TableTr>
                             <TableTh3>구분</TableTh3>
                             <TableTd3> </TableTd3>
                         </TableTr>
                         <TableTr>
                             <TableTh3>첨부파일</TableTh3>
-                            <TableTd3>여기에 첨부파일</TableTd3>
+                            <TableTd3>{samples.doc_attachment}</TableTd3>
                         </TableTr>
+                    </div>
                 </Table>
             </Docstyle2>
             <CategoryTable>
                 <select value={selectedCategory} onChange={CategoryChange}>
                     <option value="">카테고리 선택</option>
-                    <option value="category1">카테고리 1</option>
-                    <option value="category2">카테고리 2</option>
-                    <option value="category3">카테고리 3</option>
+                    <option value="1">카테고리 1</option>
+                    <option value="2">카테고리 2</option>
+                    <option value="3">카테고리 3</option>
                 </select>
             </CategoryTable>
             <ButtonStyle>
-                <button type="button" onClick={Complete}>수정</button>
-                <button type="button" onClick={Cancel}>취소</button>
+                <button type="button" onClick={hanldeUpdate}>수정완료</button>
+                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>돌아가기</button>
             </ButtonStyle>
         </Container>
     )
@@ -226,6 +287,9 @@ const ButtonStyle = styled.div`
 `;
 
 const CategoryTable = styled.div`
-    display: flex;
-    justify-content: flex-end;
+margin-bottom: 20px;
+select {
+  width: 100%;
+  padding: 10px;
+}
 `;
