@@ -9,11 +9,27 @@ import Header from '@/components/common/header';
 import MyCalendar from "@/components/calendar/MyCalendar";
 
 const Workspace = () => {
+    const [departmentList, setDepartmentList] = useState([]);
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
     
+    
     useEffect(() => {
         const token = localStorage.getItem('token')
+
+        axios
+            .get("http://localhost:8081/guest/department",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log(response.data)
+                setDepartmentList(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
         axios
             .get("http://localhost:8081/guest/project",{
@@ -40,9 +56,13 @@ const Workspace = () => {
             .catch((error) => {
                 console.log(error);
             });
+
+        
     }, []);
 
     const router = useRouter();
+
+    
 
     return (
         <Component>
@@ -60,21 +80,14 @@ const Workspace = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
+                    {departmentList.map((dp) => (
+                    <tr key={dp.depart_id}>
+                        <td style={cellStyle}>{dp.depart_id}</td>
+                        <td style={cellStyle}>{dp.depart_name}</td>
+                        <td style={cellStyle}>{dp.name}</td>
                     </tr>
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
-                    </tr>
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
-                    </tr>
+                    ))}
+                    
                 </tbody>
             </table>
             <br/>

@@ -150,7 +150,11 @@ const ProjectDetail = () => {
                     </TableRow>
                     {projectWorkList.map((projectWork) => (
                         <TableRow key={projectWork.pw_id}>
-                            <TableCell>{projectWork.pw_name}</TableCell>
+                            <TableCell>
+                                <Link href="/guest/workspace/ProjectWorkDetail/[id]" as={`/guest/workspace/ProjectWorkDetail/${projectWork.pw_id}`}>
+                                {projectWork.pw_name}
+                                </Link>
+                            </TableCell>
                             <TableCell>
                                 {moment(projectWork.pw_deadline_s).format('YYYY-MM-DD')} ~{' '}
                                 {moment(projectWork.pw_deadline_e).format('YYYY-MM-DD')}
