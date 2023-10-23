@@ -23,7 +23,7 @@ const Doc = () => {
         })
         .then((response) => {
             setSamples(response.data);
-            const filteredData = response.data.filter(approvalBack => approvalBack.doc_status === 'N');
+            const filteredData = response.data.filter(approvalBack => approvalBack.doc_status === '반려');
             setFilteredSamples(filteredData);
             console.log(filteredData)
         })

@@ -18,6 +18,7 @@ const Doc = () => {
       doc_title: '',
       doc_content: '',
       doc_attachment: null,
+      doc_status: null,
     });
 
     const handleInputChange = (e) => {
@@ -36,7 +37,6 @@ const Doc = () => {
       }));
     };
 
-
     const handleInsert = () => {
       const insertSamples = new FormData();
       // insertSamples.append('doc_id', samples.doc_id);
@@ -47,6 +47,7 @@ const Doc = () => {
       insertSamples.append('doc_attachment2', samples.doc_attachment);
       insertSamples.append('id', "4");
       insertSamples.append('category_id', selectedCategory);
+      insertSamples.append('doc_status', '기안');
       
       const token = localStorage.getItem('token')
 
@@ -63,6 +64,33 @@ const Doc = () => {
         console.error('문서 등록 실패', error)
       });
     };
+
+    const handleTemporarySave = () => {
+      const temporarySaveData = new FormData();
+      temporarySaveData.append('doc_date', samples.doc_date);
+      temporarySaveData.append('name', samples.name);
+      temporarySaveData.append('doc_title', samples.doc_title);
+      temporarySaveData.append('doc_content', samples.doc_content);
+      temporarySaveData.append('doc_attachment2', samples.doc_attachment);
+      temporarySaveData.append('id', "4");
+      temporarySaveData.append('category_id', selectedCategory);
+      temporarySaveData.append('doc_status', '임시'); // 임시 상태로 설정
+  
+      const token = localStorage.getItem('token');
+  
+      axios.post("http://localhost:8081/guest/doc/temporarySave", temporarySaveData, {
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+      })
+      .then((response) => {
+          alert('임시 저장 완료');
+          router.push('/guest/doc/save/temporarySave');
+      })
+      .catch((error) => {
+          console.error('임시 저장 실패', error);
+      });
+  };
 
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
@@ -118,13 +146,20 @@ const Doc = () => {
                                   onChange={handleInputChange}
                                 />
                                 </td>
+                                <td>
+                                <input 
+                                  type="hidden"
+                                  name="doc_status"
+                                  value={samples.doc_status}
+                                  onChange={handleInputChange}
+                                />
+                                </td>
                           </tr>
                   </table>
               </DocstyleLeft>
               <DocstyleRight>
                   <ButtonStyle>
-                      <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장</button>
-                      <button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 요청</button>
+                      <button type="button" onClick={handleTemporarySave}>임시 저장</button>
                   </ButtonStyle>
               </DocstyleRight>
           </Docstyle1>

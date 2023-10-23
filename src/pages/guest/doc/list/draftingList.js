@@ -8,6 +8,7 @@ const Doc = () => {
   const router = useRouter();
   
   const [samples, setSamples] = useState([]);
+  const [filteredSamples, setFilteredSamples] = useState([]);
   
   useEffect(() => {
       const token = localStorage.getItem('token')
@@ -19,6 +20,9 @@ const Doc = () => {
         })
         .then((response) => {
             setSamples(response.data);
+            const filteredData = response.data.filter(draft => draft.doc_status === '기안');
+            setFilteredSamples(filteredData);
+            console.log(filteredData)
         })
         .catch((error) => {
             console.log(error);
@@ -53,16 +57,18 @@ const Doc = () => {
                   <th >문서 제목</th>
                   <th>작성자</th>
                   <th>기안일</th>
+                  <th>상태</th>
               </tr>
             </thead>
             <tbody>
-              {samples.map((draft) =>
+              {filteredSamples.map((draft) =>
                   <tr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${draft.doc_id}`)}>
                       <td component="" scope="draft">{draft.doc_id}</td>
                       <td>{draft.category_name}</td>
                       <td >{draft.doc_title}</td>
                       <td>{draft.name}</td>
                       <td>{draft.doc_date}</td>
+                      <td>{draft.doc_status}</td>
                   </tr>
               )}
             </tbody>
