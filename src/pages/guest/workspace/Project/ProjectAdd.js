@@ -125,6 +125,14 @@ const ProjectAdd = () => {
                             />
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                        <select name="team_id" value={project.team_id} onChange={ProjectChange}>
+                        <option value="">팀 선택</option>
+                        <option key={project.team_id} value={project.team_id}>{project.team_name}</option>
+                        </select>
+                        </td>
+                    </tr>
                 </thead>
             </table>
 
