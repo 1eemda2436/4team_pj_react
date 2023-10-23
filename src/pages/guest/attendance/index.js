@@ -5,6 +5,7 @@ import Header from "@/components/common/header";
 import { useRouter } from "next/router";
 import AttenCalendar from "@/components/calendar/AttenCalendar";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const WeeklyWorkButton = styled.a`
     cursor: pointer;
@@ -24,11 +25,38 @@ const WeeklyWorkButton = styled.a`
 // main
 function Attendance () {
     const [attendance, setAttendance] = useState([]);
+    const [weeklyWork, setWeeklyWork] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-    })
+        const token = localStorage.getItem('token');
+        const id = localStorage.getItem('user_id');
+        axios
+            .get(`http://localhost:8081/guest/attendance/myAttenCount/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log("값? : ", response.data);
+                setAttendance(response.data);
+            });
+    }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const id = localStorage.getItem('user_id');
+        axios
+            .get(`http://localhost:8081/guest/attendance/weeklyWorkTime/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log("값? : ", response.data);
+                setWeeklyWork(response.data);
+            });
+    }, []);
 
     return (
         <MainComponent>
@@ -38,42 +66,42 @@ function Attendance () {
                     <AttenBoxUser>
                         <UserIconBox>
                             <UserIcon width='70' height='70' />
-                            <span>사원명</span>
+                            <span>{attendance.name}</span>
                         </UserIconBox>
                         <UserContent>
-                            부가설명
+                            {attendance.id}
                         </UserContent>
                     </AttenBoxUser>
                     
                     <AttenBoxInfo>
                         <div className="circle-container">
                             <CircleBox>
-                                <div className="circle">4</div>
+                                <div className="circle">{attendance.total_annual}</div>
                                 총 연차
                             </CircleBox>
 
                             <CircleBox>
-                                <div className="circle">1</div>
+                                <div className="circle">{attendance.used_annual}</div>
                                 사용 연차
                             </CircleBox>
                             
                             <CircleBox>
-                                <div className="circle">3</div>
+                                <div className="circle">{attendance.annuallastcount}</div>
                                 잔여 연차
                             </CircleBox>
                             
                             <CircleBox>
-                                <div className="circle">1</div>
+                                <div className="circle">{attendance.worklate}</div>
                                 지각계
                             </CircleBox>
 
                             <CircleBox>
-                                <div className="circle">1</div>
+                                <div className="circle">{attendance.noworking}</div>
                                 결근계
                             </CircleBox>
 
                             <CircleBox>
-                                <div className="circle">1</div>
+                                <div className="circle">{attendance.earlyout}</div>
                                 조퇴계
                             </CircleBox>
                         </div>
@@ -90,13 +118,16 @@ function Attendance () {
                     <AttenWeekWork>
                         <div className="work-hours">
                             <WeeklyWorkButton onClick={() => router.push('/guest/attendance/detail/')}>
-                                주강 긍무 형황
+                                주간 근무 현황
                             </WeeklyWorkButton>
                         </div>
                         <br/>
                         <div>[ 총 근무 시간 ]</div>
+                        <div>{weeklyWork.totalWeekWork}</div>
                         <div>[ 총 연장 근무 시간 ]</div>
+                        <div>{weeklyWork.totalWeekOver}</div>
                         <div>[ 남은 최소 근무 시간 ]</div>
+                        <div>{weeklyWork.remainWeekTime}</div>
                     </AttenWeekWork>
                 </AttenBoxBottom>
             </AttenComponent>
