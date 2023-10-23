@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import styled from "styled-components";
 import moment from 'moment';
 import Link from 'next/link';
+import axios from 'axios';
 
 const MyCalendar = () => {
     const [projectList, setProjectList] = useState([]);
@@ -13,17 +14,28 @@ const MyCalendar = () => {
         
         // 비동기 함수를 이용해 데이터를 불러옴
         async function fetchData() {
-            try {
-                const projectResponse = await fetch("http://localhost:8081/guest/project", {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                const projectData = await projectResponse.json();
-                setProjectList(projectData);
-            } catch (error) {
-                console.error("Error fetching data: ", error);
-            }
+            // try {
+            //     const projectResponse = await fetch("http://localhost:8081/guest/project", {
+            //         headers: {
+            //             'Authorization': `Bearer ${token}`
+            //         }
+            //     });
+            //     const projectData = await projectResponse.json();
+            //     setProjectList(projectData);
+            // } catch (error) {
+            //     console.error("Error fetching data: ", error);
+            // }
+            axios.get("http://localhost:8081/guest/project",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                setProjectList(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         }
 
         // 데이터 불러오기 함수 호출
@@ -70,4 +82,5 @@ const FullCalendarEventContent = styled.div`
     padding: 5px;
     border-radius: 5px;
     cursor: pointer;
+    
 `;

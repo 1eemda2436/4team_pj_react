@@ -54,9 +54,6 @@ const ProjectWorkAdd = () => {
     const saveProjectwork = (event) => {
         event.preventDefault();
 
-        projectwork.pw_deadline_s = new Date(projectwork.pw_deadline_s);
-        projectwork.pw_deadline_e = new Date(projectwork.pw_deadline_e);
-
         const token = localStorage.getItem('token')
         
         console.log('[saveProjectwork] projectwork', projectwork)
@@ -126,8 +123,7 @@ const ProjectWorkAdd = () => {
                             required
                             id="standard-required"
                             variant="standard"
-                            label="기한일(시작)"
-                            type="text"
+                            type="date"
                             name="pw_deadline_s"
                             placeholder="프로젝트 시작일을 입력해주세요"
                             onChange={ProjectworkChange}
@@ -140,8 +136,7 @@ const ProjectWorkAdd = () => {
                             required
                             id="standard-required"
                             variant="standard"
-                            label="기한일(종료)"
-                            type="text"
+                            type="date"
                             name="pw_deadline_e"
                             placeholder="프로젝트 종료일을 적어주세요"
                             onChange={ProjectworkChange}

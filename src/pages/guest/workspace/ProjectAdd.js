@@ -34,9 +34,6 @@ const ProjectAdd = () => {
     const saveProject = (event) => {
         event.preventDefault();
         
-        project.deadline_s = new Date(project.deadline_s);
-        project.deadline_e = new Date(project.deadline_e);
-        
         const token = localStorage.getItem('token')
         
         console.log('[saveProject] project', project)
@@ -94,8 +91,7 @@ const ProjectAdd = () => {
                             required
                             id="standard-required"
                             variant="standard"
-                            label="기한일(시작)"
-                            type="text"
+                            type="date"
                             name="deadline_s"
                             placeholder="프로젝트 시작일을 적어주세요"
                             onChange={ProjectChange}
@@ -108,8 +104,7 @@ const ProjectAdd = () => {
                             required
                             id="standard-required"
                             variant="standard"
-                            label="기한일(종료)"
-                            type="text"
+                            type="date"
                             name="deadline_e"
                             placeholder="프로젝트 종료일을 적어주세요"
                             onChange={ProjectChange}

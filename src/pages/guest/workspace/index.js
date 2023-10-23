@@ -9,12 +9,27 @@ import Header from '@/components/common/header';
 import MyCalendar from "@/components/calendar/MyCalendar";
 
 const Workspace = () => {
+    const [departmentList, setDepartmentList] = useState([]);
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
-    const [departmentList, setDepartmentList] = useState([]);
+    
     
     useEffect(() => {
         const token = localStorage.getItem('token')
+
+        axios
+            .get("http://localhost:8081/guest/department",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log(response.data)
+                setDepartmentList(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
         axios
             .get("http://localhost:8081/guest/project",{
@@ -42,21 +57,12 @@ const Workspace = () => {
                 console.log(error);
             });
 
-        axios
-            .get("http://localhost:8081/guest/department",{
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then((response) => {
-                setDepartmentList(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        
     }, []);
 
     const router = useRouter();
+
+    
 
     return (
         <Component>
