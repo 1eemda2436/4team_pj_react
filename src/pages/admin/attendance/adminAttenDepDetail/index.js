@@ -14,7 +14,7 @@ function AdminAttenDepDetail() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        console.log("131232131jfaj : ", token);
+        console.log("토큰값! : ", token);
         if(selectedDepartment == null)
             setSelectedDepartment(1);
     
@@ -47,7 +47,7 @@ function AdminAttenDepDetail() {
                 {/* {attendance.map((atten) => ( */}
                     <tbody >
                         <tr>
-                            <th colSpan={2} style={{ cursor: 'pointer' }}>부서별 근태 현황</th>
+                            <th colSpan={2} onClick={() => router.push('/admin/attendance/adminAttenAnnualDetail')} style={{ cursor: 'pointer' }}>부서별 근태 현황</th>
                         </tr>
 
                         <tr>
@@ -56,22 +56,22 @@ function AdminAttenDepDetail() {
 
                         <tr>
                             <th>금일 출근률</th>
-                            <td>{selectedDepartment.workinRate}</td>
+                            <td>{attendance.workinRate}</td>
                         </tr>
 
                         <tr>
                             <th>금일 지각률</th>
-                            <td>{selectedDepartment.timelate}</td>
+                            <td>{attendance.timelate}</td>
                         </tr>
 
                         <tr>
                             <th>금일 연차률</th>
-                            <td>{selectedDepartment.annualRate}</td>
+                            <td>{attendance.annualRate}</td>
                         </tr>
 
                         <tr>
                             <th>지각자 수</th>
-                            <td>{selectedDepartment.latedCount}</td>
+                            <td>{attendance.latedCount}</td>
                         </tr>
 
                         <tr>

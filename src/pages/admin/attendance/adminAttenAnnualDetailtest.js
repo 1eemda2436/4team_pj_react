@@ -13,8 +13,10 @@ const AdminAttenAnnualDetail = () => {
                 <PayTableBottom>
                     <tbody>
                         <tr>
-                            <th>사번</th>
-                            <th>이름</th>
+                            <th>부서번호</th>
+                            <th>부서명</th>
+                            <th>사원번호</th>
+                            <th>사원명</th>
                             <th>지각계</th>
                             <button>정렬</button>
                         </tr>
