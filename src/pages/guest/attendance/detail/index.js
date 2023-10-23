@@ -78,11 +78,11 @@ const AttendanceDetail = () => {
                     [ 15 ]
                 </AnnualRest>
 
-                <AnnualRest>
+                <AnnualRest onClick={() => router.push('/guest/attendance/annuallist')} style={{ cursor: 'pointer' }}>
                     [ 사용한 연차]
                 </AnnualRest>
 
-                <AnnualRest>
+                <AnnualRest onClick={() => router.push('/guest/attendance/annuallist')} style={{ cursor: 'pointer' }}>
                     [ 3 ]
                 </AnnualRest>
 
@@ -94,46 +94,30 @@ const AttendanceDetail = () => {
                     [ 12 ]
                 </AnnualRest>
 
-                <AnnualRest onClick={() => router.push('/guest/attendance/annuallist')} style={{ cursor: 'pointer' }}>
-                    [ 연차 목록 ]
-                </AnnualRest>
-
-                <AnnualRest onClick={() => router.push('/guest/attendance/annuallist')} style={{ cursor: 'pointer' }}>
-                    [ 2 ]
-                </AnnualRest>
             </CenteredGrid>
 
-            <div>
-                <TblComponent>
-                    <TblHeader>
-                        <PayTableTop>
-                            <thead>
-                            <tr>
-                                <th>지각 시간</th>
-                                <th>지각 횟수</th>
-                                <th>결근 시간</th>
-                                <th>휴가 기간</th>
-                                <th>휴가 사유</th>
-                            </tr>
-                            </thead>
-                        </PayTableTop>
-                    </TblHeader>
-
-                    <TblContent>
-                        <PayTableBottom>
-                            <tbody>
-                            <tr>
-                                <td>null</td>
-                                <td>null</td>
-                                <td>null</td>
-                                <td>null</td>
-                                <td>null</td>
-                            </tr>
-                            </tbody>
-                        </PayTableBottom>
-                    </TblContent>
-                </TblComponent>
-            </div>
+            <TableContainer>
+                <Table>
+                    <thead>
+                        <tr>
+                        <th>지각 시간</th>
+                        <th>지각 횟수</th>
+                        <th>결근 시간</th>
+                        <th>휴가 기간</th>
+                        <th>휴가 사유</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td>null</td>
+                        <td>null</td>
+                        <td>null</td>
+                        <td>null</td>
+                        <td>null</td>
+                        </tr>
+                    </tbody>
+                </Table>
+            </TableContainer>
         </div>
     );
 }
@@ -143,6 +127,14 @@ export default AttendanceDetail;
 AttendanceDetail.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
+
+const TableContainer = styled.div`
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    width: 800px;
+`;
 
 const MainComponent = styled.div`
     width: 100%;

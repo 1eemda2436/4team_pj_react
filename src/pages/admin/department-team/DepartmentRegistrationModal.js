@@ -22,6 +22,7 @@ const DepartmentRegistrationModal = ({ onClose, onSave }) => {
             });
         // 성공 처리
         onSave(); // 저장 후 처리
+        
         } catch (error) {
         // 오류 처리
         }

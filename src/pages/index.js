@@ -40,6 +40,8 @@ const Login = () => {
 
         // MemberStore의 setMemberData 메서드를 호출하여 멤버 데이터를 업데이트
         rootStore.MemberStore.setMemberData(response.data);
+        localStorage.setItem('auth', rootStore.MemberStore.member.authority);
+        localStorage.setItem('user_id', rootStore.MemberStore.member.id);
         console.log(rootStore.MemberStore.member.id);
 
         localStorage.setItem('token', response.data.token);

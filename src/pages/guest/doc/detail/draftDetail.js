@@ -37,6 +37,26 @@ const Doc = () => {
         }
     }, [id]);
 
+    const handleDelete = () => {
+        const token = localStorage.getItem("token");
+
+        if(id) {
+            axios.delete(`http://localhost:8081/guest/doc/delete/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(() => {
+                alert('문서삭제 완료')
+                // 문서 삭제 후 이동
+                router.push("/guest/doc/list/draftingList");
+            })
+            .catch((error) => {
+                console.error("문서 삭제 실패:", error);
+            });
+        }
+    }
+
     return(
         <Container>
             <ApprovalLine>
@@ -99,6 +119,8 @@ const Doc = () => {
                 </Table>
             </Docstyle2>
             <ButtonStyle>
+                <button type="button" onClick={() => router.push(`/guest/doc/draftingUpdate?id=${samples.doc_id}`)}>문서수정</button>
+                <button type="button" onClick={handleDelete}>문서삭제</button>
                 <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>돌아가기</button>
             </ButtonStyle>
         </Container>
