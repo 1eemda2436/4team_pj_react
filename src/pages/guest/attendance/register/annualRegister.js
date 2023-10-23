@@ -1,6 +1,7 @@
 import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import AttenCalendar from "@/components/calendar/AttenCalendar";
 
 // 연차 신청
 const AnnualRegister = () => {
@@ -8,11 +9,11 @@ const AnnualRegister = () => {
 
     return (
         <div align="center">
-            <div style={{border: "3px solid black", borderRadius: "20px", height: "80px", textAlign: "center", width: "800px"}}>
-                <span style={{ lineHeight: "80px" }}>
-                    캘린더자리
-                </span>
-            </div>
+            <AttenCal>
+                <div style={{ border: "3px solid black", borderRadius: "20px", width: "100%", height: "100%", display: "flex"}}>
+                    <AttenCalendar />
+                </div>
+            </AttenCal>
             <br/><br/><hr/><br/><br/>
             <div>
             <TblComponent>
@@ -56,20 +57,6 @@ const AnnualRegister = () => {
 
                         <tr>
                             <td colSpan="2">
-                                <label htmlFor="file">파일 추가</label>
-                                <input type="file" id="file" />
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colSpan="2">
-                                <label htmlFor="referenceList">참조자 및 참조 부서 목록</label>
-                                <input type="text" id="referenceList" placeholder="참조자 입력~" />
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colSpan="2">
                                 <input type="button" value={"신청하기"} onClick={() => router.push('/guest/attendance/annual')} style={{ cursor: 'pointer' }}/>
                             </td>
                         </tr>
@@ -78,15 +65,6 @@ const AnnualRegister = () => {
             </TblComponent>
             </div>
             <br/><br/><hr/><br/><br/>
-            <div>
-                <div>연차 상세 내역</div>
-                <br/>
-                <div>[ 총 연차 ]</div>
-                <div>[ 사용한 연차 ]</div>
-                <div>[ 남은 연차 ]</div>
-                <div>[ 그 동안 사용한 연차의 승인 여부 ]</div>
-                <div>[ 그 동안 거절된 연차의 사유 ]</div>
-            </div>
         </div>
     );
 }
@@ -169,4 +147,15 @@ const PayTableTop = styled(Table)``;
 
 const PayTableBottom = styled(Table)`
     margin-top: 20px;
+`;
+
+const AttenCal = styled.div`
+    width: 40%;
+    height: 100%;
+    border: 2px solid #005FC5;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    margin-right: 10px;
 `;

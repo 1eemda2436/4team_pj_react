@@ -4,6 +4,7 @@ import User from '../../../../public/asset/icons/user.svg'
 import Header from "@/components/common/header";
 import { useRouter } from "next/router";
 import AttenCalendar from "@/components/calendar/AttenCalendar";
+import { useEffect, useState } from "react";
 
 const WeeklyWorkButton = styled.a`
     cursor: pointer;
@@ -21,9 +22,13 @@ const WeeklyWorkButton = styled.a`
 
 
 // main
-const Attendance = () => {
-    const token = localStorage.getItem('token')
+function Attendance () {
+    const [attendance, setAttendance] = useState([]);
     const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+    })
 
     return (
         <MainComponent>

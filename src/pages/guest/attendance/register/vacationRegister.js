@@ -56,20 +56,6 @@ const AnnualRegister = () => {
 
                         <tr>
                             <td colSpan="2">
-                                <label htmlFor="file">파일 추가</label>
-                                <input type="file" id="file" />
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colSpan="2">
-                                <label htmlFor="referenceList">참조자 및 참조 부서 목록</label>
-                                <input type="text" id="referenceList" placeholder="참조자 입력~" />
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colSpan="2">
                                 <input type="button" value={"신청하기"} onClick={() => router.push('/guest/attendance/vacation')} style={{ cursor: 'pointer' }}/>
                             </td>
                         </tr>
@@ -78,15 +64,6 @@ const AnnualRegister = () => {
             </TblComponent>
             </div>
             <br/><br/><hr/><br/><br/>
-            <div>
-                <div>휴가 상세 내역</div>
-                <br/>
-                <div>[ 총 휴가 ]</div>
-                <div>[ 사용한 휴가 ]</div>
-                <div>[ 남은 휴가 ]</div>
-                <div>[ 그 동안 사용한 휴가의 승인 여부 ]</div>
-                <div>[ 그 동안 거절된 휴가의 사유 ]</div>
-            </div>
         </div>
     );
 }   
