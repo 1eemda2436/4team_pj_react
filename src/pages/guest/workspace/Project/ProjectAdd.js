@@ -21,8 +21,43 @@ const Component = styled.div`
 
 const ProjectAdd = () => {
     const [project, setProject] = useState({})
+    const [departmentList, setDepartmentList] = useState([]);
+    const [teams, setTeams] = useState([]);
     
     const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+
+        axios
+            .get("http://localhost:8081/guest/department",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log(response.data)
+                setDepartmentList(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        // 팀 정보 가져오기
+        axios
+            .get("http://localhost:8081/guest/team",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                console.log(response.data)
+                setTeams(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching teams:", error);
+            });
+    }, []); // 빈 배열을 넘겨주면 컴포넌트가 마운트될 때 한 번만 실행됩니다.
     
     const ProjectChange = (event) => {
         setProject(prevProject => ({
@@ -113,16 +148,28 @@ const ProjectAdd = () => {
                     </tr>
                     <tr>
                         <td>
-                            <TextField
-                            required
-                            id="standard-required"
-                            variant="standard"
-                            label="부서ID"
-                            type="text"
-                            name="depart_id"
-                            placeholder="부서ID를 적어주세요"
-                            onChange={ProjectChange}
-                            />
+                            <select name="depart_id" value={project.depart_id} onChange={ProjectChange}>
+                                <option value="">부서 선택</option>
+                                {departmentList.map(department => (
+                                    <option key={department[0]} value={department[0]}>
+                                        {department[1]}
+                                    </option>
+                                ))}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select name="team_id" value={project.team_id} onChange={ProjectChange}>
+                                <option value="">팀 선택</option>
+                                {teams
+                                    .filter(team => team.depart_id === parseInt(project.depart_id)) // depart_id와 일치하는 팀만 필터링
+                                    .map(filteredTeam => (
+                                        <option key={filteredTeam.team_id} value={filteredTeam.team_id}>
+                                            {filteredTeam.team_name}
+                                        </option>
+                                    ))}
+                            </select>
                         </td>
                     </tr>
                 </thead>

@@ -10,7 +10,7 @@ const AdminAttenAnnualDetail = () => {
     // 테두리 스타일을 정의합니다.
 
     const [attendance, setAttendance] = useState([]);
-    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [selectedCompany, setSelectedCompany] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
@@ -18,7 +18,7 @@ const AdminAttenAnnualDetail = () => {
         const token = localStorage.getItem('token');
     
         axios
-            .get(`http://localhost:8081/admin/attendance/departmentAlign/${selectedDepartment}`, {
+            .get(`http://localhost:8081/admin/attendance/companyStatus/${selectedCompany}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -28,12 +28,12 @@ const AdminAttenAnnualDetail = () => {
                 const attendanceData = response.data;
                 setAttendance(attendanceData);
             });
-    }, [selectedDepartment]);
+    }, [selectedCompany]);
     
     return (
         <div align="center">
-            <select value={selectedDepartment} onChange={(e) => setSelectedDepartment(e.target.value)}>
-                <option value="">부서 선택</option>
+            <select value={selectedCompany} onChange={(e) => setSelectedCompany(e.target.value)}>
+                <option value="">전사 선택</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -55,13 +55,13 @@ const AdminAttenAnnualDetail = () => {
                             <th>지각계</th>
                         </tr>
                         {attendance.map((atten => (
-                            <React.Fragment key={atten.depart_id}>
+                            <React.Fragment key={atten.company_id}>
                                 <tr>
+                                    <td>{atten.name}</td>
                                     <td>{atten.depart_id}</td>
                                     <td>{atten.depart_name}</td>
-                                    <td>{atten.id}</td>
-                                    <td>{atten.name}</td>
-                                    <td>{atten.latedCount}</td>
+                                    <td>{atten.lateCount}</td>
+                                    <td>{atten.holidayCount}</td>
                                 </tr>
                             </React.Fragment>
                         )))}
@@ -128,30 +128,22 @@ const MainComponent = styled.div`
 `;
 
 const Table = styled.table`
-    width:100%;
-    table-layout: fixed;
-    font-size: .9em;
-    width: 70%;
-    min-width: 650px;
+    width: 100%;
+    font-size: 0.9em;
     border-collapse: collapse;
 
     th {
-    width: 150px;
-    padding: 20px 15px;
-    text-align: center;
-    font-weight: 500;
-    font-size: 15px;
-    text-transform: uppercase;
-    white-space: nowrap;
+        padding: 15px;
+        text-align: center;
+        font-weight: 500;
+        font-size: 15px;
+        text-transform: uppercase;
     }
 
     td {
-    padding: 15px;
-    vertical-align: middle;
-    font-size: 13px;
-    border-bottom: solid 1px #E5E5E5;
-    text-align: center;
-    word-wrap: break-word;
+        padding: 15px;
+        text-align: center;
+        word-wrap: break-word;
     }
 `;
 

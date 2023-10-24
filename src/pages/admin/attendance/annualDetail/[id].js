@@ -152,11 +152,18 @@ function AdminAnnualConfirm() {
                         </tr>
 
                         <tr style={rowStyle}>
-                            <th style={TableHead}>제목</th>
-                            <td style={cellStyle} colSpan={3}>{attendance.annual_title}</td>
-                            <td style={cellStyle} rowSpan={4}>
+                            <th style={TableHead}>사원번호</th>
+                            <td style={cellStyle}>{attendance.id}</td>
+                            <th style={TableHead}>작성자명</th>
+                            <td style={cellStyle}>{attendance.name}</td>
+                            <td style={cellStyle} rowSpan={5}>
                                 <input type="text" placeholder="반려시 필수 작성" style={{}} />
                             </td>
+                        </tr>
+
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>제목</th>
+                            <td style={cellStyle} colSpan={3}>{attendance.annual_title}</td>
                         </tr>
 
                         <tr style={rowStyle}>

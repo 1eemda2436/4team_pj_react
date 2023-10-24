@@ -78,10 +78,15 @@ function AdminAttenDepDetail() {
                             <th>연차 및 휴가 자</th>
                             <td>{attendance.holidayCount}</td>
                         </tr>   
+                        
                     </tbody>
                 {/* ))} */}
                 </PayTableBottom>
             </TblComponent>
+            </div>
+            <br/><br/><hr/><br/><br/>
+            <div>
+                <button onClick={() => router.push('/admin/attendance/adminComAttendance')}>Company</button>
             </div>
             <br/><br/><hr/><br/><br/>
             <div style={{ border: "3px solid black", borderRadius: "20px", width: "400px", height: "465px", textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center" }}>

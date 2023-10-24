@@ -1,11 +1,81 @@
 import MainLayout from "@/components/layout/mainLayout";
+import axios from "axios";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 // 내 근태 현황(상세)
-const AttendanceDetail = () => {
 
+function formatDateFromTimestamp(timestamp) {   // 날짜
+    if (!timestamp) return '';
+
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-based, so we add 1
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
+function formatTimeFromTimestamp(timestamp) {   // 시간
+    if (!timestamp) return '';
+
+    const date = new Date(timestamp);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+
+    return `${hours}:${minutes}:${seconds}`;
+};
+function AttendanceDetail () {
+    const [attendance, setAttendance] = useState([]);
+    const [annual, setAnnual] = useState([]);
+    const [vacat, setVacat] = useState([]);
     const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const id = localStorage.getItem('user_id');
+        axios
+            .get(`http://localhost:8081/guest/attendance/myWorkDetail/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                setAttendance(response.data);
+            });
+    }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const id = localStorage.getItem('user_id');
+
+        axios
+            .get(`http://localhost:8081/guest/attendance/myCurrentAnnual/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                setAnnual(response.data);
+            });
+    }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const id = localStorage.getItem('user_id');
+
+        axios
+            .get(`http://localhost:8081/guest/attendance/myVacationPre/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                setVacat(response.data);
+            });
+    }, []);
 
     return (
         <div align="center">
@@ -17,42 +87,42 @@ const AttendanceDetail = () => {
                     <tbody>
                     <tr>
                         <th style={{width: "150px"}}>사원번호</th>
-                        <td>null</td>
+                        <td>{attendance.id}</td>
                     </tr>  
 
                     <tr>
                         <th>부서번호</th>
-                        <td>null</td>
+                        <td>{attendance.depart_id}</td>
                     </tr>
 
                     <tr>
                         <th>부서 명</th>
-                        <td>null</td>
+                        <td>{attendance.depart_name}</td>
                     </tr>
 
                     <tr>
                         <th>성명</th>
-                        <td>null</td>
+                        <td>{attendance.name}</td>
                     </tr>
 
                     <tr>
                         <th>금일 출근시간</th>
-                        <td>null</td>
+                        <td>{formatTimeFromTimestamp(attendance.general_workin)}</td>
                     </tr>
 
                     <tr>
                         <th>금일 퇴근시간</th>
-                        <td>null</td>
+                        <td>{formatTimeFromTimestamp(attendance.general_workout)}</td>
                     </tr>
 
                     <tr>
                         <th>금일 추가근무시간</th>
-                        <td>null</td>
+                        <td>{attendance.todaymyOT}</td>
                     </tr>
 
                     <tr>
                         <th>총 근무시간</th>
-                        <td>null</td>
+                        <td>{attendance.totalmyWork}</td>
                     </tr>
                         
                     </tbody>
@@ -75,7 +145,7 @@ const AttendanceDetail = () => {
                 </AnnualRest>
 
                 <AnnualRest>
-                    [ 15 ]
+                    [ {annual.total_annual} ]
                 </AnnualRest>
 
                 <AnnualRest onClick={() => router.push('/guest/attendance/annuallist')} style={{ cursor: 'pointer' }}>
@@ -83,7 +153,7 @@ const AttendanceDetail = () => {
                 </AnnualRest>
 
                 <AnnualRest onClick={() => router.push('/guest/attendance/annuallist')} style={{ cursor: 'pointer' }}>
-                    [ 3 ]
+                    [ {annual.used_annual} ]
                 </AnnualRest>
 
                 <AnnualRest>
@@ -91,7 +161,7 @@ const AttendanceDetail = () => {
                 </AnnualRest>
 
                 <AnnualRest>
-                    [ 12 ]
+                    [ {annual.annuallastcount} ]
                 </AnnualRest>
 
             </CenteredGrid>
@@ -100,20 +170,20 @@ const AttendanceDetail = () => {
                 <Table>
                     <thead>
                         <tr>
-                        <th>지각 시간</th>
-                        <th>지각 횟수</th>
-                        <th>결근 시간</th>
+                        <th>휴가계</th>
+                        <th>휴가 시작 일자</th> 
+                        <th>휴가 종료 일자</th>
                         <th>휴가 기간</th>
                         <th>휴가 사유</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                        <td>null</td>
-                        <td>null</td>
-                        <td>null</td>
-                        <td>null</td>
-                        <td>null</td>
+                        <td>{vacat.vacation_title}</td>
+                        <td>{formatDateFromTimestamp(vacat.vacation_start)}</td>
+                        <td>{formatDateFromTimestamp(vacat.vacation_end)}</td>
+                        <td>{vacat.vacationTerm}</td>
+                        <td>{vacat.vacation_content}</td>
                         </tr>
                     </tbody>
                 </Table>
