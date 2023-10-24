@@ -74,25 +74,6 @@ function GuestAnnualConfirm() {
         }
     }, [annual_id]);
 
-    const handleConfirm = () => {
-        const token = localStorage.getItem('token')
-
-        axios
-            .put(`http://localhost:8081/attendance/annualModify/${annual_id}`,{
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then((response) => {
-                setAttendance(response.data);
-                console.log("승인!!!");
-                router.push('/admin/attendance/adminAnnualList');
-            })
-            .catch((error) => {
-                console.log("Error:", error);
-            });
-    };
-
     const handlePdfDownload = () => {
         window.print(); // 브라우저 인쇄 
     };
@@ -167,7 +148,7 @@ function GuestAnnualConfirm() {
                             fontSize: "1rem",
                             margin: "10px",
                         }}
-                        onClick={handleConfirm}
+                        onClick={() => router.push(`/guest/attendance/annualModify/${attendance.annual_id}`)}
                     >
                         수정
                     </button>
