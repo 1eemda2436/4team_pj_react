@@ -112,7 +112,7 @@ const Workspace = () => {
                         <th style={cellStyle}>PJ_ID</th>
                         <th style={cellStyle}>프로젝트명</th>
                         <th style={cellStyle}>기한(시작일)/기한(종료일)</th>
-                        <th style={cellStyle}>담당 팀</th>
+                        <th style={cellStyle}>담당 팀 ID</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -125,7 +125,7 @@ const Workspace = () => {
                             </Link>
                         </td>
                         <td style={cellStyle}>{moment(pj.deadline_s).format('YYYY-MM-DD')} ~ {moment(pj.deadline_e).format('YYYY-MM-DD')}</td>
-                        <td style={cellStyle}>{teams.team_name}</td>
+                        <td style={cellStyle}>{pj.team_id}</td>
                     </tr>
                     ))}
                 </tbody>
@@ -143,6 +143,7 @@ const Workspace = () => {
                         <th style={cellStyle}>PW_ID</th>
                         <th style={cellStyle}>프로젝트업무명</th>
                         <th style={cellStyle}>기한(시작일)/기한(종료일)</th>
+                        <th style={cellStyle}>완료여부</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -154,6 +155,7 @@ const Workspace = () => {
                                 {pjw.pw_name}
                             </Link></td>
                         <td style={cellStyle}>{moment(pjw.pw_deadline_s).format('YYYY-MM-DD')} ~ {moment(pjw.pw_deadline_e).format('YYYY-MM-DD')}</td>
+                        <td style={cellStyle}>{pjw.complete}</td>
                     </tr>
                     ))}
                 </tbody>
