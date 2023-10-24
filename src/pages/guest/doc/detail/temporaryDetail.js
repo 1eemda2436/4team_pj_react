@@ -9,7 +9,6 @@ const Doc = () => {
     const router = useRouter();
     const id = router.query.id; // ID를 추출
     console.log(id)
-    const [selectedCategory, setSelectedCategory] = useState('');
     
     const [samples, setSamples] = useState([]);
 
@@ -102,7 +101,7 @@ const Doc = () => {
                         <TableTr>
                                 <TableTd2 colSpan={2}>{samples.doc_content}</TableTd2>
                         </TableTr>
-                     </div>
+                    </div>
                 </Table>
                 <br></br>
                 <Table>
@@ -119,9 +118,9 @@ const Doc = () => {
                 </Table>
             </Docstyle2>
             <ButtonStyle>
-                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>등록</button>
-                <button type="button" onClick={() => router.push('')}>수정</button>
-                <button type="button" onClick={handleDelete}>삭제</button>
+                <button type="button" onClick={() => router.push(`/guest/doc/temporaryUpdate?id=${samples.doc_id}`)}>문서작성</button>
+                <button type="button" onClick={handleDelete}>문서삭제</button>
+                <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>돌아가기</button>
             </ButtonStyle>
         </Container>
     )

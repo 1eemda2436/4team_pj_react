@@ -4,15 +4,20 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const cellStyle = {
-    border: "2px solid black",
-    padding: "8px",
+    border: "1px solid #ddd",
+    padding: "12px",
     textAlign: "center",
     fontWeight: "bold",
 };
 
 const tableStyle = {
     borderCollapse: "collapse",
-    width: "800px",
+    width: "900px",
+    margin: "0 auto",
+};
+
+const rowStyle = {
+    borderBottom: "1px solid #ddd",
 };
 
 const buttonStyle = {
@@ -26,6 +31,24 @@ const buttonStyle = {
     margin: "10px",
 };
 
+const TableHead = {
+    backgroundColor: "#007BFF",
+    color: "white",
+};
+
+const TableHead2 = {
+    backgroundColor: "#007BFF",
+    color: "white",
+    width: "100px",
+};
+
+const TableHead3 = {
+    backgroundColor: "#007BFF",
+    color: "white",
+    width: "100px",
+    height: "41px",
+};
+
 // 연차 상세페이지
 
 function GuestVacationConfirm() {
@@ -36,42 +59,25 @@ function GuestVacationConfirm() {
     
     useEffect(() => {
         const token = localStorage.getItem('token')
+
         if (vacation_id) {
-        console.log(vacation_id)
-        axios
-            .get(`http://localhost:8081/all/attendance/vacationDetail/${vacation_id}`,{
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then((response) => {
-                setVacation(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+            axios
+                .get(`http://localhost:8081/all/attendance/vacationDetail/${vacation_id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then((response) => {
+                    setVacation(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
     }, [vacation_id]);
 
-    const handleConfirm = () => {
-        const token = localStorage.getItem('token')
-        
-        axios
-            .put(`http://localhost:8081/attendance/vacationConfirm/${vacation_id}`,{
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then((response) => {
-                setVacation(response.data);
-                // 승인 요청 처리 후 adminAnnualList 페이지로 이동
-                console.log("승인!!!");
-                router.push('/admin/attendance/adminVacationList');
-            })
-            .catch((error) => {
-                console.log("Error:", error);
-            });
+    const handlePdfDownload = () => {
+        window.print(); // 브라우저 인쇄 
     };
 
     const startDate = new Date(vacation.vacation_start); // 데이터베이스로부터 가져온 문자열을 Date 객체로 파싱
@@ -104,31 +110,31 @@ function GuestVacationConfirm() {
             <div>
                 <table style={tableStyle}>
                     <tbody>
-                        <tr>
-                            <th style={cellStyle}>문서 번호</th>
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>문서 번호</th>
                             <td style={cellStyle}>{vacation.vacation_id}</td>
-                            <th style={cellStyle}>작성일자</th>
+                            <th style={TableHead}>작성일자</th>
                             <td style={cellStyle}>{formattedWirte}</td>
                         </tr>
 
-                        <tr>
-                            <th style={cellStyle}>제목</th>
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>제목</th>
                             <td style={cellStyle} colSpan={3}>{vacation.vacation_title}</td>
                         </tr>
 
-                        <tr>
-                            <th style={cellStyle}>날짜</th>
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>날짜</th>
                             <td style={cellStyle} colSpan={3}>{formattedDate}</td>
                         </tr>
 
-                        <tr>
+                        <tr style={rowStyle}>
                             <td colSpan={4} style={cellStyle}>
                                 {vacation.vacation_content}
                             </td>
                         </tr>
 
-                        <tr>
-                            <th style={cellStyle}>구분</th>
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>구분</th>
                             <td style={cellStyle} colSpan={3}>---</td>
                         </tr>
 
@@ -145,7 +151,7 @@ function GuestVacationConfirm() {
                             fontSize: "1rem",
                             margin: "10px",
                         }}
-                        onClick={handleConfirm}
+                        onClick={() => router.push(`/guest/attendance/vacationModify/${vacation.vacation_id}`)}
                     >
                         수정
                     </button>
@@ -160,7 +166,7 @@ function GuestVacationConfirm() {
                             fontSize: "1rem",
                             margin: "10px",
                         }}
-                        onClick={() => router.push('/guest/attendance/adminVactionList')}
+                        onClick={() => router.push('/guest/attendance/vacationlist')}
                     >
                         취소
                     </button>

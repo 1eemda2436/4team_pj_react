@@ -7,9 +7,9 @@ import axios from "axios";
 
 const Doc = () => {
     const router = useRouter();
-    const {id} = router.query;
-    console.log(id)
-
+    // const {id} = router.query;
+    const id = localStorage.getItem('user_id');
+    console.log('id가뭐야',id);
     const [selectedCategory, setSelectedCategory] = useState('');
 
     const [samples, setSamples] = useState({
@@ -20,7 +20,26 @@ const Doc = () => {
       doc_content: '',
       doc_attachment: null,
       doc_status: null,
+      id:id,
+      // approval_id: null,
     });
+
+    // useEffect(() => {
+    //   if(id) {
+    //     axios.get(`http://localhost:8081/guest/doc/guestTotal/${id}`)
+    //     .then((response) => {
+    //       const {id, name} = response.data;
+    //       setSamples((samples) => ({
+    //         ...samples,
+    //         doc_id: id,
+    //         name: name,
+    //       }));
+    //     })
+    //     .catch((error) => {
+    //       console.error('사용자 정보 호출 실패', error);
+    //     })
+    //   }
+    // }, [id]);
 
     const handleInputChange = (e) => {
       const {name, value} = e.target;
@@ -46,9 +65,10 @@ const Doc = () => {
       insertSamples.append('doc_title', samples.doc_title);
       insertSamples.append('doc_content', samples.doc_content);
       insertSamples.append('doc_attachment2', samples.doc_attachment);
-      insertSamples.append('id', "4");
+      insertSamples.append('id', samples.id);
       insertSamples.append('category_id', selectedCategory);
       insertSamples.append('doc_status', '기안');
+      // insertSamples.append('approval_id', samples.approval_id);
       
       const token = localStorage.getItem('token')
 
@@ -59,7 +79,7 @@ const Doc = () => {
       })
       .then((response) => {
           alert('문서등록 완료');
-          router.push('guest/doc/list/draftingList');
+          router.push('/guest/doc/list/draftingList');
       })
       .catch((error) => {
         console.error('문서 등록 실패', error)
@@ -73,9 +93,10 @@ const Doc = () => {
       temporarySaveData.append('doc_title', samples.doc_title);
       temporarySaveData.append('doc_content', samples.doc_content);
       temporarySaveData.append('doc_attachment2', samples.doc_attachment);
-      temporarySaveData.append('id', "4");
+      temporarySaveData.append('id', samples.id);
       temporarySaveData.append('category_id', selectedCategory);
       temporarySaveData.append('doc_status', '임시'); // 임시 상태로 설정
+      // temporarySaveData.append('approval_id', samples.approval_id);
   
       const token = localStorage.getItem('token');
   
@@ -135,7 +156,7 @@ const Doc = () => {
                                   value={samples.doc_date}
                                   onChange={handleInputChange}
                                 />
-                                </td>
+                              </td>
                           </tr>
                           <tr>
                               <th>기안자</th>
@@ -143,18 +164,27 @@ const Doc = () => {
                                 <input 
                                   type="text"
                                   name="name"
+                                  readOnly
                                   value={samples.name}
                                   onChange={handleInputChange}
                                 />
-                                </td>
-                                <td>
+                              </td>
+                              <td>
                                 <input 
                                   type="hidden"
                                   name="doc_status"
                                   value={samples.doc_status}
                                   onChange={handleInputChange}
                                 />
-                                </td>
+                              </td>
+                              <td>
+                                <input 
+                                  type="hidden"
+                                  name="approval_id"
+                                  value={samples.approval_id}
+                                  onChange={handleInputChange}
+                                />
+                              </td>
                           </tr>
                   </table>
               </DocstyleLeft>
@@ -168,14 +198,14 @@ const Doc = () => {
               <table>
                   <tr>
                     <th>제목</th>
-                    <th>
+                    <td>
                       <input 
                         type="text"
                         name="doc_title"
                         value={samples.doc_title}
                         onChange={handleInputChange}
                       />
-                    </th>
+                    </td>
                   </tr>
                   <tr>
                     <td colSpan={2}>

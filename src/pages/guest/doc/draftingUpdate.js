@@ -7,69 +7,83 @@ import axios from "axios";
 
 const Doc = () => {
     const router = useRouter();
-    const {id} = router.query.id; // ID를 추출
+    const {id} = router.query; // ID를 추출
     console.log(id);
 
     const [selectedCategory, setSelectedCategory] = useState('');
     
     const [samples, setSamples] = useState({
-        doc_id: '',
-        doc_date: '',
-        name: '',
         doc_title: '',
         doc_content: '',
-        doc_status: null,
     });
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8081/guest/doc/detail/${id}`);
-                setSamples(response.data);
-            } catch (error) {
-                console.error("문서 정보를 불러오는 중 오류 발생:", error);
-            }
-        };
-    
-        if (id) {
-            fetchData();
+        if(id) {
+            axios.get(`http://localhost:8081/guest/doc/detail/${id}`)
+            .then((response) => {
+                const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content } = response.data;
+                setSamples({
+                    doc_id,
+                    doc_date,
+                    name,
+                    doc_status,
+                    doc_attachment,
+                    category_id,
+                    doc_title,
+                    doc_content,
+                });
+                setSelectedCategory(category_id);
+            })
+            .catch((error) => {
+                console.error("문서 불러오기 실패", error);
+            })
         }
     }, [id]);
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
         setSamples((samples) => ({
-            ...samples,
-            [name]: value,
+        ...samples,
+        doc_title: name === 'doc_title' ? value : samples.doc_title,
+        doc_content: name === 'doc_content' ? value : samples.doc_content,
         }));
-        };
+    };
+
+    const handleFileChange = (f) => {
+        const file = f.target.files[0];
+        setSamples((samples) => ({
+        ...samples,
+        doc_attachment: file,
+        }));
+    };
+
+    const hanldeUpdate = () => {
+        const updateSamples = new FormData();
+        updateSamples.append('doc_title', samples.doc_title);
+        updateSamples.append('doc_content', samples.doc_content);
+        updateSamples.append('doc_status', '기안');
+        updateSamples.append('category_id', selectedCategory);
+
+        const token = localStorage.getItem('token')
         
-        const CategoryChange = (event) => {
-            setSelectedCategory(event.target.value);
-        };
-
-    const hanldeUpdate = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            const updateData = {
-            doc_date: samples.doc_date,
-            name: samples.name,
-            doc_title: samples.doc_title,
-            doc_content: samples.doc_content,
-            category_id: samples.category_id,
-            doc_status: samples.doc_status,
-        };
-        await axios.put(`http://localhost:8081/guest/doc/update/${id}`, updateData, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-        });
-
-        alert("문서 업데이트 성공");
-        router.push(`/guest/doc/detail/${id}`);
-        } catch (error) {
-            console.error("업데이트 실패", error);
+        if(id) {
+            axios.put(`http://localhost:8081/guest/doc/update/${id}`, updateSamples, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(() => {
+                alert('문서수정 완료')
+                router.push(`/guest/doc/detail/draftDetail?id=${samples.doc_id}`)
+            })
+            .catch((error) => {
+                console.error("문서 수정 실패:", error);
+            });
         }
+    }
+
+    const CategoryChange = (event) => {
+        setSelectedCategory(event.target.value);
     };
 
     return(
@@ -88,64 +102,90 @@ const Doc = () => {
             </Title>
             <Docstyle1>
                 <DocstyleLeft>
-                    <Table>
-                        <div>
-                        <TableTr>
-                            <TableTh>문서번호</TableTh>
-                            <TableTd component="" scope="detail">{samples.doc_id}</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>기안일</TableTh>
-                            <TableTd>{samples.doc_date}</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>기안자</TableTh>
-                            <TableTd>{samples.name}</TableTd>
-                        </TableTr>
-                        </div>
-                    </Table>
+                    <table>
+                        <tr>
+                            <th>문서번호</th>
+                            <td>
+                                <input 
+                                    type="number"
+                                    name="doc_id"
+                                    readOnly
+                                    value={samples.doc_id}
+                                    onChange={handleInputChange}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>기안일</th>
+                            <td>
+                                <input
+                                type="date"
+                                name="doc_date"
+                                value={samples.doc_date}
+                                onChange={handleInputChange}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>기안자</th>
+                            <td>
+                                <input 
+                                type="text"
+                                name="name"
+                                value={samples.name}
+                                onChange={handleInputChange}
+                                />
+                            </td>
+                            <td>
+                                <input 
+                                type="hidden"
+                                name="doc_status"
+                                value={samples.doc_status}
+                                onChange={handleInputChange}
+                                />
+                            </td>
+                        </tr>
+                    </table>
                 </DocstyleLeft>
                     
             </Docstyle1>
             <Docstyle2>
-                <Table>
-                    <div>
-                        <TableTr>
-                            <TableTh3>제목</TableTh3>
-                            <TableTh2>
+                <table>
+                        <tr>
+                            <th>제목</th>
+                            <td>
                                 <input 
                                     type="text"
                                     name="doc_title"
                                     value={samples.doc_title}
                                     onChange={handleInputChange}
                                 />
-                            </TableTh2>
-                        </TableTr>
-                        <TableTr>
-                                <TableTd2 colSpan={2}>
-                                    <input
-                                        type="text"
-                                        name="doc_content"
-                                        value={samples.doc_content}
-                                        onChange={handleInputChange}
-                                    />
-                                    </TableTd2>
-                        </TableTr>
-                    </div>
-                </Table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}>
+                                <input
+                                    type="text"
+                                    name="doc_content"
+                                    value={samples.doc_content}
+                                    onChange={handleInputChange}
+                                />
+                            </td>
+                        </tr>
+                </table>
                 <br></br>
-                <Table>
-                    <div>
-                        <TableTr>
-                            <TableTh3>구분</TableTh3>
-                            <TableTd3> </TableTd3>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh3>첨부파일</TableTh3>
-                            <TableTd3>{samples.doc_attachment}</TableTd3>
-                        </TableTr>
-                    </div>
-                </Table>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>구분</th>
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <th>첨부파일</th>
+                            <td>{samples.doc_attachment}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </Docstyle2>
             <CategoryTable>
                 <select value={selectedCategory} onChange={CategoryChange}>
@@ -165,125 +205,93 @@ const Doc = () => {
 
 export default Doc;
 
-Doc.getLayout = function getLayout(page) {
-    return <MainLayout>{page}</MainLayout>;
-};
-
 const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 20px;
 `;
 
 const ApprovalLine = styled.div`
-    text-align: right;
-    margin-bottom: 20px;
-    margin-left: auto;
-    tr {
-        border: solid 1px;
-    };
-
-    td {
-        border: solid 1px;
-        width: 100px;
-        height: 100px;
+margin-bottom: 20px;
+table {
+  width: 100%;
+  td {
+    width: 33.33%;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    &:hover {
+      background-color: #f5f5f5;
     }
+  }
+}
 `;
 
 const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-const Docstyle1 = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin: 10px;
-`;
-
-const Docstyle2 = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-`;
-
-const DocstyleLeft = styled.div`
-    margin-left: 10px;
-`;
-
-const DocstyleRight = styled.div`
-    margin-right: 10px;
+text-align: center;
+margin-bottom: 20px;
 `;
 
 const H1 = styled.h1`
-    font-size: 30px;
+font-size: 30px;
+margin-bottom: 10px;
 `;
 
-const Table = styled.table`
-    border: 1px solid;
+const Docstyle1 = styled.div`
+width: 80%;
+display: flex;
+justify-content: space-between;
+margin-bottom: 20px;
 `;
 
-const TableTr = styled.tr`
-    border: 1px solid;
+const DocstyleLeft = styled.div`
+width: 48%;
+table {
+  width: 100%;
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  th {
+    background-color: #f5f5f5;
+  }
+}
 `;
 
-const TableTh = styled.th`
-    border: 1px solid;
-    padding: 5px;
+const DocstyleRight = styled.div`
+width: 48%;
+display: flex;
+justify-content: space-between;
+button {
+  width: 48%;
+  padding: 10px;
+  cursor: pointer;
+  &:first-child {
+    margin-right: 4%;
+  }
+}
 `;
 
-const TableTh2 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 600px;
-`;
-
-const TableTh3 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 60px;
-`;
-
-const TableTd = styled.td`
-    border: 1px solid;
-    width: 80px;
-`;
-
-const TableTd2 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 200px;
-    height: 300px;
-`;
-
-const TableTd3 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 600px;
-`;
-
-const ButtonStyle = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-
-    button {
-        border: solid 1px;
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: gray;
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin: 1px;
-    }
-
+const Docstyle2 = styled.div`
+width: 80%;
+margin-bottom: 20px;
+table {
+  width: 100%;
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  th {
+    background-color: #f5f5f5;
+  }
+}
 `;
 
 const CategoryTable = styled.div`
@@ -291,5 +299,16 @@ margin-bottom: 20px;
 select {
   width: 100%;
   padding: 10px;
+}
+`;
+
+const ButtonStyle = styled.div`
+button {
+  width: 48%;
+  padding: 10px;
+  cursor: pointer;
+  &:first-child {
+    margin-right: 4%;
+  }
 }
 `;
