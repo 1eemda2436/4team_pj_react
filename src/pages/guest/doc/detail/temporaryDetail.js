@@ -37,6 +37,30 @@ const Doc = () => {
         }
     }, [id]);
 
+    const handleComplete = () => {
+        const token = localStorage.getItem("token");
+
+        if(id) {
+            axios.put(`http://localhost:8081/guest/doc/update/${id}`,
+            {
+                doc_title: samples.doc_title,
+                doc_status: '기안'
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then(() => {
+                alert('문서등록 완료')
+                router.push(`/guest/doc/detail/draftDetail?id=${samples.doc_id}`)
+            })
+            .catch((error) => {
+                console.error("문서 등록 실패", error);
+            });
+        }
+    };
+
     const handleDelete = () => {
         const token = localStorage.getItem("token");
 
@@ -119,7 +143,7 @@ const Doc = () => {
                 </Table>
             </Docstyle2>
             <ButtonStyle>
-                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>등록</button>
+                <button type="button" onClick={handleComplete}>등록</button>
                 <button type="button" onClick={() => router.push('')}>수정</button>
                 <button type="button" onClick={handleDelete}>삭제</button>
             </ButtonStyle>
