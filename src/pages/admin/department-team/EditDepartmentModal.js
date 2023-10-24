@@ -74,7 +74,7 @@ const EditDepartmentModal = ({ onClose, onSave, depart_id, depart_name }) => {
                         />
                     </label>
                     <br />
-                    <SaveButton type="submit">저장</SaveButton>
+                    <SaveButton type="submit">수정</SaveButton>
                     <br />
                     <SaveButton onClick={onClose}>취소</SaveButton>
                 </Form>
