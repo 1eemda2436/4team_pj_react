@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import DepartmentRegistrationModal from './DepartmentRegistrationModal'; // 모달 컴포넌트 임포트
 import EditDepartmentModal from './EditDepartmentModal';
+import TeamManagement from './TeamManagement'; 
+
 
 const DepartmentManagement = () => {
   const router = useRouter();
@@ -78,6 +80,7 @@ const handleEditModalSave = () => {
     // Perform any other necessary actions
 };
 
+  //부서 삭제
   const handleDelete = async (depart_id) => {
     console.log('!!!!!!!')
     const token = localStorage.getItem('token');
@@ -127,7 +130,7 @@ const handleEditModalSave = () => {
                     <Button onClick={() => handleDelete(department[0])}>부서 삭제</Button>
                     </td>
                     <td>
-                    <Button>팀 현황</Button>
+                    <Button onClick={() => router.push(`/admin/department-team/TeamManagement?depart_id=${department[0]}`)}>팀 현황</Button>
                     </td>
                   </tr>
                   ))}
