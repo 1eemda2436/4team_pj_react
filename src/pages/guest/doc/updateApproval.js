@@ -60,14 +60,10 @@ const Doc = () => {
     const hanldeUpdate = () => {
         const updateSamples = new FormData();
         updateSamples.append('doc_status', '진행');
-        updateSamples.append('doc_title', samples.doc_title);
-        updateSamples.append('doc_content', samples.doc_content);
-        updateSamples.append('approval_id', samples.approval_id);
-
         const token = localStorage.getItem('token')
         
         if(id) {
-            axios.put(`http://localhost:8081/guest/doc/updateApproval/${id}`, updateSamples, {
+            axios.put(`http://localhost:8081/guest/doc/update/${id}`, updateSamples, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

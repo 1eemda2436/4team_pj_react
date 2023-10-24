@@ -25,7 +25,7 @@ const Doc = () => {
             })
             .then((response) => {
                 setSamples(response.data);
-                console.log(response.data);
+                console.log('response.data', response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -49,19 +49,15 @@ const Doc = () => {
                     <Table>
                         <TableTr>
                             <TableTh>문서번호</TableTh>
-                            <TableTd component="" scope="adminDetail">{samples.approval_id}</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>결재번호</TableTh>
-                            <TableTd component="" scope="adminDetail">{samples.approval_id}</TableTd>
+                            <TableTd component="" scope="adminDetail">{samples?.doc_id}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>기안자</TableTh>
-                            <TableTd>{samples.name}</TableTd>
+                            <TableTd>{samples?.name}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>결재요청일</TableTh>
-                            <TableTd>{samples.approval_date}</TableTd>
+                            <TableTd>{samples?.approval_date}</TableTd>
                         </TableTr>
                     </Table>
                 </DocstyleLeft>
@@ -77,10 +73,10 @@ const Doc = () => {
                 <Table>
                         <TableTr>
                             <TableTh3>제목</TableTh3>
-                            <TableTh2>{samples.doc_title}</TableTh2>
+                            <TableTh2>{samples?.doc_title}</TableTh2>
                         </TableTr>
                         <TableTr>
-                                <TableTd2 colSpan={2}>{samples.doc_content}</TableTd2>
+                                <TableTd2 colSpan={2}>{samples?.doc_content}</TableTd2>
                         </TableTr>
                 </Table>
                 <br></br>
@@ -91,7 +87,7 @@ const Doc = () => {
                         </TableTr>
                         <TableTr>
                             <TableTh3>첨부파일</TableTh3>
-                            <TableTd3>{samples.doc_attachment}</TableTd3>
+                            <TableTd3>{samples?.doc_attachment}</TableTd3>
                         </TableTr>
                 </Table>
             </Docstyle2>

@@ -21,7 +21,6 @@ const Doc = () => {
       doc_attachment: null,
       doc_status: null,
       id:id,
-      // approval_id: null,
     });
 
     // useEffect(() => {
@@ -40,6 +39,14 @@ const Doc = () => {
     //     })
     //   }
     // }, [id]);
+
+    useEffect(() => {
+      const user_name = localStorage.getItem('user_name');
+      setSamples({
+        ...samples,
+        name: user_name
+      })
+    }, [id]);
 
     const handleInputChange = (e) => {
       const {name, value} = e.target;
@@ -68,7 +75,6 @@ const Doc = () => {
       insertSamples.append('id', samples.id);
       insertSamples.append('category_id', selectedCategory);
       insertSamples.append('doc_status', '기안');
-      // insertSamples.append('approval_id', samples.approval_id);
       
       const token = localStorage.getItem('token')
 
@@ -96,7 +102,6 @@ const Doc = () => {
       temporarySaveData.append('id', samples.id);
       temporarySaveData.append('category_id', selectedCategory);
       temporarySaveData.append('doc_status', '임시'); // 임시 상태로 설정
-      // temporarySaveData.append('approval_id', samples.approval_id);
   
       const token = localStorage.getItem('token');
   
