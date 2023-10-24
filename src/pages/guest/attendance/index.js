@@ -118,7 +118,7 @@ function Attendance () {
                     <AttenWeekWork>
                         <div className="work-hours">
                             <WeeklyWorkButton onClick={() => router.push('/guest/attendance/detail/')}>
-                                주간 근무 현황
+                                쭈강 긍무 형황
                             </WeeklyWorkButton>
                         </div>
                         <br/>

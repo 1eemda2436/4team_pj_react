@@ -5,13 +5,58 @@ import AttenCalendar from "@/components/calendar/AttenCalendar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const cellStyle = {
+    border: "1px solid #ddd",
+    padding: "10px",
+    textAlign: "center",
+    fontWeight: "bold",
+    height: "40px",
+};
+
+const cellStyle2 = {
+    border: "1px solid #ddd",
+    padding: "10px",
+    textAlign: "center",
+    fontWeight: "bold",
+    height: "40px", // 높이 조정
+};
+
+const tableStyle = {
+    borderCollapse: "collapse",
+    width: "900px", // 테이블 너비 조정
+    margin: "0 auto",
+};
+
+const rowStyle = {
+    borderBottom: "1px solid #ddd",
+};
+
+const buttonStyle = {
+    cursor: 'pointer',
+    backgroundColor: "#007BFF",
+    color: "white",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "20px",
+    fontSize: "1rem",
+    margin: "10px",
+};
+
+const TableHead = {
+    backgroundColor: "#007BFF",
+    color: "white",
+};
+
+const TableTitle = {
+    backgroundColor: "#007BFF",
+    color: "white",
+};
+
 // 연차 신청
 function AnnualRegister () {
-    const [attendance, setAttendance] = useState([]);
     const [annual, setAnnual] = useState({
-        annual_id: '',
-        id: '',
-        name: '',
+        id: localStorage.getItem('user_id'),
+        name: localStorage.getItem('user_name'),
         annual_title: '',
         annual_start: '',
         annual_end: '',
@@ -28,37 +73,13 @@ function AnnualRegister () {
 
     const router = useRouter();
 
-    useEffect(() => {
+const handleAnnualSubmit = () => {
         const token = localStorage.getItem('token');
         const id = localStorage.getItem('user_id');
-        axios
-            .get(`http://localhost:8081/guest/attendance/myAttenCount/${id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then((response) => {
-                console.log("값? : ", response.data);
-                setAttendance(response.data);
-            });
-    }, []);
-
-    const handleAnnualSubmit = () => {
-        const token = localStorage.getItem('token');
-        const id = localStorage.getItem('user_id');
-
-        // 데이터를 requestData에 채우기
-        const insertAnnual = new FormData();
-        insertAnnual.append('id', attendance.id);
-        insertAnnual.append('name', attendance.name);
-        
-        insertAnnual.append('annual_title', annual.annual_title);
-        insertAnnual.append('annual_start', annual.annual_start);
-        insertAnnual.append('annual_end', annual.annual_end);
-        insertAnnual.append('annual_content', annual.annual_content);
+        const name = localStorage.getItem('user_name');
 
         axios
-            .post('http://localhost:8081/guest/attendance/annualRegister', insertAnnual, {
+            .post('http://localhost:8081/guest/attendance/annualRegister', annual, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -70,11 +91,20 @@ function AnnualRegister () {
                 router.push('/guest/attendance/annuallist');
             })
             .catch((error) => {
-                // 에러 처리
                 console.error("에러 발생:", error);
+                if (error.response) {
+                    // 요청은 이루어졌지만 서버가 오류 상태 코드로 응답한 경우
+                    console.log("데이터:", error.response.data);
+                    console.log("상태:", error.response.status);
+                } else if (error.request) {
+                    // 요청은 이루어졌지만 응답을 받지 못한 경우
+                    console.log("요청은 이루어졌지만 응답을 받지 못함");
+                } else {
+                    // 요청 설정 중에 문제가 발생한 경우
+                    console.log("요청 설정 중 오류 발생:", error.message);
+                }
             });
     };
-    
 
     return (
         <div align="center">
@@ -85,64 +115,90 @@ function AnnualRegister () {
             </AttenCal>0
             <br/><br/><hr/><br/><br/>
             <div>
-            <TblComponent>
-                <PayTableBottom>
+                <table style={tableStyle}>
                     <tbody>
-                        <tr>
-                            <th colSpan="2" style={{fontSize: "36px", fontWeight: "bold"}}>연차 신청서</th>
+                        <tr style={rowStyle}>
+                            <th colSpan={4} style={TableTitle}>연차 신청서</th>
                         </tr>
 
-                        <tr>
-                            <th colSpan={2} style={{padding: "0px"}}><hr/></th>
-                        </tr>
-
-                        <tr>
-                            <td>
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>
                                 <label htmlFor="title">작성자번호</label>
-                                <input type="text" name="id" size={30} readOnly value={attendance.id} onChange={handleInputChange}/>
-                            </td>
+                            </th>
                             <td>
+                                <input type="text" name="id" size={30} value={annual.id} onChange={handleInputChange} readOnly/>
+                            </td>
+                            <th style={TableHead}>
                                 <label htmlFor="reference">작성자명</label>
-                                <input type="text" name="name" size={30} readOnly value={attendance.name} onChange={handleInputChange} />
+                            </th>
+                            <td>
+                                <input type="text" name="name" size={30} value={annual.name} onChange={handleInputChange} readOnly/>
                             </td>
                         </tr>
 
-                        <tr>
-                            <td>
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>
                                 <label htmlFor="title">제목</label>
+                            </th>
+                            <td>
                                 <input type="text" name="annual_title" placeholder="제목입력~" size={30} value={annual.annual_title} onChange={handleInputChange} />
                             </td>
-                            <td>
+                            <th style={TableHead}>
                                 <label htmlFor="reference">참조</label>
+                            </th>
+                            <td>
                                 <input type="text" id="reference" placeholder="참조 입력~" size={30} />
                             </td>
                         </tr>
 
-                        <tr>
-                            <td>
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>
                                 <label htmlFor="title">시작일</label>
+                            </th>
+                            <td>
                                 <input type="date" name="annual_start" value={annual.annual_start} onChange={handleInputChange} />
                             </td>
-                            <td>
+                            <th style={TableHead}>
                                 <label htmlFor="reference">종료일</label>
+                            </th>
+                            <td>
                                 <input type="date" name="annual_end" value={annual.annual_end} onChange={handleInputChange} />
                             </td>
                         </tr>
 
-                        <tr>
-                            <td colSpan="2" >
+                        <tr style={rowStyle}>
+                            <td colSpan={4} style={cellStyle} >
                                 <input type="text" name="annual_content" placeholder="내용 입력~" style={{width: "760px", height: "200px"}} value={annual.annual_content} onChange={handleInputChange} />
                             </td>
                         </tr>
 
-                        <tr>
-                            <td colSpan="2">
-                                <input type="submit" value={"신청하기"} style={{ cursor: 'pointer' }} onClick={handleAnnualSubmit} />
+                        <tr style={rowStyle}>
+                            <td colSpan={2} style={cellStyle}>
+                                <input type="button" value={"신청하기"} style={{
+                                    cursor: 'pointer',
+                                    backgroundColor: "#007BFF",
+                                    color: "white",
+                                    border: "none",
+                                    padding: "10px 20px",
+                                    borderRadius: "20px",
+                                    fontSize: "1rem",
+                                }} onClick={handleAnnualSubmit} />
+                            </td>
+
+                            <td colSpan={2} style={cellStyle}>
+                                <input type="button" value={"목록"} style={{
+                                    cursor: 'pointer',
+                                    backgroundColor: "#007BFF",
+                                    color: "white",
+                                    border: "none",
+                                    padding: "10px 20px",
+                                    borderRadius: "20px",
+                                    fontSize: "1rem",
+                                }} onClick={() => router.push('/guest/attendance/annuallist')} />
                             </td>
                         </tr>
                     </tbody>
-                </PayTableBottom>
-            </TblComponent>
+                </table>
             </div>
             <br/><br/><hr/><br/><br/>
         </div>
@@ -155,78 +211,12 @@ AnnualRegister.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-const TblComponent = styled.div`
-    border: 1px solid #E5E5E5;
-    border-radius: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,.10);
-    box-sizing: border-box;
-    margin-top: 40px;
-    width: 800px;
-`;
-
-const TblHeader = styled.div`
-    padding: 0px 15px;
-    background: #F6F8FA;
-    border-radius: 5px 5px 0px 0px;
-`;
-
-const TblContent = styled.div`
-    height: 550px;
-    overflow-x: auto;
-    padding: 0px 15px;
-
-&::-webkit-scrollbar {
-    width: 4px;
-} 
-
-&::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-}
-
-&::-webkit-scrollbar-thumb {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-}
-`;
 
 const MainComponent = styled.div`
     width: 100%;
     height: 100%;
     padding: 40px;
     box-sizing: border-box;
-`;
-
-const Table = styled.table`
-    width:100%;
-    table-layout: fixed;
-    font-size: .9em;
-    width: 800px;
-    min-width: 650px;
-    border-collapse: collapse;
-
-    th {
-    width: 150px;
-    padding: 20px 15px;
-    text-align: center;
-    font-weight: 500;
-    font-size: 15px;
-    text-transform: uppercase;
-    white-space: nowrap;
-    }
-
-    td {
-    padding: 15px;
-    vertical-align: middle;
-    font-size: 13px;
-    border-bottom: solid 1px #E5E5E5;
-    text-align: center;
-    word-wrap: break-word;
-    }
-`;
-
-const PayTableTop = styled(Table)``;
-
-const PayTableBottom = styled(Table)`
-    margin-top: 20px;
 `;
 
 const AttenCal = styled.div`

@@ -157,13 +157,21 @@ function AdminVacationConfirm() {
                             <th style={TableHead2}>결재의견</th>
                         </tr>
 
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>사원번호</th>
+                            <td style={cellStyle}>{vacation.id}</td>
+                            <th style={TableHead}>작성자명</th>
+                            <td style={cellStyle}>{vacation.name}</td>
+                            <td style={cellStyle} rowSpan={5}>
+                                <input type="text" placeholder="반려시 필수 작성" style={{}} />
+                            </td>
+                        </tr>
+
 
                         <tr style={rowStyle}>
                             <th style={TableHead}>제목</th>
                             <td style={cellStyle} colSpan={3}>{vacation.vacation_title}</td>
-                            <td style={cellStyle} rowSpan={4}>
-                                <input type="text" placeholder="반려시 필수 작성" style={{}} />
-                            </td>
+
                         </tr>
 
 
