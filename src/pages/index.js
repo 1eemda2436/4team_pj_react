@@ -42,6 +42,9 @@ const Login = () => {
         rootStore.MemberStore.setMemberData(response.data);
         localStorage.setItem('auth', rootStore.MemberStore.member.authority);
         localStorage.setItem('user_id', rootStore.MemberStore.member.id);
+        localStorage.setItem('company_id', rootStore.MemberStore.member.company_id);
+        localStorage.setItem('depart_id', rootStore.MemberStore.member.depart_id);
+        localStorage.setItem('team_id', rootStore.MemberStore.member.team_id);
         localStorage.setItem('user_name', rootStore.MemberStore.member.name);
         console.log(rootStore.MemberStore.member.id);
 
