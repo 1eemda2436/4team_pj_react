@@ -9,7 +9,6 @@ const Doc = () => {
     const router = useRouter();
     const id = router.query.id; // ID를 추출
     console.log(id)
-    const [selectedCategory, setSelectedCategory] = useState('');
     
     const [samples, setSamples] = useState([]);
 
@@ -36,30 +35,6 @@ const Doc = () => {
             });
         }
     }, [id]);
-
-    const handleComplete = () => {
-        const token = localStorage.getItem("token");
-
-        if(id) {
-            axios.put(`http://localhost:8081/guest/doc/update/${id}`,
-            {
-                doc_title: samples.doc_title,
-                doc_status: '기안'
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-            .then(() => {
-                alert('문서등록 완료')
-                router.push(`/guest/doc/detail/draftDetail?id=${samples.doc_id}`)
-            })
-            .catch((error) => {
-                console.error("문서 등록 실패", error);
-            });
-        }
-    };
 
     const handleDelete = () => {
         const token = localStorage.getItem("token");
@@ -126,7 +101,7 @@ const Doc = () => {
                         <TableTr>
                                 <TableTd2 colSpan={2}>{samples.doc_content}</TableTd2>
                         </TableTr>
-                     </div>
+                    </div>
                 </Table>
                 <br></br>
                 <Table>
@@ -143,9 +118,9 @@ const Doc = () => {
                 </Table>
             </Docstyle2>
             <ButtonStyle>
-                <button type="button" onClick={handleComplete}>등록</button>
-                <button type="button" onClick={() => router.push('')}>수정</button>
-                <button type="button" onClick={handleDelete}>삭제</button>
+                <button type="button" onClick={() => router.push(`/guest/doc/temporaryUpdate?id=${samples.doc_id}`)}>문서작성</button>
+                <button type="button" onClick={handleDelete}>문서삭제</button>
+                <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>돌아가기</button>
             </ButtonStyle>
         </Container>
     )

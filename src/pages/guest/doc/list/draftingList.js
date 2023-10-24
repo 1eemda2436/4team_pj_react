@@ -58,6 +58,7 @@ const Doc = () => {
                   <th>작성자</th>
                   <th>기안일</th>
                   <th>상태</th>
+                  <th></th>
               </tr>
             </thead>
             <tbody>
@@ -69,6 +70,9 @@ const Doc = () => {
                       <td>{draft.name}</td>
                       <td>{draft.doc_date}</td>
                       <td>{draft.doc_status}</td>
+                      <td>
+                        <button type="button" onClick={() => router.push(`/guest/doc/updateApproval?id=${draft.doc_id}`)}>결재요청</button>
+                      </td>
                   </tr>
               )}
             </tbody>

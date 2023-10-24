@@ -60,7 +60,7 @@ const Doc = () => {
                     </thead>
                     <tbody>
                         {samples.map(view =>
-                            <TableTr key={view.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${view.doc_id}`)}>
+                            <TableTr key={view.doc_id} onClick={() => router.push(`/guest/doc/detail/circularDetail?id=${view.doc_id}`)}>
                             <TableTd2 component="" scope="view">{view.doc_id}</TableTd2>
                             <TableTd2>{view.category_name}</TableTd2>
                             <TableTd2>{view.doc_title}</TableTd2>

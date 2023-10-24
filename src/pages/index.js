@@ -42,6 +42,7 @@ const Login = () => {
         rootStore.MemberStore.setMemberData(response.data);
         localStorage.setItem('auth', rootStore.MemberStore.member.authority);
         localStorage.setItem('user_id', rootStore.MemberStore.member.id);
+        localStorage.setItem('company_id', rootStore.MemberStore.member.company_id)
         console.log(rootStore.MemberStore.member.id);
 
         localStorage.setItem('token', response.data.token);
