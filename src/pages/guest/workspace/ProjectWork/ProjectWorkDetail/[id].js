@@ -110,7 +110,7 @@ const ProjectWorkDetail = () => {
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan="2">
-                            <Link href="/guest/workspace/ProjectWorkEdit/[id]" as={`/guest/workspace/ProjectWorkEdit/${projectwork.pw_id}`} passHref>
+                            <Link href="/guest/workspace/ProjectWork/ProjectWorkEdit/[id]" as={`/guest/workspace/ProjectWork/ProjectWorkEdit/${projectwork.pw_id}`} passHref>
                                 <Button>수정</Button>
                             </Link>
                             <Button onClick={deleteProjectWork}>삭제</Button>
