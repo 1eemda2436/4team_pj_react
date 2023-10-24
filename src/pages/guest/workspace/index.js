@@ -8,11 +8,12 @@ import moment from 'moment';
 import Header from '@/components/common/header';
 import MyCalendar from "@/components/calendar/MyCalendar";
 
+
 const Workspace = () => {
     const [departmentList, setDepartmentList] = useState([]);
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
-    
+    const [teams, setTeams] = useState([]);
     
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -56,8 +57,21 @@ const Workspace = () => {
             .catch((error) => {
                 console.log(error);
             });
-
         
+        axios
+            .get("http://localhost:8081/guest/team",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                console.log(response.data)
+                setTeams(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching teams:", error);
+            });
+
     }, []);
 
     const router = useRouter();
@@ -98,6 +112,7 @@ const Workspace = () => {
                         <th style={cellStyle}>PJ_ID</th>
                         <th style={cellStyle}>프로젝트명</th>
                         <th style={cellStyle}>기한(시작일)/기한(종료일)</th>
+                        <th style={cellStyle}>담당 팀</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,6 +125,7 @@ const Workspace = () => {
                             </Link>
                         </td>
                         <td style={cellStyle}>{moment(pj.deadline_s).format('YYYY-MM-DD')} ~ {moment(pj.deadline_e).format('YYYY-MM-DD')}</td>
+                        <td style={cellStyle}>{teams.team_name}</td>
                     </tr>
                     ))}
                 </tbody>
