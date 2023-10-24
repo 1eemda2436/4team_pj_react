@@ -7,9 +7,9 @@ import axios from "axios";
 
 const Doc = () => {
     const router = useRouter();
-    const {id} = router.query;
-    console.log(id);
-
+    // const {id} = router.query;
+    const id = localStorage.getItem('user_id');
+    console.log('id가뭐야',id);
     const [selectedCategory, setSelectedCategory] = useState('');
 
     const [samples, setSamples] = useState({
@@ -20,6 +20,8 @@ const Doc = () => {
       doc_content: '',
       doc_attachment: null,
       doc_status: null,
+      id:id,
+      // approval_id: null,
     });
 
     // useEffect(() => {
@@ -63,9 +65,10 @@ const Doc = () => {
       insertSamples.append('doc_title', samples.doc_title);
       insertSamples.append('doc_content', samples.doc_content);
       insertSamples.append('doc_attachment2', samples.doc_attachment);
-      insertSamples.append('id', "4");
+      insertSamples.append('id', samples.id);
       insertSamples.append('category_id', selectedCategory);
       insertSamples.append('doc_status', '기안');
+      // insertSamples.append('approval_id', samples.approval_id);
       
       const token = localStorage.getItem('token')
 
@@ -90,9 +93,10 @@ const Doc = () => {
       temporarySaveData.append('doc_title', samples.doc_title);
       temporarySaveData.append('doc_content', samples.doc_content);
       temporarySaveData.append('doc_attachment2', samples.doc_attachment);
-      temporarySaveData.append('id', "4");
+      temporarySaveData.append('id', samples.id);
       temporarySaveData.append('category_id', selectedCategory);
       temporarySaveData.append('doc_status', '임시'); // 임시 상태로 설정
+      // temporarySaveData.append('approval_id', samples.approval_id);
   
       const token = localStorage.getItem('token');
   
@@ -170,6 +174,14 @@ const Doc = () => {
                                   type="hidden"
                                   name="doc_status"
                                   value={samples.doc_status}
+                                  onChange={handleInputChange}
+                                />
+                              </td>
+                              <td>
+                                <input 
+                                  type="hidden"
+                                  name="approval_id"
+                                  value={samples.approval_id}
                                   onChange={handleInputChange}
                                 />
                               </td>
