@@ -3,14 +3,19 @@ import styled from "styled-components";
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import rootStore from "@/stores/rootStore";
+import Header from "@/components/common/header";
+
 
 const Community = () => {
+    
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
     const [selectedItems, setSelectedItems] = useState([]);
 
     // 체크박스를 토글하고 선택한 항목을 업데이트합니다.
     const handleCheckboxChange = (itemId) => {
+        const itemIdInt = parseInt(itemId, 10);
         if (isSelected(itemId)) {
             setSelectedItems(selectedItems.filter(item => item !== itemId));
         } else {
@@ -18,20 +23,26 @@ const Community = () => {
         }
     };
 
+    
     // 해당 아이템이 선택되었는지 확인합니다.
     const isSelected = (itemId) => selectedItems.includes(itemId);
-
-    const deleteSelectedItems = (board_id) => {
-        // 선택한 항목을 삭제하는 API 요청을 보내십시오.
+    const intSelectedItems = selectedItems.map(item => parseInt(item));
+    const deleteSelectedItems = () => {
+        if (intSelectedItems.length === 0) {
+            alert('선택된 항목이 없습니다.');
+            return;
+        }
+        
         const token = localStorage.getItem('token');
-        axios.post(`http://localhost:8081/guest/community/boardDelete/${board_id}`, {
-            itemIds: selectedItems,
-        }, {
+        // 여러 아이템을 삭제할 때는 배열 형태로 서버에 전달합니다.
+        axios.delete('http://localhost:8081/guest/community/boardDelete', {
+            data: intSelectedItems, // 선택된 아이템 ID 배열
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
         .then(response => {
+            console.log("Delete response:", response);
             // 삭제가 성공하면 선택 항목과 데이터를 업데이트합니다.
             setSelectedItems([]);
             refreshData();
@@ -59,7 +70,6 @@ const Community = () => {
             }
         });
     };
-
     useEffect(() => {
         refreshData();
     }, []);
@@ -71,7 +81,9 @@ const Community = () => {
     }
 
     return (
+        
         <Container>
+            <Header/>
             <Section>
                 <CommunityHeader>
                     <Title>자유게시판</Title>
@@ -80,41 +92,41 @@ const Community = () => {
                 </CommunityHeader>
 
                 <Table>
-                    <thead>
-                        <TableRow>
-                            <TableHeader>글번호</TableHeader>
-                            <TableHeader>제목</TableHeader>
-                            <TableHeader>글내용</TableHeader>
-                            <TableHeader>사진</TableHeader>
-                            <TableHeader>조회수</TableHeader>
-                            <TableHeader>작성자</TableHeader>
-                            <TableHeader>선택</TableHeader>
-                        </TableRow>
-                    </thead>
-                    <tbody>
-                        {data.map(item => (
-                            <TableRow key={item.board_id}>
-                                <TableCell>{item.board_id}</TableCell>
-                                <TableCell>
-                                    <BoardItemTitle onClick={() => router.push(`/guest/community/boardDetail/${item.board_id}`)}>
-                                        {item.title}
-                                    </BoardItemTitle>
-                                </TableCell>
-                                <TableCell>{item.content}</TableCell>
-                                <TableCell>{item.board_file}</TableCell>
-                                <TableCell>{item.hits}</TableCell>
-                                <TableCell>{item.id}</TableCell>
-                                <TableCell>
-                                    <input
-                                        type="checkbox"
-                                        onChange={() => handleCheckboxChange(item.board_id)}
-                                        checked={isSelected(item.board_id)}
-                                    />
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </tbody>
-                </Table>
+    <thead>
+        <TableRow>
+            <TableHeader>글번호</TableHeader>
+            <TableHeader>제목</TableHeader>
+            <TableHeader>글내용</TableHeader>
+            <TableHeader>사진</TableHeader>
+            <TableHeader>조회수</TableHeader>
+            <TableHeader>작성자</TableHeader>
+            <TableHeader>선택</TableHeader>
+        </TableRow>
+    </thead>
+    <tbody>
+    {data.map(item => (
+        <TableRow key={item.board_id}>
+            <TableCell>{item.board_id}</TableCell>
+            <TableCell>
+                <BoardItemTitle onClick={() => router.push(`/guest/community/boardDetail/${item.board_id}`)}>
+                    {item.title}
+                </BoardItemTitle>
+            </TableCell>
+            <TableCell>{item.content}</TableCell>
+            <TableCell>{item.board_file}</TableCell>
+            <TableCell>{item.hits}</TableCell>
+            <TableCell>{item.id}</TableCell>
+            <TableCell>
+                <input
+                    type="checkbox"
+                    onChange={() => handleCheckboxChange(item.board_id)}
+                    checked={isSelected(item.board_id)}
+                />
+            </TableCell>
+        </TableRow>
+    ))}
+</tbody>
+</Table>
             </Section>
         </Container>
     );
@@ -164,6 +176,9 @@ const TableHeader = styled.th`
 
 const TableCell = styled.td`
     padding: 10px;
+    white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
+    overflow: hidden; /* 내용이 넘칠 경우 가리고 숨김 */
+    text-overflow: ellipsis; /* 넘친 내용은 "..."으로 표시 */
 `;
 
 const BoardItemTitle = styled.div`
