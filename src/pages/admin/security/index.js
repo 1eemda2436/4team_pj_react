@@ -102,14 +102,15 @@ const AdminSecurityManagement = () => {
 
       console.log(transformedAuthorityStatus)
 
-      axios.post(`http://localhost:8081/admin/auth`, transformedAuthorityStatus, {
+      axios.post(`http://localhost:8081/admin/auth/update`, transformedAuthorityStatus, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })
       .then(response => { 
         console.log(response)
-        // window.location.reload();
+        alert('사원 보안 설정이 완료되었습니다.')
+        window.location.reload();
       })
       .catch(err => {
         if (axios.isAxiosError(err)) {
