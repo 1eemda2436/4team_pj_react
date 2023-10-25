@@ -4,7 +4,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { useState } from "react";
 
-const SelectBox = ({ label, itemData }) => {
+const SelectBox = ({ label, itemData, onItemSelected  }) => {
     const [isAccordionOpen, setAccordionOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState({
         id: null,
@@ -16,8 +16,10 @@ const SelectBox = ({ label, itemData }) => {
     };
 
     const handleSelect = (selectValue) => {
+        console.log(selectValue)
         setSelectedValue(selectValue);
         setAccordionOpen(!isAccordionOpen);
+        onItemSelected(selectValue);
     };
 
     return(
@@ -42,9 +44,7 @@ const SelectBox = ({ label, itemData }) => {
 
 export default SelectBox;
 
-const InputContainer = styled.div`
-    width: 100%;
-`;
+const InputContainer = styled.div``;
 
 const InputAccordion = styled.div`
     display: flex;

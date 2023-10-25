@@ -13,6 +13,20 @@ const AdminSecurityManagement = () => {
     name: null
   })
 
+  const departData = [
+    {
+      id: 1,
+      name: '부장'
+    },
+    {
+      id: 2,
+      name: '팀장'
+    }
+  ]
+
+  const [seletedID, setSeletedID] = useState('');
+  const [seletedRank, setSeletedRank] = useState('');
+
   useEffect(() => {
     const token = localStorage.getItem('token')
     const company_id = localStorage.getItem('company_id')
@@ -42,6 +56,15 @@ const AdminSecurityManagement = () => {
       });
   }, []);
 
+  const handleSelectedValueId = (selectedValue) => {
+    setSeletedID(selectedValue.id);
+  };
+
+  const handleSelectedValueRank = (selectedValue) => {
+
+    setSeletedRank(selectedValue.name);
+  };
+
   const [authorityStatus, setAuthorityStatus] = useState({
     security: false,
     attendance: false,
@@ -60,6 +83,44 @@ const AdminSecurityManagement = () => {
     console.log(authorityStatus)
   };
 
+  const userRoleToggle = () => {
+
+    if(seletedID === '' || seletedRank === '') {
+      alert('모든 항목을 입력해주세요')
+    } else {
+      const token = localStorage.getItem('token')
+
+      // authorityStatus 객체를 'N' 또는 'Y'로 변환
+      const transformedAuthorityStatus = {};
+
+      for (const key in authorityStatus) {
+        transformedAuthorityStatus[key] = authorityStatus[key] ? 'Y' : 'N';
+      }
+
+      transformedAuthorityStatus.id = seletedID;
+      transformedAuthorityStatus.rank = seletedRank;
+
+      console.log(transformedAuthorityStatus)
+
+      axios.post(`http://localhost:8081/admin/auth`, transformedAuthorityStatus, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => { 
+        console.log(response)
+        // window.location.reload();
+      })
+      .catch(err => {
+        if (axios.isAxiosError(err)) {
+          console.log(err.message)
+        } else {
+          alert('데이터를 불러오는 중 오류가 발생했습니다.')
+        }
+      });
+    }
+  }
+
   console.log(data)
 
   return (
@@ -72,10 +133,19 @@ const AdminSecurityManagement = () => {
               <SelectBox 
                 label='권한을 부여할 사원을 선택하세요.'
                 itemData={data}
+                onItemSelected={handleSelectedValueId}
               />
+
+              {seletedID !== '' && 
+                <SelectBox 
+                  label='해당 사원의 직급을 선택하세요.'
+                  itemData={departData}
+                  onItemSelected={handleSelectedValueRank}
+                />
+              }
             </InputBox>
 
-            <HowToRegIconStyle />
+            <HowToRegIconStyle onClick={userRoleToggle} />
           </TopBox>
 
           <BottomBox>
@@ -156,7 +226,8 @@ const TopBox = styled.div`
 
 const InputBox = styled.div`
   display: flex;
-  width: 50%;
+  width: 100%;
+  column-gap: 60px;
 `;
 
 const InputAccordion = styled.div`
