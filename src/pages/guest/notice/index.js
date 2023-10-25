@@ -8,6 +8,7 @@ const notice = () => {
     const [data, setData] = useState([]);
     const [error, serError] = useState(null);
     
+    
     useEffect(() => {
         const token = localStorage.getItem('token')
         axios.get('http://localhost:8081/guest/notice/noticeList',{
@@ -41,9 +42,9 @@ const notice = () => {
                         <TableHeader>글번호</TableHeader>
                         <TableHeader>제목</TableHeader>
                         <TableHeader>글내용</TableHeader>
-                        <TableHeader>사진</TableHeader>
-                        <TableHeader>조회수</TableHeader>
                         <TableHeader>작성자</TableHeader>
+                        <TableHeader></TableHeader>
+                        <TableHeader></TableHeader>
                     </TableRow>
                 </thead>
                 <tbody>
@@ -51,7 +52,7 @@ const notice = () => {
                         <TableRow key={item.notice_id}>
                             <TableCell>{item.notice_id}</TableCell>
                             <TableCell>
-                                <BoardItemTitle onClick={() => router.push(`guest/notice/NoticeDetail/${item.notice_id}`)}>
+                                <BoardItemTitle onClick={() => router.push(`notice/noticeDetail/${item.notice_id}`)}>
                                     {item.title}
                                 </BoardItemTitle>
                             </TableCell>

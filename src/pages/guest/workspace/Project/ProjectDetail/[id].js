@@ -131,7 +131,7 @@ const ProjectDetail = () => {
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan="2">
-                            <Link href="/guest/workspace/ProjectEdit/[id]" as={`/guest/workspace/ProjectEdit/${project.pj_id}`} passHref>
+                            <Link href="/guest/workspace/Project/ProjectEdit/[id]" as={`/guest/workspace/Project/ProjectEdit/${project.pj_id}`} passHref>
                                 <Button>수정</Button>
                             </Link>
                             <Button onClick={deleteProject}>삭제</Button>
@@ -150,7 +150,11 @@ const ProjectDetail = () => {
                     </TableRow>
                     {projectWorkList.map((projectWork) => (
                         <TableRow key={projectWork.pw_id}>
-                            <TableCell>{projectWork.pw_name}</TableCell>
+                            <TableCell>
+                                <Link href="/guest/workspace/ProjectWork/ProjectWorkDetail/[id]" as={`/guest/workspace/ProjectWork/ProjectWorkDetail/${projectWork.pw_id}`}>
+                                {projectWork.pw_name}
+                                </Link>
+                            </TableCell>
                             <TableCell>
                                 {moment(projectWork.pw_deadline_s).format('YYYY-MM-DD')} ~{' '}
                                 {moment(projectWork.pw_deadline_e).format('YYYY-MM-DD')}
