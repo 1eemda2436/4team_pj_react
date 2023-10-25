@@ -7,8 +7,14 @@ import axios from "axios";
 
 const Doc = () => {
     const router = useRouter();
-
+    const id = localStorage.getItem('user_id');
+    const user_name = localStorage.getItem('user_name');
+    console.log('id갖고오고있지?',id);
+    console.log('name확인:', user_name);
     const [samples, setSamples] = useState([]);
+    const [filteredSamples, setFilteredSamples] = useState([]);
+    const [page, setPage] = useState(1);
+    const itemsPerPage = 10;
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -21,11 +27,30 @@ const Doc = () => {
         })
         .then((response) => {
             setSamples(response.data);
+            const filteredSamples = response.data.filter(draft => draft.name === user_name);
+            const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
+            setSamples(sortedSamples);
+            setFilteredSamples(sortedSamples);
+            console.log('sortedSamples:', sortedSamples)
         })
         .catch((error) => {
             console.log(error);
         });
-    }, []);
+    }, [id, user_name]);
+
+    const indexOfLastItem = page * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredSamples.slice(indexOfFirstItem, indexOfLastItem);
+
+    const totalPage = Math.ceil(filteredSamples.length / itemsPerPage);
+
+    const handleClick = (type) => {
+        if (type === "prev" && page > 1) {
+            setPage(page - 1);
+        } else if (type === "next" && page < totalPage) {
+            setPage(page + 1);
+        }
+    };
 
     return(
         <Container>
@@ -65,7 +90,7 @@ const Doc = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {samples.map((draft) =>
+                        {currentItems.map((draft) =>
                             <tr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${draft.doc_id}`)}>
                                 <td component="" scope="draft">{draft.doc_id}</td>
                                 <td>{draft.category_name}</td>
@@ -83,6 +108,11 @@ const Doc = () => {
                     </tr>
                 </Table>
             </Docstyle2>
+            <PageButton>
+                <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+                <span>{page} / {totalPage}</span>
+                <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
+            </PageButton>
         </Container>
     )
 }
@@ -159,5 +189,26 @@ const Table = styled.table`
     border: none;
     cursor: pointer;
     margin: 1px;
+  }
+`;
+
+const PageButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+
+  button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    &:disabled {
+      background-color: lightgray;
+      cursor: not-allowed;
+    }
   }
 `;
