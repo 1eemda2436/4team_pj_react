@@ -13,8 +13,9 @@ const AdminPersonnel = () => {
     //페이지 로드 → list
     useEffect(() => {
       const token = localStorage.getItem('token')
+      const company_id = localStorage.getItem('company_id')
       // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-      axios.get('http://localhost:8081/admin/personnel/employeeSelectAll', {
+      axios.get(`http://localhost:8081/admin/personnel/employeeSelectAll/${company_id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
