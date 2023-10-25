@@ -1,7 +1,7 @@
 import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import AttenCalendar from "@/components/calendar/AttenCalendar";
+import MyCalendar from "@/components/calendar/MyCalendar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -88,7 +88,7 @@ const handleAnnualSubmit = () => {
                 // POST 요청 완료 후 원하는 작업 수행
                 console.log("신청 완료:", response.data);
                 // 예: 페이지 이동
-                router.push('/guest/attendance/annuallist');
+                router.push(`/guest/attendance/annuallist/${id}`);
             })
             .catch((error) => {
                 console.error("에러 발생:", error);
@@ -110,7 +110,7 @@ const handleAnnualSubmit = () => {
         <div align="center">
             <AttenCal>
                 <div style={{ border: "3px solid black", borderRadius: "20px", width: "100%", height: "100%", display: "flex"}}>
-                    <AttenCalendar />
+                    <MyCalendar />
                 </div>
             </AttenCal>0
             <br/><br/><hr/><br/><br/>
@@ -194,7 +194,7 @@ const handleAnnualSubmit = () => {
                                     padding: "10px 20px",
                                     borderRadius: "20px",
                                     fontSize: "1rem",
-                                }} onClick={() => router.push('/guest/attendance/annuallist')} />
+                                }} onClick={() => router.push(`/guest/attendance/annuallist/${annual.id}`)} />
                             </td>
                         </tr>
                     </tbody>

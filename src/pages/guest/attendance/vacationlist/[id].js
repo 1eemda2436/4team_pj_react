@@ -54,11 +54,12 @@ const DocumentLink = styled.a`
 function GuestVacationList() {
     const [vacation, setVacation] = useState([]);
     const router = useRouter();
+    const vacation_id = router.query.id;
     
     useEffect(() => {
         const token = localStorage.getItem('token')
         axios
-            .get("http://localhost:8081/all/attendance/vacationRequestsList",{
+            .get(`http://localhost:8081/guest/attendance/vacatGuestList/${vacation_id}`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
