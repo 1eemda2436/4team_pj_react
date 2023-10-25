@@ -162,8 +162,7 @@ const ProjectWorkEdit = () => {
                             id="standard-required"
                             value={projectwork.pw_deadline_s || ''}
                             variant="standard"
-                            label="기한일(시작)"
-                            type="text"
+                            type="date"
                             name="pw_deadline_s"
                             placeholder="프로젝트 시작일을 입력해주세요"
                             onChange={ProjectWorkChange}
@@ -177,8 +176,7 @@ const ProjectWorkEdit = () => {
                             id="standard-required"
                             value={projectwork.pw_deadline_e || ''}
                             variant="standard"
-                            label="기한일(종료)"
-                            type="text"
+                            type="date"
                             name="pw_deadline_e"
                             placeholder="프로젝트 종료일을 입력해주세요"
                             onChange={ProjectWorkChange}

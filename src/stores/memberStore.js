@@ -28,7 +28,7 @@ export class MemberStore {
         e_state: null, // 재직여부(1-재직, 0-퇴사)
         key: null, // 문자인증 키
         authority: null, // 권한
-        enabled: null // 인증여부 (Y/N)
+        enabled: null, // 인증여부 (Y/N)
     };
     
     constructor(root) {

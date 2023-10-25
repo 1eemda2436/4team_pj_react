@@ -7,11 +7,15 @@ import styled from "styled-components";
 const EmployeeRegistration = () => {
   const router = useRouter();
   const maxId = parseInt(router.query.maxId) + 1;
-
-  console.log('이동 후', maxId)
+  const company_id = localStorage.getItem('company_id');
+  const depart_id = localStorage.getItem('depart_id');
+  const team_id = localStorage.getItem('team_id');
 
   // Define state to hold form data
   const [formData, setFormData] = useState({
+    company_id : company_id,
+    depart_id : depart_id,
+    team_id : team_id,
     id : maxId,
     name: '',
     tel: '',

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/common/header';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import moment from "moment";
 
 const tableStyle = {
     borderCollapse: "collapse",
@@ -19,26 +20,58 @@ const Component = styled.div`
     align-items: center;
 `;
 
-const ProjectAdd = () => {
+const ProjectEdit = () => {
     const [project, setProject] = useState({})
     
     const router = useRouter();
     
+    const { id } = router.query;
+    
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (id) {
+            axios
+                .get(`http://localhost:8081/guest/project/${id}`,{
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then((response) => {
+                    console.log('[ProjectEdit] project', response.data)
+                    const formattedProject = {
+                        ...response.data,
+                        deadline_s: response.data.deadline_s
+                        ? moment(response.data.deadline_s).format('YYYY-MM-DD')
+                          : '', // 날짜 포맷 변경
+                        deadline_e: response.data.deadline_e
+                        ? moment(response.data.deadline_e).format('YYYY-MM-DD')
+                          : '', // 날짜 포맷 변경
+                    };
+                    setProject(formattedProject);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [id]);
+
     const ProjectChange = (event) => {
+        console.log(event.target.value)
+
         setProject(prevProject => ({
-            ...prevProject,
+            ...prevProject, //... => 객체에 사용하면 이전 객체 복사
             [event.target.name]: event.target.value
         }));
     };
-    
+
     const saveProject = (event) => {
         event.preventDefault();
-        
+
         project.deadline_s = new Date(project.deadline_s);
         project.deadline_e = new Date(project.deadline_e);
-        
+
         const token = localStorage.getItem('token')
-        
+
         console.log('[saveProject] project', project)
 
         axios
@@ -65,11 +98,12 @@ const ProjectAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={project.pj_name || ''}
                             variant="standard"
-                            label="프로젝트 이름"
+                            label="프로젝트명"
                             type="text"
                             name="pj_name"
-                            placeholder="프로젝트 이름을 적어주세요"
+                            placeholder="프로젝트명을 입력해주세요"
                             onChange={ProjectChange}
                             />
                         </td>
@@ -79,6 +113,7 @@ const ProjectAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={project.content || ''}
                             variant="standard"
                             label="내용"
                             type="text"
@@ -93,9 +128,9 @@ const ProjectAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={project.deadline_s || ''}
                             variant="standard"
-                            label="기한일(시작)"
-                            type="text"
+                            type="date"
                             name="deadline_s"
                             placeholder="프로젝트 시작일을 적어주세요"
                             onChange={ProjectChange}
@@ -107,9 +142,9 @@ const ProjectAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={project.deadline_e || ''}
                             variant="standard"
-                            label="기한일(종료)"
-                            type="text"
+                            type="date"
                             name="deadline_e"
                             placeholder="프로젝트 종료일을 적어주세요"
                             onChange={ProjectChange}
@@ -121,6 +156,7 @@ const ProjectAdd = () => {
                             <TextField
                             required
                             id="standard-required"
+                            value={project.depart_id || ''}
                             variant="standard"
                             label="부서ID"
                             type="text"
@@ -130,17 +166,18 @@ const ProjectAdd = () => {
                             />
                         </td>
                     </tr>
+                    
                 </thead>
             </table>
 
-            <button onClick={saveProject}>추가</button>
-            <button onClick={() => router.push('/guest/workspace')}>목록</button>
+            <button onClick = {saveProject}>수정</button>
+            <button onClick = {() => router.push('/guest/workspace')}>목록</button>
         </Component>
     )
 }
 
-export default ProjectAdd;
+export default ProjectEdit;
 
-ProjectAdd.getLayout = function getLayout(page) {
+ProjectEdit.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };

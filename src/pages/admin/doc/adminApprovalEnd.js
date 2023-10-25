@@ -24,7 +24,7 @@ const Doc = () => {
         })
         .then((response) => {
             setSamples(response.data);
-            const filteredData = response.data.filter(approvalEnd => approvalEnd.doc_status === 'E');
+            const filteredData = response.data.filter(approvalEnd => approvalEnd.doc_status === '완료');
             setFilteredSamples(filteredData);
             console.log(filteredData)
         })

@@ -22,7 +22,7 @@ const DepartmentRegistrationModal = ({ onClose, onSave }) => {
             });
         // 성공 처리
         onSave(); // 저장 후 처리
-        
+        window.location.reload();
         } catch (error) {
         // 오류 처리
         }

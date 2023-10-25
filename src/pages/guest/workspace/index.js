@@ -8,12 +8,29 @@ import moment from 'moment';
 import Header from '@/components/common/header';
 import MyCalendar from "@/components/calendar/MyCalendar";
 
+
 const Workspace = () => {
+    const [departmentList, setDepartmentList] = useState([]);
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
+    const [teams, setTeams] = useState([]);
     
     useEffect(() => {
         const token = localStorage.getItem('token')
+
+        axios
+            .get("http://localhost:8081/guest/department",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log(response.data)
+                setDepartmentList(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
         axios
             .get("http://localhost:8081/guest/project",{
@@ -40,9 +57,26 @@ const Workspace = () => {
             .catch((error) => {
                 console.log(error);
             });
+        
+        axios
+            .get("http://localhost:8081/guest/team",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                console.log(response.data)
+                setTeams(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching teams:", error);
+            });
+
     }, []);
 
     const router = useRouter();
+
+    
 
     return (
         <Component>
@@ -56,25 +90,16 @@ const Workspace = () => {
                     <tr>
                         <th style={cellStyle}>부서ID</th>
                         <th style={cellStyle}>부서명</th>
-                        <th style={cellStyle}>사원이름</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
+                    {departmentList.map((dp) => (
+                    <tr key={dp[0]}>
+                        <td style={cellStyle}>{dp[0]}</td>
+                        <td style={cellStyle}>{dp[1]}</td>
                     </tr>
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
-                    </tr>
-                    <tr>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
-                        <td style={cellStyle}>null</td>
-                    </tr>
+                    ))}
+                    
                 </tbody>
             </table>
             <br/>
@@ -87,6 +112,7 @@ const Workspace = () => {
                         <th style={cellStyle}>PJ_ID</th>
                         <th style={cellStyle}>프로젝트명</th>
                         <th style={cellStyle}>기한(시작일)/기한(종료일)</th>
+                        <th style={cellStyle}>담당 팀</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,17 +120,18 @@ const Workspace = () => {
                     <tr key={pj.pj_id}>
                         <td style={cellStyle}>{pj.pj_id}</td> 
                         <td style={cellStyle}>
-                            <Link href="/guest/workspace/ProjectDetail/[id]" as={`/guest/workspace/ProjectDetail/${pj.pj_id}`}>
+                            <Link href="/guest/workspace/Project/ProjectDetail/[id]" as={`/guest/workspace/Project/ProjectDetail/${pj.pj_id}`}>
                                 {pj.pj_name}
                             </Link>
                         </td>
                         <td style={cellStyle}>{moment(pj.deadline_s).format('YYYY-MM-DD')} ~ {moment(pj.deadline_e).format('YYYY-MM-DD')}</td>
+                        <td style={cellStyle}>{teams.team_name}</td>
                     </tr>
                     ))}
                 </tbody>
             </table>
             <div>
-            <button onClick={() => router.push('/guest/workspace/ProjectAdd')}>추가</button>
+            <button onClick={() => router.push('/guest/workspace/Project/ProjectAdd')}>추가</button>
             </div>
             <br/>
             <br/>
@@ -114,7 +141,7 @@ const Workspace = () => {
                 <thead>
                     <tr>
                         <th style={cellStyle}>PW_ID</th>
-                        <th style={cellStyle}>프로젝트명</th>
+                        <th style={cellStyle}>프로젝트업무명</th>
                         <th style={cellStyle}>기한(시작일)/기한(종료일)</th>
                     </tr>
                 </thead>
@@ -123,7 +150,7 @@ const Workspace = () => {
                     <tr key={pjw.pw_id}>
                         <td style={cellStyle}>{pjw.pw_id}</td>
                         <td style={cellStyle}>
-                            <Link href="/guest/workspace/ProjectWorkDetail/[id]" as={`/guest/workspace/ProjectWorkDetail/${pjw.pw_id}`}>
+                            <Link href="/guest/workspace/ProjectWork/ProjectWorkDetail/[id]" as={`/guest/workspace/ProjectWork/ProjectWorkDetail/${pjw.pw_id}`}>
                                 {pjw.pw_name}
                             </Link></td>
                         <td style={cellStyle}>{moment(pjw.pw_deadline_s).format('YYYY-MM-DD')} ~ {moment(pjw.pw_deadline_e).format('YYYY-MM-DD')}</td>
@@ -132,7 +159,7 @@ const Workspace = () => {
                 </tbody>
             </table>
             <div>
-            <button onClick={() => router.push('/guest/workspace/ProjectWorkAdd')}>추가</button>
+            <button onClick={() => router.push('/guest/workspace/ProjectWork/ProjectWorkAdd')}>추가</button>
             </div>
         </Component>
     )
