@@ -19,6 +19,7 @@
     "@mui/icons-material": "^5.14.12",
     "@mui/material": "^5.14.12",
     "axios": "^1.5.1",
+    "chart.js": "^4.4.0",
     "html2canvas": "^1.4.1",
     "http-proxy-middleware": "^2.0.6",
     "mobx": "^6.10.2",
@@ -26,6 +27,7 @@
     "moment": "^2.29.4",
     "next": "^13.5.4",
     "react": "latest",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "latest",
     "styled-components": "^6.0.8"
   },

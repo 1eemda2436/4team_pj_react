@@ -1,8 +1,26 @@
+import DepartStickChart from "@/components/chart/DepartStickChart";
+import TeamRadarChart from "@/components/chart/TeamRadarChart";
 import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const AdminAttendanceDep = () => {
     const router = useRouter();
+
+    const [selectedDepartment, setSelectedDepartment] = useState(''); // 선택한 부서 상태
+    const [selectedTeam, setSelectedTeam] = useState(''); // 선택한 팀 상태
+
+    const handleSelectDepart = (e) => {
+        const selectedDepart = e.target.value;
+        console.log("부서!", selectedDepart);
+        setSelectedDepartment(selectedDepart);
+    };
+
+    const handleSelectTeam = (e) => {
+        const selectedTm = e.target.value;
+        console.log("팀!", e.target.value);
+        setSelectedTeam(e.target.value);
+    };
 
     return (
         <div>
@@ -21,9 +39,9 @@ const AdminAttendanceDep = () => {
                         flexDirection: "column",
                         fontSize: "1.5rem", // 폰트 크기 추가
                     }}
-                    onClick={() => router.push('/admin/attendance/adminAttenDepDetail')}
+                    // onClick={() => router.push('/admin/attendance/adminAttenDepDetail')}
                 >
-                    부서별 근태 현황 그래프
+                    <DepartStickChart selectedDepartment={selectedDepartment} />
                 </div>
                 <div
                     style={{
@@ -41,7 +59,33 @@ const AdminAttendanceDep = () => {
                         fontSize: "1.2rem", // 폰트 크기 추가
                     }}
                 >
-                    부서별 조회
+                    <div>
+                        <select
+                            onChange={handleSelectDepart} // 선택 변경 핸들러 추가
+                            value={selectedDepartment}
+                        >
+                            <option value="">부서 선택</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <select
+                            onChange={handleSelectTeam} // 선택 변경 핸들러 추가
+                            value={selectedTeam}
+                        >
+                            <option value="">팀 선택</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div
@@ -61,7 +105,7 @@ const AdminAttendanceDep = () => {
                 }}
                 onClick={() => router.push('/admin/attendance/adminAttenDepDetail')}
             >
-                부서별 근태 통계 원형 그래프
+                <TeamRadarChart selectedTeam={selectedTeam} />
             </div>
             <div>
                 <button
