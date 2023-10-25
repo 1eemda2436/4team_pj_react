@@ -20,7 +20,7 @@ const AdminAttendanceCom = () => {
         const selectedDepart = e.target.value;
         console.log("부서!", selectedDepart);
         setSelectedDepartment(selectedDepart);
-    };
+    };  
 
     return (
         <div>

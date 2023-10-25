@@ -55,6 +55,7 @@ const DepartRadarChart = ({ selectedDepartment }) => {
         ],
     };
 
+
     return (
         <div>
             <div>
