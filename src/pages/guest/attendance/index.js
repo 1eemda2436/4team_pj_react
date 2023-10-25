@@ -3,7 +3,7 @@ import styled from "styled-components";
 import User from '../../../../public/asset/icons/user.svg'
 import Header from "@/components/common/header";
 import { useRouter } from "next/router";
-import AttenCalendar from "@/components/calendar/AttenCalendar";
+import MyCalendar from "@/components/calendar/MyCalendar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -111,7 +111,7 @@ function Attendance () {
                 <AttenBoxBottom>
                     <AttenCal>
                         <div style={{ border: "3px solid black", borderRadius: "20px", width: "100%", height: "100%", display: "flex"}}>
-                            <AttenCalendar />
+                            <MyCalendar />
                         </div>
                     </AttenCal>
                     
