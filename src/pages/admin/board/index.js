@@ -1,111 +1,195 @@
 import AdminLayout from "@/components/layout/adminLayout";
-import { useRouter } from 'next/router';
 import styled from "styled-components";
 import React, { useEffect, useState } from 'react';
-import { CheckBox } from "@mui/icons-material";
 import axios from 'axios';
-
-
-const handleDelete = () => {
-    // id에 해당하는 게시물을 삭제
-    axios.delete(`http://localhost:8081/board/${board_id}`)
-        .then(response => {
-            // 성공적으로 삭제되면 상태를 업데이트하거나 필요한 작업 수행
-            console.log(`ID가 ${board_id}인 항목이 성공적으로 삭제되었습니다.`);
-        })
-        .catch(error => {
-            // 에러 처리
-            
-        });
-}
+import { useRouter } from 'next/router';
+import rootStore from "@/stores/rootStore";
+import Header from "@/components/common/header";
 
 const Notice = () => {
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
-    const BoardItemTitle = styled.div`
-  cursor: pointer;
-  color: #007bff;
-  font-weight: bold;
-`;
-  
-    useEffect(() => {
-      axios.get('http://localhost:8081/board')
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [noticeData, setNoticeData] = useState([]);
+    
+    const router = useRouter();
+
+    // 체크박스를 토글하는 함수
+    const handleCheckboxChange = (itemId) => {
+        const itemIdInt = parseInt(itemId, 10);
+        if (isSelected(itemId)) {
+            setSelectedItems(selectedItems.filter(item => item !== itemIdInt));
+        } else {
+            setSelectedItems([...selectedItems, itemIdInt]);
+        }
+    };
+
+    // 해당 아이템이 선택되었는지 확인하는 함수
+    const isSelected = (itemId) => selectedItems.includes(itemId);
+
+    // 선택된 항목 삭제 함수
+    const deleteSelectedItems = () => {
+        if (selectedItems.length === 0) {
+            alert('선택된 항목이 없습니다.');
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+        const deletePromises = selectedItems.map(itemId => {
+            return axios.delete(`http://localhost:8081/admin/notice/deleteNotice/${itemId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
         .then(response => {
-          setData(response.data);
+          console.log("Delete response:", response);
+          // 삭제가 성공하면 선택 항목과 데이터를 업데이트합니다.
+          setSelectedItems([]);
+          refreshData();
+      })
+      .catch(err => {
+          console.error('선택한 항목 삭제 중 오류 발생:', err);
+      });
+    })
+  };
+    // 데이터를 다시 불러오는 함수
+    const refreshData = () => {
+        const token = localStorage.getItem('token');
+        axios.get('http://localhost:8081/guest/community/list', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            setData(response.data);
         })
         .catch(err => {
-          if (axios.isAxiosError(err)) {
-            setError(err.response.data.message);
-          } else {
-            setError('데이터를 가져오는 중 오류 발생');
-          }
+            if (axios.isAxiosError(err)) {
+                setError(err.response.data.message);
+            } else {
+                setError('데이터를 가져오는 중 오류 발생');
+            }
         });
+    };
+
+    useEffect(() => {
+        refreshData();
+        const token = localStorage.getItem('token');
+        axios.get('http://localhost:8081/guest/notice/noticeList', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            setNoticeData(response.data)
+        })
+        .catch(err => {
+            if (axios.isAxiosError(err)) {
+                // setError(err.response.data.message);
+            } else {
+                setError('데이터를 가져오는 중 오류 발생');
+            }
+        })
     }, []);
-  
-    const router = useRouter();
+
+    const goToBoardWrite = () => {
+        router.push('/guest/community/BoardWrite');
+    }
+
+    const goToNoticeWrite = () => {
+      router.push('/admin/board/NoticeWrite');
+  }
 
     return (
         <Container>
-          <Section>
-            <h2>공지사항</h2>
-            <Table>
-              <thead>
-                <TableRow>
-                  <TableHeader>NO.</TableHeader>
-                  <TableHeader>제목</TableHeader>
-                  <TableHeader>등록일</TableHeader>
-                  <TableHeader>선택</TableHeader>
-                </TableRow>
-              </thead>
-              <tbody>
-                <TableRow>
-                  <TableCell>1</TableCell>
-                  <TableCell>
-                    <LinkItem onClick={() => router.push('/guest/notice/NoticeDetails')}>
-                      최근 공지사항을 보여줍니다.
-                    </LinkItem>
-                  </TableCell>
-                  <TableCell>2023-10-06</TableCell>
-                </TableRow>
-                {/* Add more notice items */}
-              </tbody>
-            </Table>
-          </Section>
-      
-          <Section>
-            <h2>자유게시판</h2>
-            <Table>
-              <thead>
-                <TableRow>
-                  <TableHeader>글번호</TableHeader>
-                  <TableHeader>제목</TableHeader>
-                  <TableHeader>글내용</TableHeader>
-                  <TableHeader>사진</TableHeader>
-                  <TableHeader>조회수</TableHeader>    
-                  <TableHeader>작성자</TableHeader>    
-                </TableRow>
-              </thead>
-              <tbody>
-          {data.map(item => (
-            <TableRow key={item.board_id}>
-              <TableCell>{item.board_id}</TableCell>
-              <TableCell>
-                <BoardItemTitle onClick={() => router.push(`/guest/community/boardDetail/${item.board_id}`)}>
-                  {item.title}
-                </BoardItemTitle>
-              </TableCell>
-              <TableCell>{item.content}</TableCell>
-              <TableCell>{item.board_file}</TableCell>
-              <TableCell>{item.hits}</TableCell>
-              <TableCell>{item.id}</TableCell>
+            <Section>
+            <CommunityHeader>
+            <Title>공지사항</Title>
+            <Button onClick={goToNoticeWrite}>글쓰기</Button>
+            <Button onClick={deleteSelectedItems}>선택 삭제</Button>
+            </CommunityHeader>
+                <Table>
+        <thead>
+                    <TableRow>
+                        <TableHeader>글번호</TableHeader>
+                        <TableHeader>제목</TableHeader>
+                        <TableHeader>글내용</TableHeader>
+                        <TableHeader>사진</TableHeader>
+                        <TableHeader>조회수</TableHeader>
+                        <TableHeader>작성자</TableHeader>
+                        <TableHeader>선택</TableHeader>
+                    </TableRow>
+                </thead>
+                <tbody>
+                    {noticeData.map(item => (
+                        <TableRow key={item.notice_id}>
+                            <TableCell>{item.notice_id}</TableCell>
+                            <TableCell>
+                                <BoardItemTitle onClick={() => router.push(`notice/NoticeDetail/${item.notice_id}`)}>
+                                    {item.title}
+                                </BoardItemTitle>
+                            </TableCell>
+                            <TableCell>{item.content}</TableCell>
+                            <TableCell>{item.board_file}</TableCell>
+                            <TableCell>{item.hits}</TableCell>
+                            <TableCell>{item.writer}</TableCell>
+                            <TableCell>
+                            <input
+                                type="checkbox"
+                                onChange={() => handleCheckboxChange(item.notice_id)}
+                                checked={isSelected(item.notice_id)}
+                            />
+            </TableCell>
+                        </TableRow>
+                    ))}
+                </tbody>
+        </Table>
+            </Section>
 
-              
-            </TableRow>
-          ))}
-        </tbody>
-            </Table>
-            <Button onClick={() => handleDelete()}>삭제</Button>
-          </Section>
+            <Section>
+                <CommunityHeader>
+                    <Title>자유게시판</Title>
+                    <Button onClick={goToBoardWrite}>글쓰기</Button>
+                    <Button onClick={deleteSelectedItems}>선택 삭제</Button>
+                </CommunityHeader>
+
+                <Table>
+                <thead>
+        <TableRow>
+            <TableHeader>글번호</TableHeader>
+            <TableHeader>제목</TableHeader>
+            <TableHeader>글내용</TableHeader>
+            <TableHeader>사진</TableHeader>
+            <TableHeader>조회수</TableHeader>
+            <TableHeader>작성자</TableHeader>
+            <TableHeader>선택</TableHeader>
+        </TableRow>
+    </thead>
+    <tbody>
+    {data.map(item => (
+        <TableRow key={item.board_id}>
+            <TableCell>{item.board_id}</TableCell>
+            <TableCell>
+                <BoardItemTitle onClick={() => router.push(`/guest/community/boardDetail/${item.board_id}`)}>
+                    {item.title}
+                </BoardItemTitle>
+            </TableCell>
+            <TableCell>{item.content}</TableCell>
+            <TableCell>{item.board_file}</TableCell>
+            <TableCell>{item.hits}</TableCell>
+            <TableCell>{item.id}</TableCell>
+            <TableCell>
+                <input
+                    type="checkbox"
+                    onChange={() => handleCheckboxChange(item.board_id)}
+                    checked={isSelected(item.board_id)}
+                />
+            </TableCell>
+        </TableRow>
+    ))}
+</tbody>
+                </Table>
+            </Section>
         </Container>
     );
 }
@@ -127,6 +211,12 @@ const Container = styled.div`
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 `;
 
+const CommunityHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
 const Section = styled.div`
     margin: 20px 0;
 `;
@@ -142,6 +232,8 @@ const TableRow = styled.tr`
 
 const TableHeader = styled.th`
     padding: 10px;
+    background-color: #007bff;
+    color: #fff;
 `;
 
 const TableCell = styled.td`
@@ -155,9 +247,22 @@ const LinkItem = styled.div`
 
 const Button = styled.button`
     padding: 5px 10px;
-    background-color: #f00; /* Change to your desired background color */
+    background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+`;
+
+const Title = styled.h1`
+    font-size: 24px;
+    margin: 0;
+    padding: 10px 0;
+    text-align: center;
+`;
+
+const BoardItemTitle = styled.div`
+    cursor: pointer;
+    color: #007bff;
+    font-weight: bold;
 `;

@@ -6,25 +6,31 @@ import axios from "axios";
 
 
 const Doc = () => {
-
     const router = useRouter();
     const id = router.query.id; // ID를 추출
     console.log(id)
     const [selectedCategory, setSelectedCategory] = useState('');
-
+    
     const [samples, setSamples] = useState([]);
-
+    console.log('samples.sign:', samples.sign)
+    
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
     };
 
     useEffect(() => {
+        const token = localStorage.getItem('token')
+        
         if (id) {
-            console.log(id);
-            axios.get(`http://localhost:8081/doc/detail/${id}`)
+            console.log('id:', id);
+            axios.get(`http://localhost:8081/guest/doc/detail/${id}`,{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 setSamples(response.data);
-                console.log(response.data);
+                console.log('response.data:', response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -32,14 +38,72 @@ const Doc = () => {
         }
     }, [id]);
 
+    // 파일 다운로드 
+    const downloadFile = (fileName) => {
+        const token = localStorage.getItem('token');
+        // API를 통해 파일 다운로드 요청
+        return axios.get(`http://localhost:8081/guest/doc/download/${fileName}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            // 이전 파일을 받아오기 위해 응답 타입을 blob으로 설정
+            responseType: 'blob'
+        })
+        .then((response) => {
+            // response로 받은 파일 데이터 가공
+            const blob = new Blob([response.data], {type: response.headers['content-type'] });
+            // 브라우저에서 파일을 다운로드할 수 있는 url 생성
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+            console.error('파일 다운로드 실패', error);
+        });
+    };
+
+    const handleDownload = () => {
+        if(samples.doc_attachment) {
+            downloadFile(samples.doc_attachment);
+        }
+        else {
+            alert('파일이 없습니다.');
+        }
+    };
+
+    const handleDelete = () => {
+        const token = localStorage.getItem("token");
+
+        if(id) {
+            axios.delete(`http://localhost:8081/guest/doc/delete/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(() => {
+                alert('문서삭제 완료')
+                // 문서 삭제 후 이동
+                router.push("/guest/doc/list/draftingList");
+            })
+            .catch((error) => {
+                console.error("문서 삭제 실패:", error);
+            });
+        }
+    }
+    
     return(
         <Container>
             <ApprovalLine>
                 <table>
                     <tr>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                        <td>
+                            <img src={samples.sign} alt="사인" style={{ width: '100px', height: '100px' }} />
+                        </td>           
+                        <td></td>
                     </tr>
                 </table>
             </ApprovalLine>
@@ -65,12 +129,7 @@ const Doc = () => {
                         </div>
                     </Table>
                 </DocstyleLeft>
-                <DocstyleRight>
-                    <ButtonStyle>
-                        <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장</button>
-                        <button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 요청</button>
-                    </ButtonStyle>
-                </DocstyleRight>
+                    
             </Docstyle1>
             <Docstyle2>
                 <Table>
@@ -82,7 +141,7 @@ const Doc = () => {
                         <TableTr>
                                 <TableTd2 colSpan={2}>{samples.doc_content}</TableTd2>
                         </TableTr>
-                     </div>
+                    </div>
                 </Table>
                 <br></br>
                 <Table>
@@ -94,21 +153,15 @@ const Doc = () => {
                         <TableTr>
                             <TableTh3>첨부파일</TableTh3>
                             <TableTd3>{samples.doc_attachment}</TableTd3>
+                            <button type="button" onClick={handleDownload}>파일 다운로드</button>
                         </TableTr>
                     </div>
                 </Table>
             </Docstyle2>
-            <CategoryTable>
-                <select value={selectedCategory} onChange={CategoryChange}>
-                    <option value="">카테고리 선택</option>
-                    <option value="category1">카테고리 1</option>
-                    <option value="category2">카테고리 2</option>
-                    <option value="category3">카테고리 3</option>
-                </select>
-            </CategoryTable>
             <ButtonStyle>
-                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>완료</button>
-                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>취소</button>
+                <button type="button" onClick={() => router.push(`/guest/doc/draftingUpdate?id=${samples.doc_id}`)}>문서수정</button>
+                <button type="button" onClick={handleDelete}>문서삭제</button>
+                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>돌아가기</button>
             </ButtonStyle>
         </Container>
     )

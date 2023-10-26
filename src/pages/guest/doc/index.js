@@ -6,26 +6,56 @@ import axios from "axios";
 
 
 const Doc = () => {
-
     const router = useRouter();
-
+    const id = localStorage.getItem('user_id');
+    const user_name = localStorage.getItem('user_name');
+    console.log('id갖고오고있지?',id);
+    console.log('name확인:', user_name);
     const [samples, setSamples] = useState([]);
+    const [filteredSamples, setFilteredSamples] = useState([]);
+    const [page, setPage] = useState(1);
+    const itemsPerPage = 10;
 
     useEffect(() => {
+        const token = localStorage.getItem('token');
+
         axios
-        .get("http://localhost:8081/doc/guestTotal")
+        .get("http://localhost:8081/guest/doc/guestTotal",{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
         .then((response) => {
             setSamples(response.data);
+            const filteredSamples = response.data.filter(draft => draft.name === user_name);
+            const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
+            setSamples(sortedSamples);
+            setFilteredSamples(sortedSamples);
+            console.log('sortedSamples:', sortedSamples)
         })
         .catch((error) => {
             console.log(error);
         });
-    }, []);
+    }, [id, user_name]);
+
+    const indexOfLastItem = page * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredSamples.slice(indexOfFirstItem, indexOfLastItem);
+
+    const totalPage = Math.ceil(filteredSamples.length / itemsPerPage);
+
+    const handleClick = (type) => {
+        if (type === "prev" && page > 1) {
+            setPage(page - 1);
+        } else if (type === "next" && page < totalPage) {
+            setPage(page + 1);
+        }
+    };
 
     return(
         <Container>
             <Title>
-                <H1>통합 문서함</H1>
+                <H1>전자 결재</H1>
             </Title>
             <PersonalMenu>
                 <tbody>
@@ -49,15 +79,40 @@ const Doc = () => {
                     </tr>
                 </tbody>
             </PersonalMenu>
-            <DocList>
-                <tbody>
+            <Docstyle2>
+                    <thead>
+                        <tr>
+                            <th>문서번호</th>
+                            <th>카테고리</th>
+                            <th >문서 제목</th>
+                            <th>작성자</th>
+                            <th>기안일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentItems.map((draft) =>
+                            <tr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${draft.doc_id}`)}>
+                                <td component="" scope="draft">{draft.doc_id}</td>
+                                <td>{draft.category_name}</td>
+                                <td >{draft.doc_title}</td>
+                                <td>{draft.name}</td>
+                                <td>{draft.doc_date}</td>
+                            </tr>
+                        )}
+                    </tbody>
+                <Table>
                     <tr>
                         <td>
-                            버튼을 누르면 페이지가 넘어가지 않고 여기에 뜨게 만들기
+                            <button type="button" onClick={() => router.push(`/guest/doc/insertDraft`)}>문서 작성</button>
                         </td>
                     </tr>
-                </tbody>
-            </DocList>
+                </Table>
+            </Docstyle2>
+            <PageButton>
+                <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+                <span>{page} / {totalPage}</span>
+                <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
+            </PageButton>
         </Container>
     )
 }
@@ -69,31 +124,91 @@ Doc.getLayout = function getLayout(page) {
 };
 
 const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-
-const H1 = styled.h1`
-    font-size: 30px;
+  text-align: center;
+  margin-bottom: 20px;
 `;
 
 const PersonalMenu = styled.table`
-    width: 200px;
-    padding: 20px;
-    position: fixed;
-    height: 100%;
-    left: auto;
-    top: 100px;
+  width: 100%;
+  margin: 10px 0;
+  th {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid black;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 1px;
+  }
 `;
 
-const DocList = styled.table`
-    margin-left: 220px;
-    padding: 20px;
+const Docstyle2 = styled.table`
+  width: 100%;
+  thead {
+    th {
+      text-align: center;
+      padding: 10px;
+      border: 1px solid black;
+    }
+  }
+  tbody {
+    tr {
+      cursor: pointer;
+      td {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid black;
+      }
+    }
+  }
+`;
+
+const H1 = styled.h1`
+  font-size: 30px;
+`;
+
+const Table = styled.table`
+    button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 1px;
+  }
+`;
+
+const PageButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+
+  button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    &:disabled {
+      background-color: lightgray;
+      cursor: not-allowed;
+    }
+  }
 `;

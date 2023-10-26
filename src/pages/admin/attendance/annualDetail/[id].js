@@ -52,13 +52,18 @@ const TableHead3 = {
 function AdminAnnualConfirm() {
     const router = useRouter();
     const annual_id = router.query.id;
-
+    
     const [attendance, setAttendance] = useState({});
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token');
         if (annual_id) {
             axios
-                .get(`http://localhost:8081/attendance/annualDetail/${annual_id}`)
+                .get(`http://localhost:8081/all/attendance/annualDetail/${annual_id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
                 .then((response) => {
                     setAttendance(response.data);
                 })
@@ -69,8 +74,13 @@ function AdminAnnualConfirm() {
     }, [annual_id]);
 
     const handleConfirm = () => {
+        const token = localStorage.getItem('token');
         axios
-            .put(`http://localhost:8081/attendance/annualConfirm/${annual_id}`)
+            .put(`http://localhost:8081/admin/attendance/annualConfirm/${annual_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 setAttendance(response.data);
                 console.log("승인!!!");
@@ -82,8 +92,13 @@ function AdminAnnualConfirm() {
     };
 
     const handleReturn = () => {
+        const token = localStorage.getItem('token');
         axios
-            .put(`http://localhost:8081/attendance/annualReturn/${annual_id}`)
+            .put(`http://localhost:8081/admin/attendance/annualReturn/${annual_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
                 setAttendance(response.data);
                 console.log("반려!!!");
@@ -137,11 +152,18 @@ function AdminAnnualConfirm() {
                         </tr>
 
                         <tr style={rowStyle}>
-                            <th style={TableHead}>제목</th>
-                            <td style={cellStyle} colSpan={3}>{attendance.annual_title}</td>
+                            <th style={TableHead}>사원번호</th>
+                            <td style={cellStyle}>{attendance.id}</td>
+                            <th style={TableHead}>작성자명</th>
+                            <td style={cellStyle}>{attendance.name}</td>
                             <td style={cellStyle} rowSpan={5}>
                                 <input type="text" placeholder="반려시 필수 작성" style={{}} />
                             </td>
+                        </tr>
+
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>제목</th>
+                            <td style={cellStyle} colSpan={3}>{attendance.annual_title}</td>
                         </tr>
 
                         <tr style={rowStyle}>
@@ -162,15 +184,7 @@ function AdminAnnualConfirm() {
                         <tr style={rowStyle}>
                             <th style={TableHead}>구분</th>
                             <td style={cellStyle} colSpan={3}>---</td>
-                        </tr>
-
-                        <tr style={rowStyle}>
-                            <th style={TableHead}>첨부파일</th>
-                            <td style={cellStyle} colSpan={3}>
-                                <input type="file" />
-                            </td>
-                            <td align="center">
-                                <button
+                            <button
                                     style={{
                                         cursor: 'pointer',
                                         backgroundColor: "#007BFF",
@@ -199,8 +213,7 @@ function AdminAnnualConfirm() {
                                     onClick={handleReturn}
                                 >
                                     반려
-                                </button>
-                            </td>
+                            </button>
                         </tr>
                     </tbody>
                 </table>

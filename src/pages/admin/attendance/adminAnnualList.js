@@ -54,10 +54,15 @@ const DocumentLink = styled.a`
 function AdminAnnualList() {
     const [attendance, setAttendance] = useState([]);
     const router = useRouter();
-
+    
     useEffect(() => {
+        const token = localStorage.getItem('token');
         axios
-            .get("http://localhost:8081/attendance/annualRequestsList")
+            .get("http://localhost:8081/all/attendance/annualRequestsList", {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then((response) => {
             setAttendance(response.data);
             })

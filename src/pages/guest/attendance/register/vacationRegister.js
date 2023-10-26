@@ -1,135 +1,215 @@
 import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import MyCalendar from "@/components/calendar/MyCalendar";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+const cellStyle = {
+    border: "1px solid #ddd",
+    padding: "10px",
+    textAlign: "center",
+    fontWeight: "bold",
+    height: "40px",
+};
+
+const cellStyle2 = {
+    border: "1px solid #ddd",
+    padding: "10px",
+    textAlign: "center",
+    fontWeight: "bold",
+    height: "40px", // 높이 조정
+};
+
+const tableStyle = {
+    borderCollapse: "collapse",
+    width: "900px", // 테이블 너비 조정
+    margin: "0 auto",
+};
+
+const rowStyle = {
+    borderBottom: "1px solid #ddd",
+};
+
+const buttonStyle = {
+    cursor: 'pointer',
+    backgroundColor: "#007BFF",
+    color: "white",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "20px",
+    fontSize: "1rem",
+    margin: "10px",
+};
+
+const TableHead = {
+    backgroundColor: "#007BFF",
+    color: "white",
+};
+
+const TableTitle = {
+    backgroundColor: "#007BFF",
+    color: "white",
+};
 
 // 연차 신청
-const AnnualRegister = () => {
+function VacationRegister () {
+    const [vaca, setVaca] = useState({
+        id: localStorage.getItem('user_id'),
+        name: localStorage.getItem('user_name'),
+        vacation_title: '',
+        vacation_start: '',
+        vacation_end: '',
+        vacation_content: '',
+    });
+
+    const handleInputChange = (e) => {
+        const {name, value} = e.target;
+        setVaca((vaca) => ({
+            ...vaca,
+            [name]: value,
+        }));
+    };
 
     const router = useRouter();
 
+const handleAnnualSubmit = () => {
+        const token = localStorage.getItem('token');
+        const id = localStorage.getItem('user_id');
+        const name = localStorage.getItem('user_name');
+
+        axios
+            .post('http://localhost:8081/guest/attendance/vacationRegister', vaca, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                // POST 요청 완료 후 원하는 작업 수행
+                console.log("신청 완료:", response.data);
+                // 예: 페이지 이동
+                router.push(`/guest/attendance/vacationlist/${id}`);
+            })
+            .catch((error) => {
+                console.error("에러 발생:", error);
+                if (error.response) {
+                    // 요청은 이루어졌지만 서버가 오류 상태 코드로 응답한 경우
+                    console.log("데이터:", error.response.data);
+                    console.log("상태:", error.response.status);
+                } else if (error.request) {
+                    // 요청은 이루어졌지만 응답을 받지 못한 경우
+                    console.log("요청은 이루어졌지만 응답을 받지 못함");
+                } else {
+                    // 요청 설정 중에 문제가 발생한 경우
+                    console.log("요청 설정 중 오류 발생:", error.message);
+                }
+            });
+    };
+
     return (
         <div align="center">
-            <div style={{border: "3px solid black", borderRadius: "20px", height: "80px", textAlign: "center", width: "800px"}}>
-                <span style={{ lineHeight: "80px" }}>
-                    캘린더자리
-                </span>
-            </div>
+            <AttenCal>
+                <div style={{ border: "3px solid black", borderRadius: "20px", width: "100%", height: "100%", display: "flex"}}>
+                    <MyCalendar />
+                </div>
+            </AttenCal>
             <br/><br/><hr/><br/><br/>
             <div>
-            <TblComponent>
-                <PayTableBottom>
+                <table style={tableStyle}>
                     <tbody>
-                        <tr>
-                            <th colSpan="2" style={{fontSize: "36px", fontWeight: "bold"}}>휴가 신청서</th>
+                        <tr style={rowStyle}>
+                            <th colSpan={4} style={TableTitle}>휴가 신청서</th>
                         </tr>
 
-                        <tr>
-                            <th colSpan={2} style={{padding: "0px"}}><hr/></th>
-                        </tr>
-
-                        <tr>
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>
+                                <label htmlFor="title">작성자번호</label>
+                            </th>
                             <td>
-                                <label htmlFor="title">제목</label>
-                                <input type="text" id="title" placeholder="제목입력~" size={30} />
+                                <input type="text" name="id" size={30} value={vaca.id} onChange={handleInputChange} readOnly />
                             </td>
+                            <th style={TableHead}>
+                                <label htmlFor="reference">작성자명</label>
+                            </th>
                             <td>
+                                <input type="text" name="name" size={30} value={vaca.name} onChange={handleInputChange} readOnly />
+                            </td>
+                        </tr>
+
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>
+                                <label htmlFor="title">제목</label>
+                            </th>
+                            <td>
+                                <input type="text" name="vacation_title" placeholder="제목입력~" size={30} value={vaca.vacation_title} onChange={handleInputChange} />
+                            </td>
+                            <th style={TableHead}>
                                 <label htmlFor="reference">참조</label>
+                            </th>
+                            <td>
                                 <input type="text" id="reference" placeholder="참조 입력~" size={30} />
                             </td>
                         </tr>
 
-                        <tr>
-                            <td>
+                        <tr style={rowStyle}>
+                            <th style={TableHead}>
                                 <label htmlFor="title">시작일</label>
-                                <input type="date"/>
-                            </td>
+                            </th>
                             <td>
+                                <input type="date" name="vacation_start" value={vaca.vacation_start} onChange={handleInputChange} />
+                            </td>
+                            <th style={TableHead}>
                                 <label htmlFor="reference">종료일</label>
-                                <input type="date"/>
+                            </th>
+                            <td>
+                                <input type="date" name="vacation_end" value={vaca.vacation_end} onChange={handleInputChange} />
                             </td>
                         </tr>
 
-                        <tr>
-                            <td colSpan="2">
-                                <input type="text" id="content" placeholder="내용 입력~" style={{width: "760px", height: "200px"}} />
+                        <tr style={rowStyle}>
+                            <td colSpan={4} style={cellStyle} >
+                                <input type="text" name="vacation_content" placeholder="내용 입력~" style={{width: "760px", height: "200px"}} value={vaca.vacation_content} onChange={handleInputChange} />
                             </td>
                         </tr>
 
-                        <tr>
-                            <td colSpan="2">
-                                <label htmlFor="file">파일 추가</label>
-                                <input type="file" id="file" />
+                        <tr style={rowStyle}>
+                            <td colSpan={2} style={cellStyle}>
+                                <input type="button" value={"신청하기"} style={{
+                                    cursor: 'pointer',
+                                    backgroundColor: "#007BFF",
+                                    color: "white",
+                                    border: "none",
+                                    padding: "10px 20px",
+                                    borderRadius: "20px",
+                                    fontSize: "1rem",
+                                }} onClick={handleAnnualSubmit} />
                             </td>
-                        </tr>
 
-                        <tr>
-                            <td colSpan="2">
-                                <label htmlFor="referenceList">참조자 및 참조 부서 목록</label>
-                                <input type="text" id="referenceList" placeholder="참조자 입력~" />
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td colSpan="2">
-                                <input type="button" value={"신청하기"} onClick={() => router.push('/guest/attendance/vacation')} style={{ cursor: 'pointer' }}/>
+                            <td colSpan={2} style={cellStyle}>
+                                <input type="button" value={"목록"} style={{
+                                    cursor: 'pointer',
+                                    backgroundColor: "#007BFF",
+                                    color: "white",
+                                    border: "none",
+                                    padding: "10px 20px",
+                                    borderRadius: "20px",
+                                    fontSize: "1rem",
+                                }} onClick={() => router.push(`/guest/attendance/vacationlist/${vaca.id}`)} />
                             </td>
                         </tr>
                     </tbody>
-                </PayTableBottom>
-            </TblComponent>
+                </table>
             </div>
             <br/><br/><hr/><br/><br/>
-            <div>
-                <div>휴가 상세 내역</div>
-                <br/>
-                <div>[ 총 휴가 ]</div>
-                <div>[ 사용한 휴가 ]</div>
-                <div>[ 남은 휴가 ]</div>
-                <div>[ 그 동안 사용한 휴가의 승인 여부 ]</div>
-                <div>[ 그 동안 거절된 휴가의 사유 ]</div>
-            </div>
         </div>
     );
 }   
 
-export default AnnualRegister;
+export default VacationRegister;
 
-AnnualRegister.getLayout = function getLayout(page) {
+VacationRegister.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
-
-const TblComponent = styled.div`
-    border: 1px solid #E5E5E5;
-    border-radius: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,.10);
-    box-sizing: border-box;
-    margin-top: 40px;
-    width: 800px;
-`;
-
-const TblHeader = styled.div`
-    padding: 0px 15px;
-    background: #F6F8FA;
-    border-radius: 5px 5px 0px 0px;
-`;
-
-const TblContent = styled.div`
-    height: 550px;
-    overflow-x: auto;
-    padding: 0px 15px;
-
-&::-webkit-scrollbar {
-    width: 4px;
-} 
-
-&::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-}
-
-&::-webkit-scrollbar-thumb {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-}
-`;
 
 const MainComponent = styled.div`
     width: 100%;
@@ -138,36 +218,13 @@ const MainComponent = styled.div`
     box-sizing: border-box;
 `;
 
-const Table = styled.table`
-    width:100%;
-    table-layout: fixed;
-    font-size: .9em;
-    width: 800px;
-    min-width: 650px;
-    border-collapse: collapse;
-
-    th {
-    width: 150px;
-    padding: 20px 15px;
+const AttenCal = styled.div`
+    width: 40%;
+    height: 100%;
+    border: 2px solid #005FC5;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
     text-align: center;
-    font-weight: 500;
-    font-size: 15px;
-    text-transform: uppercase;
-    white-space: nowrap;
-    }
-
-    td {
-    padding: 15px;
-    vertical-align: middle;
-    font-size: 13px;
-    border-bottom: solid 1px #E5E5E5;
-    text-align: center;
-    word-wrap: break-word;
-    }
-`;
-
-const PayTableTop = styled(Table)``;
-
-const PayTableBottom = styled(Table)`
-    margin-top: 20px;
+    margin-right: 10px;
 `;

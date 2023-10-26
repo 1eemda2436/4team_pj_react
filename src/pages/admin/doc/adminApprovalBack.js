@@ -7,140 +7,179 @@ import axios from "axios";
 
 const Doc = () => {
 
-    const router = useRouter();
+  const router = useRouter();
+  const id = localStorage.getItem('user_id');
+  console.log('id확인:',id);
+  const [samples, setSamples] = useState([]);
+  const [filteredSamples, setFilteredSamples] = useState([]);
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 10;
+  
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+      axios
+      .get("http://localhost:8081/admin/doc/approvalBack", {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then((response) => {
+          setSamples(response.data);
+          const filteredSamples = response.data.filter(approvalBack => approvalBack.doc_status === '반려');
+          const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
+          setSamples(sortedSamples);
+          setFilteredSamples(sortedSamples);
+          console.log('sortedSamples:', sortedSamples)
+      })
+      .catch((error) => {
+          console.log(error);
+      });
+  }, []);
 
-    const [samples, setSamples] = useState([]);
-    const [filteredSamples, setFilteredSamples] = useState([]);
+  const indexOfLastItem = page * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredSamples.slice(indexOfFirstItem, indexOfLastItem);
 
-    useEffect(() => {
-        axios
-        .get("http://localhost:8081/doc/approvalBack")
-        .then((response) => {
-            setSamples(response.data);
-            const filteredData = response.data.filter(approvalBack => approvalBack.doc_status === 'N');
-            setFilteredSamples(filteredData);
-            console.log(filteredData)
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }, []);
+  const totalPage = Math.ceil(filteredSamples.length / itemsPerPage);
 
-    return(
-        <Container>
-            <Title>
-                <H1>반려 문서함</H1>
-            </Title>
-            <Docstyle1>
-                <Table>
-                    <TableTr>
-                        <TableTh>
-                            <button type="button" onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재 완료 문서함</button>
-                        </TableTh>
-                        <TableTh>
-                            <button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 예정 문서함</button>
-                        </TableTh>
-                        <TableTh>
-                            <button type="button" onClick={() => router.push('/admin/doc/adminApprovalBack')}>결재 반려 문서함</button>
-                        </TableTh>
-                    </TableTr>
-                </Table>
-            </Docstyle1>
+  const handleClick = (type) => {
+      if (type === "prev" && page > 1) {
+          setPage(page - 1);
+      } else if (type === "next" && page < totalPage) {
+          setPage(page + 1);
+      }
+  };
 
-            <Docstyle2>
-                <Table>
-                    <thead>
-                        <TableTr>
-                            <TableTh2>상태</TableTh2>
-                            <TableTh2>문서번호</TableTh2>
-                            <TableTh2>카테고리</TableTh2>
-                            <TableTh2 isTitle>문서 제목</TableTh2>
-                            <TableTh2>작성자</TableTh2>
-                            <TableTh2>결재일</TableTh2>
-                        </TableTr>
-                    </thead>
-                    <tbody>
-                    {samples.map(approvalBack =>
-                            <TableTr key = {approvalBack.approval_id}>
-                                    <TableTd2 component="" scope="approvalBack">{approvalBack.doc_status}</TableTd2>
-                                    <TableTd2>{approvalBack.doc_id}</TableTd2>
-                                    <TableTd2>{approvalBack.category_name}</TableTd2>
-                                    <TableTd2 isTitle>{approvalBack.doc_title}</TableTd2>
-                                    <TableTd2>{approvalBack.name}</TableTd2>
-                                    <tableTd2>{approvalBack.approval_date}</tableTd2>
-                            </TableTr>
-                        )}
-                    </tbody>
-                </Table>
-            </Docstyle2>
-        </Container>
-    )
+  return(
+    <Container>
+        <Title>
+            <H1>반려 문서함</H1>
+        </Title>
+        <Docstyle1>
+            <tbody>
+                <tr>
+                    <th>
+                        <button type="button" onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재 완료 문서함</button>
+                    </th>
+                    <th>
+                        <button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 예정 문서함</button>
+                    </th>
+                    <th>
+                        <button type="button" onClick={() => router.push('/admin/doc/adminApprovalBack')}>결재 반려 문서함</button>
+                    </th>
+                </tr>
+            </tbody>
+        </Docstyle1>
+        <Docstyle2>
+                <thead>
+                    <tr>
+                        <th>상태</th>
+                        <th>문서번호</th>
+                        <th>문서 제목</th>
+                        <th>작성자</th>
+                        <th>결재일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {currentItems.map(approvalBack =>
+                        <tr key = {approvalBack.doc_id} onClick={() => router.push(`/admin/doc/adminApprovalBackDetail?id=${approvalBack.doc_id}`)}>
+                          <td component="" scope="approvalBack">{approvalBack.doc_status}</td>
+                          <td>{approvalBack.doc_id}</td>
+                          <td isTitle>{approvalBack.doc_title}</td>
+                          <td>{approvalBack.name}</td>
+                          <td>{approvalBack.approval_date}</td>
+                        </tr>
+                    )}
+                </tbody>
+        </Docstyle2>
+        <PageButton>
+                <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+                <span>{page} / {totalPage}</span>
+                <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
+        </PageButton>
+    </Container>
+  )
 }
 
 export default Doc;
 
 Doc.getLayout = function getLayout(page) {
-    return <AdminLayout>{page}</AdminLayout>;
+  return <AdminLayout>{page}</AdminLayout>;
 };
 
 const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+width: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
 `;
 
 const Title = styled.div`
+text-align: center;
+margin-bottom: 20px;
+`;
+
+const Docstyle1 = styled.table`
+width: 100%;
+margin: 10px 0;
+th {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid black;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: gray;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 1px;
+}
+`;
+
+const Docstyle2 = styled.table`
+width: 100%;
+thead {
+  th {
     text-align: center;
-    margin-bottom: 20px;
-`;
-
-const Docstyle1 = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    margin: 10px;
-`;
-
-const Docstyle2 = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+  }
+}
+tbody {
+  tr {
+    cursor: pointer;
+    td {
+      text-align: center;
+      padding: 10px;
+      border: 1px solid black;
+    }
+  }
+}
 `;
 
 const H1 = styled.h1`
-    font-size: 30px;
+font-size: 30px;
 `;
 
-const Table = styled.table`
-    border: 1px solid;
-`;
+const PageButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 
-const TableTr = styled.tr`
-    border: 1px solid;
-`;
-
-const TableTh = styled.th`
-    border: 1px solid;
-    padding: 5px;
-`;
-
-const TableTh2 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: ${(props) => (props.isTitle ? '40%' : 'auto%')};
-    width: 100px;
-`;
-
-const TableTd = styled.td`
-    border: 1px solid;
-`;
-
-const TableTd2 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: ${(props) => (props.isTitle ? '40%' : 'auto%')};
+  button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    &:disabled {
+      background-color: lightgray;
+      cursor: not-allowed;
+    }
+  }
 `;

@@ -2,9 +2,16 @@ import styled from "styled-components";
 import HeaderNotice from '../../../public/asset/icons/HeaderNotice.svg'
 import User from '../../../public/asset/icons/user.svg'
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const Header = ({isNoticeShow = true, isUserShow = true}) => {
     const router = useRouter();
+    const [authority, setAuthority] = useState('');
+
+    useEffect(() => {
+        console.log(localStorage.getItem('auth'))
+        setAuthority(localStorage.getItem('auth'))
+    })
 
     return(
         <MainCompoenet>
@@ -17,16 +24,24 @@ const Header = ({isNoticeShow = true, isUserShow = true}) => {
                 </NotcieBox>
             )}
             
-            {isUserShow && (
-                <UserBox onClick={() => router.push('/guest/my')}>
-                    <User width="45" height="45" />
-                    <UserStatus />
-                    <UserContent>
-                        <UserName>사원명</UserName>
-                        <UserTeam>소속부서 - 소속팀</UserTeam>
-                    </UserContent>
-                </UserBox>
-            )}
+            <RightBox>
+                {(authority == "ROLE_MANAGER" || authority == "ROLE_ADMIN") && (
+                    <AdminLink onClick={() => router.push('/admin')}>
+                        어드민 페이지로 이동
+                    </AdminLink>
+                )}
+
+                {isUserShow && (
+                    <UserBox onClick={() => router.push('/guest/my')}>
+                        <User width="45" height="45" />
+                        <UserStatus />
+                        <UserContent>
+                            <UserName>사원명</UserName>
+                            <UserTeam>소속부서 - 소속팀</UserTeam>
+                        </UserContent>
+                    </UserBox>
+                )}
+            </RightBox>
         </MainCompoenet>
     )
 }
@@ -53,6 +68,25 @@ const NoticeContent = styled.div`
     font-size: 24px;
     margin-left: 10px;
     font-weight: 700;
+`;
+
+const RightBox = styled.div`
+    display: flex;
+    column-gap: 20px;
+    align-items: flex-end;
+`;
+
+const AdminLink = styled.div`
+    color: #007BFF;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration-line: underline;
+    cursor: pointer;
+    padding-bottom: 5px;
+
+    &:hover {
+        color: red;
+    }
 `;
 
 const UserBox = styled.div`

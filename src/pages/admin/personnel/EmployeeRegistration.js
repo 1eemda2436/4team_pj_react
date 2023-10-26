@@ -7,11 +7,15 @@ import styled from "styled-components";
 const EmployeeRegistration = () => {
   const router = useRouter();
   const maxId = parseInt(router.query.maxId) + 1;
-
-  console.log('이동 후', maxId)
+  const company_id = localStorage.getItem('company_id');
+  const depart_id = localStorage.getItem('depart_id');
+  const team_id = localStorage.getItem('team_id');
 
   // Define state to hold form data
   const [formData, setFormData] = useState({
+    company_id : company_id,
+    depart_id : depart_id,
+    team_id : team_id,
     id : maxId,
     name: '',
     tel: '',
@@ -26,9 +30,14 @@ const EmployeeRegistration = () => {
 
   // Handle form submission
   const handleSubmit = async () => {
+    const token = localStorage.getItem('token')
     try {
       // Make a POST request to your Spring Boot API
-      await axios.post('http://localhost:8081/personnel/employeeInsert', formData);
+      await axios.post('http://localhost:8081/admin/personnel/employeeInsert', formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
       // Optionally, you can handle success or show a message to the user
       alert('사원 등록에 성공 했습니다.');

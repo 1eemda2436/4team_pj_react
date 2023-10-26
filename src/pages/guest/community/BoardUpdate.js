@@ -21,7 +21,7 @@ const BoardUpdate = () => {
             <Row>
                 <div>
                 <div>글내용</div>
-                <TextArea rows="6" />
+                <TextArea rows="20" cols="50"/>
                 </div>
             </Row>
             </Content>
