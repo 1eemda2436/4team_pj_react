@@ -12,6 +12,7 @@ const Doc = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     
     const [samples, setSamples] = useState([]);
+    console.log('samples.sign:', samples.sign)
     
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
@@ -21,7 +22,7 @@ const Doc = () => {
         const token = localStorage.getItem('token')
         
         if (id) {
-            console.log(id);
+            console.log('id:', id);
             axios.get(`http://localhost:8081/guest/doc/detail/${id}`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -29,7 +30,7 @@ const Doc = () => {
             })
             .then((response) => {
                 setSamples(response.data);
-                console.log(response.data);
+                console.log('response.data:', response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -93,15 +94,16 @@ const Doc = () => {
             });
         }
     }
-
+    
     return(
         <Container>
             <ApprovalLine>
                 <table>
                     <tr>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                        <td>
+                            <img src={samples.sign} alt="사인" style={{ width: '100px', height: '100px' }} />
+                        </td>           
+                        <td></td>
                     </tr>
                 </table>
             </ApprovalLine>

@@ -21,24 +21,11 @@ const Doc = () => {
       doc_attachment: null,
       doc_status: null,
       id:id,
+      sign: null,
     });
 
-    // useEffect(() => {
-    //   if(id) {
-    //     axios.get(`http://localhost:8081/guest/doc/guestTotal/${id}`)
-    //     .then((response) => {
-    //       const {id, name} = response.data;
-    //       setSamples((samples) => ({
-    //         ...samples,
-    //         doc_id: id,
-    //         name: name,
-    //       }));
-    //     })
-    //     .catch((error) => {
-    //       console.error('사용자 정보 호출 실패', error);
-    //     })
-    //   }
-    // }, [id]);
+    // const [signFile, setSignFile] = useState(undefined);
+    const [imageSrc, setImageSrc] = useState('');
 
     useEffect(() => {
       const user_name = localStorage.getItem('user_name');
@@ -64,6 +51,11 @@ const Doc = () => {
       }));
     };
 
+    // const handleSignFileChange = (f) => {
+    //   const file = f.target.files[0];
+    //   setSignFile(file);
+    // };
+
     const handleInsert = () => {
       const insertSamples = new FormData();
       // insertSamples.append('doc_id', samples.doc_id);
@@ -72,6 +64,7 @@ const Doc = () => {
       insertSamples.append('doc_title', samples.doc_title);
       insertSamples.append('doc_content', samples.doc_content);
       insertSamples.append('doc_attachment2', samples.doc_attachment);
+      insertSamples.append('sign2', samples.sign);
       insertSamples.append('id', samples.id);
       insertSamples.append('category_id', selectedCategory);
       insertSamples.append('doc_status', '기안');
@@ -99,6 +92,7 @@ const Doc = () => {
       temporarySaveData.append('doc_title', samples.doc_title);
       temporarySaveData.append('doc_content', samples.doc_content);
       temporarySaveData.append('doc_attachment2', samples.doc_attachment);
+      temporarySaveData.append('sign2', samples.sign);
       temporarySaveData.append('id', samples.id);
       temporarySaveData.append('category_id', selectedCategory);
       temporarySaveData.append('doc_status', '임시'); // 임시 상태로 설정
@@ -123,16 +117,50 @@ const Doc = () => {
         setSelectedCategory(event.target.value);
     };
 
+    const encodeFileToBase64 = (fileBlob) => {
+      // 첨부파일 전송을 위해 셋팅 
+      const file = fileBlob;
+      setSamples((samples) => ({
+        ...samples,
+        sign: file,
+      }));
+
+      // preview
+      const reader = new FileReader();
+      reader.readAsDataURL(fileBlob);
+      return new Promise((resolve) => {
+        reader.onload = () => {
+          setImageSrc(reader.result);
+          resolve();
+        };
+      });
+    };
+
     return(
       <Container>
           <ApprovalLine>
               <table>
                   <tr>
-                      <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                      <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                      <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                      <td>
+                        {imageSrc && <img src={imageSrc} alt="preview-img" style={{width: '100px', height: '100px'}} />}
+                      </td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input 
+                        type="file"
+                        name="signFile"
+                        onChange={(e) => {
+                          encodeFileToBase64(e.target.files[0]);
+                        }
+                      }
+                      />
+                      </td>
+                      <td></td>
                   </tr>
               </table>
+              
           </ApprovalLine>
           <Title>
               <H1>업무 기안서</H1>
@@ -274,20 +302,18 @@ padding: 20px;
 `;
 
 const ApprovalLine = styled.div`
-margin-bottom: 20px;
-table {
-  width: 100%;
-  td {
-    width: 33.33%;
-    cursor: pointer;
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-    &:hover {
-      background-color: #f5f5f5;
+    text-align: right;
+    margin-bottom: 20px;
+    margin-left: auto;
+    tr {
+        border: solid 1px;
+    };
+
+    td {
+        border: solid 1px;
+        width: 100px;
+        height: 100px;
     }
-  }
-}
 `;
 
 const Title = styled.div`
