@@ -74,6 +74,17 @@ const Doc = () => {
         }
     };
 
+    // 날짜 변환
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        });
+        return formattedDate;
+    };
+
     return(
         <Container>
             <ApprovalLine>
@@ -98,7 +109,7 @@ const Doc = () => {
                         </TableTr>
                         <TableTr>
                             <TableTh>결재일</TableTh>
-                            <TableTd>{samples.approval_date}</TableTd>
+                            <TableTd>{formatDate(samples.approval_date)}</TableTd>
                         </TableTr>
                     </Table>
                 </DocstyleLeft>
@@ -116,7 +127,6 @@ const Doc = () => {
                 <br></br>
                 <Table>
                         <TableTr>
-                            <TableTh3>구분</TableTh3>
                             <TableTd3> </TableTd3>
                         </TableTr>
                         <TableTr>

@@ -50,6 +50,17 @@ const Doc = () => {
       }
   };
 
+  // 날짜 변환
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    return formattedDate;
+  };
+
   return(
     <Container>
         <Title>
@@ -87,16 +98,18 @@ const Doc = () => {
                           <td>{approvalBack.doc_id}</td>
                           <td isTitle>{approvalBack.doc_title}</td>
                           <td>{approvalBack.name}</td>
-                          <td>{approvalBack.approval_date}</td>
+                          <td>{formatDate(approvalBack.approval_date)}</td>
                         </tr>
                     )}
                 </tbody>
         </Docstyle2>
+        {totalPage > 1 && (  // 여기에서 조건부 렌더링을 수행합니다.
         <PageButton>
-                <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
-                <span>{page} / {totalPage}</span>
-                <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
+          <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+          <span>{page} / {totalPage}</span>
+          <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
         </PageButton>
+        )}
     </Container>
   )
 }

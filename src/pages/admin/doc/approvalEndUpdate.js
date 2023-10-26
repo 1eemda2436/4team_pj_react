@@ -190,7 +190,6 @@ const Doc = () => {
                 <table>
                     <tbody>
                         <tr>
-                            <th>구분</th>
                             <td> </td>
                         </tr>
                         <tr>

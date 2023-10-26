@@ -13,30 +13,63 @@ const Doc = () => {
     
     const [samples, setSamples] = useState([]);
     console.log('samples.sign:', samples.sign)
+
+    const [imageSrc, setImageSrc] = useState("");
     
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
     };
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        
-        if (id) {
-            console.log('id:', id);
-            axios.get(`http://localhost:8081/guest/doc/detail/${id}`,{
+        const fetchData = async () => {
+            const token = localStorage.getItem('token');
+    
+            if (id) {
+                try {
+                    const response = await axios.get(`http://localhost:8081/guest/doc/detail/${id}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+    
+                    setSamples(response.data);
+                    console.log('response.data:', response.data);
+                    const fileName = response.data.sign; // 실제 이미지 파일 이름
+                    getImageAsBase64(fileName);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        };
+    
+        fetchData();
+    }, [id]);
+
+    // 이미지
+    const getImageAsBase64 = (fileName) => {
+        if (fileName) {
+            // 이미지 파일이 있는 경우에만 요청을 보내도록 체크
+            const token = localStorage.getItem('token');
+            axios.get(`http://localhost:8081/guest/doc/imageFile/${fileName}`, {
+                responseType: 'arraybuffer',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            .then((response) => {
-                setSamples(response.data);
-                console.log('response.data:', response.data);
+            .then(response => {
+                const base64Image = Buffer.from(response.data, 'binary').toString('base64');
+                setImageSrc(`data:image/jpeg;base64,${base64Image}`);
             })
-            .catch((error) => {
-                console.log(error);
+            .catch(error => {
+                console.error('이미지 가져오기 실패:', error);
             });
+        } else {
+            // fileName이 undefined인 경우 이미지를 가져오지 않음
+            console.log('이미지 파일이 없다');
         }
-    }, [id]);
+    };
+    
+    const fileName = samples.sign; // 실제 이미지 파일 이름
 
     // 파일 다운로드 
     const downloadFile = (fileName) => {
@@ -94,6 +127,17 @@ const Doc = () => {
             });
         }
     }
+
+    // 날짜 변환
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        });
+        return formattedDate;
+    };
     
     return(
         <Container>
@@ -101,7 +145,13 @@ const Doc = () => {
                 <table>
                     <tr>
                         <td>
-                            <img src={samples.sign} alt="사인" style={{ width: '100px', height: '100px' }} />
+                        {imageSrc && (
+                        <img
+                            src={imageSrc}
+                            alt="미리보기"
+                            style={{ width: "100px", height: "100px" }}
+                        />
+                        )}
                         </td>           
                         <td></td>
                     </tr>
@@ -120,7 +170,7 @@ const Doc = () => {
                         </TableTr>
                         <TableTr>
                             <TableTh>기안일</TableTh>
-                            <TableTd>{samples.doc_date}</TableTd>
+                            <TableTd>{formatDate(samples.doc_date)}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>기안자</TableTh>
@@ -147,7 +197,6 @@ const Doc = () => {
                 <Table>
                     <div>
                         <TableTr>
-                            <TableTh3>구분</TableTh3>
                             <TableTd3> </TableTd3>
                         </TableTr>
                         <TableTr>

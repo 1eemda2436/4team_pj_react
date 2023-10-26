@@ -27,6 +27,17 @@ const Doc = () => {
         });
     }, []);
 
+    // 날짜 변환
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        });
+        return formattedDate;
+      };
+
     return(
         <Container>
             <Title>
@@ -70,7 +81,7 @@ const Doc = () => {
                             <TableTr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${draft.doc_id}`)}>
                                 <TableTd2 component="" scope="draft">{draft.doc_id}</TableTd2>
                                 <TableTd2>{draft.category_name}</TableTd2>
-                                <TableTd2 >{draft.doc_title}</TableTd2>
+                                <TableTd2 >{formatDate(draft.doc_title)}</TableTd2>
                                 <TableTd2>{draft.name}</TableTd2>
                                 <TableTd2>{draft.doc_date}</TableTd2>
                             </TableTr>
