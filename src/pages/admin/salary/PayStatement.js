@@ -55,77 +55,84 @@ const PayStatement = () => {
     const totalPayment = Math.ceil(totalMathPayment / 10000) * 10000
 
     return (
-        <Container>
-        <Title>급여관리 - 명세서</Title>
-        <SubTitle>직책</SubTitle>
-        <SubTitle>이름</SubTitle>
+        <MainContainer>
+          <Title>급여관리 - 명세서</Title>
 
-        <SubTitle>2023년 10월 명세서</SubTitle>
-        <HeaderRow>
-            <div>{PayStatementData.email}</div>
-            <div>{PayStatementData.rank}</div>
-            <div>{PayStatementData.name}</div>
-        </HeaderRow>
-        <Table>
-            <thead>
-              <TableHeader>
-                <TableCell colSpan={4}>지급내역(과세)</TableCell>
-                <TableCell colSpan={2}>지급내역(비과세)</TableCell>
-                <TableCell rowSpan={2}>지급액</TableCell>
-                <TableCell rowSpan={7}>지급총액</TableCell>
-              </TableHeader>
-            </thead>
-            <tbody>
-              <tr>
-                  <TableCell>기본금</TableCell>
-                  <TableCell>상여금</TableCell>
-                  <TableCell>야근수당</TableCell>
-                  <TableCell>연차수당</TableCell>
-                  <TableCell>식비</TableCell>
-                  <TableCell>교통비</TableCell>
-              </tr>
-              <tr>
-                  <TableCell>{PayStatementData.salary}</TableCell>
-                  <TableCell>{PayStatementData.bonus}</TableCell>
-                  <TableCell>{PayStatementData.overtime_pay}</TableCell>
-                  <TableCell>{PayStatementData.allowance}</TableCell>
-                  <TableCell>{PayStatementData.food_pay}</TableCell>
-                  <TableCell>{PayStatementData.t_pay}</TableCell>
-                  <TableCell>{paymentTotal}</TableCell>
-              </tr>
-              <tr>
-                  <TableCell colSpan={6}>공제내역</TableCell>
-                  <TableCell rowSpan={2}>공제계</TableCell>
-              </tr>
-              <tr>
-                  <TableCell>소득세</TableCell>
-                  <TableCell>지방 소득세</TableCell>
-                  <TableCell>국민연금</TableCell>
-                  <TableCell>건강보험</TableCell>
-                  <TableCell>장기 요양보험</TableCell>
-                  <TableCell>고용보험</TableCell>
-              </tr>
-              <tr>
-                  <TableCell>{PayStatementData.income_tax}</TableCell>
-                  <TableCell>{PayStatementData.local_tax}</TableCell>
-                  <TableCell>{PayStatementData.national_pension}</TableCell>
-                  <TableCell>{PayStatementData.health_insurance}</TableCell>
-                  <TableCell>{PayStatementData.c_health_insurance}</TableCell>
-                  <TableCell>{PayStatementData.employment_insurance}</TableCell>
-                  <TableCell>{deductionTotal}</TableCell>
-              </tr>
-              <tr>
-                  <TableCell colSpan={6}>합 계</TableCell>
-                  <TableCell>{totalMathPayment}</TableCell>
-                  <TableCell>{totalPayment}</TableCell>
-              </tr>
-            </tbody>
-        </Table>
-        <ButtonContainer>
-            <Button>발송</Button>
-            <Button onClick={() => router.back()}>이전</Button>
-        </ButtonContainer>
-        </Container>
+          <PayContainer>
+            <SubTitle>2023년 10월 명세서</SubTitle>
+
+            <TitleBox>
+              <SubTitleBox>
+                <span>직책</span>
+                <div>{PayStatementData.rank}</div>
+              </SubTitleBox>
+              <SubTitleBox>
+                <span>이름</span>
+                <div>{PayStatementData.name}</div>
+              </SubTitleBox>
+            </TitleBox>
+
+            <Table>
+                <thead>
+                  <TableHeader>
+                    <TableCell colSpan={4}>지급내역(과세)</TableCell>
+                    <TableCell colSpan={2}>지급내역(비과세)</TableCell>
+                    <TableCell rowSpan={2}>지급액</TableCell>
+                    <TableCell rowSpan={7}>지급총액</TableCell>
+                  </TableHeader>
+                </thead>
+                <tbody>
+                  <tr>
+                      <TableCell>기본금</TableCell>
+                      <TableCell>상여금</TableCell>
+                      <TableCell>야근수당</TableCell>
+                      <TableCell>연차수당</TableCell>
+                      <TableCell>식비</TableCell>
+                      <TableCell>교통비</TableCell>
+                  </tr>
+                  <tr>
+                      <TableCell>{PayStatementData.salary}</TableCell>
+                      <TableCell>{PayStatementData.bonus}</TableCell>
+                      <TableCell>{PayStatementData.overtime_pay}</TableCell>
+                      <TableCell>{PayStatementData.allowance}</TableCell>
+                      <TableCell>{PayStatementData.food_pay}</TableCell>
+                      <TableCell>{PayStatementData.t_pay}</TableCell>
+                      <TableCell>{paymentTotal}</TableCell>
+                  </tr>
+                  <tr>
+                      <TableCell colSpan={6}>공제내역</TableCell>
+                      <TableCell rowSpan={2}>공제계</TableCell>
+                  </tr>
+                  <tr>
+                      <TableCell>소득세</TableCell>
+                      <TableCell>지방 소득세</TableCell>
+                      <TableCell>국민연금</TableCell>
+                      <TableCell>건강보험</TableCell>
+                      <TableCell>장기 요양보험</TableCell>
+                      <TableCell>고용보험</TableCell>
+                  </tr>
+                  <tr>
+                      <TableCell>{PayStatementData.income_tax}</TableCell>
+                      <TableCell>{PayStatementData.local_tax}</TableCell>
+                      <TableCell>{PayStatementData.national_pension}</TableCell>
+                      <TableCell>{PayStatementData.health_insurance}</TableCell>
+                      <TableCell>{PayStatementData.c_health_insurance}</TableCell>
+                      <TableCell>{PayStatementData.employment_insurance}</TableCell>
+                      <TableCell>{deductionTotal}</TableCell>
+                  </tr>
+                  <tr>
+                      <TableCell colSpan={6}>합 계</TableCell>
+                      <TableCell>{totalMathPayment}</TableCell>
+                      <TableCell>{totalPayment}</TableCell>
+                  </tr>
+                </tbody>
+            </Table>
+            <ButtonContainer>
+                <Button>발송</Button>
+                <Button onClick={() => router.back()}>이전</Button>
+            </ButtonContainer>
+          </PayContainer>
+        </MainContainer>
     );
 }
 
@@ -135,39 +142,57 @@ PayStatement.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
 
-const Container = styled.div`
-  font-family: Arial, sans-serif;
-  max-width: 800px;
+const MainContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  box-sizing: border-box;
   margin: 0 auto;
-  padding: 20px;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 `;
 
-const Title = styled.h2`
-  font-size: 24px;
-  margin: 0;
-  padding: 10px 0;
-  text-align: center;
+const Title = styled.div`
+  font-size: 26px;
+  font-weight: 700;
+  color: #007bff;
+`;
+
+const PayContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  margin-top: -80px;
+`;
+
+const TitleBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-width: 30%;
+`;
+
+const SubTitleBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  cursor: default;
 `;
 
 const SubTitle = styled.div`
-  font-size: 18px;
-  margin: 10px 0;
-`;
-
-const HeaderRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 100px;
+  width: 100%;
+  text-align: center;
+  cursor: default;
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  cursor: default;
 `;
 
 const TableHeader = styled.tr`
@@ -195,4 +220,5 @@ const Button = styled.button`
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: 600;
 `;
