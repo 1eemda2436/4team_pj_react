@@ -98,6 +98,9 @@ const handleEditModalSave = () => {
     }
   }
 
+  //특정부서 안보이게 하기
+  const filteredDepartments = department.filter(department => department[1] !== '임시 부서');
+
   return (
     <MainComponent>
       <Title>인사 관리 - 부서 현황</Title>
@@ -119,7 +122,7 @@ const handleEditModalSave = () => {
       <TblContent>
             <PersonnelTableTop>
                 <tbody>
-                  {department.map(department => (
+                  {filteredDepartments.map(department => (
                   <tr key={department[0]}>
                     <td>{department[0]}</td>
                     <td>{department[1]}</td>
