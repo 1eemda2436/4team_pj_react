@@ -34,62 +34,56 @@ export default function MainSideMenu() {
 
     //메뉴 요소 배열 
     const menus = [
-        {   
-            id: 1,
-            icon: <Alerts />,
-            value: '알림',
-            path: '/guest'
-        },
         {
-            id: 2,
+            id: 1,
             icon: <Video_Conference />,
             value: '워크스페이스',
             path: '/guest/workspace'
         },
         {   
-            id: 3,
+            id: 2,
             icon: <Calendar />,
             value: '캘린더',
             path: '/guest/calendar'
         },
         {
-            id: 4,
+            id: 3,
             icon: <Chat />,
             value: '메신저',
             path: '/guest/chatting'
         },
         {
-            id: 5,
+            id: 4,
             icon: <Megaphone />,
             value: '공지사항',
             path: '/guest/notice'
         },
         {
-            id: 6,
+            id: 5,
             icon: <Forms />,
             value: '전자결재',
             path: '/guest/doc'
         },
         {
-            id: 7,
+            id: 6,
             icon: <Time />,
             value: '근태관리',
             path: '/guest/attendance'
         },
         {
-            id: 8,
+            id: 7,
             icon: <Badge />,
             value: '인사관리',
             path: '/guest/personnel'
         },
         {
-            id: 9,
+            id: 8,
             icon: <Bank />,
             value: '급여관리',
             path: '/guest/salary'
         },
         {
-            id: 10,
+            id: 9,
             icon: <Working_Together />,
             value: '커뮤니티',
             path: '/guest/community'
@@ -120,6 +114,7 @@ const SideMenu = styled.div`
 
 const Logo1Icon = styled(Logo1)`
     cursor: pointer;
+    margin-bottom: 20px;
 `;
 
 const MenuIcons = styled.div`
