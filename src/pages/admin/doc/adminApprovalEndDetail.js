@@ -11,6 +11,10 @@ const Doc = () => {
     const id = router.query.id; // ID를 추출
     console.log(id)
 
+    const handleBack = () => {
+        router.back(); // 이전 페이지로 이동
+    };
+
     const [samples, setSamples] = useState([]);
 
     
@@ -33,6 +37,43 @@ const Doc = () => {
         }
     }, [id]);
 
+    // 파일 다운로드 
+    const downloadFile = (fileName) => {
+        const token = localStorage.getItem('token');
+        // API를 통해 파일 다운로드 요청
+        return axios.get(`http://localhost:8081/guest/doc/download/${fileName}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            // 이전 파일을 받아오기 위해 응답 타입을 blob으로 설정
+            responseType: 'blob'
+        })
+        .then((response) => {
+            // response로 받은 파일 데이터 가공
+            const blob = new Blob([response.data], {type: response.headers['content-type'] });
+            // 브라우저에서 파일을 다운로드할 수 있는 url 생성
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+            console.error('파일 다운로드 실패', error);
+        });
+    };
+
+    const handleDownload = () => {
+        if(samples.doc_attachment) {
+            downloadFile(samples.doc_attachment);
+        }
+        else {
+            alert('파일이 없습니다.');
+        }
+    };
+
     return(
         <Container>
             <ApprovalLine>
@@ -48,21 +89,26 @@ const Doc = () => {
                 <DocstyleLeft>
                     <Table>
                         <TableTr>
-                            <TableTh>결재번호</TableTh>
-                            <TableTd component="" scope="adminDetail">{samples.approval_id}</TableTd>
+                            <TableTh>문서번호</TableTh>
+                            <TableTd component="" scope="adminDetail">{samples.doc_id}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>기안자</TableTh>
                             <TableTd>{samples.name}</TableTd>
                         </TableTr>
                         <TableTr>
-                            <TableTh>결재요청일</TableTh>
+                            <TableTh>결재일</TableTh>
                             <TableTd>{samples.approval_date}</TableTd>
                         </TableTr>
                     </Table>
                 </DocstyleLeft>
                 <DocstyleRight>
-                    <Comment placeholder="결재 의견을 입력하세요" />
+                    <table>
+                        <tr>
+                            <th>결재의견</th>
+                            <td>{samples.approval_content}</td>
+                        </tr>
+                    </table>
                 </DocstyleRight>
             </Docstyle1>
             <Docstyle2>
@@ -77,16 +123,20 @@ const Doc = () => {
                 </Table>
                 <br></br>
                 <Table>
-                        <TableTr>
-                            <TableTh3>구분</TableTh3>
-                            <TableTd3> </TableTd3>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh3>첨부파일</TableTh3>
-                            <TableTd3>{samples.doc_attachment}</TableTd3>
-                        </TableTr>
+                    <TableTr>
+                        <TableTh3>구분</TableTh3>
+                        <TableTd3> </TableTd3>
+                    </TableTr>
+                    <TableTr>
+                        <TableTh3>첨부파일</TableTh3>
+                        <TableTd3>{samples.doc_attachment}</TableTd3>
+                        <button type="button" onClick={handleDownload}>파일 다운로드</button>
+                    </TableTr>
                 </Table>
             </Docstyle2>
+            <ButtonStyle>
+                <button type="button" onClick={handleBack}>돌아가기</button>
+            </ButtonStyle>
         </Container>
     )
 }

@@ -10,6 +10,11 @@ const Doc = () => {
     const {id} = router.query; // ID를 추출
     console.log(id);
 
+    const handleBack = () => {
+        router.back(); // 이전 페이지로 이동
+    };
+
+
     const [selectedCategory, setSelectedCategory] = useState('');
     
     const [samples, setSamples] = useState({
@@ -45,7 +50,6 @@ const Doc = () => {
         setSamples((prevSamples) => ({
         ...prevSamples,
         [name]: value,
-
         }));
     };
 
@@ -59,7 +63,9 @@ const Doc = () => {
 
     const hanldeUpdate = () => {
         const updateSamples = new FormData();
-        updateSamples.append('doc_status', '진행');
+        updateSamples.append('doc_status', '반려');
+        updateSamples.append('approval_date', samples.approval_date);
+        updateSamples.append('approval_content', samples.approval_content);
         const token = localStorage.getItem('token')
         
         if(id) {
@@ -69,11 +75,11 @@ const Doc = () => {
                 }
             })
             .then(() => {
-                alert('결재요청 완료')
-                router.push('/guest/doc/list/draftingList')
+                alert('반려 완료')
+                router.push(`/admin/doc/adminApprovalBackDetail?id=${samples.doc_id}`)
             })
             .catch((error) => {
-                console.error("결재요청 실패:", error);
+                console.error("반려 실패:", error);
             });
         }
     }
@@ -94,7 +100,7 @@ const Doc = () => {
                 </table>
             </ApprovalLine>
             <Title>
-                <H1>업무 기안서</H1>
+                <H1>결 재</H1>
             </Title>
             <Docstyle1>
                 <DocstyleLeft>
@@ -112,13 +118,12 @@ const Doc = () => {
                             </td>
                         </tr>
                         <tr>
-                            <th>기안일</th>
+                            <th>결재일</th>
                             <td>
                                 <input
                                 type="date"
-                                name="doc_date"
-                                readOnly
-                                value={samples.doc_date}
+                                name="approval_date"
+                                value={samples.approval_date}
                                 onChange={handleInputChange}
                                 />
                             </td>
@@ -144,7 +149,21 @@ const Doc = () => {
                         </tr>
                     </table>
                 </DocstyleLeft>
-                    
+                <DocstyleRight>
+                    <table>
+                        <tr>
+                            <th>결재의견</th>
+                            <td>
+                                <input 
+                                type="text"
+                                name="approval_content"
+                                value={samples.approval_content}
+                                onChange={handleInputChange}
+                                />
+                            </td>
+                        </tr>
+                    </table>
+                </DocstyleRight>    
             </Docstyle1>
             <Docstyle2>
                 <table>
@@ -193,8 +212,8 @@ const Doc = () => {
                 </select>
             </CategoryTable>
             <ButtonStyle>
-                <button type="button" onClick={hanldeUpdate}>결재요청</button>
-                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>돌아가기</button>
+                <button type="button" onClick={hanldeUpdate}>반려</button>
+                <button type="button" onClick={handleBack}>취소</button>
             </ButtonStyle>
         </Container>
     )
