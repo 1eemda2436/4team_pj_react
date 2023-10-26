@@ -7,10 +7,15 @@ import axios from "axios";
 
 const Doc = () => {
   const router = useRouter();
-  
+  const id = localStorage.getItem('user_id');
+    const user_name = localStorage.getItem('user_name');
+    console.log('id확인:',id);
+    console.log('name확인:', user_name);
   const [samples, setSamples] = useState([]);
   const [filteredSamples, setFilteredSamples] = useState([]);
-  
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 10;
+
   useEffect(() => {
       const token = localStorage.getItem('token')
       
@@ -22,14 +27,31 @@ const Doc = () => {
       })
       .then((response) => {
         setSamples(response.data);
-        const filteredData = response.data.filter(temporary => temporary.doc_status === '임시');
-        setFilteredSamples(filteredData);
-        console.log(filteredData)
+        const filteredSamples = response.data.filter(temporary => temporary.doc_status === '임시' && temporary.name === user_name);
+        const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
+        setSamples(sortedSamples);
+        setFilteredSamples(sortedSamples);
+        console.log('sortedSamples:', sortedSamples)
     })
       .catch((error) => {
           console.log(error);
       });
-    }, []);
+    }, [id, user_name]);
+
+    const indexOfLastItem = page * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredSamples.slice(indexOfFirstItem, indexOfLastItem);
+
+    const totalPage = Math.ceil(filteredSamples.length / itemsPerPage);
+
+    const handleClick = (type) => {
+        if (type === "prev" && page > 1) {
+            setPage(page - 1);
+        } else if (type === "next" && page < totalPage) {
+            setPage(page + 1);
+        }
+    };
+
     return(
         <Container>
             <Title>
@@ -62,7 +84,7 @@ const Doc = () => {
                       </tr>
                     </thead>
                     <tbody>
-                        {filteredSamples.map((temporary) => 
+                        {currentItems.map((temporary) => 
                             <tr key={temporary.doc_id} onClick={() => router.push(`/guest/doc/detail/temporaryDetail?id=${temporary.doc_id}`)}>
                             <td component="" scope="temporary">{temporary.doc_id}</td>
                             <td>{temporary.category_name}</td>
@@ -74,6 +96,11 @@ const Doc = () => {
                             )}
                     </tbody>
             </Docstyle2>
+            <PageButton>
+                <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+                <span>{page} / {totalPage}</span>
+                <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
+            </PageButton>
         </Container>
     )
 }
@@ -138,4 +165,25 @@ tbody {
 
 const H1 = styled.h1`
 font-size: 30px;
+`;
+
+const PageButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+
+  button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    &:disabled {
+      background-color: lightgray;
+      cursor: not-allowed;
+    }
+  }
 `;

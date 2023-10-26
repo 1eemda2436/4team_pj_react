@@ -62,11 +62,9 @@ const Doc = () => {
                         <tr>
                             <th>상태</th>
                             <th>문서번호</th>
-                            <th>카테고리</th>
                             <th>문서 제목</th>
                             <th>작성자</th>
                             <th>결재일</th>
-                            <th>결재완료일</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,11 +72,9 @@ const Doc = () => {
                             <tr key = {adminTotal.doc_id} onClick={() => router.push(`/admin/doc/adminApprovalIngDetail?id=${adminTotal.doc_id}`)}>
                                     <td component="" scope="adminTotal">{adminTotal.doc_status}</td>
                                     <td>{adminTotal.doc_id}</td>
-                                    <td>{adminTotal.category_name}</td>
                                     <td>{adminTotal.doc_title}</td>
                                     <td>{adminTotal.name}</td>
                                     <td>{adminTotal.approval_date}</td>
-                                    <td>{adminTotal.approval_endDate}</td>
                             </tr>
                         )}
                     </tbody>

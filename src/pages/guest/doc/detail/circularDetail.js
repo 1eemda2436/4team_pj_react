@@ -36,6 +36,43 @@ const Doc = () => {
         }
     }, [id]);
 
+    // 파일 다운로드 
+    const downloadFile = (fileName) => {
+        const token = localStorage.getItem('token');
+        // API를 통해 파일 다운로드 요청
+        return axios.get(`http://localhost:8081/guest/doc/download/${fileName}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            // 이전 파일을 받아오기 위해 응답 타입을 blob으로 설정
+            responseType: 'blob'
+        })
+        .then((response) => {
+            // response로 받은 파일 데이터 가공
+            const blob = new Blob([response.data], {type: response.headers['content-type'] });
+            // 브라우저에서 파일을 다운로드할 수 있는 url 생성
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+            console.error('파일 다운로드 실패', error);
+        });
+    };
+
+    const handleDownload = () => {
+        if(samples.doc_attachment) {
+            downloadFile(samples.doc_attachment);
+        }
+        else {
+            alert('파일이 없습니다.');
+        }
+    };
+
     const handleDelete = () => {
         const token = localStorage.getItem("token");
 
@@ -113,6 +150,7 @@ const Doc = () => {
                         <TableTr>
                             <TableTh3>첨부파일</TableTh3>
                             <TableTd3>{samples.doc_attachment}</TableTd3>
+                            <button type="button" onClick={handleDownload}>파일 다운로드</button>
                         </TableTr>
                     </div>
                 </Table>
