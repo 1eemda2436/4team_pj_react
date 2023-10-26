@@ -8,6 +8,7 @@ const AdminPayManagement = () => {
 
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const [totalSalary, setTotalSalary] = useState(0); 
   
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -19,8 +20,8 @@ const AdminPayManagement = () => {
     })
       .then(response => {
         setData(response.data); // 응답 데이터를 상태에 저장
-
-        console.log(response.data.id)
+        const total = response.data.reduce((acc, item) => acc + item.salary, 0);
+        setTotalSalary(total);
       })
       .catch(err => {
         if (axios.isAxiosError(err)) {
@@ -41,7 +42,7 @@ const AdminPayManagement = () => {
         id: item.id, 
         s_id: item.s_id,
         name: item.name,
-        rank: item.rank
+        rank: item.rank,
       }
     });
   };
@@ -98,7 +99,7 @@ const AdminPayManagement = () => {
 
           <TotalBox>
             <TotalTitle>합계</TotalTitle>
-            <TotalResult>999999</TotalResult>
+            <TotalResult>{totalSalary}</TotalResult>
           </TotalBox>
         </TblComponent>
     </MainComponent>

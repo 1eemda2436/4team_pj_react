@@ -20,6 +20,7 @@ const TeamUpdateModal = ({ onClose, onUpdate, team_id, team_name,depart_id }) =>
             });
             // 성공 시 로직
             onUpdate(); // 팀 현황 화면을 업데이트하거나 모달을 닫을 수 있습니다.
+            window.location.reload();
         } catch (error) {
             // 오류 처리
             console.error('팀 수정 중 오류 발생:', error);

@@ -54,7 +54,7 @@ const TeamManagement = () => {
     const teamHandleModalSave = () => {
         // 모달에서 저장 버튼을 눌렀을 때의 로직 추가
         setModalOpen(false); // 모달을 닫을 수도 있음
-        router.push('/admin/department-team/TeamManagement/'); // 팀 현황 화면으로 리디렉션
+        //router.push('/admin/department-team/TeamManagement/'); // 팀 현황 화면으로 리디렉션
     };
 
     //팀 수정 모달
