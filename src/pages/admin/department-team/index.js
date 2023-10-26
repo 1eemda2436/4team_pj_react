@@ -82,9 +82,9 @@ const handleEditModalSave = () => {
 
   //부서 삭제
   const handleDelete = async (depart_id) => {
-    console.log('!!!!!!!')
     const token = localStorage.getItem('token');
-    console.log(token)
+    const result = confirm('정말로 삭제하시겠습니까? (예/아니오)');
+    if(result){
       try {
         await axios.put(`http://localhost:8081/admin/department/DepartmentDelete/${depart_id}`, null, {
           headers: {
@@ -94,6 +94,7 @@ const handleEditModalSave = () => {
         window.location.reload();
     } catch (error) {
         console.log('!!!')
+    }
     }
   }
 

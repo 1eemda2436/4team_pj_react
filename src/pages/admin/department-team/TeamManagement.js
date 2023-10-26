@@ -34,6 +34,7 @@ const TeamManagement = () => {
                 }})
                 .then(response => {
                     setTeamData(response.data); // 응답 데이터를 상태에 저장
+                    console.log(response.data)
                 })
                 .catch(err => {
                     // 오류 처리
@@ -54,7 +55,7 @@ const TeamManagement = () => {
     const teamHandleModalSave = () => {
         // 모달에서 저장 버튼을 눌렀을 때의 로직 추가
         setModalOpen(false); // 모달을 닫을 수도 있음
-        //router.push('/admin/department-team/TeamManagement/'); // 팀 현황 화면으로 리디렉션
+        
     };
 
     //팀 수정 모달
@@ -73,24 +74,27 @@ const TeamManagement = () => {
     };
     
     const teamHandleUpdateSave = () => {
-        // Handle actions after editing and saving
         setEditModalOpen(false);
-        // Perform any other necessary actions
+        window.location.reload();
     };
 
     //팀 삭제
     const teamHandleDelete = async (team_id) => {
         const token = localStorage.getItem('token');
-        console.log(token)
-        try {
-            await axios.put(`http://localhost:8081/admin/team/delete/${team_id}`, null, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }})
-            // 성공 처리
-            window.location.reload();
-        } catch (error) {
-            console.log('!!!')
+        const result = confirm('정말로 삭제하시겠습니까? (예/아니오)');
+        if (result) {
+            try {
+                await axios.put(`http://localhost:8081/admin/team/delete/${team_id}`, null, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }})
+                // 성공 처리
+                window.location.reload();
+            } catch (error) {
+                console.log('!!!')
+            }
+        } else {
+
         }
     }
 
@@ -145,6 +149,7 @@ const TeamManagement = () => {
                 depart_id={depart_id}
                 onClose={teamHandleUpdateClose}
                 onSave={teamHandleUpdateSave}
+                onUpdate={teamHandleUpdateSave}
                 team_id={selectedDepartInfo.team_id}
                 team_name={selectedDepartInfo.team_name}
             />

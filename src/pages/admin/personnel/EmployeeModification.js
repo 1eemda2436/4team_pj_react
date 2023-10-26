@@ -20,9 +20,10 @@ const EmployeeModification = () => {
     });
 
     const handleDepartmentChange = (e) => {
-        const selectedDepartmentId = e.target.value;
+        const depart_id = e.target.value;
         // 선택한 부서에 대한 팀 정보 가져오기
-        axios.get(`http://localhost:8081/admin/department/teamsFind/${selectedDepartmentId}`, {
+        const token = localStorage.getItem('token')
+        axios.get(`http://localhost:8081/admin/department/teamsFind/${depart_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -37,6 +38,7 @@ const EmployeeModification = () => {
     
     useEffect(() => {
         const token = localStorage.getItem('token')
+        console.log(token)
         const company_id = localStorage.getItem('company_id')
         axios.get(`http://localhost:8081/admin/department/find/${company_id}`, {
             headers: {
@@ -45,6 +47,7 @@ const EmployeeModification = () => {
         })
         .then(response => {
             setDepartments(response.data);
+            console.log(response.data);
         })
         .catch(error => {
             console.error('부서 정보 가져오기 오류', error);
@@ -68,7 +71,7 @@ const EmployeeModification = () => {
                     console.error('사원 정보 가져오기 오류', error);
                 });
         }
-    }, [id]);
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -142,8 +145,8 @@ const EmployeeModification = () => {
                         >
                             <option value="">부서를 선택하세요</option>
                             {departments.map(department => (
-                                <option key={department.id} value={department.id}>
-                                {department.name}
+                                <option key={department.depart_id} value={department.depart_id}>
+                                {department.depart_name}
                                 </option>
                             ))}
                         </select>
@@ -162,8 +165,8 @@ const EmployeeModification = () => {
                         >
                             <option value="">팀을 선택하세요</option>
                             {teams.map(team => (
-                                <option key={team.id} value={team.id}>
-                                {team.name}
+                                <option key={team.team_id} value={team.team_id}>
+                                {team.team_name}
                                 </option>
                             ))}
                         </select>
