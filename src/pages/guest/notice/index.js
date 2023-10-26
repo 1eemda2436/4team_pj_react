@@ -52,7 +52,7 @@ const notice = () => {
                         <TableHeader>제목</TableHeader>
                         <TableHeader>글내용</TableHeader>
                         <TableHeader>작성자</TableHeader>
-                        <TableHeader></TableHeader>
+                        <TableHeader>조회수</TableHeader>
                         <TableHeader></TableHeader>
                     </TableRow>
                 </thead>
@@ -66,9 +66,9 @@ const notice = () => {
                                 </BoardItemTitle>
                             </TableCell>
                             <TableCell>{item.content}</TableCell>
-                            <TableCell>{item.board_file}</TableCell>
-                            <TableCell>{item.hits}</TableCell>
                             <TableCell>{item.writer}</TableCell>
+                            <TableCell>{item.hits}</TableCell>
+                            
                         </TableRow>
                     ))}
                 </tbody>

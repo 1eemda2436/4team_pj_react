@@ -19,14 +19,14 @@ const Component = styled.div`
 `;
 
 const MyInfoEdit = () => {
-    const [memberInfo, setMemberInfo] = useState([]);
+    const [memberInfo, setMemberInfo] = useState({});
     const router = useRouter();
-    const {id} = router.query;
+    const id = localStorage.getItem('user_id');
+    
 
     useEffect(() => {
         const token = localStorage.getItem('token')
-        
-        if(id) {
+            
             axios
                 .get(`http://localhost:8081/guest/my/member/${id}`, {
                     headers: {
@@ -40,8 +40,7 @@ const MyInfoEdit = () => {
                 .catch((error) => {
                     console.log(error);
                 });
-        }
-    }, [id]);
+    }, [])
 
     const MemberInfoChange = (event) => {
         console.log(event.target.value)
@@ -60,16 +59,16 @@ const MyInfoEdit = () => {
         console.log('[saveMemberInfo] memberInfo', memberInfo)
 
         axios
-            .post("http://localhost:8081/guest/my/member/${id}", memberInfo,{
+            .post("http://localhost:8081/guest/my/memberModify", memberInfo,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {
-                router.push('/guest/my/member/${id}');
+                router.push('/guest/MyPage');
             })
             .catch((error) => {
-                console.log(erorr);
+                console.log(error);
             });
     }
 

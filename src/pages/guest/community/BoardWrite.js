@@ -1,19 +1,32 @@
 import MainLayout from "@/components/layout/mainLayout";
 import styled from "styled-components";
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 
+
+
 const BoardWrite = () => {
+
     const [formData, setFormData] = useState({
-        category_id: "",
-        id: "",
-        title: "",
-        content: "",
-        date: "",
+
     });
+    const [name, setName] = useState('');
+    const [id, setId] = useState('');
+
+    useEffect(() => {
+        const name1 = localStorage.getItem('user_name');
+        const id1 = localStorage.getItem('user_id');
+        if (name1) {
+            setName(name1);
+        }
+        if (id1) {
+            setId(id1);
+        }
+    }, []);
 
     const router = useRouter();
+   
 
     // 입력 폼의 값을 업데이트하는 함수
     const handleInputChange = (e) => {
@@ -27,6 +40,7 @@ const BoardWrite = () => {
     // 게시물을 서버에 등록하는 함수
     const handlePostBoard = () => {
         const token = localStorage.getItem('token')
+        
         axios.post('http://localhost:8081/guest/community/add', formData,{
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -52,7 +66,8 @@ const BoardWrite = () => {
                     </div>
                     <div>
                         <div>작성자</div>
-                        <Input type="text" name="id" onChange={handleInputChange} value={formData.id} />
+                        <Input type="text" name="name" value={id} />
+                        <div>{name}</div> 
                     </div>
                     <div>
                         <div>제목</div>

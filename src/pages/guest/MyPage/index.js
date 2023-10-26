@@ -41,14 +41,15 @@ const Button = styled.button`
 const MyPage = () => {
     const [member, setMember] = useState({});
     const router = useRouter();
-
+    
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-
+        const id = localStorage.getItem('user_id');
+        console.log(id);
 
             axios
-                .get(`http://localhost:8081/guest/my/member/user_id`, {
+                .get(`http://localhost:8081/guest/my/member/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -56,13 +57,12 @@ const MyPage = () => {
                 .then((response) => {
                     console.log('[MyInfo] member', response.data)
                     setMember(response.data);
-                    rootStore.MemberStore.setMemberData(response.data);
-                    localStorage.setItem('user_id', rootStore.MemberStore.member.id);
+                    localStorage.setItem('user_id', response.data.id);
                 })
                 .catch((error) => {
                     console.log(error)
                 });
-        })
+        },[])
 
     return (
         <MainLayout>
