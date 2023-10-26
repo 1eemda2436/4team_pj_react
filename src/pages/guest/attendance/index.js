@@ -7,6 +7,7 @@ import MyCalendar from "@/components/calendar/MyCalendar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+
 const WeeklyWorkButton = styled.a`
     cursor: pointer;
     background-color: #005FC5;
@@ -128,6 +129,7 @@ function Attendance () {
                         <div>{weeklyWork.totalWeekOver}</div>
                         <div>[ 남은 최소 근무 시간 ]</div>
                         <div>{weeklyWork.remainWeekTime}</div>
+
                     </AttenWeekWork>
                 </AttenBoxBottom>
             </AttenComponent>
