@@ -35,7 +35,10 @@ const admin = () => {
                 .then(response => {
                     console.log(response.data)
                     setRoleData(response.data); // 받은 데이터를 상태에 저장
-                    localStorage.setItem('roleData', JSON.stringify(response.data)); // 데이터를 로컬스토리지에 JSON 형식으로 저장
+
+                    if(response.data != null) {
+                        localStorage.setItem('roleData', JSON.stringify(response.data)); // 데이터를 로컬스토리지에 JSON 형식으로 저장
+                    }
                 })
                 .catch(err => {
                     console.log("Error", err);
@@ -45,36 +48,6 @@ const admin = () => {
                 console.error("Error fetching data: ", error);
             }
         }
-
-        // axios.get(`http://localhost:8081/admin/auth/${id}`, {
-        //     headers: {
-        //         'Authorization': `Bearer ${token}`
-        //     }
-        // })
-        // .then(response => { 
-        //     console.log(response.data)
-        //     setCompanyData(response.data);
-        // })
-        // .catch(err => {
-        //     if (axios.isAxiosError(err)) {
-        //     console.log(err.message)
-        //     } else {
-        //     alert('데이터를 불러오는 중 오류가 발생했습니다.')
-        //     }
-        // });
-
-        // axios.get(`http://localhost:8081/admin/company/${company_id}`, {
-        //     headers: {
-        //         'Authorization': `Bearer ${token}`
-        //     }
-        // })
-        // .then(response => {
-        //     console.log(response.data)
-        //     setData(response.data); // 받은 데이터를 상태에 저장
-        // })
-        // .catch(err => {
-        //     console.log("getSampleByID Error", err);
-        // });
 
         fetchData();
     }, []);

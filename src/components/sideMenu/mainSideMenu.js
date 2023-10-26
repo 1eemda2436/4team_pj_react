@@ -27,6 +27,11 @@ function MenuToggle({ menus }) {
 export default function MainSideMenu() {
     const router = useRouter();
 
+    const logoutToggle = () => {
+        localStorage.clear();
+        router.push('/');
+    }
+
     //메뉴 요소 배열 
     const menus = [
         {   
@@ -99,7 +104,7 @@ export default function MainSideMenu() {
                     <MenuToggle menus={menu} key={menu.id} />
                 ))}
             </MenuIcons>
-            <LogoutIcon onClick={() => router.push('/')} />
+            <LogoutIcon onClick={logoutToggle} />
         </SideMenu>
     )
 }

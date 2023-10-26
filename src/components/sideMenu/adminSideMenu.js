@@ -22,7 +22,7 @@ function MenuToggle({ menus }) {
 
 export default function adminSideMenu() {
     const router = useRouter();
-    const [roleData, setRoleData] = useState([]);
+    const [roleData, setRoleData] = useState({});
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -31,6 +31,7 @@ export default function adminSideMenu() {
                 setRoleData(storedData);
             }
         }
+        
     }, []); // 빈 배열로 설정
 
     console.log(roleData)
@@ -49,42 +50,42 @@ export default function adminSideMenu() {
             icon: <CyberSecurity />,
             value: '보안관리',
             path: '/admin/security',
-            show: roleData ? roleData.security : 'Y'
+            show: roleData === '' ? roleData.security : 'Y'
         },
         {   
             id: 3,
             icon: <SalaryMale />,
             value: '급여관리',
             path: '/admin/salary',
-            show: roleData ? roleData.salary : 'Y'
+            show: roleData === '' ? roleData.salary : 'Y'
         },
         {   
             id: 4,
             icon: <People />,
             value: '인사관리',
             path: '/admin/personnel',
-            show:  roleData ? roleData.personnel : 'Y'
+            show:  roleData === '' ? roleData.personnel : 'Y'
         },
         {   
             id: 5,
             icon: <MaintenanceDate />,
             value: '근태관리',
             path: '/admin/attendance',
-            show:  roleData ? roleData.attendance : 'Y'
+            show:  roleData === '' ? roleData.attendance : 'Y'
         },
         {   
             id: 6,
             icon: <SelectiveHighlighting />,
             value: '전자결재',
             path: '/admin/doc',
-            show:  roleData ? roleData.approval : 'Y'
+            show:  roleData === '' ? roleData.approval : 'Y'
         },
         {   
             id: 7,
             icon: <DocumentHeader />,
             value: '게시판관리',
             path: '/admin/board',
-            show:  roleData ? roleData.board : 'Y'
+            show:  roleData === '' ? roleData.board : 'Y'
         },
     ];
 
