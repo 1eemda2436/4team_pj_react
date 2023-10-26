@@ -3,12 +3,17 @@ import styled from "styled-components";
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Header from '@/components/common/header';
 
 const notice = () => {
     const [data, setData] = useState([]);
-    const [error, serError] = useState(null);
+    const [authority, setAuthority] = useState('');
     
-    
+    useEffect(() => {
+        console.log(localStorage.getItem('auth'))
+        setAuthority(localStorage.getItem('auth'))
+    })
+
     useEffect(() => {
         const token = localStorage.getItem('token')
         axios.get('http://localhost:8081/guest/notice/noticeList',{
@@ -30,11 +35,15 @@ const notice = () => {
 
     const router = useRouter();
     return(
+        <Component>
+            <Header/>
         <Container>
         <Section>
         <CommunityHeader>
         <Title>공지사항</Title>
-        <Button onClick={() => router.push('/admin/board/NoticeWrite')}>글쓰기(관리자 로그인시 관리자만 보이게)</Button>
+        {(authority == "ROLE_MANAGER" || authority == "ROLE_ADMIN") && (
+            <Button onClick={() => router.push('/admin/board/NoticeWrite')}>글쓰기</Button>
+                )}
         </CommunityHeader>
         <Table>
         <thead>
@@ -66,6 +75,7 @@ const notice = () => {
         </Table>
         </Section>
     </Container>
+    </Component>
     )
 }
 
@@ -133,4 +143,8 @@ const Title = styled.h1`
     margin: 0;
     padding: 10px 0;
     text-align: center;
+`;
+
+const Component = styled.div`
+
 `;

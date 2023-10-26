@@ -10,8 +10,29 @@ import Header from "@/components/common/header";
 const Community = () => {
     
     const [data, setData] = useState([]);
-    const [error, setError] = useState(null);
     const [selectedItems, setSelectedItems] = useState([]);
+    const [isAllSelected, setIsAllSelected] = useState(false);
+    const CategoryChange = (event) => {
+        setData(prevData => ({
+            ...prevData,
+            [event.target.name] : event.target.value
+        }));
+    }
+
+    // 체크박스 전체선택, 선택해제
+    const handleSelectAllChage = () => {
+        if (isAllSelected) {
+            // 전체 선택이 해제된 경우, 모든 항목을 제거합니다.
+            setSelectedItems([]);
+        } else {
+            // 전체 선택이 체크된 경우, 모든 항목을 추가합니다.
+            const allItemIds = data.map(item => item.board_id);
+            setSelectedItems(allItemIds);
+        }
+        // 전체 선택 체크박스의 상태를 업데이트합니다.
+        setIsAllSelected(!isAllSelected);
+    };
+    
 
     // 체크박스를 토글하고 선택한 항목을 업데이트합니다.
     const handleCheckboxChange = (itemId) => {
@@ -25,6 +46,7 @@ const Community = () => {
 
     
     // 해당 아이템이 선택되었는지 확인합니다.
+    
     const isSelected = (itemId) => selectedItems.includes(itemId);
     const intSelectedItems = selectedItems.map(item => parseInt(item));
     const deleteSelectedItems = () => {
@@ -52,6 +74,7 @@ const Community = () => {
         });
     };
 
+    
     const refreshData = () => {
         const token = localStorage.getItem('token');
         axios.get('http://localhost:8081/guest/community/list', {
@@ -81,31 +104,48 @@ const Community = () => {
     }
 
     return (
-        
-        <Container>
+        <Component>
             <Header/>
+        <Container>
+            
             <Section>
                 <CommunityHeader>
                     <Title>자유게시판</Title>
-                    <Button onClick={goToBoardWrite}>글쓰기</Button>
+                        <select name="category_id" 
+                        value={data.category_id} 
+                        onChange={CategoryChange}>
+                            <option value="">카테고리 선택</option>
+                            <option key={data.category_id} value={data.category_id}>{data.category_id}</option>
+                        </select>
                     <Button onClick={deleteSelectedItems}>선택 삭제</Button>
                 </CommunityHeader>
 
                 <Table>
     <thead>
         <TableRow>
+            <TableHeader>
+                <input type="checkbox"
+                onChange={handleSelectAllChage}
+                checked={isAllSelected}/>
+            </TableHeader>
             <TableHeader>글번호</TableHeader>
             <TableHeader>제목</TableHeader>
             <TableHeader>글내용</TableHeader>
             <TableHeader>사진</TableHeader>
             <TableHeader>조회수</TableHeader>
             <TableHeader>작성자</TableHeader>
-            <TableHeader>선택</TableHeader>
         </TableRow>
     </thead>
     <tbody>
     {data.map(item => (
         <TableRow key={item.board_id}>
+            <TableCell>
+                <input
+                    type="checkbox"
+                    onChange={() => handleCheckboxChange(item.board_id)}
+                    checked={isSelected(item.board_id)}
+                />
+            </TableCell>
             <TableCell>{item.board_id}</TableCell>
             <TableCell>
                 <BoardItemTitle onClick={() => router.push(`/guest/community/boardDetail/${item.board_id}`)}>
@@ -116,19 +156,16 @@ const Community = () => {
             <TableCell>{item.board_file}</TableCell>
             <TableCell>{item.hits}</TableCell>
             <TableCell>{item.id}</TableCell>
-            <TableCell>
-                <input
-                    type="checkbox"
-                    onChange={() => handleCheckboxChange(item.board_id)}
-                    checked={isSelected(item.board_id)}
-                />
-            </TableCell>
+            
         </TableRow>
     ))}
 </tbody>
 </Table>
             </Section>
+            <Button onClick={goToBoardWrite}>글쓰기</Button>
         </Container>
+        
+        </Component>
     );
 }
 
@@ -137,6 +174,9 @@ export default Community;
 Community.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
+
+const Component = styled.div`
+`;
 
 const Container = styled.div`
     font-family: Arial, sans-serif;
