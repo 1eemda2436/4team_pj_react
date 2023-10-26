@@ -25,7 +25,7 @@ const Header = ({isNoticeShow = true, isUserShow = true}) => {
             )}
             
             <RightBox>
-                {authority == "ROLE_MANAGER" && (
+                {(authority == "ROLE_MANAGER" || authority == "ROLE_ADMIN") && (
                     <AdminLink onClick={() => router.push('/admin')}>
                         어드민 페이지로 이동
                     </AdminLink>

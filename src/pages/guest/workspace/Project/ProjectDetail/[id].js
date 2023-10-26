@@ -48,7 +48,7 @@ const ProjectDetail = () => {
     const router = useRouter();
 
     const { id } = router.query;
-    
+
     useEffect(() => {
         const token = localStorage.getItem('token')
 

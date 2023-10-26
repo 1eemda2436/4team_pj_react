@@ -13,8 +13,9 @@ const AdminPersonnel = () => {
     //페이지 로드 → list
     useEffect(() => {
       const token = localStorage.getItem('token')
+      const company_id = localStorage.getItem('company_id')
       // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-      axios.get('http://localhost:8081/admin/personnel/employeeSelectAll', {
+      axios.get(`http://localhost:8081/admin/personnel/employeeSelectAll/${company_id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -80,15 +81,53 @@ const AdminPersonnel = () => {
       }
     };
 
+    const [file, setFile] = useState(null);
+
+    const handleFileChange = (e) => {
+      const selectedFile = e.target.files[0];
+      setFile(selectedFile);
+    };
+
+    const formData = new FormData();
+    formData.append('회원가입', file); // 'file'은 서버에서 파일을 수신할 때의 이름입니다.
+
+    const handleUpload = () => {
+      if (file) {
+        const formData = new FormData();
+        formData.append('excelFile', file);
+
+        axios.post('http://localhost:8081/admin/excel/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // 이 부분이 중요합니다.
+          },
+        })
+          .then((response) => {
+            // 서버에서의 응답 처리
+            console.log(response.data);
+            alert(response.data);
+          })
+          .catch((error) => {
+            console.error('파일 업로드 오류:', error);
+          });
+      }
+    };
+
     return (
         <MainComponent>
         <Title>인사 관리 - 사원 관리</Title>
         <div>
             <Button onClick={handleEmployeeRegistration}>사원등록</Button>
         </div>
+        <br />
         <div>
             <Button onClick={() => router.push('/admin/department-team/')}>부서현황</Button>
         </div>
+
+        <div>
+          <input type="file" accept=".xlsx" onChange={handleFileChange} />
+          {file && <button onClick={handleUpload}>Upload Excel File</button>}
+        </div>
+
         <TblComponent>
           <TblHeader>
             <Table>
