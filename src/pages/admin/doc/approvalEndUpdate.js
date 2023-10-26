@@ -1,4 +1,4 @@
-import MainLayout from "@/components/layout/mainLayout"
+import AdminLayout from "@/components/layout/adminLayout";
 import styled from "styled-components";
 import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
@@ -15,17 +15,27 @@ const Doc = () => {
     };
 
     const [selectedCategory, setSelectedCategory] = useState('');
-    
+    const [imageSrc, setImageSrc] = useState("");
+    const [insertImageSrc, setInsertImageSrc] = useState('');
     const [samples, setSamples] = useState({
         doc_title: '',
         doc_content: '',
+        sign: null,
+        admin_sign: null,
     });
 
     useEffect(() => {
         if(id) {
             axios.get(`http://localhost:8081/admin/doc/adminDetail/${id}`)
             .then((response) => {
-                const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content } = response.data;
+                const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content, sign, admin_sign } = response.data;
+                let date = new Date();
+                let year = date.getFullYear();
+                let month = ("0" + (1 + date.getMonth())).slice(-2);
+                let day = ("0" + date.getDate()).slice(-2);
+            
+                let yyyymmdd = year + "-" + month + "-" + day;
+                console.log('response.data:', response.data);
                 setSamples({
                     doc_id,
                     doc_date,
@@ -35,7 +45,11 @@ const Doc = () => {
                     category_id,
                     doc_title,
                     doc_content,
+                    approval_date: yyyymmdd,
+                    sign,
+                    admin_sign,
                 });
+                setImageSrc(`http://localhost:8081/myimage/${response.data.sign}`);
                 setSelectedCategory(category_id);
             })
             .catch((error) => {
@@ -65,7 +79,10 @@ const Doc = () => {
         updateSamples.append('doc_status', '완료');
         updateSamples.append('approval_date', samples.approval_date);
         updateSamples.append('approval_content', samples.approval_content);
+        updateSamples.append('admin_sign', samples.admin_sign);
+        updateSamples.append('sign2', samples.sign);
         const token = localStorage.getItem('token')
+        console.log('samples.admin_sign:',samples.admin_sign);
         
         if(id) {
             axios.put(`http://localhost:8081/admin/doc/update/${id}`, updateSamples, {
@@ -87,14 +104,57 @@ const Doc = () => {
         setSelectedCategory(event.target.value);
     };
 
+    const encodeFileToBase64 = (fileBlob) => {
+        // 첨부파일 전송을 위해 셋팅 
+        const file = fileBlob;
+        setSamples((samples) => ({
+        ...samples,
+        admin_sign: file,
+        }));
+
+        // 미리보기
+        const reader = new FileReader();
+        reader.readAsDataURL(fileBlob);
+        return new Promise((resolve) => {
+            reader.onload = () => {
+                setInsertImageSrc(reader.result);
+                resolve();
+            };
+        });
+    };
+
     return(
         <Container>
             <ApprovalLine>
                 <table>
                     <tr>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
+                        <td>
+                        {imageSrc && (
+                        <img
+                            src={imageSrc}
+                            alt="사원사인"
+                            style={{ width: "100px", height: "100px" }}
+                        />
+                        )}
+                        </td>
+                        <td>
+                            {insertImageSrc && <img src={insertImageSrc} alt="관리자사인" style={{width: '100px', height: '100px'}} />}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            <input 
+                            type="file"
+                            name="signFile"
+                            onChange={(e) => {
+                                encodeFileToBase64(e.target.files[0]);
+                                }
+                            }
+                            />
+                        </td>
                     </tr>
                 </table>
             </ApprovalLine>
@@ -217,6 +277,10 @@ const Doc = () => {
 
 export default Doc;
 
+Doc.getLayout = function getLayout(page) {
+    return <AdminLayout>{page}</AdminLayout>;
+};
+
 const Container = styled.div`
 width: 100%;
 display: flex;
@@ -226,21 +290,20 @@ padding: 20px;
 `;
 
 const ApprovalLine = styled.div`
-margin-bottom: 20px;
-table {
-  width: 100%;
-  td {
-    width: 33.33%;
-    cursor: pointer;
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
-    &:hover {
-      background-color: #f5f5f5;
+    text-align: right;
+    margin-bottom: 20px;
+    margin-left: auto;
+    tr {
+        border: solid 1px;
+    };
+
+    td {
+        border: solid 1px;
+        width: 100px;
+        height: 100px;
     }
-  }
-}
 `;
+
 
 const Title = styled.div`
 text-align: center;

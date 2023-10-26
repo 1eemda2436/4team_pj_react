@@ -16,6 +16,7 @@ const Doc = () => {
     };
 
     const [samples, setSamples] = useState([]);
+    const [imageSrc, setImageSrc] = useState("");
 
     
     useEffect(() => {
@@ -30,6 +31,7 @@ const Doc = () => {
             .then((response) => {
                 setSamples(response.data);
                 console.log(response.data);
+                setImageSrc(`http://localhost:8081/myimage/${response.data.sign}`);
             })
             .catch((error) => {
                 console.log(error);
@@ -90,9 +92,16 @@ const Doc = () => {
             <ApprovalLine>
                 <table>
                     <tr>
-                        <td onClick={() => router.push('/admin/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/admin/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/admin/doc/approvalLine')}></td>
+                        <td>
+                        {imageSrc && (
+                        <img
+                            src={imageSrc}
+                            alt="미리보기"
+                            style={{ width: "100px", height: "100px" }}
+                        />
+                        )}
+                        </td>           
+                        <td></td>
                     </tr>
                 </table>
             </ApprovalLine>

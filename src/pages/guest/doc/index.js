@@ -88,6 +88,11 @@ const Doc = () => {
                             <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                        <button type="button" onClick={() => router.push('/guest/doc/list/approvalSuggestList')}>결재 요청목록</button>
+                        </td>
+                    </tr>
                 </tbody>
             </PersonalMenu>
             <Docstyle2>
