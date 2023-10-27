@@ -69,7 +69,7 @@ const DepartStickChart = ({ selectedDepartment }) => {
     return (
         <div>
             <div style={{ width: '100%', height: '100%' }}>
-                <h2>Department Chart</h2>
+                <h2>부서별 근태현황</h2>
                 <Bar data={data} options={options} />
             </div>
         </div>
