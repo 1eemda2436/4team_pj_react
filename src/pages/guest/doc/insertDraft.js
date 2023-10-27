@@ -30,10 +30,8 @@ const Doc = () => {
 
     useEffect(() => {
       const user_name = localStorage.getItem('user_name');
-
       // const sign = localStorage.getItem('sign');
       // console.log('sign:', sign);
-      
       setSamples({
         ...samples,
         name: user_name
