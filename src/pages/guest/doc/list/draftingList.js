@@ -51,6 +51,17 @@ const Doc = () => {
         }
     };
 
+    // 날짜 변환
+    const formatDate = (timestamp) => {
+      const date = new Date(timestamp);
+      const formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+      return formattedDate;
+    };
+
     return (
       <Container>
           <Title>
@@ -67,6 +78,9 @@ const Doc = () => {
                   </th>
                   <th>
                       <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
+                  </th>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/list/approvalSuggestList')}>결재 요청목록</button>
                   </th>
               </tr>
             </tbody>
@@ -90,7 +104,7 @@ const Doc = () => {
                     <td>{draft.category_name}</td>
                     <td>{draft.doc_title}</td>
                     <td>{draft.name}</td>
-                    <td>{draft.doc_date}</td>
+                    <td>{formatDate(draft.doc_date)}</td>
                     <td>{draft.doc_status}</td>
                     <td>
                       <button type="button" onClick={() => router.push(`/guest/doc/updateApproval?id=${draft.doc_id}`)}>결재요청</button>
@@ -108,11 +122,13 @@ const Doc = () => {
               </tr>
             </tbody>
           </Docstyle2>
-          <PageButton>
-                <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
-                <span>{page} / {totalPage}</span>
-                <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
-          </PageButton>
+          {totalPage > 1 && ( 
+        <PageButton>
+          <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+          <span>{page} / {totalPage}</span>
+          <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
+        </PageButton>
+      )}
       </Container>
   );
 };

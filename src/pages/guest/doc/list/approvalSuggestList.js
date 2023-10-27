@@ -1,7 +1,7 @@
-import AdminLayout from "@/components/layout/adminLayout";
+import MainLayout from "@/components/layout/mainLayout"
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import React, {useState, useEffect} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 
@@ -11,25 +11,25 @@ const Doc = () => {
   const id = localStorage.getItem('user_id');
   console.log('id확인:',id);
   const [samples, setSamples] = useState([]);
+  const [filteredSamples, setFilteredSamples] = useState([]);
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   
   useEffect(() => {
     const token = localStorage.getItem('token')
-      axios
-      .get("http://localhost:8081/admin/doc/adminTotal", {
+    axios
+      .get("http://localhost:8081/admin/doc/approvalIng", {
         headers: {
           'Authorization': `Bearer ${token}`
-        }
+      }
       })
       .then((response) => {
-        setSamples(response.data);
-        const statuses = ['완료', '진행', '반려']
-        const filteredSamples = response.data.filter(adminTotal => statuses.includes(adminTotal.doc_status));
-        const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
-        setSamples(sortedSamples);
-        setFilteredSamples(sortedSamples);
-        console.log('sortedSamples:', sortedSamples)
+          setSamples(response.data);
+          const filteredSamples = response.data.filter(approvalIng => approvalIng.doc_status === '진행');
+          const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
+          setSamples(sortedSamples);
+          setFilteredSamples(sortedSamples);
+          console.log('sortedSamples:', sortedSamples)
       })
       .catch((error) => {
           console.log(error);
@@ -38,16 +38,16 @@ const Doc = () => {
 
   const indexOfLastItem = page * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = samples.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredSamples.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPage = Math.ceil(samples.length / itemsPerPage);
+  const totalPage = Math.ceil(filteredSamples.length / itemsPerPage);
 
   const handleClick = (type) => {
-    if (type === "prev" && page > 1) {
-        setPage(page - 1);
-    } else if (type === "next" && page < totalPage) {
-        setPage(page + 1);
-    }
+      if (type === "prev" && page > 1) {
+          setPage(page - 1);
+      } else if (type === "next" && page < totalPage) {
+          setPage(page + 1);
+      }
   };
 
   // 날짜 변환
@@ -64,32 +64,26 @@ const Doc = () => {
   return(
       <Container>
           <Title>
-              <H1>전자 결재</H1>
+              <H1>진행 문서함</H1>
           </Title>
-          <AdminMenu>
+          <Docstyle1>
               <tbody>
-                  <tr>
-                      <td>
-                          결재문서함
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>
-                          <button type="button" onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재 완료 문서함</button>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>
-                          <button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 예정 문서함</button>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>
-                          <button type="button" onClick={() => router.push('/admin/doc/adminApprovalBack')}>결재 반려 문서함</button>
-                      </td>
-                  </tr>
+              <tr>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
+                  </th>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
+                  </th>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
+                  </th>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/list/approvalSuggestList')}>결재 요청목록</button>
+                  </th>
+              </tr>
               </tbody>
-          </AdminMenu>
+          </Docstyle1>
           <Docstyle2>
                   <thead>
                       <tr>
@@ -101,13 +95,13 @@ const Doc = () => {
                       </tr>
                   </thead>
                   <tbody>
-                      {samples.map((adminTotal) =>
-                          <tr key = {adminTotal.doc_id} onClick={() => router.push(`/admin/doc/adminApprovalIngDetail?id=${adminTotal.doc_id}`)}>
-                                  <td component="" scope="adminTotal">{adminTotal.doc_status}</td>
-                                  <td>{adminTotal.doc_id}</td>
-                                  <td>{adminTotal.doc_title}</td>
-                                  <td>{adminTotal.name}</td>
-                                  <td>{formatDate(adminTotal.approval_date)}</td>
+                  {currentItems.map(approvalIng =>
+                          <tr key = {approvalIng.doc_id} onClick={() => router.push(`/guest/doc/detail/approvalSuggestDetail?id=${approvalIng.doc_id}`)}>
+                                  <td component="" scope="approvalIng">{approvalIng.doc_status}</td>
+                                  <td>{approvalIng.doc_id}</td>
+                                  <td isTitle>{approvalIng.doc_title}</td>
+                                  <td>{approvalIng.name}</td>
+                                  <td>{formatDate(approvalIng.approval_date)}</td>
                           </tr>
                       )}
                   </tbody>
@@ -126,7 +120,7 @@ const Doc = () => {
 export default Doc;
 
 Doc.getLayout = function getLayout(page) {
-    return <AdminLayout>{page}</AdminLayout>;
+    return <MainLayout>{page}</MainLayout>;
 };
 
 const Container = styled.div`
@@ -134,7 +128,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
 `;
 
 const Title = styled.div`
@@ -142,7 +135,7 @@ const Title = styled.div`
   margin-bottom: 20px;
 `;
 
-const AdminMenu = styled.table`
+const Docstyle1 = styled.table`
   width: 100%;
   margin: 10px 0;
   th {

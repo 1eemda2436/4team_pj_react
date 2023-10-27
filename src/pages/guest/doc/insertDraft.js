@@ -10,6 +10,7 @@ const Doc = () => {
     // const {id} = router.query;
     const id = localStorage.getItem('user_id');
     console.log('id가뭐야',id);
+    
     const [selectedCategory, setSelectedCategory] = useState('');
 
     const [samples, setSamples] = useState({
@@ -29,6 +30,10 @@ const Doc = () => {
 
     useEffect(() => {
       const user_name = localStorage.getItem('user_name');
+
+      // const sign = localStorage.getItem('sign');
+      // console.log('sign:', sign);
+      
       setSamples({
         ...samples,
         name: user_name
@@ -125,16 +130,16 @@ const Doc = () => {
         sign: file,
       }));
 
-      // preview
-      const reader = new FileReader();
-      reader.readAsDataURL(fileBlob);
-      return new Promise((resolve) => {
-        reader.onload = () => {
-          setImageSrc(reader.result);
-          resolve();
-        };
-      });
-    };
+    // 미리보기
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        resolve();
+      };
+    });
+  };
 
     return(
       <Container>
@@ -142,7 +147,7 @@ const Doc = () => {
               <table>
                   <tr>
                       <td>
-                        {imageSrc && <img src={imageSrc} alt="preview-img" style={{width: '100px', height: '100px'}} />}
+                        {imageSrc && <img src={imageSrc} alt="미리보기" style={{width: '100px', height: '100px'}} />}
                       </td>
                       <td></td>
                   </tr>
@@ -171,13 +176,7 @@ const Doc = () => {
                           <tr>
                               <th>문서번호</th>
                               <td>
-                                <input
-                                  type="number"
-                                  name="doc_id"
-                                  readOnly
-                                  value={samples.doc_id}
-                                  onChange={handleInputChange}
-                                />
+                                {samples.doc_id}
                               </td>
                           </tr>
                           <tr>
@@ -202,22 +201,18 @@ const Doc = () => {
                                   onChange={handleInputChange}
                                 />
                               </td>
-                              <td>
                                 <input 
                                   type="hidden"
                                   name="doc_status"
                                   value={samples.doc_status}
                                   onChange={handleInputChange}
                                 />
-                              </td>
-                              <td>
                                 <input 
                                   type="hidden"
                                   name="approval_id"
                                   value={samples.approval_id}
                                   onChange={handleInputChange}
                                 />
-                              </td>
                           </tr>
                   </table>
               </DocstyleLeft>
@@ -254,10 +249,6 @@ const Doc = () => {
               <br></br>
               <table>
                 <tbody>
-                  <tr>
-                    <th>구분</th>
-                    <td> </td>
-                  </tr>
                   <tr>
                     <th>첨부파일</th>
                     <td>

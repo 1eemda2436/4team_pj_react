@@ -10,6 +10,10 @@ const Doc = () => {
     const id = router.query.id; // ID를 추출
     console.log(id)
 
+    const handleBack = () => {
+        router.back(); // 이전 페이지로 이동
+    };
+
     const [leftList, setLeftList] = useState([]);
     const [rightList, setRightList] = useState([]);
 
@@ -105,7 +109,7 @@ const Doc = () => {
                 </MemberListTable>
                 <ButtonStyle>
                 <button type="button" onClick={Complete}>완료</button>
-                <button type="button" onClick={Cancel}>취소</button>
+                <button type="button" onClick={handleBack}>뒤로가기</button>
                 </ButtonStyle>
         </Container>
     )
