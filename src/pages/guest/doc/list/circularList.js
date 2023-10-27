@@ -64,17 +64,20 @@ const Doc = () => {
             </Title>
             <Docstyle1>
                 <tbody>
-                    <tr>
-                        <th>
-                            <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
-                        </th>
-                        <th>
-                            <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
-                        </th>
-                        <th>
-                            <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
-                        </th>
-                    </tr>
+                <tr>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
+                  </th>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
+                  </th>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
+                  </th>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/list/approvalSuggestList')}>결재 요청목록</button>
+                  </th>
+              </tr>
                 </tbody>
             </Docstyle1>
             <Docstyle2>

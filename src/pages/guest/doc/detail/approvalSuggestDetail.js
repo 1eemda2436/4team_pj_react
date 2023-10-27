@@ -6,41 +6,37 @@ import axios from "axios";
 
 
 const Doc = () => {
+
     const router = useRouter();
     const id = router.query.id; // ID를 추출
     console.log(id)
-    const [selectedCategory, setSelectedCategory] = useState('');
-    
-    const [samples, setSamples] = useState([]);
-    console.log('samples.sign:', samples.sign)
 
+    const [samples, setSamples] = useState([]);
     const [imageSrc, setImageSrc] = useState("");
-    
-    const CategoryChange = (event) => {
-        setSelectedCategory(event.target.value);
+
+    const handleBack = () => {
+        router.back(); // 이전 페이지로 이동
     };
 
+    
     useEffect(() => {
-        const fetchData = async () => {
-            const token = localStorage.getItem('token');
-    
-            if (id) {
-                try {
-                    const response = await axios.get(`http://localhost:8081/guest/doc/detail/${id}`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-                    setSamples(response.data);
-                    console.log('response.data:', response.data);
-                    setImageSrc(`http://localhost:8081/myimage/${response.data.sign}`);
-                } catch (error) {
-                    console.error(error);
+        const token = localStorage.getItem('token')
+        if (id) {
+            console.log(id);
+            axios.get(`http://localhost:8081/admin/doc/adminDetail/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
-            }
-        };
-    
-        fetchData();
+            })
+            .then((response) => {
+                setSamples(response.data);
+                console.log('response.data', response.data);
+                setImageSrc(`http://localhost:8081/myimage/${response.data.sign}`);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }
     }, [id]);
 
     // 파일 다운로드 
@@ -80,26 +76,6 @@ const Doc = () => {
         }
     };
 
-    const handleDelete = () => {
-        const token = localStorage.getItem("token");
-
-        if(id) {
-            axios.delete(`http://localhost:8081/guest/doc/delete/${id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(() => {
-                alert('문서삭제 완료')
-                // 문서 삭제 후 이동
-                router.push("/guest/doc/list/draftingList");
-            })
-            .catch((error) => {
-                console.error("문서 삭제 실패:", error);
-            });
-        }
-    }
-
     // 날짜 변환
     const formatDate = (timestamp) => {
         const date = new Date(timestamp);
@@ -110,7 +86,7 @@ const Doc = () => {
         });
         return formattedDate;
     };
-    
+
     return(
         <Container>
             <ApprovalLine>
@@ -129,33 +105,26 @@ const Doc = () => {
                     </tr>
                 </table>
             </ApprovalLine>
-            <Title>
-                <H1>업무 기안서</H1>
-            </Title>
             <Docstyle1>
                 <DocstyleLeft>
                     <Table>
-                        <div>
                         <TableTr>
                             <TableTh>문서번호</TableTh>
-                            <TableTd component="" scope="detail">{samples.doc_id}</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>기안일</TableTh>
-                            <TableTd>{formatDate(samples.doc_date)}</TableTd>
+                            <TableTd component="" scope="adminDetail">{samples.doc_id}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>기안자</TableTh>
                             <TableTd>{samples.name}</TableTd>
                         </TableTr>
-                        </div>
+                        <TableTr>
+                            <TableTh>기안일</TableTh>
+                            <TableTd>{formatDate(samples.doc_date)}</TableTd>
+                        </TableTr>
                     </Table>
                 </DocstyleLeft>
-                    
             </Docstyle1>
             <Docstyle2>
                 <Table>
-                    <div>
                         <TableTr>
                             <TableTh3>제목</TableTh3>
                             <TableTh2>{samples.doc_title}</TableTh2>
@@ -163,11 +132,9 @@ const Doc = () => {
                         <TableTr>
                                 <TableTd2 colSpan={2}>{samples.doc_content}</TableTd2>
                         </TableTr>
-                    </div>
                 </Table>
                 <br></br>
                 <Table>
-                    <div>
                         <TableTr>
                             <TableTd3> </TableTd3>
                         </TableTr>
@@ -176,14 +143,8 @@ const Doc = () => {
                             <TableTd3>{samples.doc_attachment}</TableTd3>
                             <button type="button" onClick={handleDownload}>파일 다운로드</button>
                         </TableTr>
-                    </div>
                 </Table>
             </Docstyle2>
-            <ButtonStyle>
-                <button type="button" onClick={() => router.push(`/guest/doc/draftingUpdate?id=${samples.doc_id}`)}>문서수정</button>
-                <button type="button" onClick={handleDelete}>문서삭제</button>
-                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>돌아가기</button>
-            </ButtonStyle>
         </Container>
     )
 }
@@ -215,11 +176,6 @@ const ApprovalLine = styled.div`
         height: 100px;
     }
 `;
-
-const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
 const Docstyle1 = styled.div`
     display: flex;
     justify-content: space-between;
@@ -240,10 +196,14 @@ const DocstyleLeft = styled.div`
 
 const DocstyleRight = styled.div`
     margin-right: 10px;
+    text-align: right;
 `;
 
-const H1 = styled.h1`
-    font-size: 30px;
+const Comment = styled.textarea`
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 10px;
+    resize: vertical;
 `;
 
 const Table = styled.table`
