@@ -42,16 +42,16 @@ const Notice = () => {
                 }
             })
         .then(response => {
-          console.log("Delete response:", response);
-          // 삭제가 성공하면 선택 항목과 데이터를 업데이트합니다.
-          setSelectedItems([]);
-          refreshData();
-      })
-      .catch(err => {
-          console.error('선택한 항목 삭제 중 오류 발생:', err);
-      });
-    })
-  };
+            console.log("Delete response:", response);
+            // 삭제가 성공하면 선택 항목과 데이터를 업데이트합니다.
+            setSelectedItems([]);
+            refreshData();
+        })
+        .catch(err => {
+            console.error('선택한 항목 삭제 중 오류 발생:', err);
+        });
+        })
+    };
     // 데이터를 다시 불러오는 함수
     const refreshData = () => {
         const token = localStorage.getItem('token');
@@ -97,8 +97,8 @@ const Notice = () => {
     }
 
     const goToNoticeWrite = () => {
-      router.push('/admin/board/NoticeWrite');
-  }
+        router.push('/admin/board/NoticeWrite');
+    }
 
     return (
         <Container>
@@ -114,9 +114,9 @@ const Notice = () => {
                         <TableHeader>글번호</TableHeader>
                         <TableHeader>제목</TableHeader>
                         <TableHeader>글내용</TableHeader>
-                        <TableHeader>사진</TableHeader>
+                        {/* <TableHeader>사진</TableHeader> */}
                         <TableHeader>조회수</TableHeader>
-                        <TableHeader>작성자</TableHeader>
+                        {/* <TableHeader>작성자</TableHeader> */}
                         <TableHeader>선택</TableHeader>
                     </TableRow>
                 </thead>
@@ -130,7 +130,7 @@ const Notice = () => {
                                 </BoardItemTitle>
                             </TableCell>
                             <TableCell>{item.content}</TableCell>
-                            <TableCell>{item.board_file}</TableCell>
+                            {/* <TableCell>{item.board_file}</TableCell> */}
                             <TableCell>{item.hits}</TableCell>
                             <TableCell>{item.writer}</TableCell>
                             <TableCell>

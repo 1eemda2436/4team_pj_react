@@ -49,12 +49,12 @@ const NoticeWrite = () => {
                     <div>내용</div>
                     <input type="text" name="content" onChange={handleInputChange} value={formData.content} rows="10" cols="50" />
                 </div>
-                <div>
+                {/* <div>
                     <div>관리자 (체크박스 진행)</div>
                     <div>부서장 (체크박스 진행)</div>
                     <div>팀장 (체크박스 진행)</div>
                     <div>전 사원 (체크박스 진행)</div>
-                </div>
+                </div> */}
             </Content>
             <ButtonContainer>
                 <Button onClick={handlePostBoard}>등록</Button>

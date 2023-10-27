@@ -7,6 +7,7 @@ import rootStore from "@/stores/rootStore";
 import Header from "@/components/common/header";
 import SelectBox from "@/components/form/selectBox";
 import UserIcon from '../../../../public/asset/icons/user.svg';
+import NewsCrawling from "@/components/crawling/news";
 
 
 const Community = () => {
@@ -15,6 +16,18 @@ const Community = () => {
     const [selectedItems, setSelectedItems] = useState([]);
     const [isAllSelected, setIsAllSelected] = useState(false);
     const [category, setCategory] = useState([]);
+
+useEffect(() => {
+    // 새로운 데이터를 불러오는 API 호출
+    axios.get('URL_새로운_데이터를_불러오는_API')
+        .then(response => {
+            setNewData(response.data);
+        })
+        .catch(error => {
+            console.error('새로운 데이터를 불러오는 중 에러:', error);
+        });
+}, []);
+
     
     const CategoryChange = (event) => {
         setData(prevData => ({
@@ -181,8 +194,7 @@ const Community = () => {
                     </ContentContainer>
                 </BoardContainer>
                 <NewsContainer>
-                    test
-                    {/* 뉴스 내용 크롤링한거 넣기 */}
+                    <NewsCrawling />
                 </NewsContainer>
             </MainContainer>
         </>

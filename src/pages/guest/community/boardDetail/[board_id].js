@@ -7,12 +7,18 @@ import { useRouter } from 'next/router';
 const BoardDetails = () => {
     const [comments, setComments] = useState([]);
     const [boardData, setBoardData] = useState({});
+    const [authority, setAuthority] = useState('');
     const router = useRouter();
     const { board_id } = router.query;
 
     const [formData, setFormData] = useState({
         content: ""
     });
+
+    useEffect(() => {
+        console.log(localStorage.getItem('auth'))
+        setAuthority(localStorage.getItem('auth'))
+    })
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -118,8 +124,9 @@ const BoardDetails = () => {
         <Container>
             <Title>자유게시판 상세</Title>
 
+            {(authority == "ROLE_MANAGER" || authority == "ROLE_ADMIN" || authority == "ROLE_USER") && (
             <Button onClick={handleDelete}>삭제</Button>
-
+            )}
             
 
             <Table>

@@ -8,11 +8,15 @@ import axios from 'axios';
 
 const BoardWrite = () => {
 
-    const [formData, setFormData] = useState({
-
-    });
     const [name, setName] = useState('');
     const [id, setId] = useState('');
+    const [category, setCategory] = useState([]);
+    const [formData, setFormData] = useState({
+        id : id,
+        category_id: category,
+        title : '',
+        content : '',
+    });
 
     useEffect(() => {
         const name1 = localStorage.getItem('user_name');
@@ -23,10 +27,12 @@ const BoardWrite = () => {
         if (id1) {
             setId(id1);
         }
+
+        
     }, []);
 
     const router = useRouter();
-   
+
 
     // 입력 폼의 값을 업데이트하는 함수
     const handleInputChange = (e) => {
@@ -53,6 +59,27 @@ const BoardWrite = () => {
             .catch(error => {
                 console.error('게시물 등록 오류:', error);
             });
+            // 카테고리 데이터를 서버에서 가져오는 axios 요청 코드
+        axios.get('http://localhost:8081/guest/community/category', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            setCategory(response.data);
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    };
+
+    const CategoryChange = (event) => {
+        const selectedCategoryId = event.target.value;
+        setFormData({
+            ...formData,
+            category_id: selectedCategoryId, // 선택된 카테고리의 ID를 업데이트
+        });
     };
 
     return (
@@ -62,20 +89,24 @@ const BoardWrite = () => {
                 <Row>
                     <div>
                         <div>카테고리</div>
-                        <Input type="text" name="category_id" onChange={handleInputChange} value={formData.category_id} />
+                        {/* <select name="category_id" value={formData.category_id} onChange={CategoryChange}>
+                            <option value="">카테고리 선택</option>
+                            {category.map(cat => (
+                                <option key={cat[0]} value={cat[0]}>
+                                    {cat[1]}
+                                </option>
+                            ))}
+                        </select> */}
+                        <Input type="text" name="category_id" onChange={CategoryChange} value={formData.category} />
                     </div>
                     <div>
                         <div>작성자</div>
-                        <Input type="text" name="name" value={id} />
-                        <div>{name}</div> 
+                        <Input type="text" name="name" value={name} readOnly />
+                        <Input type="hidden" name="id" value={formData.id} />
                     </div>
                     <div>
                         <div>제목</div>
                         <Input type="text" name="title" onChange={handleInputChange} value={formData.title} />
-                    </div>
-                    <div>
-                        <div>작성일</div>
-                        <Input type="date" name="date" onChange={handleInputChange} value={formData.date} />
                     </div>
                 </Row>
                 <Row>

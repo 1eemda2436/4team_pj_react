@@ -6,8 +6,14 @@ import { useRouter } from 'next/router';
 
 const NoticeDetails = () => {
     const [noticeData, setNoticeData] = useState({}); // 빈 객체로 초기화
+    const [authority, setAuthority] = useState('');
     const router = useRouter();
     const { notice_id } = router.query;
+
+    useEffect(() => {
+        console.log(localStorage.getItem('auth'))
+        setAuthority(localStorage.getItem('auth'))
+    })
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -23,6 +29,24 @@ const NoticeDetails = () => {
             });
         }
     }, [notice_id]);
+
+    const deleteNotice = (event) => {
+        event.preventDefault();
+        const token = localStorage.getItem('token')
+    // 여러 아이템을 삭제할 때는 배열 형태로 서버에 전달합니다.
+    axios.delete(`http://localhost:8081/admin/notice/deleteNotice/${notice_id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        console.log("Delete response:", response);
+        router.push('/guest/notice')
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+};
 
     const Title = styled.h1`
         font-size: 24px;
@@ -40,10 +64,14 @@ const NoticeDetails = () => {
             <Title>공지사항 상세</Title>
 
             <Table>
+                <thead>
                 <TableRow>
                     <TableCell>제목</TableCell>
                     <TableCell>글내용</TableCell>
+                    <TableCell>조회수</TableCell>
                 </TableRow>
+                </thead>
+                <tbody>
                 {noticeData.content && (
                     <TableRow key={noticeData.notice_id}>
                         <TableCell>
@@ -54,11 +82,18 @@ const NoticeDetails = () => {
                                 {noticeData.content}
                             </ContentContainer>
                         </TableCell>
+                        <TableCell>
+                            <ContentContainer>
+                                {noticeData.hits}
+                            </ContentContainer>
+                        </TableCell>
                     </TableRow>
                 )}
+                </tbody>
             </Table>
-
             <BackButton onClick={() => router.back()}>이전</BackButton>
+            {(authority == "ROLE_MANAGER" || authority == "ROLE_ADMIN") && (
+            <BackButton onClick={deleteNotice}>삭제</BackButton>)}
         </Container>
     );
 }
