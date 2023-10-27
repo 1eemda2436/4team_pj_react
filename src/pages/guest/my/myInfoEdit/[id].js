@@ -126,7 +126,7 @@ const MyInfoEdit = () => {
             </table>
 
             <button onClick = {saveMemberInfo}>수정</button>
-            <button onClick = {() => router.push('/guest/MyPage')}>취소</button>
+            <button onClick = {() => router.push('/guest/my')}>취소</button>
         </Component>
     )
     
