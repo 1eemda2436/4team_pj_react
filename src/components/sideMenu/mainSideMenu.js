@@ -46,12 +46,12 @@ export default function MainSideMenu() {
             value: '캘린더',
             path: '/guest/calendar'
         },
-        {
-            id: 3,
-            icon: <Chat />,
-            value: '메신저',
-            path: '/guest/chatting'
-        },
+        // {
+        //     id: 3,
+        //     icon: <Chat />,
+        //     value: '메신저',
+        //     path: '/guest/chatting'
+        // },
         {
             id: 4,
             icon: <Megaphone />,
@@ -130,7 +130,7 @@ const MenuIconDiv = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 11px 0px;
+    padding: 18px 0px;
     margin-bottom: 10px;
     cursor: pointer;
 

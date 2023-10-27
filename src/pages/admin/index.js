@@ -64,15 +64,19 @@ const admin = () => {
                     <InfoValue>{companyData.address}</InfoValue>
                 </InfoDiv>
                 <InfoDiv>
-                    <InfoTitle>Business number</InfoTitle>
-                    <InfoValue>{}</InfoValue>
+                    <InfoTitle>Work-In</InfoTitle>
+                    <InfoValue>{companyData.work_in}</InfoValue>
+                </InfoDiv>
+                <InfoDiv>
+                    <InfoTitle>Work-Out</InfoTitle>
+                    <InfoValue>{companyData.work_out}</InfoValue>
                 </InfoDiv>
             </CompanyInfoBox>
             <ControllerBox>
                 <ContentBox>프로젝트</ContentBox>
-                <ContentBox>직원수</ContentBox>
+                <ContentBox>회사규모 ({companyData.employees})</ContentBox>
                 <ContentBox>근태 현황</ContentBox>
-                <ContentBox>권한 권리</ContentBox>
+                <ContentBox>{companyData.email}</ContentBox>
             </ControllerBox>
         </MainComponent>
     )
@@ -106,7 +110,7 @@ const InfoDiv = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 38px;
+    font-size: 32px;
     margin-bottom: 45px;
 `;
 const InfoTitle = styled.div`
