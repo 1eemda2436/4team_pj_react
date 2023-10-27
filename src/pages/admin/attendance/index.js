@@ -32,6 +32,7 @@ const AdminAttendanceDep = () => {
         });
     };
 
+    // 부서 목록 가져오기
     useEffect(() => {
         const token = localStorage.getItem('token')
         console.log(token)
