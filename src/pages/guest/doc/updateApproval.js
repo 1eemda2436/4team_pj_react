@@ -15,6 +15,7 @@ const Doc = () => {
     const [samples, setSamples] = useState({
         doc_title: '',
         doc_content: '',
+        doc_date: null,
     });
 
     useEffect(() => {
@@ -63,7 +64,7 @@ const Doc = () => {
         const token = localStorage.getItem('token')
         
         if(id) {
-            axios.put(`http://localhost:8081/guest/doc/update/${id}`, updateSamples, {
+            axios.put(`http://localhost:8081/guest/doc/updateIng/${id}`, updateSamples, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -81,6 +82,17 @@ const Doc = () => {
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
     };
+
+    // 날짜 변환
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        });
+        return formattedDate;
+      };
 
     return(
         <Container>
@@ -105,13 +117,7 @@ const Doc = () => {
                         <tr>
                             <th>기안일</th>
                             <td>
-                                <input
-                                type="date"
-                                name="doc_date"
-                                readOnly
-                                value={samples.doc_date}
-                                onChange={handleInputChange}
-                                />
+                                {samples.doc_date}
                             </td>
                         </tr>
                         <tr>

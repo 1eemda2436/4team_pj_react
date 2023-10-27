@@ -77,7 +77,7 @@ const Doc = () => {
         const token = localStorage.getItem('token')
         
         if(id) {
-            axios.put(`http://localhost:8081/guest/doc/update/${id}`, updateSamples, {
+            axios.put(`http://localhost:8081/admin/doc/updateBack/${id}`, updateSamples, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

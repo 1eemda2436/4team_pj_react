@@ -88,7 +88,7 @@ const Doc = () => {
                           <th>문서번호</th>
                           <th>문서 제목</th>
                           <th>작성자</th>
-                          <th>결재일</th>
+                          <th>기안일</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -98,7 +98,7 @@ const Doc = () => {
                                   <td>{approvalIng.doc_id}</td>
                                   <td isTitle>{approvalIng.doc_title}</td>
                                   <td>{approvalIng.name}</td>
-                                  <td>{formatDate(approvalIng.approval_date)}</td>
+                                  <td>{formatDate(approvalIng.doc_date)}</td>
                           </tr>
                       )}
                   </tbody>
