@@ -27,7 +27,8 @@ const Doc = () => {
         })
         .then((response) => {
             setSamples(response.data);
-            const filteredSamples = response.data.filter(draft => draft.name === user_name);
+            const filteredSamples = response.data.filter(draft => draft.name === user_name)
+                                                  .filter(draft => !['완료', '진행', '반려'].includes(draft.doc_status));
             const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
             setSamples(sortedSamples);
             setFilteredSamples(sortedSamples);
