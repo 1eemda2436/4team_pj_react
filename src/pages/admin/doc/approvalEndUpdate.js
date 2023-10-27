@@ -15,6 +15,7 @@ const Doc = () => {
     };
 
     const [selectedCategory, setSelectedCategory] = useState('');
+
     const [imageSrc, setImageSrc] = useState("");
     const [insertImageSrc, setInsertImageSrc] = useState('');
     const [samples, setSamples] = useState({
@@ -28,6 +29,7 @@ const Doc = () => {
         if(id) {
             axios.get(`http://localhost:8081/admin/doc/adminDetail/${id}`)
             .then((response) => {
+
                 const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content, sign, admin_sign } = response.data;
                 let date = new Date();
                 let year = date.getFullYear();
@@ -36,6 +38,7 @@ const Doc = () => {
             
                 let yyyymmdd = year + "-" + month + "-" + day;
                 console.log('response.data:', response.data);
+
                 setSamples({
                     doc_id,
                     doc_date,
@@ -45,6 +48,7 @@ const Doc = () => {
                     category_id,
                     doc_title,
                     doc_content,
+
                     approval_date: yyyymmdd,
                     sign,
                     admin_sign,
@@ -79,6 +83,7 @@ const Doc = () => {
         updateSamples.append('doc_status', '완료');
         updateSamples.append('approval_date', samples.approval_date);
         updateSamples.append('approval_content', samples.approval_content);
+
         updateSamples.append('admin_sign', samples.admin_sign);
         updateSamples.append('sign2', samples.sign);
         const token = localStorage.getItem('token')
@@ -103,6 +108,7 @@ const Doc = () => {
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
     };
+
 
     const encodeFileToBase64 = (fileBlob) => {
         // 첨부파일 전송을 위해 셋팅 
@@ -277,6 +283,7 @@ const Doc = () => {
 
 export default Doc;
 
+
 Doc.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
@@ -303,7 +310,6 @@ const ApprovalLine = styled.div`
         height: 100px;
     }
 `;
-
 
 const Title = styled.div`
 text-align: center;

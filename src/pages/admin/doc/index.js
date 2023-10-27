@@ -13,8 +13,7 @@ const Doc = () => {
   const [samples, setSamples] = useState([]);
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
-
-    
+  
   useEffect(() => {
     const token = localStorage.getItem('token')
       axios

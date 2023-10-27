@@ -104,6 +104,7 @@ const Doc = () => {
                     </tbody>
                 </Table>
             </Docstyle2>
+
             {totalPage > 1 && (  // 여기에서 조건부 렌더링을 수행합니다.
             <PageButton>
               <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>

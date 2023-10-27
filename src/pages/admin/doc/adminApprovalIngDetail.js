@@ -18,6 +18,10 @@ const Doc = () => {
         router.back(); // 이전 페이지로 이동
     };
 
+    const handleBack = () => {
+        router.back(); // 이전 페이지로 이동
+    };
+
     
     useEffect(() => {
         const token = localStorage.getItem('token')
