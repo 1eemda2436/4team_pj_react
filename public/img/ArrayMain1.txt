@@ -1,0 +1,24 @@
+package test;
+
+public class _10_ArrayMain {
+	//배열이란?
+	
+	//배열(member)을 이용하여 매개변수 생성자로 값 전달하고 출력
+	//홍길동 30 hong@mail.com
+	//김태희 25 kim@mail.com
+	//비 35 rain@mail.com
+	//유느님 45 you@mail.com
+	//아이유 30 iu@mail.com
+
+	_10_Member[]member = new _10_Member();
+	member[0] = new _10_Member("홍길동", 30, "hong@mail.com");
+	member[1] = new _10_Member("김태희", 25, "kim@mail.com");
+	member[2] = new _10_Member("비", 35, "rain@mail.com");
+	member[3] = new _10_Member("유느님", 45, "you@mail.com");
+	member[4] = new _10_Member("아이유", 30, "iu@mail.com");
+
+	for( int i = 0; i < member.length; i++) {
+		member[i].printInfo();
+	}
+	
+}

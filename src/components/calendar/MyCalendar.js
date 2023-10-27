@@ -83,7 +83,7 @@ const MyCalendar = () => {
                 eventContent={(eventInfo) => (
                     <FullCalendarEventContent>
                         <Link href={`/guest/workspace/ProjectDetail/${eventInfo.event.id}`}>
-                                {eventInfo.event.title}
+                            {eventInfo.event.title}
                         </Link>
                     </FullCalendarEventContent>
                     )}

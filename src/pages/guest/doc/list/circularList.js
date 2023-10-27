@@ -46,6 +46,17 @@ const Doc = () => {
         }
     };
 
+    // 날짜 변환
+    const formatDate = (timestamp) => {
+      const date = new Date(timestamp);
+      const formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+      return formattedDate;
+    };
+
     return(
         <Container>
             <Title>
@@ -53,17 +64,20 @@ const Doc = () => {
             </Title>
             <Docstyle1>
                 <tbody>
-                    <tr>
-                        <th>
-                            <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
-                        </th>
-                        <th>
-                            <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
-                        </th>
-                        <th>
-                            <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
-                        </th>
-                    </tr>
+                <tr>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
+                  </th>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
+                  </th>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
+                  </th>
+                  <th>
+                      <button type="button" onClick={() => router.push('/guest/doc/list/approvalSuggestList')}>결재 요청목록</button>
+                  </th>
+              </tr>
                 </tbody>
             </Docstyle1>
             <Docstyle2>
@@ -83,18 +97,21 @@ const Doc = () => {
                             <TableTd2 component="" scope="view">{view.doc_id}</TableTd2>
                             <TableTd2>{view.doc_title}</TableTd2>
                             <TableTd2>{view.name}</TableTd2>
-                            <TableTd2>{view.doc_date}</TableTd2>
+                            <TableTd2>{formatDate(view.doc_date)}</TableTd2>
                             <TableTd2>{view.doc_read}</TableTd2>
                             </TableTr>
                             )}
                     </tbody>
                 </Table>
             </Docstyle2>
+
+            {totalPage > 1 && (  // 여기에서 조건부 렌더링을 수행합니다.
             <PageButton>
-                <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
-                <span>{page} / {totalPage}</span>
-                <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
-          </PageButton>
+              <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+              <span>{page} / {totalPage}</span>
+              <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
+            </PageButton>
+            )}
         </Container>
     )
 }

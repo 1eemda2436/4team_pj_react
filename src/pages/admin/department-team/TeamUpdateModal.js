@@ -1,25 +1,29 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { router, useRouter } from 'next/router';
 
 const TeamUpdateModal = ({ onClose, onUpdate, team_id, team_name,depart_id }) => {
+    const router = useRouter();
+
     const [updatedTeamData, setUpdatedTeamData] = useState({
         team_id:team_id,
         team_name:team_name,
         depart_id:depart_id
     });
 
-    const handleUpdate = async () => {
+    const handleUpdate = () => {
+        console.log(onUpdate)
         const token = localStorage.getItem('token');
         try {
             // PUT 요청을 보냅니다.
-            await axios.put(`http://localhost:8081/admin/team/TeamUpdate`, updatedTeamData, {
+            axios.put(`http://localhost:8081/admin/team/TeamUpdate`, updatedTeamData, {
                 headers: {
                     'Authorization': `Bearer ${token}`, // 토큰을 헤더에 추가
                 },
-            });
+            })
             // 성공 시 로직
-            onUpdate(); // 팀 현황 화면을 업데이트하거나 모달을 닫을 수 있습니다.
+            onUpdate(); 
         } catch (error) {
             // 오류 처리
             console.error('팀 수정 중 오류 발생:', error);

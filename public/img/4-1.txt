@@ -1,0 +1,58 @@
+package test;
+
+public class _08_Sungjuk {
+	/*세과목의 총점, 평균, 학점 구하기
+	 *1)매개변수 생성자를 통해 3과목의 점수 전달
+	 *2)디폴트생성자,setter를 통해 3과목의 점수 전달
+	*/
+	//멤버변수
+	private int kor;
+	private int eng;
+	private int math;
+
+	//디폴트생성자
+	public _08_Sungjuk() {}
+
+	//매개변수 생성자
+	public _08_Sungjuk(int kor, int eng, int math) {
+		this.kor = kor;
+		this.eng = eng;
+		this.math = math;
+	}
+	
+	//멤버 매서드
+	//getGrade()=>ABCDF
+	
+	
+	//setter, getter
+	public int getKor() {
+		return kor;
+	}
+	public void setKor(int kor) {
+		this.kor = kor;
+	}
+	public int getEng() {
+		return eng;
+	}
+	public void setEng(int eng) {
+		this.eng = eng;
+	}
+	public int getMath() {
+		return math;
+	}
+	public void setMath(int math) {
+		this.math = math;
+	}
+	
+	//getAvg() 소수점이하 둘째 자리 / getSum() 합계 출력
+	public double add(double kor, double eng, double math) {
+		return kor + eng + math;
+	}
+
+	//printInfo()=>국어,영어,수학 점수
+	public void printInfo() {
+		System.out.println("국어점수 : " + kor);
+		System.out.println("영어점수 : " + eng);
+		System.out.println("수학점수 : " + math);
+	}
+}
