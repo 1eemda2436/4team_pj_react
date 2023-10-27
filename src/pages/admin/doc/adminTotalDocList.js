@@ -28,6 +28,17 @@ const Doc = () => {
         });
     }, []);
 
+    // 날짜 변환
+    const formatDate = (timestamp) => {
+      const date = new Date(timestamp);
+      const formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+      return formattedDate;
+    };
+
     return(
         <Container>
             <Title>
@@ -77,8 +88,8 @@ const Doc = () => {
                                     <td>{adminTotal.category_name}</td>
                                     <td>{adminTotal.doc_title}</td>
                                     <td>{adminTotal.name}</td>
-                                    <td>{adminTotal.approval_date}</td>
-                                    <td>{adminTotal.approval_endDate}</td>
+                                    <td>{formatDate(adminTotal.approval_date)}</td>
+                                    <td>{formatDate(adminTotal.approval_endDate)}</td>
                             </tr>
                         )}
                     </tbody>

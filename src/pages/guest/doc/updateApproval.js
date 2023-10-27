@@ -174,10 +174,6 @@ const Doc = () => {
                 <table>
                     <tbody>
                         <tr>
-                            <th>구분</th>
-                            <td> </td>
-                        </tr>
-                        <tr>
                             <th>첨부파일</th>
                             <td>{samples.doc_attachment}</td>
                         </tr>

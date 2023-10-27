@@ -1,0 +1,44 @@
+package test;
+
+public class _10_Member {
+	//멤버변수
+	private String name;
+	private int age;
+	private String email;
+
+	//디폴트 생성자
+	public _10_Member () {}	
+
+	//매개변수 생성자
+	public _10_Member (String name, int age, String email) {
+		trhis.name = name;
+		this.age = age;
+		this.email = email;
+	}
+
+	//멤버메서드
+	//getter setter
+	public String getName() {
+		return name;
+	}	
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	//printInfo()
+	printInfo() {
+		System.out.println("\t이름 : " + name + "\t나이 : " + age +  "\t이메일 : " + email)
+	}
+}
