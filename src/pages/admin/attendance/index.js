@@ -1,14 +1,51 @@
 import DepartStickChart from "@/components/chart/DepartStickChart";
 import TeamRadarChart from "@/components/chart/TeamRadarChart";
 import AdminLayout from "@/components/layout/adminLayout";
+import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const AdminAttendanceDep = () => {
     const router = useRouter();
 
     const [selectedDepartment, setSelectedDepartment] = useState(''); // 선택한 부서 상태
     const [selectedTeam, setSelectedTeam] = useState(''); // 선택한 팀 상태
+    const [depart, setDepart] = useState([]);
+    const [team, setTeam] = useState([]);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        axios   // 부서 목록 용
+            .get("http://localhost:8081/guest/department",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log("값!@!@", response.data);
+                setDepart(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        axios   // 팀 목록용
+            .get("http://localhost:8081/guest/team",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                console.log("값좀보자!!!", response.data)
+                setTeam(response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching teams:", error);
+            });
+    }, []);
 
     const handleSelectDepart = (e) => {
         const selectedDepart = e.target.value;
@@ -60,30 +97,33 @@ const AdminAttendanceDep = () => {
                     }}
                 >
                     <div>
-                        <select
-                            onChange={handleSelectDepart} // 선택 변경 핸들러 추가
-                            value={selectedDepartment}
-                        >
+                        <select name="depart_id" value={depart.depart_id} onChange={handleSelectDepart}>
                             <option value="">부서 선택</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
+                            {depart.map(dp => (
+                                <option key={dp[0]} value={dp[0]}>
+                                    {dp[1]}
+                                </option>
+                            ))}
                         </select>
                     </div>
 
                     <div>
                         <select
+                            name="team_id"
                             onChange={handleSelectTeam} // 선택 변경 핸들러 추가
-                            value={selectedTeam}
+                            value={team.team_id}
                         >
                             <option value="">팀 선택</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
+                            {/* {team.map(tm => (
+                                <option key={tm[0]} value={tm[0]}>
+                                    {tm[1]}
+                                </option>
+                            ))} */}
+                            {team.map(tm => (
+                                <option key={tm.team_id} value={tm.team_id}>
+                                    {tm.team_name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>
