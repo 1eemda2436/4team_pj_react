@@ -1,14 +1,13 @@
-import MainLayout from "@/components/layout/mainLayout";
+import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const BoardWrite = () => {
+const boardUpdate = () => {
     const router = useRouter();
     const { id } = router.query;
-    //const id = localStorage.getItem('user_id'); // 로컬 스토리지에서 사용자 ID 가져오기
-
+    const [categories, setCategories] = useState([]); // 카테고리 목록을 저장할 상태
     const [formData, setFormData] = useState({
         category_id: "",
         id: id, 
@@ -16,8 +15,6 @@ const BoardWrite = () => {
         content: "",
         date: new Date().toISOString().slice(0, 10), // 현재 날짜를 ISO 형식으로 가져오기
     });
-
-    const [categories, setCategories] = useState([]); // 카테고리 목록을 저장할 상태
 
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -36,6 +33,23 @@ const BoardWrite = () => {
             });
     }, []);
 
+    // 게시물을 서버에 등록하는 함수
+    const handlePostBoard = () => {
+        const token = localStorage.getItem('token')
+        axios.post(`http://localhost:8081/guest/community/edit/${board_id}`, formData,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }) // 게시물 데이터를 서버에 POST 요청으로 보냄
+            .then(response => {
+                console.log('게시물 수정 성공:', response.data);
+                router.push('/guest/community'); // 게시판 페이지로 이동
+            })
+            .catch(error => {
+                console.error('게시물 수정 오류:', error);
+            });
+    };
+
     // 입력 폼의 값을 업데이트하는 함수
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -45,27 +59,10 @@ const BoardWrite = () => {
         });
     };
 
-    // 게시물을 서버에 등록하는 함수
-    const handlePostBoard = () => {
-        const token = localStorage.getItem('token')
-        axios.post(`http://localhost:8081/guest/community/add`, formData,{
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        }) // 게시물 데이터를 서버에 POST 요청으로 보냄
-            .then(response => {
-                console.log('게시물 등록 성공:', response.data);
-                router.push('/guest/community'); // 게시판 페이지로 이동
-            })
-            .catch(error => {
-                console.error('게시물 등록 오류:', error);
-            });
-    };
-
-    return (
+    return(
         <Container>
-            <Title>자유게시판 등록</Title>
-            <Content>
+        <Title>자유게시판 수정</Title>
+        <Content>
                 <Row>
                     <div>
                         <div>카테고리</div>
@@ -104,16 +101,16 @@ const BoardWrite = () => {
                 </Row>
             </Content>
             <ButtonContainer>
-                <Button onClick={handlePostBoard}>등록</Button>
-                <Button onClick={() => router.back()}>이전</Button>
+            <Button onClick={() => router.push('/guest/community/boardDetails')}>수정</Button>
+            <Button onClick={() => router.back()}>이전</Button>
             </ButtonContainer>
         </Container>
-    );
+    )
 }
 
-export default BoardWrite;
+export default boardUpdate;
 
-BoardWrite.getLayout = function getLayout(page) {
+boardUpdate.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 

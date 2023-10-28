@@ -38,6 +38,24 @@ const Button = styled.button`
     }
 `;
 
+const TableWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+`;
+
+const LeftTable = styled.table`
+    width: 45%;
+    border-collapse: collapse;
+`;
+
+const RightTable = styled.table`
+    width: 45%;
+    border-collapse: collapse;
+`;
+
+
+
 const my = () => {
     const [member, setMember] = useState({});
     const router = useRouter();
@@ -66,35 +84,68 @@ const my = () => {
 
     return (
         <MainLayout>
-            <Header/>
-            <Table>
-                <tbody>
-                    <TableRow>
-                        <TableCell>사원명</TableCell>
-                        <TableCell>{member.name}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>사원이메일</TableCell>
-                        <TableCell>{member.email}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>사원연락처</TableCell>
-                        <TableCell>{member.tel}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>입사일</TableCell>
-                        <TableCell>{member.hireday}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan="2">
-                            <Button onClick={() => router.push(`/guest/my/myInfoEdit/${id}`)}>수정</Button>
-                        </TableCell>
-                        
-                    </TableRow>
-                </tbody>
-            </Table>
+            <Header />
+            <TableWrapper>
+                <LeftTable>
+                    <tbody>
+                        <TableRow>
+                            <TableCell>{member.profile}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>{member.name}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>{member.email}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>{member.tel}</TableCell>
+                        </TableRow>
+                    </tbody>
+                </LeftTable>
+                <RightTable>
+                    <tbody>
+                        <TableRow>
+                            <TableCell>부서명</TableCell>
+                            <TableCell>{member.depart_name}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>팀명</TableCell>
+                            <TableCell>{member.team_name}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>사원 번호</TableCell>
+                            <TableCell>{member.id}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>직급</TableCell>
+                            <TableCell>{member.rank}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>이름</TableCell>
+                            <TableCell>{member.name}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>이메일</TableCell>
+                            <TableCell>{member.email}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>전화번호</TableCell>
+                            <TableCell>{member.tel}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>주민번호</TableCell>
+                            <TableCell>{member.resident}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>계좌</TableCell>
+                            <TableCell>{member.bank}</TableCell>
+                        </TableRow>
+                    </tbody>
+                </RightTable>
+            </TableWrapper>
+            <Button onClick={() => router.push(`/guest/my/myInfoEdit/{id}`)}>수정</Button>
         </MainLayout>
-    )
+    );
 
     
 }
