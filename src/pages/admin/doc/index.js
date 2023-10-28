@@ -108,7 +108,7 @@ const Doc = () => {
                                   <td>{adminTotal.doc_id}</td>
                                   <td>{adminTotal.doc_title}</td>
                                   <td>{adminTotal.name}</td>
-                                  <td>{formatDate(adminTotal.approval_date)}</td>
+                                  <td>{formatDate(adminTotal.doc_date)}</td>
                           </tr>
                       )}
                   </tbody>

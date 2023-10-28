@@ -117,8 +117,8 @@ const Doc = () => {
                             <TableTd>{samples.name}</TableTd>
                         </TableTr>
                         <TableTr>
-                            <TableTh>결재일</TableTh>
-                            <TableTd>{formatDate(samples.approval_date)}</TableTd>
+                            <TableTh>기안일</TableTh>
+                            <TableTd>{formatDate(samples.doc_date)}</TableTd>
                         </TableTr>
                     </Table>
                 </DocstyleLeft>
