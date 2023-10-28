@@ -42,16 +42,16 @@ const Notice = () => {
                 }
             })
         .then(response => {
-          console.log("Delete response:", response);
+            console.log("Delete response:", response);
           // 삭제가 성공하면 선택 항목과 데이터를 업데이트합니다.
-          setSelectedItems([]);
-          refreshData();
-      })
-      .catch(err => {
-          console.error('선택한 항목 삭제 중 오류 발생:', err);
-      });
+            setSelectedItems([]);
+            refreshData();
+        })
+        .catch(err => {
+            console.error('선택한 항목 삭제 중 오류 발생:', err);
+        });
     })
-  };
+};
     // 데이터를 다시 불러오는 함수
     const refreshData = () => {
         const token = localStorage.getItem('token');
@@ -97,19 +97,20 @@ const Notice = () => {
     }
 
     const goToNoticeWrite = () => {
-      router.push('/admin/board/NoticeWrite');
-  }
+        router.push('/admin/board/NoticeWrite');
+    }
 
     return (
-        <Container>
+        <MainComponent>
+            <Title>게시판관리</Title>
             <Section>
             <CommunityHeader>
-            <Title>공지사항</Title>
+            <BoardTitle>공지사항</BoardTitle>
             <Button onClick={goToNoticeWrite}>글쓰기</Button>
             <Button onClick={deleteSelectedItems}>선택 삭제</Button>
             </CommunityHeader>
                 <Table>
-        <thead>
+                <thead>
                     <TableRow>
                         <TableHeader>글번호</TableHeader>
                         <TableHeader>제목</TableHeader>
@@ -148,7 +149,7 @@ const Notice = () => {
 
             <Section>
                 <CommunityHeader>
-                    <Title>자유게시판</Title>
+                    <BoardTitle>자유게시판</BoardTitle>
                     <Button onClick={goToBoardWrite}>글쓰기</Button>
                     <Button onClick={deleteSelectedItems}>선택 삭제</Button>
                 </CommunityHeader>
@@ -190,7 +191,7 @@ const Notice = () => {
 </tbody>
                 </Table>
             </Section>
-        </Container>
+        </MainComponent>
     );
 }
 
@@ -200,15 +201,25 @@ Notice.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
 
+const MainComponent = styled.div`
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+`;
+
+const Title = styled.h2`
+    font-size: 26px;
+    font-weight: 700;
+    color: #007bff;
+`;
+
 const Container = styled.div`
-    font-family: Arial, sans-serif;
+    height: 100%;
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 `;
 
 const CommunityHeader = styled.div`
@@ -254,7 +265,7 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const Title = styled.h1`
+const BoardTitle = styled.h1`
     font-size: 24px;
     margin: 0;
     padding: 10px 0;
