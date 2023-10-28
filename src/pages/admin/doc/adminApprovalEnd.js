@@ -9,8 +9,6 @@ import styled from "styled-components";
 const Doc = () => {
 
   const router = useRouter();
-  const id = localStorage.getItem('user_id');
-  console.log('id확인:',id);
   const [samples, setSamples] = useState([]);
   const [filteredSamples, setFilteredSamples] = useState([]);
   const [page, setPage] = useState(1);

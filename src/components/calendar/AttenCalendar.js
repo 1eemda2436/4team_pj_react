@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import moment from 'moment';
 
-function AttenCalendar () {
+function AttenCalendar ({ height }) {
     // 여기에서 달력 옵션을 정의합니다
         const calendarOptions = {
         plugins: [dayGridPlugin],
@@ -65,18 +65,69 @@ function AttenCalendar () {
     const allEvents = [...projectEvents];
 
     return (
-        <FullCalendar
-        plugins={[dayGridPlugin]}
-        events={allEvents}
-        headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay",
-        }}
-        {...calendarOptions}
-        />
+        <FullCalendarWrapper>
+            <FullCalendar
+                height={height ? height : 500}
+                plugins={[dayGridPlugin]}
+                events={allEvents}
+                aspectRatio={2.5}
+                firstDay={1}
+                headerToolbar={{
+                    left: "prev,next today",
+                    center: "title",
+                    right: "dayGridMonth,timeGridWeek,timeGridDay",
+                }}
+                {...calendarOptions}
+            />
+        </FullCalendarWrapper>
     );
 };
 
 export default AttenCalendar;
+
+const FullCalendarWrapper  = styled.div`
+    width: 100%;
+
+    /* 일요일 날짜 빨간색 */
+    .fc-day-sun a {
+    color: red;
+    text-decoration: none;
+    }
+
+    /* 토요일 날짜 파란색 */
+    .fc-day-sat a {
+    color: blue;
+    text-decoration: none;
+    }
+
+    /*종일제목*/
+    .fc-event-title.fc-sticky{
+        text-align: center;
+    }
+
+    /*more버튼*/ 
+    .fc-daygrid-more-link.fc-more-link{
+        color: #000;
+    }
+    /*일정시간*/
+    .fc-daygrid-event > .fc-event-time{
+        color:#000;
+    }
+    /*시간제목*/
+    .fc-daygrid-dot-event > .fc-event-title{
+        color:#000 !important;
+    }
+
+    /*상단버튼*/
+    .fc .fc-button-primary {
+        background-color: #005FC5;
+        border: 1px solid transparent;
+    }
+
+    /*이벤트*/
+    .fc-h-event {
+        background-color: #000;
+        border: 1px solid transparent;
+    }
+`;
 
