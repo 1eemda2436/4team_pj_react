@@ -7,6 +7,7 @@ import MyCalendar from "@/components/calendar/MyCalendar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+
 const WeeklyWorkButton = styled.a`
     cursor: pointer;
     background-color: #005FC5;
@@ -115,9 +116,11 @@ function Attendance () {
                     
                     <AttenWeekWork>
                         <div className="work-hours">
-                            <WeeklyWorkButton onClick={() => router.push('/guest/attendance/detail/')}>
-                                쭈강 긍무 형황
-                            </WeeklyWorkButton>
+                            {localStorage.getItem('auth') !== 'ROLE_ADMIN' && (
+                                <WeeklyWorkButton onClick={() => router.push('/guest/attendance/detail/')}>
+                                    쭈강 긍무 형황
+                                </WeeklyWorkButton>
+                            )}
                         </div>
                         <br/>
                         <div>[ 총 근무 시간 ]</div>
@@ -126,6 +129,7 @@ function Attendance () {
                         <div>{weeklyWork.totalWeekOver}</div>
                         <div>[ 남은 최소 근무 시간 ]</div>
                         <div>{weeklyWork.remainWeekTime}</div>
+
                     </AttenWeekWork>
                 </AttenBoxBottom>
             </AttenComponent>

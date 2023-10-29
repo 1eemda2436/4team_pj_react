@@ -57,8 +57,10 @@ function AdminAnnualList() {
     
     useEffect(() => {
         const token = localStorage.getItem('token');
+        const company_id = localStorage.getItem('company_id');
+        console.log("값좀 보자", company_id);
         axios
-            .get("http://localhost:8081/all/attendance/annualRequestsList", {
+            .get(`http://localhost:8081/all/attendance/annualRequestsList/${company_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -100,6 +102,24 @@ return (
         ))}
     </tbody>
     </Table>
+    <AttenBtnBox>
+        <button
+            type="button"
+            onClick={() => router.push('/admin/attendance')}
+            style={{
+                cursor: 'pointer',
+                backgroundColor: "#007BFF",
+                color: "white",
+                border: "none",
+                padding: "10px 20px",
+                borderRadius: "20px",
+                fontSize: "1rem",
+                margin: "5px",
+            }}
+        >
+            Prev
+        </button>
+    </AttenBtnBox>
 </PageContainer>
 );
 }
@@ -109,3 +129,10 @@ export default AdminAnnualList;
 AdminAnnualList.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
+
+const AttenBtnBox = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 120px;
+`;
