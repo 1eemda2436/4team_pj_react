@@ -57,7 +57,8 @@ function AdminAnnualList() {
     
     useEffect(() => {
         const token = localStorage.getItem('token');
-        const company_id = localStorage.getItem('company_id')
+        const company_id = localStorage.getItem('company_id');
+        console.log("값좀 보자", company_id);
         axios
             .get(`http://localhost:8081/all/attendance/annualRequestsList/${company_id}`, {
                 headers: {
