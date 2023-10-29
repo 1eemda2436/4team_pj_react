@@ -89,7 +89,7 @@ const Doc = () => {
     };
 
     return(
-        <Container>
+        <MainContainer>
             <ApprovalLine>
                 <table>
                     <tr>
@@ -157,7 +157,7 @@ const Doc = () => {
             <ButtonStyle>
                 <button type="button" onClick={handleBack}>돌아가기</button>
             </ButtonStyle>
-        </Container>
+        </MainContainer>
     )
 }
 
@@ -167,11 +167,13 @@ Doc.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
 
-const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+
+
+const MainContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  box-sizing: border-box;
 `;
 
 const ApprovalLine = styled.div`
