@@ -28,6 +28,7 @@ function Attendance () {
     const [attendance, setAttendance] = useState([]);
     const [weeklyWork, setWeeklyWork] = useState([]);
     const router = useRouter();
+    const userRole = localStorage.getItem('auth');
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -118,7 +119,7 @@ function Attendance () {
                     
                     <AttenWeekWork>
                         <div className="work-hours">
-                            {localStorage.getItem('auth') !== 'ROLE_ADMIN' && (
+                            {userRole !== 'ROLE_ADMIN' && (
                                 <WeeklyWorkButton onClick={() => router.push('/guest/attendance/detail/')}>
                                     쭈강 긍무 형황
                                 </WeeklyWorkButton>
