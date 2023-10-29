@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from 'next/router';
 import { RouterTwoTone } from '@mui/icons-material';
+import moment from 'moment';
+import Header from '@/components/common/header';
 
 const BoardDetails = () => {
     const [comments, setComments] = useState([]);
@@ -14,9 +16,7 @@ const BoardDetails = () => {
     const { board_id } = router.query;
     const [categories, setCategories] = useState([]); // 카테고리 목록을 저장할 상태
     
-    const [formData, setFormData] = useState({
-        content: ""
-    });
+    const [formData, setFormData] = useState({});
 
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -55,7 +55,8 @@ const BoardDetails = () => {
             .catch(error => {
                 console.error('데이터를 불러오는 중 오류 발생:', error);
             });
-
+            
+            //댓글 불러오기
             axios.get(`http://localhost:8081/guest/comment/commentFind/${board_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -72,9 +73,11 @@ const BoardDetails = () => {
 
     const handleCommentSubmit = () => {
         const token = localStorage.getItem('token');
+        const currentDate = moment().format('YYYY-MM-DD'); // 현재 날짜 가져오기
         axios.post(`http://localhost:8081/guest/comment/addComment`, {
             content: formData.content,
             board_id: board_id,
+            reg_date: currentDate,
         }, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -104,7 +107,7 @@ const BoardDetails = () => {
     //게시글 삭제
     const handleDelete = () => {
         const token = localStorage.getItem('token');
-        axios.delete(`http://localhost:8081/guest/community/boardDelete`, {
+        axios.delete(`http://localhost:8081/guest/community/boardDelete/${board_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -116,6 +119,11 @@ const BoardDetails = () => {
         .catch(error => {
             console.error('게시물 삭제 중 오류 발생:', error);
         });
+    };
+
+    const handleCommentEdit = (comment_id) => {
+        // 댓글 수정 페이지로 이동하며 댓글 ID를 URL에 전달
+        router.push(`/guest/community/commentEdit/${comment_id}`);
     };
 
     const handleCommentDelete = (comment_id) => {
@@ -143,6 +151,8 @@ const BoardDetails = () => {
     };
 
     return (
+        <>
+        <Header />
         <Container>
             <Title>자유게시판 상세</Title>
             <Content>
@@ -161,7 +171,7 @@ const BoardDetails = () => {
                     </div>
                     <div>
                         <div>작성일</div>
-                        <div>{boardData.reg_date}</div>
+                        <div>{moment(boardData.reg_date).format('YYYY-MM-DD')}</div>
                     </div>
                 </Row>
                 <Row>
@@ -173,7 +183,7 @@ const BoardDetails = () => {
             </Content>
             <div>
             <Button onClick={() => router.push('/guest/community')}>목록</Button>
-            <Button onClick={() => router.push(`/guest/community/boardUpdate/${boardData.id}`)}>수정</Button>
+            <Button onClick={() => router.push(`/guest/community/boardUpdate/${board_id}`)}>수정</Button>
             {(authority == "ROLE_MANAGER" || authority == "ROLE_ADMIN" || authority == "ROLE_USER") && (
             <Button onClick={handleDelete}>삭제</Button>
             )}
@@ -192,8 +202,8 @@ const BoardDetails = () => {
                     <TableRow>
                         <TableCell>작성자</TableCell>
                         <TableCell>글내용</TableCell>
-                        <TableCell>일자</TableCell>
-                        <TableCell>좋아요</TableCell>
+                        <TableCell>작성일</TableCell>
+                        {/* <TableCell>좋아요</TableCell> */}
                         <TableCell>작업</TableCell> {/* 수정 및 삭제 버튼을 표시할 열 추가 */}
                     </TableRow>
                 </thead>
@@ -202,11 +212,11 @@ const BoardDetails = () => {
                         <TableRow key={item.comment_id}>
                             <TableCell>{item.writer}</TableCell>
                             <TableCell>{item.content}</TableCell>
-                            <TableCell>{item.reg_date}</TableCell>
-                            <TableCell>{item.likes}</TableCell>
+                            <TableCell>{moment(item.reg_date).format('YYYY-MM-DD')}</TableCell>
+                            {/* <TableCell>{item.likes}</TableCell> */}
                             <TableCell>
+                                {/* <Button onClick={() => handleCommentEdit(item.comment_id)}>수정</Button> */}
                                 <Button onClick={() => handleCommentDelete(item.comment_id)}>삭제</Button>
-                                <Button onClick={() => handleCommentEdit(item.comment_id)}>수정</Button>
                             </TableCell>
                         </TableRow>
                     ))}
@@ -214,6 +224,7 @@ const BoardDetails = () => {
             </Table>
             
         </Container>
+        </>
     );
 }
 

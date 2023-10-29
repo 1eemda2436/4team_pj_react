@@ -20,6 +20,7 @@ const BoardWrite = () => {
     const [categories, setCategories] = useState([]); // 카테고리 목록을 저장할 상태
 
     useEffect(() => {
+        
         const token = localStorage.getItem('token')
         // 서버에서 카테고리 목록을 가져오는 요청
         axios.get('http://localhost:8081/guest/community/categories', {

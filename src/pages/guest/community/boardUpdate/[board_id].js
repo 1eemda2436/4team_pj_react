@@ -3,18 +3,23 @@ import styled from "styled-components";
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Header from "@/components/common/header";
 
 const boardUpdate = () => {
     const router = useRouter();
     const { id } = router.query;
-    const [categories, setCategories] = useState([]); // 카테고리 목록을 저장할 상태
+    const { board_id } = router.query;
+    
     const [formData, setFormData] = useState({
         category_id: "",
         id: id, 
         title: "",
         content: "",
+        board_id: board_id,
         date: new Date().toISOString().slice(0, 10), // 현재 날짜를 ISO 형식으로 가져오기
     });
+    
+    const [categories, setCategories] = useState([]); // 카테고리 목록을 저장할 상태
 
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -33,10 +38,33 @@ const boardUpdate = () => {
             });
     }, []);
 
-    // 게시물을 서버에 등록하는 함수
+    useEffect(() => {
+        if(board_id) {
+        const token = localStorage.getItem('token')
+        // 게시글 목록을 가져오는 요청
+        axios.get(`http://localhost:8081/guest/community/boardFind/${board_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }) // 서버의 게시글 목록 API 엔드포인트를 사용
+            .then(response => {
+                console.log(response.data[0])
+                response.data[0].reg_date = new Date(response.data[0].reg_date).toISOString()
+                    const { category_id, id, title, content, date } = response.data[0];
+                    console.log(category_id, id, title, content, date)
+                    setFormData({ category_id, id, title, content, date });
+            })
+            .catch(error => {
+                console.error('게시글 가져오기 오류:', error);
+            });
+        }
+    }, [board_id]);
+
+    // 게시물을 서버에 수정하는 함수
     const handlePostBoard = () => {
         const token = localStorage.getItem('token')
-        axios.post(`http://localhost:8081/guest/community/edit/${board_id}`, formData,{
+        formData.board_id = board_id
+        axios.put(`http://localhost:8081/guest/community/edit/${board_id}`, formData,{
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -60,6 +88,8 @@ const boardUpdate = () => {
     };
 
     return(
+        <>
+        <Header />
         <Container>
         <Title>자유게시판 수정</Title>
         <Content>
@@ -101,10 +131,11 @@ const boardUpdate = () => {
                 </Row>
             </Content>
             <ButtonContainer>
-            <Button onClick={() => router.push('/guest/community/boardDetails')}>수정</Button>
+            <Button onClick={handlePostBoard}>수정</Button>
             <Button onClick={() => router.back()}>이전</Button>
             </ButtonContainer>
         </Container>
+        </>
     )
 }
 
