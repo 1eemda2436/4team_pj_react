@@ -9,6 +9,8 @@ const Doc = () => {
 
   const router = useRouter();
   const [samples, setSamples] = useState([]);
+  const [filteredSamples, setFilteredSamples] = useState([]);
+  const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
     
@@ -27,14 +29,27 @@ const Doc = () => {
         const filteredSamples = response.data.filter(adminTotal => statuses.includes(adminTotal.doc_status));
         const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
         setSamples(sortedSamples);
-        // setFilteredSamples(sortedSamples);
+        setFilteredSamples(sortedSamples);
         console.log('sortedSamples:', sortedSamples)
       })
       .catch((error) => {
           console.log(error);
       });
   }, []);
+  
+  const indexOfLastItem = page * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredSamples.slice(indexOfFirstItem, indexOfLastItem);
 
+  const totalPage = Math.ceil(filteredSamples.length / itemsPerPage);
+
+  const handleClick = (type) => {
+      if (type === "prev" && page > 1) {
+          setPage(page - 1);
+      } else if (type === "next" && page < totalPage) {
+          setPage(page + 1);
+      }
+  };
 
   // 날짜 변환
   const formatDate = (timestamp) => {
@@ -49,44 +64,52 @@ const Doc = () => {
 
   return(
       <MainContainer>
-          <Title>전자결재</Title>
-          <AdminMenu>
-            <Button onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재 완료 문서함</Button>
-            <Button onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 예정 문서함</Button>
-            <Button onClick={() => router.push('/admin/doc/adminApprovalBack')}>결재 반려 문서함</Button>
-          </AdminMenu>
+        <Title>전자결재</Title>
+        <AdminMenu>
+          <Button onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재 완료 문서함</Button>
+          <Button onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 예정 문서함</Button>
+          <Button onClick={() => router.push('/admin/doc/adminApprovalBack')}>결재 반려 문서함</Button>
+        </AdminMenu>
 
-          <TblComponent>
-            <TblHeader>
-              <DocTableTop>
-                <thead>
-                  <tr>
-                    <th>+</th>
-                    <th>상태</th>
-                    <th>제목</th>
-                    <th>기안자</th>
-                    <th>결재일</th>
+        <TblComponent>
+          <TblHeader>
+            <DocTableTop>
+              <thead>
+                <tr>
+                  <th>상태</th>
+                  <th>문서번호</th>
+                  <th>제목</th>
+                  <th>기안자</th>
+                  <th>결재일</th>
+                </tr>
+              </thead>
+            </DocTableTop>
+          </TblHeader>
+
+          <TblContent>
+            <DocTableBottom>
+              <tbody>
+                {currentItems.map((adminTotal) =>
+                  <tr key = {adminTotal.doc_id} onClick={() => router.push(`/admin/doc/adminApprovalIngDetail?id=${adminTotal.doc_id}`)}>
+                    <td component="" scope="adminTotal">{adminTotal.doc_status}</td>
+                    <td>{adminTotal.doc_id}</td>
+                    <td>{adminTotal.doc_title}</td>
+                    <td>{adminTotal.name}</td>
+                    <td>{formatDate(adminTotal.doc_date)}</td>
                   </tr>
-                </thead>
-              </DocTableTop>
-            </TblHeader>
+                )}
+              </tbody>
+            </DocTableBottom>
+          </TblContent>
 
-            <TblContent>
-              <DocTableBottom>
-                <tbody>
-                  {samples.map((adminTotal) =>
-                    <tr key = {adminTotal.doc_id} onClick={() => router.push(`/admin/doc/adminApprovalIngDetail?id=${adminTotal.doc_id}`)}>
-                        <td component="" scope="adminTotal">{adminTotal.doc_status}</td>
-                        <td>{adminTotal.doc_id}</td>
-                        <td>{adminTotal.doc_title}</td>
-                        <td>{adminTotal.name}</td>
-                        <td>{formatDate(adminTotal.doc_date)}</td>
-                    </tr>
-                  )}
-                </tbody>
-              </DocTableBottom>
-            </TblContent>
-          </TblComponent>
+          {totalPage > 1 && (  // 여기에서 조건부 렌더링을 수행합니다.
+          <PageButton>
+            <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+            <span>{page} / {totalPage}</span>
+            <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
+          </PageButton>
+          )}
+        </TblComponent>
       </MainContainer>
   )
 }
@@ -202,12 +225,14 @@ const PageButton = styled.div`
     margin: 0 10px;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: gray;
+    background-color: #007bff;
     color: white;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
     &:disabled {
-      background-color: lightgray;
+      background-color: #007bff;
+      cursor: not-allowed;
     }
   }
 `;
