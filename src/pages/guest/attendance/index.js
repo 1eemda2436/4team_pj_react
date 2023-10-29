@@ -1,62 +1,139 @@
 import MainLayout from "@/components/layout/mainLayout";
 import styled from "styled-components";
+import User from '../../../../public/asset/icons/user.svg'
+import Header from "@/components/common/header";
+import { useRouter } from "next/router";
+import MyCalendar from "@/components/calendar/MyCalendar";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+
+const WeeklyWorkButton = styled.a`
+    cursor: pointer;
+    background-color: #005FC5;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+
+    &:hover {
+    background-color: #003F85;
+    }
+`;
+
 
 // main
-const Attendance = () => {
+function Attendance () {
+    const [attendance, setAttendance] = useState([]);
+    const [weeklyWork, setWeeklyWork] = useState([]);
+    const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const id = localStorage.getItem('user_id');
+        axios
+            .get(`http://localhost:8081/guest/attendance/myAttenCount/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log("값? : ", response.data);
+                setAttendance(response.data);
+            });
+    }, []);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const id = localStorage.getItem('user_id');
+        axios
+            .get(`http://localhost:8081/guest/attendance/weeklyWorkTime/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                console.log("값? : ", response.data);
+                setWeeklyWork(response.data);
+            });
+    }, []);
+
     return (
-        <AttenContainer>
-            <AttenBoxTop>
-                <AttenBoxUser>
-                    [ user! ]
-                </AttenBoxUser>
+        <MainComponent>
+            <Header />
+            <AttenComponent>
+                <AttenBoxTop>
+                    <AttenBoxUser>
+                        <UserIconBox>
+                            <UserIcon width='70' height='70' />
+                            <span>{attendance.name}</span>
+                        </UserIconBox>
+                        <UserContent>
+                            {attendance.id}
+                        </UserContent>
+                    </AttenBoxUser>
+                    
+                    <AttenBoxInfo>
+                        <div className="circle-container">
+                            <CircleBox>
+                                <div className="circle">{attendance.total_annual}</div>
+                                총 연차
+                            </CircleBox>
+
+                            <CircleBox>
+                                <div className="circle">{attendance.used_annual}</div>
+                                사용 연차
+                            </CircleBox>
+                            
+                            <CircleBox>
+                                <div className="circle">{attendance.annuallastcount}</div>
+                                잔여 연차
+                            </CircleBox>
+                            
+                            <CircleBox>
+                                <div className="circle">{attendance.worklate}</div>
+                                지각계
+                            </CircleBox>
+
+                            <CircleBox>
+                                <div className="circle">{attendance.noworking}</div>
+                                결근계
+                            </CircleBox>
+
+                            <CircleBox>
+                                <div className="circle">{attendance.earlyout}</div>
+                                조퇴계
+                            </CircleBox>
+                        </div>
+                    </AttenBoxInfo>
+                </AttenBoxTop>
                 
-                <AttenBoxInfo>
-                    <div className="circle-container">
-                        <div className="circle">
-                            <span>총 연차</span>
-                        </div><br/>
-                        총 연차
-                        <div className="circle">
-                            <span>사용 연차</span>
-                        </div><br/>
-                        사용 연차
-                        <div className="circle">
-                            <span>잔여 연차</span>
-                        </div><br/>
-                        잔여 연차
-                        <div className="circle">
-                            <span>지각계</span>
-                        </div><br/>
-                        지각계
-                        <div className="circle">
-                            <span>결근계</span>
-                        </div><br/>
-                        결근계
-                        <div className="circle">
-                            <span>조퇴계</span>
-                        </div><br/>
-                        조퇴계
-                    </div>
-                </AttenBoxInfo>
-            </AttenBoxTop>
-            
-            <AttenBoxBottom>
-                <AttenCal>
-                    <div className="calendar">
-                        [ 캘린더 자리 ]
-                    </div>
-                </AttenCal>
-                
-                <AttenWeekWork>
-                    <div className="work-hours">
-                        [ 주간 근무 현황 ]
-                    </div>
-                    <div>[ 총 근무 시간 ]</div>
-                    <div>[ 총 연장 근무 시간 ]</div>
-                    <div>[ 남은 최소 근무 시간 ]</div>
-                </AttenWeekWork>
-            </AttenBoxBottom>
-        </AttenContainer>
+                <AttenBoxBottom>
+                    <AttenCal>
+                        <MyCalendar height={550} />
+                    </AttenCal>
+                    
+                    <AttenWeekWork>
+                        <div className="work-hours">
+                            {localStorage.getItem('auth') !== 'ROLE_ADMIN' && (
+                                <WeeklyWorkButton onClick={() => router.push('/guest/attendance/detail/')}>
+                                    쭈강 긍무 형황
+                                </WeeklyWorkButton>
+                            )}
+                        </div>
+                        <br/>
+                        <div>[ 총 근무 시간 ]</div>
+                        <div>{weeklyWork.totalWeekWork}</div>
+                        <div>[ 총 연장 근무 시간 ]</div>
+                        <div>{weeklyWork.totalWeekOver}</div>
+                        <div>[ 남은 최소 근무 시간 ]</div>
+                        <div>{weeklyWork.remainWeekTime}</div>
+
+                    </AttenWeekWork>
+                </AttenBoxBottom>
+            </AttenComponent>
+        </MainComponent>
     );
 }
 
@@ -66,88 +143,127 @@ Attendance.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-const AttenContainer = styled.div`
-    width: 100%;
-    height: 100vh;
+const MainComponent = styled.div`
+    height: 100%;
+`;
+
+const AttenComponent = styled.div`
+    height: 90%;
+    display: flex;
     align-items: center;
     justify-content: center;
-    display: flex;
     flex-direction: column;
-    padding: 20px;
     box-sizing: border-box;
+    padding: 50px 5%;
 `;
 
 const AttenBoxTop = styled.div`
-    width: 80%;
+    width: 100%;
+    min-height: 20%;
     display: flex;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 `;
 
 const AttenBoxBottom = styled.div`
-    width: 80%;
+    width: 100%;
+    height: 80%;
     display: flex;
-    margin-bottom: 50px;
 `;
 
 const AttenCal = styled.div`
-    width: 50%;
-    border: 3px solid black;
-    border-radius: 20px;
+    width: 40%;
+    height: 100%;
+    border: 2px solid #005FC5;
+    border-radius: 10px;
     padding: 20px;
-    height: 300px;
+    box-sizing: border-box;
     text-align: center;
     margin-right: 10px;
 `;
 
 const AttenWeekWork = styled.div`
-    width: 50%;
+    width: 60%;
+    height: 100%;
     margin-left: 10px;
-    border: 3px solid black;
-    border-radius: 20px;
+    border: 2px solid #005FC5;
+    border-radius: 10px;
     padding: 20px;
-    height: 300px;
+    box-sizing: border-box;
     text-align: center;
 `;
 
 const AttenBoxUser = styled.div`
-    border: 3px solid black;
-    border-radius: 20px;
+    border-radius: 10px;
     width: 20%;
-    background-color: #17a1fa;
-    height: 103px;
-    color: white;
+    background-color: #F6F8FA;
+    color: #005FC5;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     font-size: 18px;
     margin-right: 10px;
+    border: 2px solid #005FC5;
+    padding: 0px 10px;
+`;
+
+const UserIconBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const UserIcon = styled(User)`
+    margin-bottom: 8px;
+`;
+
+const UserContent = styled.div`
+    margin-left: 20px;
+`;
+
+const CircleBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 15px;
 `;
 
 const AttenBoxInfo = styled.div`
-    border: 3px solid black;
-    border-radius: 20px;
+    border: 2px solid #005FC5;
+    box-sizing: border-box;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 80%;
     font-size: 16px;
-    height: 103px;
-    font-size: 16px;
     margin-left: 10px;
+    padding: 15px 0px;
+    cursor: default;
+    
     .circle-container {
         display: flex;
         align-items: center;
         justify-content: center;
-        column-gap: 10px;
+        column-gap: 35px;
     }
+
     .circle {
-        background-color: #17a1fa;
-        width: 72px;
-        height: 72px;
-        border: 3px solid black;
+        background-color: #F6F8FA;
+        min-width: 80px;
+        min-height: 80px;
         border-radius: 50%;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        color: #005FC5;
+        margin-bottom: 10px;
+        font-size: 28px;
+        font-weight: 700;
+
+        &:hover {
+            background-color: #005FC5;
+            color: #fff;
+        }
     }
-    `;
+`;

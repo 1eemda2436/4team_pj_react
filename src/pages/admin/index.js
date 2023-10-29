@@ -1,27 +1,82 @@
 import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout"
+import axios from "axios";
+import React, {useEffect ,useState } from "react";
+
 const admin = () => {
+    const [companyData, setCompanyData] = useState([]);
+    const [roleData, setRoleData] = useState([])
+    
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const company_id = localStorage.getItem('company_id');
+        const id = localStorage.getItem('user_id');
+
+        async function fetchData() {
+            try {
+                const companyRes = await axios.get(`http://localhost:8081/admin/company/${company_id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    console.log(response.data)
+                    setCompanyData(response.data); // 받은 데이터를 상태에 저장
+                })
+                .catch(err => {
+                    console.log("Error", err);
+                });
+
+                const roleRes = await axios.get(`http://localhost:8081/admin/auth/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    console.log(response.data)
+                    setRoleData(response.data); // 받은 데이터를 상태에 저장
+
+                    if(response.data != null) {
+                        localStorage.setItem('roleData', JSON.stringify(response.data)); // 데이터를 로컬스토리지에 JSON 형식으로 저장
+                    }
+                })
+                .catch(err => {
+                    console.log("Error", err);
+                });
+                
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+            }
+        }
+
+        fetchData();
+    }, []);
+
     return(
         <MainComponent>
             <CompanyInfoBox>
                 <InfoDiv>
                     <InfoTitle>License</InfoTitle>
-                    <InfoValue>FORBIDDEN</InfoValue>
+                    <InfoValue>{companyData.name}</InfoValue>
                 </InfoDiv>
                 <InfoDiv>
                     <InfoTitle>Location</InfoTitle>
-                    <InfoValue>서울</InfoValue>
+                    <InfoValue>{companyData.address}</InfoValue>
                 </InfoDiv>
                 <InfoDiv>
-                    <InfoTitle>Business number</InfoTitle>
-                    <InfoValue>사업자 번호</InfoValue>
+                    <InfoTitle>Work-In</InfoTitle>
+                    <InfoValue>{companyData.work_in}</InfoValue>
+                </InfoDiv>
+                <InfoDiv>
+                    <InfoTitle>Work-Out</InfoTitle>
+                    <InfoValue>{companyData.work_out}</InfoValue>
                 </InfoDiv>
             </CompanyInfoBox>
             <ControllerBox>
                 <ContentBox>프로젝트</ContentBox>
-                <ContentBox>직원수</ContentBox>
+                <ContentBox>회사규모 ({companyData.employees})</ContentBox>
                 <ContentBox>근태 현황</ContentBox>
-                <ContentBox>권한 권리</ContentBox>
+                <ContentBox>{companyData.email}</ContentBox>
             </ControllerBox>
         </MainComponent>
     )
@@ -34,6 +89,8 @@ export default admin;
 admin.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
+
+
 const MainComponent = styled.div`
     width: 100%;
     height: 100vh;
@@ -53,7 +110,7 @@ const InfoDiv = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 38px;
+    font-size: 32px;
     margin-bottom: 45px;
 `;
 const InfoTitle = styled.div`

@@ -22,94 +22,99 @@ function MenuToggle({ menus }) {
             <MenuName>{menus.value}</MenuName>
         </MenuIconDiv>
     );
-  }
+}
 
 export default function MainSideMenu() {
+    const router = useRouter();
+
+    const logoutToggle = () => {
+        localStorage.clear();
+        router.push('/');
+    }
+
     //메뉴 요소 배열 
     const menus = [
-        {   
-            id: 1,
-            icon: <Alerts />,
-            value: '알림',
-            path: '/guest'
-        },
         {
-            id: 2,
+            id: 1,
             icon: <Video_Conference />,
             value: '워크스페이스',
-            path: '/guest'
-        },
-        {
-            id: 3,
-            icon: <Time />,
-            value: '근태관리',
-            path: '/guest'
+            path: '/guest/workspace'
         },
         {   
-            id: 4,
+            id: 2,
             icon: <Calendar />,
             value: '캘린더',
             path: '/guest/calendar'
         },
+        // {
+        //     id: 3,
+        //     icon: <Chat />,
+        //     value: '메신저',
+        //     path: '/guest/chatting'
+        // },
+        {
+            id: 4,
+            icon: <Megaphone />,
+            value: '공지사항',
+            path: '/guest/notice'
+        },
         {
             id: 5,
-            icon: <Chat />,
-            value: '메신저',
-            path: '/guest'
+            icon: <Forms />,
+            value: '전자결재',
+            path: '/guest/doc'
         },
         {
             id: 6,
-            icon: <Megaphone />,
-            value: '공지사항',
-            path: '/guest'
+            icon: <Time />,
+            value: '근태관리',
+            path: '/guest/attendance'
         },
         {
             id: 7,
-            icon: <Forms />,
-            value: '전자결재',
-            path: '/guest'
+            icon: <Badge />,
+            value: '인사관리',
+            path: '/guest/personnel'
         },
         {
             id: 8,
-            icon: <Badge />,
-            value: '인사관리',
-            path: '/guest'
+            icon: <Bank />,
+            value: '급여관리',
+            path: '/guest/salary'
         },
         {
             id: 9,
-            icon: <Bank />,
-            value: '급여관리',
-            path: '/guest'
-        },
-        {
-            id: 10,
             icon: <Working_Together />,
             value: '커뮤니티',
-            path: '/guest'
+            path: '/guest/community'
         },
     ];
 
     return (
         <SideMenu>
-            <Logo1 />
+            <Logo1Icon onClick={() => router.push('/guest')}/>
             <MenuIcons>
                 {menus.map((menu) => (
                     <MenuToggle menus={menu} key={menu.id} />
                 ))}
             </MenuIcons>
-            <LogoutIcon />
+            <LogoutIcon onClick={logoutToggle} />
         </SideMenu>
     )
 }
 
 const SideMenu = styled.div`
-    width: 80px;
-    height: 100vh;
+    width: 110px;
     background-color: #005FC5;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 15px 0px;
+`;
+
+const Logo1Icon = styled(Logo1)`
+    cursor: pointer;
+    margin-bottom: 20px;
 `;
 
 const MenuIcons = styled.div`
@@ -125,10 +130,10 @@ const MenuIconDiv = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 11px 0px;
+    padding: 18px 0px;
     margin-bottom: 10px;
     cursor: pointer;
-   
+
     &:hover {
         background: rgba(255, 255, 255, 0.2);
         color: white;

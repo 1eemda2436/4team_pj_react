@@ -1,32 +1,86 @@
 import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
-import React, {useState} from "react";
-
+import React, {useEffect, useState} from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 
 const Doc = () => {
-
-    const TemporarySave = () => {
-
-        console.log('임시 저장이 완료되었습니다.');
-    }
-    
-    const Approval = () => {
-    
-        console.log('결재 요청이 완료되었습니다.');
-    }
-
-    const Complete = () => {
-
-        console.log('문서 작성이 완료되었습니다.');
-    }
-    
-    const Cancel = () => {
-    
-        console.log('문서 작성이 취소되었습니다.');
-    }
+    const router = useRouter();
+    const {id} = router.query; // ID를 추출
+    console.log(id);
 
     const [selectedCategory, setSelectedCategory] = useState('');
+    
+    const [samples, setSamples] = useState({
+        doc_title: '',
+        doc_content: '',
+    });
+
+    useEffect(() => {
+        if(id) {
+            axios.get(`http://localhost:8081/guest/doc/detail/${id}`)
+            .then((response) => {
+                const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content } = response.data;
+                setSamples({
+                    doc_id,
+                    doc_date,
+                    name,
+                    doc_status,
+                    doc_attachment,
+                    category_id,
+                    doc_title,
+                    doc_content,
+                });
+                setSelectedCategory(category_id);
+            })
+            .catch((error) => {
+                console.error("문서 불러오기 실패", error);
+            })
+        }
+    }, [id]);
+
+    const handleInputChange = (e) => {
+        const {name, value} = e.target;
+        setSamples((samples) => ({
+        ...samples,
+        doc_title: name === 'doc_title' ? value : samples.doc_title,
+        doc_content: name === 'doc_content' ? value : samples.doc_content,
+        }));
+    };
+
+    const handleFileChange = (f) => {
+        const file = f.target.files[0];
+        setSamples((samples) => ({
+        ...samples,
+        doc_attachment: file,
+        }));
+    };
+
+    const hanldeUpdate = () => {
+        const updateSamples = new FormData();
+        updateSamples.append('doc_title', samples.doc_title);
+        updateSamples.append('doc_content', samples.doc_content);
+        updateSamples.append('doc_status', '기안');
+        updateSamples.append('category_id', selectedCategory);
+
+        const token = localStorage.getItem('token')
+        
+        if(id) {
+            axios.put(`http://localhost:8081/guest/doc/update/${id}`, updateSamples, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(() => {
+                alert('문서수정 완료')
+                router.push(`/guest/doc/detail/draftDetail?id=${samples.doc_id}`)
+            })
+            .catch((error) => {
+                console.error("문서 수정 실패:", error);
+            });
+        }
+    }
 
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
@@ -34,69 +88,101 @@ const Doc = () => {
 
     return(
         <Container>
-            <ApprovalLine>
-                <table>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
-            </ApprovalLine>
             <Title>
                 <H1>업무 기안서</H1>
             </Title>
             <Docstyle1>
                 <DocstyleLeft>
-                    <Table>
-                        <TableTr>
-                            <TableTh>문서번호</TableTh>
-                            <TableTd>1</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>기안일</TableTh>
-                            <TableTd>1</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>기안자</TableTh>
-                            <TableTd>1</TableTd>
-                        </TableTr>
-                    </Table>
+                    <table>
+                        <tr>
+                            <th>문서번호</th>
+                            <td>
+                                <input 
+                                    type="number"
+                                    name="doc_id"
+                                    readOnly
+                                    value={samples.doc_id}
+                                    onChange={handleInputChange}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>기안일</th>
+                            <td>
+                                <input
+                                type="date"
+                                name="doc_date"
+                                value={samples.doc_date}
+                                onChange={handleInputChange}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>기안자</th>
+                            <td>
+                                <input 
+                                type="text"
+                                name="name"
+                                value={samples.name}
+                                onChange={handleInputChange}
+                                />
+                                <input 
+                                type="hidden"
+                                name="doc_status"
+                                value={samples.doc_status}
+                                onChange={handleInputChange}
+                                />
+                            </td>
+                        </tr>
+                    </table>
                 </DocstyleLeft>
+                    
             </Docstyle1>
             <Docstyle2>
-                <Table>
-                        <TableTr>
-                            <TableTh3>제목</TableTh3>
-                            <TableTh2>여기에 문서 제목</TableTh2>
-                        </TableTr>
-                        <TableTr>
-                                <TableTd2 colSpan={2}>문서 내용</TableTd2>
-                        </TableTr>
-                </Table>
+                <table>
+                        <tr>
+                            <th>제목</th>
+                            <td>
+                                <input 
+                                    type="text"
+                                    name="doc_title"
+                                    value={samples.doc_title}
+                                    onChange={handleInputChange}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}>
+                                <input
+                                    type="text"
+                                    name="doc_content"
+                                    value={samples.doc_content}
+                                    onChange={handleInputChange}
+                                />
+                            </td>
+                        </tr>
+                </table>
                 <br></br>
-                <Table>
-                        <TableTr>
-                            <TableTh3>구분</TableTh3>
-                            <TableTd3> </TableTd3>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh3>첨부파일</TableTh3>
-                            <TableTd3>여기에 첨부파일</TableTd3>
-                        </TableTr>
-                </Table>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>첨부파일</th>
+                            <td>{samples.doc_attachment}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </Docstyle2>
             <CategoryTable>
                 <select value={selectedCategory} onChange={CategoryChange}>
                     <option value="">카테고리 선택</option>
-                    <option value="category1">카테고리 1</option>
-                    <option value="category2">카테고리 2</option>
-                    <option value="category3">카테고리 3</option>
+                    <option value="1">카테고리 1</option>
+                    <option value="2">카테고리 2</option>
+                    <option value="3">카테고리 3</option>
                 </select>
             </CategoryTable>
             <ButtonStyle>
-                <button type="button" onClick={Complete}>수정</button>
-                <button type="button" onClick={Cancel}>취소</button>
+                <button type="button" onClick={hanldeUpdate}>수정완료</button>
+                <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>돌아가기</button>
             </ButtonStyle>
         </Container>
     )
@@ -104,128 +190,110 @@ const Doc = () => {
 
 export default Doc;
 
-Doc.getLayout = function getLayout(page) {
-    return <MainLayout>{page}</MainLayout>;
-};
-
 const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 20px;
 `;
 
 const ApprovalLine = styled.div`
-    text-align: right;
-    margin-bottom: 20px;
-    margin-left: auto;
-    tr {
-        border: solid 1px;
-    };
-
-    td {
-        border: solid 1px;
-        width: 100px;
-        height: 100px;
+margin-bottom: 20px;
+table {
+  width: 100%;
+  td {
+    width: 33.33%;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    &:hover {
+      background-color: #f5f5f5;
     }
+  }
+}
 `;
 
 const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-const Docstyle1 = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin: 10px;
-`;
-
-const Docstyle2 = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-`;
-
-const DocstyleLeft = styled.div`
-    margin-left: 10px;
-`;
-
-const DocstyleRight = styled.div`
-    margin-right: 10px;
+text-align: center;
+margin-bottom: 20px;
 `;
 
 const H1 = styled.h1`
-    font-size: 30px;
+font-size: 30px;
+margin-bottom: 10px;
 `;
 
-const Table = styled.table`
-    border: 1px solid;
+const Docstyle1 = styled.div`
+width: 80%;
+display: flex;
+justify-content: space-between;
+margin-bottom: 20px;
 `;
 
-const TableTr = styled.tr`
-    border: 1px solid;
+const DocstyleLeft = styled.div`
+width: 48%;
+table {
+  width: 100%;
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  th {
+    background-color: #f5f5f5;
+  }
+}
 `;
 
-const TableTh = styled.th`
-    border: 1px solid;
-    padding: 5px;
+const DocstyleRight = styled.div`
+width: 48%;
+display: flex;
+justify-content: space-between;
+button {
+  width: 48%;
+  padding: 10px;
+  cursor: pointer;
+  &:first-child {
+    margin-right: 4%;
+  }
+}
 `;
 
-const TableTh2 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 600px;
-`;
-
-const TableTh3 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 60px;
-`;
-
-const TableTd = styled.td`
-    border: 1px solid;
-    width: 80px;
-`;
-
-const TableTd2 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 200px;
-    height: 300px;
-`;
-
-const TableTd3 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 600px;
-`;
-
-const ButtonStyle = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-
-    button {
-        border: solid 1px;
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: gray;
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin: 1px;
-    }
-
+const Docstyle2 = styled.div`
+width: 80%;
+margin-bottom: 20px;
+table {
+  width: 100%;
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  th {
+    background-color: #f5f5f5;
+  }
+}
 `;
 
 const CategoryTable = styled.div`
-    display: flex;
-    justify-content: flex-end;
+margin-bottom: 20px;
+select {
+  width: 100%;
+  padding: 10px;
+}
+`;
+
+const ButtonStyle = styled.div`
+button {
+  width: 48%;
+  padding: 10px;
+  cursor: pointer;
+  &:first-child {
+    margin-right: 4%;
+  }
+}
 `;

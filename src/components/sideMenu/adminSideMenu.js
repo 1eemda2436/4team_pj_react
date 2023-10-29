@@ -7,6 +7,7 @@ import MaintenanceDate from '../../../public/asset/icons/MaintenanceDate.svg';
 import SelectiveHighlighting from '../../../public/asset/icons/SelectiveHighlighting.svg';
 import DocumentHeader from '../../../public/asset/icons/DocumentHeader.svg';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 function MenuToggle({ menus }) {
     const router = useRouter();
@@ -17,52 +18,74 @@ function MenuToggle({ menus }) {
         <MenuName>{menus.value}</MenuName>
     </MenuIconDiv>
     );
-  }
+}
 
 export default function adminSideMenu() {
+    const router = useRouter();
+    const [roleData, setRoleData] = useState({});
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const storedData = JSON.parse(localStorage.getItem('roleData'));
+            if (storedData) {
+                setRoleData(storedData);
+            }
+        }
+        
+    }, []); // 빈 배열로 설정
+
+    console.log(roleData)
+
     //메뉴 요소 배열 
     const menus = [
         {   
             id: 1,
             icon: <AdminMain />,
             value: '메인',
-            path: '/admin'
+            path: '/admin',
+            show: 'Y'
         },
         {   
             id: 2,
             icon: <CyberSecurity />,
             value: '보안관리',
-            path: '/admin/security'
+            path: '/admin/security',
+            show: roleData === '' ? roleData.security : 'Y'
         },
         {   
             id: 3,
             icon: <SalaryMale />,
             value: '급여관리',
-            path: '/admin/salary'
+            path: '/admin/salary',
+            show: roleData === '' ? roleData.salary : 'Y'
         },
         {   
             id: 4,
             icon: <People />,
             value: '인사관리',
-            path: '/admin'
+            path: '/admin/personnel',
+            show:  roleData === '' ? roleData.personnel : 'Y'
         },
         {   
             id: 5,
             icon: <MaintenanceDate />,
             value: '근태관리',
-            path: '/admin'
+            path: '/admin/attendance',
+            show:  roleData === '' ? roleData.attendance : 'Y'
         },
         {   
             id: 6,
             icon: <SelectiveHighlighting />,
             value: '전자결재',
-            path: '/admin'
+            path: '/admin/doc',
+            show:  roleData === '' ? roleData.approval : 'Y'
         },
         {   
             id: 7,
             icon: <DocumentHeader />,
             value: '게시판관리',
-            path: '/admin'
+            path: '/admin/board',
+            show:  roleData === '' ? roleData.board : 'Y'
         },
     ];
 
@@ -77,10 +100,12 @@ export default function adminSideMenu() {
             </AdminMinaSideHeader>
             <MenuIcons>
                 {menus.map((menu) => (
-                    <MenuToggle menus={menu} key={menu.id} />
+                    menu.show === 'Y' && ( // show가 'Y'인 메뉴만 렌더링
+                        <MenuToggle menus={menu} key={menu.id} />
+                    )
                 ))}
             </MenuIcons>
-            <BottomSpan>사원 페이지 이동</BottomSpan>
+            <BottomSpan onClick={() => router.push('/guest')}>사원 페이지 이동</BottomSpan>
         </SideMenu>
     )
 }
