@@ -133,6 +133,7 @@ const Community = () => {
                 <NewsContainer>
                     test
                     {/* 뉴스 내용 크롤링한거 넣기 */}
+                    <button onClick={() => router.push('/guest/community/test')} />
                 </NewsContainer>
             </MainContainer>
         </>

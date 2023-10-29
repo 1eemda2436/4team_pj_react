@@ -1,15 +1,59 @@
 import DepartStickChart from "@/components/chart/DepartStickChart";
 import TeamRadarChart from "@/components/chart/TeamRadarChart";
 import AdminLayout from "@/components/layout/adminLayout";
+import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState  } from "react";
 import styled from "styled-components";
 
 const AdminAttendanceDep = () => {
     const router = useRouter();
 
-    const [selectedDepartment, setSelectedDepartment] = useState(1); // 선택한 부서 상태
-    const [selectedTeam, setSelectedTeam] = useState(1); // 선택한 팀 상태
+    const [selectedDepartment, setSelectedDepartment] = useState(''); // 선택한 부서 상태
+    const [selectedTeam, setSelectedTeam] = useState(''); // 선택한 팀 상태
+    const [departments, setDepartments] = useState([]);
+    const [teams, setTeams] = useState([]);
+
+    const handleDepartmentChange = (e) => {
+        const depart_id = e.target.value;
+        // 선택한 부서에 대한 팀 정보 가져오기
+        const token = localStorage.getItem('token')
+        axios.get(`http://localhost:8081/admin/department/teamsFind/${depart_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            setTeams(response.data);
+            console.log("값보자!!!", response.data);
+        })
+        .catch(error => {
+            console.error('팀 정보 가져오기 오류', error);
+        });
+    };
+
+    // 부서 목록 가져오기
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        console.log(token)
+        const company_id = localStorage.getItem('company_id')
+        axios.get(`http://localhost:8081/admin/department/find/${company_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            setDepartments(response.data);
+            console.log("얘도보자!@!@", response.data);
+        })
+        .catch(error => {
+            console.error('부서 정보 가져오기 오류', error);
+        });
+        
+        // 페이지가 처음 로드될 때 팀 정보를 초기화
+        setTeams([]);
+
+    }, []);
 
     const handleSelectDepart = (e) => {
         const selectedDepart = e.target.value;
@@ -22,6 +66,7 @@ const AdminAttendanceDep = () => {
         console.log("팀!", e.target.value);
         setSelectedTeam(e.target.value);
     };
+    
 
     return (
         <MainContainer>
@@ -30,27 +75,32 @@ const AdminAttendanceDep = () => {
             <ChartContainer>
                 <ChartSelectBox>
                     <select
-                        onChange={handleSelectDepart} // 선택 변경 핸들러 추가
-                        value={selectedDepartment}
+                        name="depart_id"
+                        value={departments.depart_id}
+                        onChange={(e) => {
+                            handleSelectDepart(e);
+                            handleDepartmentChange(e);
+                        }}
                     >
-                        <option value="1">부서 선택</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
+                        <option value="">부서를 선택하세요</option>
+                        {departments.map(department => (
+                            <option key={department.depart_id} value={department.depart_id}>
+                            {department.depart_name}
+                            </option>
+                        ))}
                     </select>
 
                     <select
-                        onChange={handleSelectTeam} // 선택 변경 핸들러 추가
-                        value={selectedTeam}
-                    >
-                        <option value="1">팀 선택</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
+                            name="team_id"
+                            value={teams.team_id}
+                            onChange={handleSelectTeam}
+                        >
+                            <option value="">팀을 선택하세요</option>
+                            {teams.map(team => (
+                                <option key={team.team_id} value={team.team_id}>
+                                {team.team_name}
+                                </option>
+                            ))}
                     </select>
                 </ChartSelectBox>
 

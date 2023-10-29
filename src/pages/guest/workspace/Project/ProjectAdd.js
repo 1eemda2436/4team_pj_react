@@ -23,7 +23,7 @@ const ProjectAdd = () => {
                 }
             })
             .then((response) => {
-                console.log(response.data)
+                console.log("값", response.data);
                 setDepartmentList(response.data);
             })
             .catch((error) => {
