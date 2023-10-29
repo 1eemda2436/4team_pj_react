@@ -55,10 +55,9 @@ const PayStatement = () => {
     const totalPayment = Math.ceil(totalMathPayment / 10000) * 10000
 
     return (
+        <>
+        <Header/>
         <MainContainer>
-        <div><Header/></div>
-        <Title>급여관리 - 명세서</Title>
-
         <PayContainer>
         <SubTitle>2023년 10월 명세서</SubTitle>
 
@@ -128,11 +127,9 @@ const PayStatement = () => {
                 </tr>
             </tbody>
         </Table>
-        <ButtonContainer>
-            <Button onClick={() => router.back()}>이전</Button>
-        </ButtonContainer>
         </PayContainer>
         </MainContainer>
+        </>
     );
 }
 
@@ -144,16 +141,10 @@ PayStatement.getLayout = function getLayout(page) {
 
 const MainContainer = styled.div`
     width: 100%;
-    height: 100%;
+    height: 90%;
     padding: 40px;
     box-sizing: border-box;
     margin: 0 auto;
-`;
-
-const Title = styled.div`
-    font-size: 26px;
-    font-weight: 700;
-    color: #007bff;
 `;
 
 const PayContainer = styled.div`

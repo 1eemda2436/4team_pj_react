@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Header from "@/components/common/header";
 
 
 const Doc = () => {
@@ -65,10 +66,9 @@ const Doc = () => {
       };
 
     return(
+      <>
+      <Header />
       <MainContainer>
-          <Title>
-            전자 결재
-          </Title>
           <PersonalMenu>
             <Button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</Button>
             <Button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</Button>
@@ -107,19 +107,20 @@ const Doc = () => {
               </DocTableBottom>
             </TblContent>
 
-              <PersonalMenu>
-                <Button type="button" onClick={() => router.push(`/guest/doc/insertDraft`)}>문서 작성</Button>
-              </PersonalMenu>
+            <PersonalMenu>
+              <Button type="button" onClick={() => router.push(`/guest/doc/insertDraft`)}>문서 작성</Button>
+            </PersonalMenu>
           
-          {totalPage > 1 && (  // 여기에서 조건부 렌더링을 수행합니다.
-            <PageButton>
-                <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
-                <span>{page} / {totalPage}</span>
-                <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
-            </PageButton>
-          )}
+            {totalPage > 1 && (  // 여기에서 조건부 렌더링을 수행합니다.
+              <PageButton>
+                  <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+                  <span>{page} / {totalPage}</span>
+                  <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
+              </PageButton>
+            )}
         </TblComponent>
       </MainContainer>
+      </>
     )
 }
 
@@ -131,7 +132,7 @@ Doc.getLayout = function getLayout(page) {
 
 const MainContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 90%;
   padding: 40px;
   box-sizing: border-box;
 `;
@@ -145,7 +146,6 @@ const Title = styled.div`
 const PersonalMenu = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 40px;
 `;
 
 const Button = styled.button`
@@ -174,7 +174,7 @@ const TblHeader = styled.div`
 `;
 
 const TblContent = styled.div`
-  height: 600px;
+  height: 500px;
   overflow-x: auto;
   padding: 0px 15px;
 
@@ -228,7 +228,7 @@ const PageButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin: 20px 0px;
 
   button {
     margin: 0 10px;
