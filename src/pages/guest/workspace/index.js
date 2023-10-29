@@ -12,15 +12,20 @@ import MyCalendar from "@/components/calendar/MyCalendar";
 const Workspace = () => {
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
-    const [teams, setTeams] = useState([]);
+    const [isProjectModalOpen, setProjectModalOpen] = useState(false);
+    const [isProjectEditModalOpen, setProjectEditModalOpen] = useState(false);
+    const [isWorkModalOpen, setWorkModalOpen] = useState(false);
+    const [isWorkEditModalOpen, setWorkEditModalOpen] = useState(false);
+    // const [teams, setTeams] = useState([]);
+
+    const [showWork, setShowWork] = useState(false);
     
     useEffect(() => {
         const token = localStorage.getItem('token')
         const company_id = localStorage.getItem('company_id')
-        const depart_id = localStorage.getItem('depart_id')
         const team_id = localStorage.getItem('team_id')
 
-        axios.get(`http://localhost:8081/guest/project/${team_id}`, {
+        axios.get(`http://localhost:8081/guest/project/list/${team_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -32,47 +37,21 @@ const Workspace = () => {
         .catch((error) => {
             console.log(error);
         });
-
-        axios.get(`http://localhost:8081/guest/team/${depart_id}`,{
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            setTeams(response.data);
-            console.log(response.data)
-        })
-        .catch(error => {
-            console.error("Error fetching teams:", error);
-        });
-
     }, []);
 
     const router = useRouter();
 
-    const projectWorkToggle = ({ pj_id }) => {
-        axios.get(`http://localhost:8081/guest/projectwork/${pj_id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then((response) => {
-            setProjectworkList(response.data);
-            console.log('??', response.data)
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
+    const projectWorkToggle = (pj_id) => {
+        const token = localStorage.getItem('token')
 
-    const projectWorkAll = () => {
-        axios.get(`http://localhost:8081/guest/projectwork/all/${team_id}`, {
+        axios.get(`http://localhost:8081/guest/projectwork/list/${pj_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
         .then((response) => {
-            setProjectworkList(response.data);
+            setProjectworkList(response.data)
+            setShowWork(true)
             console.log('??', response.data)
         })
         .catch((error) => {
@@ -86,30 +65,32 @@ const Workspace = () => {
             <MainContainer>
                 <ProjectContainer>
                     <ProjectListContainer>
-                        <PTitle onClick={projectWorkAll}>프로젝트</PTitle>
-                        {projectList.map((pj) => (
-                            <ProjectBox key={pj.pj_id} onClick={projectWorkToggle(pj.pj_id)}>
-                                <ProjectDate>{moment(pj.deadline_s).format('YY-MM-DD')} ~ {moment(pj.deadline_e).format('YY-MM-DD')}</ProjectDate>
-                                <ProjectTitle>{pj.pj_name}</ProjectTitle>
-                            </ProjectBox>
-                        ))}
-                        {projectList.map((pj) => (
-                            <ProjectBox key={pj.pj_id}>
-                                <ProjectDate>{moment(pj.deadline_s).format('YY-MM-DD')} ~ {moment(pj.deadline_e).format('YY-MM-DD')}</ProjectDate>
-                                <ProjectTitle>{pj.pj_name}</ProjectTitle>
-                            </ProjectBox>
-                        ))}
+                        <PTitle>프로젝트</PTitle>
+                        {projectList.length > 0 ? (
+                            projectList.map((pj) => (
+                                <ProjectBox key={pj.pj_id} onClick={() => projectWorkToggle(pj.pj_id)}>
+                                    <ProjectDate>{moment(pj.deadline_s).format('YY-MM-DD')} ~ {moment(pj.deadline_e).format('YY-MM-DD')}</ProjectDate>
+                                    <ProjectTitle>{pj.pj_name}</ProjectTitle>
+                                </ProjectBox>
+                            ))
+                        ) : (
+                            <NoTitle>아직 등록된 프로젝트가 없습니다.</NoTitle>
+                        )}
                     </ProjectListContainer>
 
-                    <ProjectWorkContainer>
+                    {showWork && (<ProjectWorkContainer>
                         <PTitle>업무</PTitle>
-                        {projectworkList.map((pjw) => (
-                            <ProjectBox key={pjw.pw_id}>
-                                <ProjectDate>{moment(pjw.pw_deadline_s).format('YY-MM-DD')} ~ {moment(pjw.pw_deadline_e).format('YY-MM-DD')}</ProjectDate>
-                                <ProjectTitle>{pjw.pw_name}</ProjectTitle>
-                            </ProjectBox>
-                        ))}
-                    </ProjectWorkContainer>
+                        {projectworkList.length > 0 ? (
+                            projectworkList.map((pjw) => (
+                                <ProjectBox key={pjw.pw_id}>
+                                    <ProjectDate>{moment(pjw.pw_deadline_s).format('YY-MM-DD')} ~ {moment(pjw.pw_deadline_e).format('YY-MM-DD')}</ProjectDate>
+                                    <ProjectTitle>{pjw.pw_name}</ProjectTitle>
+                                </ProjectBox>
+                            ))
+                        ) : (
+                            <NoTitle>아직 등록된 업무가 없습니다.</NoTitle>
+                        )}
+                    </ProjectWorkContainer>)}
                     
                     <TeamContainer>
                         <ToggleBox>
@@ -118,18 +99,50 @@ const Workspace = () => {
                         </ToggleBox>
 
                         <TeamBox>
-                            {teams.map((t) => (
+                            {/* {teams.map((t) => (
                                 <TeamUser>
                                     <UserName></UserName>
                                 </TeamUser>
-                            ))}
+                            ))} */}
                         </TeamBox>
                     </TeamContainer>
                 </ProjectContainer>
 
                 <CalendarContainer>
-                    <MyCalendar height={600} />
+                    <MyCalendar height={750} />
                 </CalendarContainer>
+
+                {isProjectModalOpen && (
+                    <ProjectAddModal
+                        onClose={handleModalClose}
+                        onSave={handleModalSave}
+                    />
+                )}
+
+                {isProjectEditModalOpen && (
+                    <ProjectEditModal
+                        onClose={handleEditModalClose}
+                        onSave={handleEditModalSave}
+                        depart_id={selectedDepartInfo.depart_id}
+                        depart_name={selectedDepartInfo.depart_name}
+                    />
+                )}
+
+                {isWorkModalOpen && (
+                    <WorkAddModal
+                        onClose={handleModalClose}
+                        onSave={handleModalSave}
+                    />
+                )}
+
+                {isWorkEditModalOpen && (
+                    <WorkEditModal
+                        onClose={handleEditModalClose}
+                        onSave={handleEditModalSave}
+                        depart_id={selectedDepartInfo.depart_id}
+                        depart_name={selectedDepartInfo.depart_name}
+                    />
+                )}
                 
             </MainContainer>
         </>
@@ -181,12 +194,20 @@ const PTitle = styled.div`
     cursor: default;
 `;
 
+const NoTitle = styled.div`
+    color: gray;
+    padding: 0px 100px;
+    white-space: nowrap;
+    
+`;
+
 const ProjectBox = styled.div`
     display: flex;
     align-items: center;
     border-bottom: 1px solid #e5e5e5;
     padding: 15px 0px;
     margin: 10px 20px;
+    cursor: pointer;
     
     &:hover {
         background: #eff1f6;
@@ -199,12 +220,14 @@ const ProjectDate = styled.div`
     margin-right: 150px;
     padding-left: 20px;
     font-size: 14px;
+    word-wrap: break-word;
 `;
 
 const ProjectTitle = styled.div`
     font-size: 18px;
     padding-right: 20px;
     font-weight: 600;
+    white-space: nowrap;
 `;
 
 const ToggleBox = styled.div`

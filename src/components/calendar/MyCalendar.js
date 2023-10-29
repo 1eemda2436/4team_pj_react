@@ -14,11 +14,12 @@ const MyCalendar = ({ height }) => {
 
     useEffect(() => {
         const token = localStorage.getItem('token')
+        const team_id = localStorage.getItem('team_id')
         
         // 비동기 함수를 이용해 데이터를 불러옴
         async function fetchData() {
             try {
-                const projectResponse = await fetch("http://localhost:8081/guest/project", {
+                const projectResponse = await fetch(`http://localhost:8081/guest/project/list/${team_id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -51,42 +52,34 @@ const MyCalendar = ({ height }) => {
         fetchData();
     }, []); // 빈 배열을 두어 컴포넌트가 마운트될 때 한 번만 실행
 
-    const projectEvents = projectList.map(pj => ({
-        title: pj.pj_name,
-        start: moment(pj.deadline_s).format('YYYY-MM-DD'),
-        end: moment(pj.deadline_e).format('YYYY-MM-DD'),
-        id: pj.pj_id
-    }));
+    const projectEvents = projectList.length > 0
+        ? projectList.map(pj => ({
+            title: pj.pj_name,
+            start: moment(pj.deadline_s).format('YYYY-MM-DD'),
+            end: moment(pj.deadline_e).format('YYYY-MM-DD'),
+            id: pj.pj_id
+        }))
+    : [];
 
-    const annualEvents = cfan.map(an => ({
-        title: an.annual_title,
-        start: moment(an.annual_start).format('YYYY-MM-DD'),
-        end: moment(an.annual_end).format('YYYY-MM-DD'),
-        id: an.name
-    }));
+    const annualEvents = cfan.length > 0
+        ? cfan.map(an => ({
+            title: an.annual_title,
+            start: moment(an.annual_start).format('YYYY-MM-DD'),
+            end: moment(an.annual_end).format('YYYY-MM-DD'),
+            id: an.name
+        }))
+    : [];
 
-    const vacationEvents = cfva.map(va => ({
-        title: va.vacation_title,
-        start: moment(va.vacation_start).format('YYYY-MM-DD'),
-        end: moment(va.vacation_end).format('YYYY-MM-DD'),
-        id: va.name
-    }));
+    const vacationEvents = cfva.length > 0
+        ? cfva.map(va => ({
+            title: va.vacation_title,
+            start: moment(va.vacation_start).format('YYYY-MM-DD'),
+            end: moment(va.vacation_end).format('YYYY-MM-DD'),
+            id: va.name
+        }))
+    : [];
 
     const allEvents = [...projectEvents, ...annualEvents, ...vacationEvents];
-
-    // function calendar_rendering() {
-    //     calendar = new FullCalendar.Calendar(calendarEl, {
-    //       initialView: "dayGridMonth",
-    //       firstDay: 1,
-    //       titleFormat: function (date) {
-    //         year = date.date.year;
-    //         month = date.date.month + 1;
-    //   
-    //         return year + "년 " + month + "월";
-    //       },
-    //     });
-    //     calendar.render();
-    //   }
 
     return (
         <FullCalendarWrapper>
