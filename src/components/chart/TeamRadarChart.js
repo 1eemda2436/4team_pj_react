@@ -57,7 +57,7 @@ const TeamPieChart = ({ selectedTeam }) => {
 
     return (
         <div>
-            <h2>Team Chart</h2>
+            <h2>팀별 근태현황</h2>
             <Pie data={data} />
         </div>
     );

@@ -9,8 +9,6 @@ import styled from "styled-components";
 const Doc = () => {
 
   const router = useRouter();
-  const id = localStorage.getItem('user_id');
-  console.log('id확인:',id);
   const [samples, setSamples] = useState([]);
   const [filteredSamples, setFilteredSamples] = useState([]);
   const [page, setPage] = useState(1);
@@ -51,54 +49,67 @@ const Doc = () => {
       }
   };
 
+  // 날짜 변환
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    return formattedDate;
+  };
+
   return(
-      <Container>
+      <MainContainer>
           <Title>
-              <H1>완료 문서함</H1>
+            완료 문서함
           </Title>
-          <Docstyle1>
-              <tbody>
+          <AdminMenu>
+            <Button type="button" onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재 완료 문서함</Button>
+            <Button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 예정 문서함</Button>
+            <Button type="button" onClick={() => router.push('/admin/doc/adminApprovalBack')}>결재 반려 문서함</Button>
+          </AdminMenu>
+          <TblComponent>
+            <TblHeader>
+              <DocTableTop>
+                <thead>
                   <tr>
-                      <th>
-                          <button type="button" onClick={() => router.push('/admin/doc/adminApprovalEnd')}>결재 완료 문서함</button>
-                      </th>
-                      <th>
-                          <button type="button" onClick={() => router.push('/admin/doc/adminApprovalIng')}>결재 예정 문서함</button>
-                      </th>
-                      <th>
-                          <button type="button" onClick={() => router.push('/admin/doc/adminApprovalBack')}>결재 반려 문서함</button>
-                      </th>
+                    <th>상태</th>
+                    <th>문서번호</th>
+                    <th>문서 제목</th>
+                    <th>작성자</th>
+                    <th>결재일</th>
                   </tr>
-              </tbody>
-          </Docstyle1>
-          <Docstyle2>
-                  <thead>
-                      <tr>
-                          <th>상태</th>
-                          <th>문서번호</th>
-                          <th>문서 제목</th>
-                          <th>작성자</th>
-                          <th>결재일</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {currentItems.map((approvalEnd) =>
-                          <tr key = {approvalEnd.doc_id} onClick={() => router.push(`/admin/doc/adminApprovalEndDetail?id=${approvalEnd.doc_id}`)}>
-                              <td component="" scope="approvalEnd">{approvalEnd.doc_status}</td>
-                              <td>{approvalEnd.doc_id}</td>
-                              <td>{approvalEnd.doc_title}</td>
-                              <td>{approvalEnd.name}</td>
-                              <td>{approvalEnd.approval_date}</td>
-                          </tr>
-                      )}
-                  </tbody>
-          </Docstyle2>
+                </thead>
+              </DocTableTop>
+            </TblHeader>
+
+            <TblContent>
+              <DocTableBottom>
+                <tbody>
+                  {currentItems.map((approvalEnd) =>
+                    <tr key = {approvalEnd.doc_id} onClick={() => router.push(`/admin/doc/adminApprovalEndDetail?id=${approvalEnd.doc_id}`)}>
+                      <td component="" scope="approvalEnd">{approvalEnd.doc_status}</td>
+                      <td>{approvalEnd.doc_id}</td>
+                      <td>{approvalEnd.doc_title}</td>
+                      <td>{approvalEnd.name}</td>
+                      <td>{formatDate(approvalEnd.approval_date)}</td>
+                    </tr>
+                  )}
+                </tbody>
+              </DocTableBottom>
+            </TblContent>
+          
+          {totalPage > 1 && (  // 여기에서 조건부 렌더링을 수행합니다.
           <PageButton>
-                <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
-                <span>{page} / {totalPage}</span>
-                <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
-        </PageButton>
-      </Container>
+            <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+            <span>{page} / {totalPage}</span>
+            <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
+          </PageButton>
+          )}
+        </TblComponent>
+      </MainContainer>
   )
 }
 
@@ -108,60 +119,99 @@ Doc.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
 
-const Container = styled.div`
+const MainContainer = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  height: 100%;
+  padding: 40px;
+  box-sizing: border-box;
 `;
 
 const Title = styled.div`
-  text-align: center;
-  margin-bottom: 20px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #007bff;
 `;
 
-const Docstyle1 = styled.table`
+const AdminMenu = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 20px;
+`;
+
+const TblComponent = styled.div`
+  border: 1px solid #E5E5E5;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,.10);
+  box-sizing: border-box;
+  margin-top: 40px;
+`;
+
+const TblHeader = styled.div`
+  padding: 0px 15px;
+  background: #F6F8FA;
+  border-radius: 5px 5px 0px 0px;
+`;
+
+const TblContent = styled.div`
+  height: 600px;
+  overflow-x: auto;
+  padding: 0px 15px;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  } 
+
+  &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+  }
+  
+  &::-webkit-scrollbar-thumb {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+  }
+`;
+
+const Table = styled.table`
+  width:100%;
+  table-layout: fixed;
+  font-size: .9em;
   width: 100%;
-  margin: 10px 0;
+  min-width: 650px;
+  border-collapse: collapse;
+
   th {
+    padding: 20px 15px;
     text-align: center;
-    padding: 10px;
-    border: 1px solid black;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: gray;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin: 1px;
+
+  td {
+    padding: 15px;
+    vertical-align: middle;
+    font-size: 13px;
+    border-bottom: solid 1px #E5E5E5;
+    text-align: center;
+    word-wrap: break-word;
   }
 `;
 
-const Docstyle2 = styled.table`
-  width: 100%;
-  thead {
-    th {
-      text-align: center;
-      padding: 10px;
-      border: 1px solid black;
-    }
-  }
-  tbody {
-    tr {
-      cursor: pointer;
-      td {
-        text-align: center;
-        padding: 10px;
-        border: 1px solid black;
-      }
-    }
-  }
-`;
+const DocTableTop = styled(Table)``;
 
-const H1 = styled.h1`
-  font-size: 30px;
+const DocTableBottom = styled(Table)`
+  margin-top: 20px;
 `;
 
 const PageButton = styled.div`
@@ -174,12 +224,13 @@ const PageButton = styled.div`
     margin: 0 10px;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: gray;
+    background-color: #007bff;
     color: white;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
     &:disabled {
-      background-color: lightgray;
+      background-color: #007bff;
       cursor: not-allowed;
     }
   }

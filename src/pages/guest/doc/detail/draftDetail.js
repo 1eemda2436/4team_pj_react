@@ -13,29 +13,34 @@ const Doc = () => {
     
     const [samples, setSamples] = useState([]);
     console.log('samples.sign:', samples.sign)
+
+    const [imageSrc, setImageSrc] = useState("");
     
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);
     };
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        
-        if (id) {
-            console.log('id:', id);
-            axios.get(`http://localhost:8081/guest/doc/detail/${id}`,{
-                headers: {
-                    'Authorization': `Bearer ${token}`
+        const fetchData = async () => {
+            const token = localStorage.getItem('token');
+    
+            if (id) {
+                try {
+                    const response = await axios.get(`http://localhost:8081/guest/doc/detail/${id}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    setSamples(response.data);
+                    console.log('response.data:', response.data);
+                    setImageSrc(`http://localhost:8081/myimage/${response.data.sign}`);
+                } catch (error) {
+                    console.error(error);
                 }
-            })
-            .then((response) => {
-                setSamples(response.data);
-                console.log('response.data:', response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        }
+            }
+        };
+    
+        fetchData();
     }, [id]);
 
     // 파일 다운로드 
@@ -94,6 +99,17 @@ const Doc = () => {
             });
         }
     }
+
+    // 날짜 변환
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        });
+        return formattedDate;
+    };
     
     return(
         <Container>
@@ -101,7 +117,13 @@ const Doc = () => {
                 <table>
                     <tr>
                         <td>
-                            <img src={samples.sign} alt="사인" style={{ width: '100px', height: '100px' }} />
+                        {imageSrc && (
+                        <img
+                            src={imageSrc}
+                            alt="미리보기"
+                            style={{ width: "100px", height: "100px" }}
+                        />
+                        )}
                         </td>           
                         <td></td>
                     </tr>
@@ -120,7 +142,7 @@ const Doc = () => {
                         </TableTr>
                         <TableTr>
                             <TableTh>기안일</TableTh>
-                            <TableTd>{samples.doc_date}</TableTd>
+                            <TableTd>{formatDate(samples.doc_date)}</TableTd>
                         </TableTr>
                         <TableTr>
                             <TableTh>기안자</TableTh>
@@ -147,7 +169,6 @@ const Doc = () => {
                 <Table>
                     <div>
                         <TableTr>
-                            <TableTh3>구분</TableTh3>
                             <TableTd3> </TableTd3>
                         </TableTr>
                         <TableTr>

@@ -6,7 +6,7 @@ import moment from 'moment';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const MyCalendar = () => {
+const MyCalendar = ({ height }) => {
     const [projectList, setProjectList] = useState([]);
     const [cfan, setCfan] = useState([]);
     const [cfva, setCfva] = useState([]);
@@ -74,36 +74,96 @@ const MyCalendar = () => {
 
     const allEvents = [...projectEvents, ...annualEvents, ...vacationEvents];
 
+    // function calendar_rendering() {
+    //     calendar = new FullCalendar.Calendar(calendarEl, {
+    //       initialView: "dayGridMonth",
+    //       firstDay: 1,
+    //       titleFormat: function (date) {
+    //         year = date.date.year;
+    //         month = date.date.month + 1;
+    //   
+    //         return year + "년 " + month + "월";
+    //       },
+    //     });
+    //     calendar.render();
+    //   }
+
     return (
-        <Caldiv>
+        <FullCalendarWrapper>
             <FullCalendar 
+                height={height ? height : 900}
                 plugins={[ dayGridPlugin ]}
                 events={allEvents}
                 aspectRatio={2.5}
                 eventContent={(eventInfo) => (
                     <FullCalendarEventContent>
-                        <Link href={`/guest/workspace/ProjectDetail/${eventInfo.event.id}`}>
+                        <EventTitle onClick={() => router.push(`/guest/workspace/ProjectDetail/${eventInfo.event.id}`) }>
                             {eventInfo.event.title}
-                        </Link>
+                        </EventTitle>
                     </FullCalendarEventContent>
-                    )}
+                )}
+                firstDay={1}
             />
-        </Caldiv>
+        </FullCalendarWrapper>
     );
 }
 
 export default MyCalendar;
 
-const Caldiv = styled.div `
+const FullCalendarWrapper  = styled.div`
     width: 100%;
-    height: 100%;
+
+    /* 일요일 날짜 빨간색 */
+    .fc-day-sun a {
+    color: red;
+    text-decoration: none;
+    }
+
+    /* 토요일 날짜 파란색 */
+    .fc-day-sat a {
+    color: blue;
+    text-decoration: none;
+    }
+
+    /*종일제목*/
+    .fc-event-title.fc-sticky{
+        text-align: center;
+    }
+
+    /*more버튼*/ 
+    .fc-daygrid-more-link.fc-more-link{
+        color: #000;
+    }
+    /*일정시간*/
+    .fc-daygrid-event > .fc-event-time{
+        color:#000;
+    }
+    /*시간제목*/
+    .fc-daygrid-dot-event > .fc-event-title{
+        color:#000 !important;
+    }
+
+    /*상단버튼*/
+    .fc .fc-button-primary {
+        background-color: #005FC5;
+        border: 1px solid transparent;
+    }
+
+    /*이벤트*/
+    .fc-h-event {
+        background-color: #000;
+        border: 1px solid transparent;
+    }
 `;
 
 const FullCalendarEventContent = styled.div`
-    background-color: #3498db;
+    background-color: #000;
     color: white;
     padding: 5px;
     border-radius: 5px;
     cursor: pointer;
-    
+    border: none;
+    border: 1px solid transparent;
 `;
+
+const EventTitle = styled.div``;

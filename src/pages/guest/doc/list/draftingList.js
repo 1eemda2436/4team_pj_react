@@ -51,29 +51,34 @@ const Doc = () => {
         }
     };
 
+    // 날짜 변환
+    const formatDate = (timestamp) => {
+      const date = new Date(timestamp);
+      const formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+      return formattedDate;
+    };
+
     return (
-      <Container>
-          <Title>
-              <H1>기안 문서함</H1>
-          </Title>
-          <Docstyle1>
-            <tbody>
-              <tr>
-                  <th>
-                      <button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</button>
-                  </th>
-                  <th>
-                      <button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</button>
-                  </th>
-                  <th>
-                      <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</button>
-                  </th>
-              </tr>
-            </tbody>
-          </Docstyle1>
-          <Docstyle2>
-            <thead>
-              <tr>
+      <MainContainer>
+        <Title>
+          기안 문서함
+        </Title>
+        <PersonalMenu>
+          <Button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</Button>
+          <Button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</Button>
+          <Button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</Button>
+          <Button type="button" onClick={() => router.push('/guest/doc/list/approvalSuggestList')}>결재 요청목록</Button>
+        </PersonalMenu>
+
+        <TblComponent>
+          <TblHeader>
+            <DocTableTop>
+              <thead>
+                <tr>
                   <th>문서번호</th>
                   <th>카테고리</th>
                   <th >문서 제목</th>
@@ -81,39 +86,45 @@ const Doc = () => {
                   <th>기안일</th>
                   <th>상태</th>
                   <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((draft) =>
+                </tr>
+              </thead>
+            </DocTableTop>
+          </TblHeader>
+
+          <TblContent>
+            <DocTableBottom>
+              <tbody>
+                {currentItems.map((draft) =>
                   <tr key={draft.doc_id} onClick={() => router.push(`/guest/doc/detail/draftDetail?id=${draft.doc_id}`)}>
                     <td component="" scope="draft">{draft.doc_id}</td>
                     <td>{draft.category_name}</td>
                     <td>{draft.doc_title}</td>
                     <td>{draft.name}</td>
-                    <td>{draft.doc_date}</td>
+                    <td>{formatDate(draft.doc_date)}</td>
                     <td>{draft.doc_status}</td>
-                    <td>
+                    {/* 마우스 클릭이벤트가 안으로 전달되지 않게 하는 함수 */}
+                    <td onClick={(e)=> {e.stopPropagation()}}>
                       <button type="button" onClick={() => router.push(`/guest/doc/updateApproval?id=${draft.doc_id}`)}>결재요청</button>
                     </td>
                   </tr>
-              )}
-            </tbody>
-          </Docstyle2>
-          <Docstyle2>
-            <tbody>
-              <tr>
-                <td>
-                  <button type="button" onClick={() => router.push(`/guest/doc/insertDraft`)}>문서 작성</button>
-                </td>
-              </tr>
-            </tbody>
-          </Docstyle2>
+                )}
+              </tbody>
+            </DocTableBottom>
+          </TblContent>
+        
+          <PersonalMenu>
+            <Button type="button" onClick={() => router.push(`/guest/doc/insertDraft`)}>문서 작성</Button>
+          </PersonalMenu>
+
+        {totalPage > 1 && ( 
           <PageButton>
-                <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
-                <span>{page} / {totalPage}</span>
-                <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
+            <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+            <span>{page} / {totalPage}</span>
+            <button onClick={() => handleClick("next")} disabled={page === totalPage}>다음</button>
           </PageButton>
-      </Container>
+        )}
+      </TblComponent>
+    </MainContainer>
   );
 };
 
@@ -123,60 +134,99 @@ Doc.getLayout = function getLayout(page) {
   return <MainLayout>{page}</MainLayout>;
 };
 
-const Container = styled.div`
-width: 100%;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+const MainContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  box-sizing: border-box;
 `;
 
 const Title = styled.div`
-text-align: center;
-margin-bottom: 20px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #007bff;
 `;
 
-const Docstyle1 = styled.table`
-width: 100%;
-margin: 10px 0;
-th {
-  text-align: center;
-  padding: 10px;
-}
-button {
+const PersonalMenu = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+`;
+
+const Button = styled.button`
   padding: 10px 20px;
-  font-size: 16px;
-  background-color: gray;
-  color: white;
+  background-color: #007bff;
+  color: #fff;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
-  margin: 1px;
-}
+  font-size: 16px;
+  margin-right: 20px;
 `;
 
-const Docstyle2 = styled.table`
-width: 100%;
-border-collapse: collapse;
-th, td {
-  text-align: center;
-  padding: 10px;
-  border: 1px solid black;
-  vertical-align: middle; /* 중앙 정렬을 위해 추가된 스타일 */
-}
-tbody {
-  tr {
-    cursor: pointer;
-    td {
-      text-align: center;
-      padding: 10px;
-      border: 1px solid black;
-    }
+const TblComponent = styled.div`
+  border: 1px solid #E5E5E5;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,.10);
+  box-sizing: border-box;
+  margin-top: 40px;
+`;
+
+const TblHeader = styled.div`
+  padding: 0px 15px;
+  background: #F6F8FA;
+  border-radius: 5px 5px 0px 0px;
+`;
+
+const TblContent = styled.div`
+  height: 600px;
+  overflow-x: auto;
+  padding: 0px 15px;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  } 
+
+  &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
   }
-}
+  
+  &::-webkit-scrollbar-thumb {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+  }
 `;
 
-const H1 = styled.h1`
-font-size: 30px;
+const Table = styled.table`
+  width:100%;
+  table-layout: fixed;
+  font-size: .9em;
+  width: 100%;
+  min-width: 650px;
+  border-collapse: collapse;
+
+  th {
+    padding: 20px 15px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 15px;
+    vertical-align: middle;
+    font-size: 13px;
+    border-bottom: solid 1px #E5E5E5;
+    text-align: center;
+    word-wrap: break-word;
+  }
+`;
+
+const DocTableTop = styled(Table)``;
+
+const DocTableBottom = styled(Table)`
+  margin-top: 20px;
 `;
 
 const PageButton = styled.div`
@@ -189,12 +239,13 @@ const PageButton = styled.div`
     margin: 0 10px;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: gray;
+    background-color: #007bff;
     color: white;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
     &:disabled {
-      background-color: lightgray;
+      background-color: #007bff;
       cursor: not-allowed;
     }
   }

@@ -5,10 +5,12 @@ import Header from "@/components/common/header";
 
 const Calendar = () => {
     return (
-        <MainComponent>
+        <>
             <Header />
-            <MyCalendar />
-        </MainComponent>
+            <MainComponent>
+                <MyCalendar height={800} />
+            </MainComponent>
+        </>
     );
 }
 
@@ -19,5 +21,7 @@ Calendar.getLayout = function getLayout(page) {
 };
 
 const MainComponent = styled.div`
-    padding: 0px 50px;
+    padding: 20px 50px;
+    height: 90%;
+    box-sizing: border-box;
 `;

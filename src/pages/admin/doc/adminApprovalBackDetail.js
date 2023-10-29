@@ -16,6 +16,7 @@ const Doc = () => {
     };
 
     const [samples, setSamples] = useState([]);
+    const [imageSrc, setImageSrc] = useState("");
 
     
     useEffect(() => {
@@ -31,6 +32,7 @@ const Doc = () => {
             .then((response) => {
                 setSamples(response.data);
                 console.log(response.data);
+                setImageSrc(`http://localhost:8081/myimage/${response.data.sign}`);
             })
             .catch((error) => {
                 console.log(error);
@@ -75,14 +77,32 @@ const Doc = () => {
         }
     };
 
+    // 날짜 변환
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        });
+        return formattedDate;
+    };
+
     return(
-        <Container>
+        <MainContainer>
             <ApprovalLine>
                 <table>
                     <tr>
-                        <td onClick={() => router.push('/admin/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/admin/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/admin/doc/approvalLine')}></td>
+                        <td>
+                        {imageSrc && (
+                        <img
+                            src={imageSrc}
+                            alt="미리보기"
+                            style={{ width: "100px", height: "100px" }}
+                        />
+                        )}
+                        </td>           
+                        <td></td>
                     </tr>
                 </table>
             </ApprovalLine>
@@ -99,7 +119,7 @@ const Doc = () => {
                         </TableTr>
                         <TableTr>
                             <TableTh>결재일</TableTh>
-                            <TableTd>{samples.approval_date}</TableTd>
+                            <TableTd>{formatDate(samples.approval_date)}</TableTd>
                         </TableTr>
                     </Table>
                 </DocstyleLeft>
@@ -125,7 +145,6 @@ const Doc = () => {
                 <br></br>
                 <Table>
                     <TableTr>
-                        <TableTh3>구분</TableTh3>
                         <TableTd3> </TableTd3>
                     </TableTr>
                     <TableTr>
@@ -138,7 +157,7 @@ const Doc = () => {
             <ButtonStyle>
                 <button type="button" onClick={handleBack}>돌아가기</button>
             </ButtonStyle>
-        </Container>
+        </MainContainer>
     )
 }
 
@@ -148,11 +167,13 @@ Doc.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
 
-const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+
+
+const MainContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  box-sizing: border-box;
 `;
 
 const ApprovalLine = styled.div`

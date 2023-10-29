@@ -1,4 +1,4 @@
-import MainLayout from "@/components/layout/mainLayout"
+import AdminLayout from "@/components/layout/adminLayout";
 import styled from "styled-components";
 import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
@@ -27,6 +27,13 @@ const Doc = () => {
             axios.get(`http://localhost:8081/guest/doc/detail/${id}`)
             .then((response) => {
                 const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content } = response.data;
+                let date = new Date();
+                let year = date.getFullYear();
+                let month = ("0" + (1 + date.getMonth())).slice(-2);
+                let day = ("0" + date.getDate()).slice(-2);
+            
+                let yyyymmdd = year + "-" + month + "-" + day;
+                
                 setSamples({
                     doc_id,
                     doc_date,
@@ -36,6 +43,7 @@ const Doc = () => {
                     category_id,
                     doc_title,
                     doc_content,
+                    approval_date: yyyymmdd,
                 });
                 setSelectedCategory(category_id);
             })
@@ -69,7 +77,7 @@ const Doc = () => {
         const token = localStorage.getItem('token')
         
         if(id) {
-            axios.put(`http://localhost:8081/guest/doc/update/${id}`, updateSamples, {
+            axios.put(`http://localhost:8081/admin/doc/updateBack/${id}`, updateSamples, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -193,7 +201,6 @@ const Doc = () => {
                 <table>
                     <tbody>
                         <tr>
-                            <th>구분</th>
                             <td> </td>
                         </tr>
                         <tr>
@@ -220,6 +227,10 @@ const Doc = () => {
 }
 
 export default Doc;
+
+Doc.getLayout = function getLayout(page) {
+    return <AdminLayout>{page}</AdminLayout>;
+};
 
 const Container = styled.div`
 width: 100%;

@@ -112,21 +112,45 @@ const AdminPersonnel = () => {
       }
     };
 
+    const downloadExcel = async () => {
+      try {
+        const response = await axios.get('http://localhost:8081/admin/excel/download', {
+          responseType: 'blob', // 응답 데이터 형식을 Blob으로 설정
+        });
+    
+        // Blob 데이터를 파일로 변환
+        const blob = new Blob([response.data]);
+        const url = window.URL.createObjectURL(blob);
+    
+        // 새로운 <a> 요소를 생성하고 다운로드 링크를 설정
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'personnel_members.xlsx'; // 다운로드할 파일 이름 설정
+        a.style.display = 'none';
+    
+        // <a> 요소를 body에 추가하고 클릭하여 다운로드 시작
+        document.body.appendChild(a);
+        a.click();
+    
+        // 클릭 이벤트 후 <a> 요소 삭제
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } catch (error) {
+        console.error('엑셀 다운로드 실패:', error);
+      }
+    };
+
     return (
         <MainComponent>
         <Title>인사 관리 - 사원 관리</Title>
-        <div>
-            <Button onClick={handleEmployeeRegistration}>사원등록</Button>
-        </div>
-        <br />
-        <div>
-            <Button onClick={() => router.push('/admin/department-team/')}>부서현황</Button>
-        </div>
 
-        <div>
-          <input type="file" accept=".xlsx" onChange={handleFileChange} />
-          {file && <button onClick={handleUpload}>Upload Excel File</button>}
-        </div>
+          <BtnContainer>
+            <Button onClick={() => router.push('/admin/department-team/')}>부서현황</Button>
+            <Button onClick={handleEmployeeRegistration}>사원등록</Button>
+            <Button onClick={downloadExcel}>사원정보 다운로드</Button>
+            <input type="file" accept=".xlsx" onChange={handleFileChange} />
+            {file && <Button onClick={handleUpload}>Upload Excel File</Button>}
+          </BtnContainer>
 
         <TblComponent>
           <TblHeader>
@@ -189,6 +213,13 @@ const Title = styled.h2`
   color: #007bff;
 `;
 
+const BtnContainer = styled.div`
+  display: flex;
+  margin-top: 70px;
+  align-items: center;
+
+`;
+
 const TblComponent = styled.div`
   border: 1px solid #E5E5E5;
   border-radius: 5px;
@@ -204,7 +235,7 @@ const TblHeader = styled.div`
 `;
 
 const TblContent = styled.div`
-  height: 550px;
+  height: 600px;
   overflow-x: auto;
   padding: 0px 15px;
 
@@ -250,28 +281,6 @@ const Table = styled.table`
 
 const PersonnelTableTop = styled(Table)``;
 
-const PayTableBottom = styled(Table)`
-  margin-top: 20px;
-`;
-
-const TotalBox = styled.div`
-  display: flex;
-  margin: 50px 30px 20px 30px;
-  justify-content: flex-end;
-  align-items: flex-end;
-  box-sizing: border-box;
-`;
-
-const TotalTitle = styled.div`
-  color: #007bff;
-  font-weight: 700;
-  font-size: 20px;
-`;
-
-const TotalResult = styled.span`
-  margin-left: 15px;
-`;
-
 const Button = styled.button`
   padding: 10px 20px;
   background-color: #007bff;
@@ -280,4 +289,5 @@ const Button = styled.button`
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  margin-right: 20px;
 `;
