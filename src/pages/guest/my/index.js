@@ -40,7 +40,7 @@ const my = () => {
                 <LeftTable>
                     <tbody>
                         <TableRow>
-                            <TableCell>{member.profile}</TableCell>
+                            <TableCell>{member.sign}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>{member.name}</TableCell>
