@@ -116,7 +116,7 @@ const AdminAttendanceDep = () => {
                 <AttenBtnBox>
                     <button
                         type="button"
-                        onClick={() => router.push('/admin/attendance/adminAnnualList')}
+                        onClick={() => router.push(`/admin/attendance/adminAnnualList/`)}
                         style={{
                             cursor: 'pointer',
                             backgroundColor: "#007BFF",
@@ -132,7 +132,7 @@ const AdminAttendanceDep = () => {
                     </button>
                     <button
                         type="button"
-                        onClick={() => router.push('/admin/attendance/adminVacationList')}
+                        onClick={() => router.push(`/admin/attendance/adminVacationList/`)}
                         style={{
                             cursor: 'pointer',
                             backgroundColor: "#007BFF",
