@@ -28,12 +28,6 @@ export default function Join() {
         KEY: '',
     })
 
-    const prevJoinData = useRef(joinData);
-
-    useEffect(() => {
-        prevJoinData.current = joinData;
-    }, [joinData]);
-
     //    company_id   varchar2(50)   	PRIMARY KEY,   	--회사 id
 //    name      	varchar2(100)   NOT NULL,      	--회사명
 //    address      varchar2(255)   NOT NULL,      	--주소
@@ -45,13 +39,7 @@ export default function Join() {
 //    KEY         	varchar2(100)   NOT NULL,      	--이메일 인증 키
 //    enabled      char(1)         
 
-    const handleInputChange = (name, value) => {
-        setJoinData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    }
-    
+
     const handleNextStep = () => {
         if (step < 3) {
             // 다음 단계 이동
@@ -60,23 +48,45 @@ export default function Join() {
     };
 
     function Step1Content() {
+        const [joinData, setJoinData] = useState({
+            name: '',
+            address: '',
+            employees: '',
+            manager: '',
+            email: '',
+            work_in: '',
+            work_out: '',
+            KEY: '',
+        })
+
+        const onChangeHandler = (event) => {
+            const name = event.target.name;
+            const value = event.target.value;
+            setJoinData((prevState) => ({
+            ...prevState,
+            [name]: value,
+            }));
+        };
+
         return (
             <StepMainComponent>
                 <TitleBox>
                     <><ColorTitle>사업자 정보 확인</ColorTitle>을 위해</>
                     <>아래 내용들을 입력해주세요 📝</>
                 </TitleBox>
-                <InputForm>
-                    <Input
-                        type='text'
-                        label="회사명"
-                        name="name"
-                        value={prevJoinData.current.name}
-                        onChange={handleInputChange}
-                        isStatus={status.name}
-                    />
-                    
-                </InputForm>
+                <InputContainer>
+                    <InputForm>
+                        <InputLabel>회사명</InputLabel>
+                        <Input
+                            type='text'
+                            name="name"
+                            value={joinData.name}
+                            onChange={onChangeHandler}
+                            isStatus={status.name}
+                        />
+                        
+                    </InputForm>
+                </InputContainer>
             </StepMainComponent>
         );
     
@@ -194,6 +204,10 @@ const TitleBox = styled.div``;
 
 const ColorTitle = styled.div``;
 
+const InputContainer = styled.div``;
+
 const InputForm = styled.div``;
+
+const InputLabel = styled.div``;
 
 const Input = styled.input``;
