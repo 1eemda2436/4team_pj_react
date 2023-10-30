@@ -142,6 +142,22 @@ const Workspace = () => {
         });
     };
 
+    const projectClose = (pj_id) => {
+        const token = localStorage.getItem('token');
+        axios.put(`http://localhost:8081/guest/project/update/${pj_id}`, null, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            console.log(response)
+            window.location.reload();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
     return (
         <>
             <Header/>
@@ -189,6 +205,7 @@ const Workspace = () => {
                                     <NoTitle>아직 등록된 업무가 없습니다.</NoTitle>
                                     )}
                             <AddBoardBtn onClick={() => workModalOpen(pj_id)}>업무 추가</AddBoardBtn>
+                            <AddBoardBtn onClick={() => projectClose(pj_id)}>프로젝트 종료</AddBoardBtn>
                         </ProjectWorkContainer>
                     )}
                     
