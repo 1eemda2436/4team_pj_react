@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 // 내 근태 현황(상세)
-
 function formatDateFromTimestamp(timestamp) {   // 날짜
     if (!timestamp) return '';
 
