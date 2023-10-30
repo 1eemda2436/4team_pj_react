@@ -7,56 +7,20 @@ import rootStore from "@/stores/rootStore";
 import Header from "@/components/common/header";
 import SelectBox from "@/components/form/selectBox";
 import UserIcon from '../../../../public/asset/icons/user.svg';
+import NewsCrawling from "@/components/crawling/news";
 
 
 const Community = () => {
     
+    const router = useRouter();
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
-    const [selectedItems, setSelectedItems] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
-    // 체크박스를 토글하고 선택한 항목을 업데이트합니다.
-    const handleCheckboxChange = (itemId) => {
-        const itemIdInt = parseInt(itemId, 10);
-        if (isSelected(itemId)) {
-            setSelectedItems(selectedItems.filter(item => item !== itemId));
-        } else {
-            setSelectedItems([...selectedItems, itemId]);
-        }
-    };
 
-    
-    // 해당 아이템이 선택되었는지 확인합니다.
-    const isSelected = (itemId) => selectedItems.includes(itemId);
-    const intSelectedItems = selectedItems.map(item => parseInt(item));
-    const deleteSelectedItems = () => {
-        if (intSelectedItems.length === 0) {
-            alert('선택된 항목이 없습니다.');
-            return;
-        }
-        
+    useEffect(() => {
         const token = localStorage.getItem('token');
-        // 여러 아이템을 삭제할 때는 배열 형태로 서버에 전달합니다.
-        axios.delete('http://localhost:8081/guest/community/boardDelete', {
-            data: intSelectedItems, // 선택된 아이템 ID 배열
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            console.log("Delete response:", response);
-            // 삭제가 성공하면 선택 항목과 데이터를 업데이트합니다.
-            setSelectedItems([]);
-            refreshData();
-        })
-        .catch(err => {
-            console.error('선택한 항목 삭제 중 오류 발생:', err);
-        });
-    };
-
-    const refreshData = () => {
-        const token = localStorage.getItem('token');
-        axios.get('http://localhost:8081/guest/community/list', {
+        axios.get(`http://localhost:8081/guest/community/list`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -71,15 +35,77 @@ const Community = () => {
                 setError('데이터를 가져오는 중 오류 발생');
             }
         });
+    }, [currentPage]); // currentPage 변경 시에만 데이터를 다시 가져옵니다.
+
+    const [itemsPerPage] = useState(10);
+    const [page, setPage] = useState(1);
+
+    // 페이지별로 데이터 슬라이스
+    const paginateData = (data, page, itemsPerPage) => {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return data.slice(startIndex, endIndex);
     };
-    useEffect(() => {
-        refreshData();
-    }, []);
 
-    const router = useRouter();
+    // 현재 페이지에 따라 데이터 슬라이스
+    const currentItems = paginateData(data, page, itemsPerPage);
+    const totalPages = Math.ceil(data.length / itemsPerPage);
 
+    const handleClick = (type) => {
+    if (type === "prev" && page > 1) {
+        setPage(page - 1);
+    } else if (type === "next" && page < totalPages) {
+        setPage(page + 1);
+    }
+    };
+
+    const [selectedCategory, setSelectedCategory] = useState(''); // 선택한 카테고리
+    const [categories, setCategories] = useState([]); // 카테고리 목록
+    const [filteredData, setFilteredData] = useState([]); // 필터링된 게시글 목록
+
+    // useEffect(() => {
+    //     // 카테고리 목록을 가져오는 API 요청
+    //     const token = localStorage.getItem('token');
+    //     axios.get('http://localhost:8081/guest/community/categories', {
+    //         headers: {
+    //             'Authorization': `Bearer ${token}`
+    //         }
+    //     })
+    //     .then(response => {
+    //         setCategories(response.data);
+    //     })
+    //     .catch(error => {
+    //         console.error('카테고리 가져오기 오류:', error);
+    //     });
+    // }, []);
+
+    // 카테고리 선택 시 호출되는 함수 / 대기
+    const handleCategorySelect = (category_id) => {
+        setSelectedCategory(category_id);
+        const token = localStorage.getItem('token');
+        // API 요청을 보내서 선택한 카테고리에 해당하는 게시글 목록을 가져옴
+        axios.get(`http://localhost:8081/guest/community/list?category=${category_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            setFilteredData(response.data);
+        })
+        .catch(error => {
+            console.error('게시글 목록 가져오기 오류:', error);
+        });
+    }
+
+    //BoardWrite이동 메서드
     const goToBoardWrite = () => {
-        router.push('/guest/community/BoardWrite');
+        const user_id = localStorage.getItem('user_id');
+        //router.push(`/guest/community/BoardWrite/`);
+        router.push({
+            pathname: '/guest/community/BoardWrite',
+            query: { id: user_id }
+        });
+        
     }
 
     return (
@@ -91,25 +117,37 @@ const Community = () => {
                         <TitleBox>
                             <Title>자유게시판</Title>
                             <CategorySelect>
-                                <Category>카테고리1</Category>
+                                {/* <SelectBox 
+                                    // SelectBox 컴포넌트에 카테고리 목록과 선택된 카테고리를 전달
+                                    label='카테고리를 선택하세요.'
+                                    //options={categories}
+                                    itemData={categories}
+                                    selectedValue={selectedCategory}
+                                    onItemSelected={handleCategorySelect}
+                                /> */}
                             </CategorySelect>
                         </TitleBox>
                         <ToggleBox>
-                            <MyBoardBtn>내 글 보기</MyBoardBtn>
+                            {/* <MyBoardBtn>내 글 보기</MyBoardBtn> */}
                             <AddBoardBtn onClick={goToBoardWrite}>글쓰기</AddBoardBtn>
                         </ToggleBox>
                     </SubHeaderContainer>
 
                     <ContentContainer>
-                        {data.map(item => (
+                        {/* {filteredData.map(item => ( */}
+                        {currentItems
+                        //.filter(item => item.category_id === selectedCategory) // 선택된 카테고리에 해당하는 게시글만 필터링
+                        .map(item => (
                             <ContentBox 
+                                // key={item.board_id}
+                                // onClick={() => router.push(`/guest/community/boardDetail/${item.board_id}`)}
                                 key={item.board_id}
                                 onClick={() => router.push(`/guest/community/boardDetail/${item.board_id}`)}
                             >
                                 <ContentHeader>
                                     <UserBox>
                                         <UserIconStyle width="35" height="35" />
-                                        <UserName>작성자</UserName>
+                                        <UserName>{item.writer}</UserName>
                                     </UserBox>
                                     {(item.hits !== 0 && item.hits !== null) ? 
                                         (<Hits>{item.hits}</Hits>) 
@@ -129,11 +167,16 @@ const Community = () => {
                             </ContentBox>
                         ))}
                     </ContentContainer>
+                    {totalPages > 1 && (  // 여기에서 조건부 렌더링을 수행합니다.
+                    <PageButton>
+                        <button onClick={() => handleClick("prev")} disabled={page === 1}>이전</button>
+                        <span>{page} / {totalPages}</span>
+                        <button onClick={() => handleClick("next")} disabled={page === totalPages}>다음</button>
+                    </PageButton>
+                    )}
                 </BoardContainer>
                 <NewsContainer>
-                    test
-                    {/* 뉴스 내용 크롤링한거 넣기 */}
-                    <button onClick={() => router.push('/guest/community/test')} />
+                    <NewsCrawling />
                 </NewsContainer>
             </MainContainer>
         </>
@@ -293,3 +336,8 @@ const NewsContainer = styled.div`
     border-radius: 5px;
 `;
 
+const PageButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px`;
