@@ -1,3 +1,4 @@
+import DocRadarChart from "@/components/chart/DocRadarChart";
 import Header from "@/components/common/header";
 import MainLayout from "@/components/layout/mainLayout"
 
@@ -5,6 +6,9 @@ const Guest = () => {
     return(
         <div>
             <Header />
+            <div>
+                <DocRadarChart />
+            </div>
         </div>
     )
 };
