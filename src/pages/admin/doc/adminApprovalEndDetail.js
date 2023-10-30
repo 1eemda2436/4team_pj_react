@@ -174,8 +174,8 @@ const Doc = () => {
                     </tr>
                 </TableAttachment>
             </TblContent>
-
             </TblComponent>
+            
             <ButtonStyle>
                 <Button type="button" onClick={handleBack}>돌아가기</Button>
             </ButtonStyle>

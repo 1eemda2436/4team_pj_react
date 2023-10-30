@@ -61,14 +61,6 @@ const Doc = () => {
         }));
     };
 
-    const handleFileChange = (f) => {
-        const file = f.target.files[0];
-        setSamples((samples) => ({
-        ...samples,
-        doc_attachment: file,
-        }));
-    };
-
     const hanldeUpdate = () => {
         const updateSamples = new FormData();
         updateSamples.append('doc_status', '반려');
@@ -386,12 +378,14 @@ const CategoryTable = styled.div`
 `;
 
 const ButtonStyle = styled.div`
-button {
-  width: 48%;
-  padding: 10px;
-  cursor: pointer;
-  &:first-child {
-    margin-right: 4%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  button {
+    width: 150px; /* 버튼 너비 조절 */
+    padding: 10px;
+    cursor: pointer;
+    margin: 0 10px; /* 버튼 사이의 간격 조절 */
   }
-}
 `;

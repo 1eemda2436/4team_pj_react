@@ -107,7 +107,7 @@ const Doc = () => {
                     <td>{draft.doc_status}</td>
                     {/* 마우스 클릭이벤트가 안으로 전달되지 않게 하는 함수 */}
                     <td onClick={(e)=> {e.stopPropagation()}}>
-                      <button type="button" onClick={() => router.push(`/guest/doc/updateApproval?id=${draft.doc_id}`)}>결재요청</button>
+                      <Button type="button" onClick={() => router.push(`/guest/doc/updateApproval?id=${draft.doc_id}`)}>결재요청</Button>
                     </td>
                   </tr>
                 )}
