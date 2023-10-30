@@ -81,7 +81,6 @@ const Doc = () => {
                         <th>문서 제목</th>
                         <th>작성자</th>
                         <th>기안일</th>
-                        <th>조회여부</th>
                     </tr>
                 </thead>
               </DocTableTop>
@@ -96,7 +95,6 @@ const Doc = () => {
                       <td>{view.doc_title}</td>
                       <td>{view.name}</td>
                       <td>{formatDate(view.doc_date)}</td>
-                      <td>{view.doc_read}</td>
                     </tr>
                   )}
                 </tbody>
