@@ -2,20 +2,11 @@ import styled from "styled-components"
 import ArrowL from '../../../public/asset/icons/arrowLeft.svg'
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import Input from "@/components/form/input";
 
 export default function Join() {
     const router = useRouter();
     const [step, setStep] = useState(1);
-
-    const [status, setStatus] = useState({
-        name: '',
-        address: '',
-        employees: '',
-        manager: '',
-        email: '',
-        work_in: '',
-        work_out: '',
-    });
 
     const [joinData, setJoinData] = useState({
         name: '',
@@ -48,21 +39,14 @@ export default function Join() {
     };
 
     function Step1Content() {
-        const [joinData, setJoinData] = useState({
+        const [data, setData] = useState({
             name: '',
             address: '',
             employees: '',
-            manager: '',
-            email: '',
-            work_in: '',
-            work_out: '',
-            KEY: '',
         })
 
-        const onChangeHandler = (event) => {
-            const name = event.target.name;
-            const value = event.target.value;
-            setJoinData((prevState) => ({
+        const onChangeHandler = (name, value) => {
+            setData((prevState) => ({
             ...prevState,
             [name]: value,
             }));
@@ -75,17 +59,32 @@ export default function Join() {
                     <>아래 내용들을 입력해주세요 📝</>
                 </TitleBox>
                 <InputContainer>
-                    <InputForm>
-                        <InputLabel>회사명</InputLabel>
-                        <Input
-                            type='text'
-                            name="name"
-                            value={joinData.name}
-                            onChange={onChangeHandler}
-                            isStatus={status.name}
-                        />
-                        
-                    </InputForm>
+                    <Input
+                        type='text'
+                        name='name'
+                        value={data.name}
+                        label='회사명'
+                        onChange={onChangeHandler}
+                        placeholder='회사명을 입력해주세요'
+                    />
+
+                    <Input
+                        type='text'
+                        name='address'
+                        value={data.address}
+                        label='회사 주소'
+                        onChange={onChangeHandler}
+                        placeholder='회사 주소를 입력해주세요'
+                    />
+
+                    <Input
+                        type='number'
+                        name='employees'
+                        value={data.employees}
+                        label='회사 규모'
+                        onChange={onChangeHandler}
+                        placeholder='회사 규모를 입력해주세요'
+                    />
                 </InputContainer>
             </StepMainComponent>
         );
@@ -205,9 +204,3 @@ const TitleBox = styled.div``;
 const ColorTitle = styled.div``;
 
 const InputContainer = styled.div``;
-
-const InputForm = styled.div``;
-
-const InputLabel = styled.div``;
-
-const Input = styled.input``;

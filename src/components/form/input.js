@@ -1,10 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-const Input = ({ type, label, name, onChange, placeholder, isStatus }) => {
+const Input = ({ type, label, name, onChange, placeholder, value }) => {
     const [focused, setFocused] = useState(false);
-
-    const inputRef = useRef(null);
 
     const handleFocus = () => {
         setFocused(true);
@@ -20,14 +18,12 @@ const Input = ({ type, label, name, onChange, placeholder, isStatus }) => {
 
     return (
         <InputComponent>
-            <Label focused={focused} isStatus={isStatus}>{label}</Label>
+            <Label focused={focused}>{label}</Label>
             <InputForm
                 type={type}
                 name={name}
-                ref={inputRef}
-                value={inputRef.current.value ? inputRef.current.value : ''}
+                value={value}
                 onChange={handleChange}
-                isStatus={isStatus}
                 placeholder={placeholder}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -65,13 +61,7 @@ const InputComponent = styled.div`
 `;
 
 const Label = styled.div`
-    color: ${({ isStatus, focused }) => (
-        focused ? "#005FC5" : (
-            isStatus === "success" ? "green" : (
-                isStatus === "fail" ? "red" : "#000"
-            )
-        )
-    )};
+    color: ${({ focused }) => (focused ? "#005FC5" : "#000")};
     font-weight: 600;
     transition: color 0.1s;
     margin-bottom: 5px;
@@ -86,23 +76,17 @@ const InputForm = styled.input`
     outline: none;
     font-size: 16px;
 
-    
-    ${({ isStatus, focused }) => {
+    &[type="number"]::-webkit-inner-spin-button,
+    &[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    ${({ focused }) => {
         if (focused) {
             return `
                 border: 1px solid #005FC5;
                 transition: 0.5s;
-            `;
-        }
-        else if (isStatus === "success") {
-            return `
-                border-color: green;
-                ${focused ? "box-shadow: 0 0 3px green;" : ""}
-            `;
-        } else if (isStatus === "fail") {
-            return `
-                border-color: red;
-                ${focused ? "box-shadow: 0 0 3px red;" : ""}
             `;
         }
     }}

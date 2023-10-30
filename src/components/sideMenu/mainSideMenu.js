@@ -12,6 +12,7 @@ import Video_Conference from '../../../public/asset/icons/Video_Conference.svg';
 import Working_Together from '../../../public/asset/icons/Working_Together.svg';
 import Logout from '../../../public/asset/icons/logout.svg'
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 //menu 아이콘, 제목 스타일 함수
 function MenuToggle({ menus }) {
@@ -26,11 +27,22 @@ function MenuToggle({ menus }) {
 
 export default function MainSideMenu() {
     const router = useRouter();
+    const [auth, setAuth] = useState(false);
 
     const logoutToggle = () => {
         localStorage.clear();
         router.push('/');
     }
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const auth = localStorage.getItem('auth');
+            if (auth === ROLE_ADMIN) {
+                setAuth(true);
+            }
+        }
+        
+    }, []); // 빈 배열로 설정
 
     //메뉴 요소 배열 
     const menus = [
@@ -62,25 +74,25 @@ export default function MainSideMenu() {
             id: 5,
             icon: <Forms />,
             value: '전자결재',
-            path: '/guest/doc'
+            path: auth ? '/admin/doc' : '/guest/doc'
         },
         {
             id: 6,
             icon: <Time />,
             value: '근태관리',
-            path: '/guest/attendance'
+            path: auth ? '/admin/attendance' : '/guest/attendance'
         },
         {
             id: 7,
             icon: <Badge />,
             value: '인사관리',
-            path: '/guest/personnel'
+            path: auth ? '/admin/personnel' : '/guest/personnel'
         },
         {
             id: 8,
             icon: <Bank />,
             value: '급여관리',
-            path: '/guest/salary'
+            path: auth ? '/admin/salary' : '/guest/salary'
         },
         {
             id: 9,
