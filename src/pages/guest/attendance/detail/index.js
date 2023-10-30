@@ -169,11 +169,11 @@ function AttendanceDetail () {
                             [ {annual.total_annual} ]
                         </AnnualRest>
 
-                        <AnnualRest onClick={() => router.push('/guest/attendance/annuallist/')} style={{ cursor: 'pointer' }}>
+                        <AnnualRest>
                             [ 사용한 연차]
                         </AnnualRest>
 
-                        <AnnualRest onClick={() => router.push('/guest/attendance/annuallist/')} style={{ cursor: 'pointer' }}>
+                        <AnnualRest>
                             [ {annual.used_annual} ]
                         </AnnualRest>
 

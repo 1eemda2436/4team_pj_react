@@ -3,12 +3,14 @@ import { useRouter } from 'next/router';
 import styled from "styled-components";
 import React, { useState } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 
 
 const NoticeWrite = () => {
     const [formData, setFormData] = useState({
         title: "",
         content: "",
+        reg_date: new Date().toISOString().slice(0, 10), // 현재 날짜를 ISO 형식으로 가져오기
     });
     const router = useRouter();
 
@@ -49,11 +51,15 @@ const NoticeWrite = () => {
                     <div>내용</div>
                     <input type="text" name="content" onChange={handleInputChange} value={formData.content} rows="10" cols="50" />
                 </div>
-                <div>
+                {/* <div>
                     <div>관리자 (체크박스 진행)</div>
                     <div>부서장 (체크박스 진행)</div>
                     <div>팀장 (체크박스 진행)</div>
                     <div>전 사원 (체크박스 진행)</div>
+                </div> */}
+                <div>
+                    <div>작성일</div>
+                    <input type="date" name="reg_date" onChange={handleInputChange} value={formData.reg_date} readOnly />
                 </div>
             </Content>
             <ButtonContainer>

@@ -79,7 +79,7 @@ const ProjectWorkEdit = () => {
         console.log(event.target.value)
 
         setProjectwork(prevProjectWork => ({
-            ...prevProjectWork,
+            ...prevProjectWork,//... => 객체에 사용하면 이전 객체 복사
             [event.target.name]: event.target.value
         }));
     };

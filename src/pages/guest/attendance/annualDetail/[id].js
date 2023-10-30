@@ -126,7 +126,7 @@ function GuestAnnualConfirm() {
                         </tr>
 
                         <tr style={rowStyle}>
-                            <th style={TableHead3} colSpan={4}>내용글씨바꿔줘</th>
+                            <th style={TableHead3} colSpan={4}>내용</th>
                         </tr>
 
                         <tr style={rowStyle}>
@@ -163,7 +163,7 @@ function GuestAnnualConfirm() {
                             fontSize: "1rem",
                             margin: "10px",
                         }}
-                        onClick={() => router.push('/guest/attendance/annuallist')}
+                        onClick={() => router.push(`/guest/attendance/annuallist/${attendance.id}`)}
                     >
                         취소
                     </button>

@@ -22,6 +22,34 @@ const WeeklyWorkButton = styled.a`
     }
 `;
 
+const SectionHeader = styled.div`
+    font-size: 24px;
+    font-weight: bold;
+    color: #005FC5;
+    margin-top: 20px;
+`;
+
+const SectionText = styled.div`
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px;
+`;
+
+const SectionValue = styled.div`
+    font-size: 20px;
+    color: #005FC5;
+    font-weight: bold;
+    margin-top: 5px;
+`;
+
+const SectionContainer = styled.div`
+    background-color: #F6F8FA;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
+`;
+
 
 // main
 function Attendance () {
@@ -123,12 +151,21 @@ function Attendance () {
                             )}
                         </div>
                         <br/>
-                        <div>[ 총 근무 시간 ]</div>
-                        <div>{weeklyWork.totalWeekWork}</div>
-                        <div>[ 총 연장 근무 시간 ]</div>
-                        <div>{weeklyWork.totalWeekOver}</div>
-                        <div>[ 남은 최소 근무 시간 ]</div>
-                        <div>{weeklyWork.remainWeekTime}</div>
+                        <SectionContainer>
+                            <SectionHeader>총 근무 시간</SectionHeader>
+                            <SectionText>이번 주 동안 근무한 시간</SectionText>
+                            <SectionValue>{weeklyWork.totalWeekWork}</SectionValue>
+                        </SectionContainer>
+                        <SectionContainer>
+                            <SectionHeader>총 연장 근무 시간</SectionHeader>
+                            <SectionText>이번 주 동안 연장 근무한 시간</SectionText>
+                            <SectionValue>{weeklyWork.totalWeekOver}</SectionValue>
+                        </SectionContainer>
+                        <SectionContainer>
+                            <SectionHeader>남은 최소 근무 시간</SectionHeader>
+                            <SectionText>남은 최소 근무 시간</SectionText>
+                            <SectionValue>{weeklyWork.remainWeekTime}</SectionValue>
+                        </SectionContainer>
 
                     </AttenWeekWork>
                 </AttenBoxBottom>

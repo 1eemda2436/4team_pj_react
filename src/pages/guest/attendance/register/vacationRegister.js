@@ -116,7 +116,7 @@ const handleAnnualSubmit = () => {
                 </div>
             </AttenCal>
             <br/><br/><hr/><br/><br/>
-            <div>
+            <div style={{display: "none"}}>
                 <input type="text" name="company_id" size={30} value={vaca.company_id} onChange={handleInputChange} readOnly/>
             </div>
             <div>

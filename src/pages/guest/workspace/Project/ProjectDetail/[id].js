@@ -126,6 +126,10 @@ const ProjectDetail = () => {
                         <TableCell>{project.depart_id}</TableCell>
                     </TableRow>
                     <TableRow>
+                        <TableCell>담당 팀</TableCell>
+                        <TableCell>{project.team_id}</TableCell>
+                    </TableRow>
+                    <TableRow>
                         <TableCell>내용</TableCell>
                         <TableCell>{project.content}</TableCell>
                     </TableRow>
