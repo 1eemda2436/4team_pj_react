@@ -12,6 +12,9 @@ import MyCalendar from "@/components/calendar/MyCalendar";
 const Workspace = () => {
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
+    const [project, setProject] = useState([]);
+
+    // modal
     const [isProjectModalOpen, setProjectModalOpen] = useState(false);
     const [isProjectEditModalOpen, setProjectEditModalOpen] = useState(false);
     const [isWorkModalOpen, setWorkModalOpen] = useState(false);
@@ -22,7 +25,6 @@ const Workspace = () => {
     
     useEffect(() => {
         const token = localStorage.getItem('token')
-        const company_id = localStorage.getItem('company_id')
         const team_id = localStorage.getItem('team_id')
 
         axios.get(`http://localhost:8081/guest/project/list/${team_id}`, {
@@ -44,20 +46,70 @@ const Workspace = () => {
     const projectWorkToggle = (pj_id) => {
         const token = localStorage.getItem('token')
 
-        axios.get(`http://localhost:8081/guest/projectwork/list/${pj_id}`, {
+        try {
+            axios.get(`http://localhost:8081/guest/projectwork/list/${pj_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                setProjectworkList(response.data)
+                setShowWork(true)
+                console.log('??', response.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+            axios.get(`http://localhost:8081/guest/project/${pj_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((response) => {
+                setProject(response.data)
+                console.log(response.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        } catch (error) {
+            console.error("Error fetching data: ", error);
+        }
+
+        console.log(project)
+    }
+
+    const handleCompleteClick = (pw_id, completed) => {
+        console.log(completed)
+        const token = localStorage.getItem('token');
+        const newCompletedValue = completed === 'Y' ? 'N' : 'Y';
+        console.log(newCompletedValue)
+    
+        axios.put(`http://localhost:8081/guest/projectwork/complete/${pw_id}`, newCompletedValue, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
         .then((response) => {
-            setProjectworkList(response.data)
-            setShowWork(true)
-            console.log('??', response.data)
+            // const updatedCompletion = { [pw_id]: newCompletedValue };
+            // setCompletions({...updatedCompletion});
+            const itemIndex = projectworkList.findIndex(item => item.pw_id === pw_id);
+
+            if (itemIndex !== -1) {
+                // 2. 해당 ID의 항목을 수정합니다.
+                const updatedItems = [...projectworkList]; // 배열을 복사합니다.
+                updatedItems[itemIndex] = { ...updatedItems[itemIndex], complete: newCompletedValue }; // 원하는 항목을 업데이트합니다.
+
+                // 3. 변경된 배열로 상태를 업데이트합니다.
+                setProjectworkList(updatedItems);
+            }
+            console.log(response);
         })
         .catch((error) => {
             console.log(error);
         });
-    }
+    };
 
     return (
         <>
@@ -78,19 +130,35 @@ const Workspace = () => {
                         )}
                     </ProjectListContainer>
 
-                    {showWork && (<ProjectWorkContainer>
-                        <PTitle>업무</PTitle>
-                        {projectworkList.length > 0 ? (
-                            projectworkList.map((pjw) => (
-                                <ProjectBox key={pjw.pw_id}>
-                                    <ProjectDate>{moment(pjw.pw_deadline_s).format('YY-MM-DD')} ~ {moment(pjw.pw_deadline_e).format('YY-MM-DD')}</ProjectDate>
-                                    <ProjectTitle>{pjw.pw_name}</ProjectTitle>
-                                </ProjectBox>
-                            ))
-                        ) : (
-                            <NoTitle>아직 등록된 업무가 없습니다.</NoTitle>
-                        )}
-                    </ProjectWorkContainer>)}
+                    {showWork && (
+                        <ProjectWorkContainer>
+                            {project !== null ? (
+                                <ProjectDetailBox>
+                                    <DetailTitle>{project.pj_name}</DetailTitle>
+                                    <Details>{project.content}</Details>
+                                </ProjectDetailBox>
+                            ) : (
+                                <NoTitle>해당 프로젝트의 상세 정보가 없습니다.</NoTitle>
+                            )}
+
+                            <PTitle>업무</PTitle>
+
+                            {projectworkList.length > 0 ? (
+                                projectworkList.map((pjw) => (
+                                    <ProjectBox key={pjw.pw_id}>
+                                        <ProjectComplete 
+                                            completed={pjw.complete} 
+                                            onClick={() => handleCompleteClick(pjw.pw_id, pjw.complete)}
+                                        />
+                                        <ProjectDate>{moment(pjw.pw_deadline_s).format('YY-MM-DD')} ~ {moment(pjw.pw_deadline_e).format('YY-MM-DD')}</ProjectDate>
+                                        <ProjectTitle>{pjw.pw_name}</ProjectTitle>
+                                    </ProjectBox>
+                                ))
+                            ) : (
+                                <NoTitle>아직 등록된 업무가 없습니다.</NoTitle>
+                            )}
+                        </ProjectWorkContainer>
+                    )}
                     
                     <TeamContainer>
                         <ToggleBox>
@@ -179,10 +247,29 @@ const ProjectListContainer = styled.div`
     border: 2px solid #eee;
     border-radius: 8px;
     padding: 10px 5px;
+    overflow-x: auto;
 `;
 
 const ProjectWorkContainer = styled(ProjectListContainer)`
     margin-left: 30px;
+    overflow-x: auto;
+`;
+
+const ProjectDetailBox = styled.div`
+    padding: 30px 20px;
+    margin-bottom: 30px;
+`;
+
+const DetailTitle = styled.div`
+    font-weight: 700;
+    font-size: 22px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
+`;
+
+const Details = styled.div`
+    margin-top: 15px;
+    font-size: 18px;
 `;
 
 const PTitle = styled.div`
@@ -201,13 +288,25 @@ const NoTitle = styled.div`
     
 `;
 
+const ProjectComplete = styled.div`
+    width: 13px;
+    min-width: 13px;
+    height: 13px;
+    min-height: 13px;
+    border: 1px solid gray;
+    border-radius: 3px;
+    margin-left: 10px;
+    cursor: pointer;
+    background: ${(props) => (props.completed === 'Y' ? '#005FC5' : 'transparent')};
+    transition: background-color 0.3s;
+`;
+
 const ProjectBox = styled.div`
     display: flex;
     align-items: center;
     border-bottom: 1px solid #e5e5e5;
     padding: 15px 0px;
     margin: 10px 20px;
-    cursor: pointer;
     
     &:hover {
         background: #eff1f6;
@@ -266,10 +365,4 @@ const CalendarContainer = styled.div`
 
 const TeamContainer = styled.div``;
 
-const UserContainer = styled.div``;
-
 const TeamBox = styled.div``;
-
-const TeamUser = styled.div``;
-
-const UserName = styled.div``;

@@ -149,12 +149,13 @@ const Title = styled.div`
   font-size: 26px;
   font-weight: 700;
   color: #007bff;
+  text-align: center;
 `;
 
 const PersonalMenu = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 40px;
 `;
 
 const Button = styled.button`

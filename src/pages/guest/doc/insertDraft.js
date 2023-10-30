@@ -25,13 +25,10 @@ const Doc = () => {
       sign: null,
     });
 
-    // const [signFile, setSignFile] = useState(undefined);
     const [imageSrc, setImageSrc] = useState('');
 
     useEffect(() => {
       const user_name = localStorage.getItem('user_name');
-      // const sign = localStorage.getItem('sign');
-      // console.log('sign:', sign);
       setSamples({
         ...samples,
         name: user_name
@@ -53,11 +50,6 @@ const Doc = () => {
         doc_attachment: file,
       }));
     };
-
-    // const handleSignFileChange = (f) => {
-    //   const file = f.target.files[0];
-    //   setSignFile(file);
-    // };
 
     const handleInsert = () => {
       const insertSamples = new FormData();

@@ -1,26 +1,27 @@
-import MainLayout from "@/components/layout/mainLayout";
+import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Header from "@/components/common/header";
 
-const BoardWrite = () => {
+const boardUpdate = () => {
     const router = useRouter();
     const { id } = router.query;
-    //const id = localStorage.getItem('user_id'); // 로컬 스토리지에서 사용자 ID 가져오기
-
+    const { board_id } = router.query;
+    
     const [formData, setFormData] = useState({
         category_id: "",
         id: id, 
         title: "",
         content: "",
+        board_id: board_id,
         date: new Date().toISOString().slice(0, 10), // 현재 날짜를 ISO 형식으로 가져오기
     });
-
+    
     const [categories, setCategories] = useState([]); // 카테고리 목록을 저장할 상태
 
     useEffect(() => {
-        
         const token = localStorage.getItem('token')
         // 서버에서 카테고리 목록을 가져오는 요청
         axios.get('http://localhost:8081/guest/community/categories', {
@@ -37,6 +38,46 @@ const BoardWrite = () => {
             });
     }, []);
 
+    useEffect(() => {
+        if(board_id) {
+        const token = localStorage.getItem('token')
+        // 게시글 목록을 가져오는 요청
+        axios.get(`http://localhost:8081/guest/community/boardFind/${board_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }) // 서버의 게시글 목록 API 엔드포인트를 사용
+            .then(response => {
+                console.log(response.data[0])
+                response.data[0].reg_date = new Date(response.data[0].reg_date).toISOString()
+                    const { category_id, id, title, content, date } = response.data[0];
+                    console.log(category_id, id, title, content, date)
+                    setFormData({ category_id, id, title, content, date });
+            })
+            .catch(error => {
+                console.error('게시글 가져오기 오류:', error);
+            });
+        }
+    }, [board_id]);
+
+    // 게시물을 서버에 수정하는 함수
+    const handlePostBoard = () => {
+        const token = localStorage.getItem('token')
+        formData.board_id = board_id
+        axios.put(`http://localhost:8081/guest/community/edit/${board_id}`, formData,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }) // 게시물 데이터를 서버에 POST 요청으로 보냄
+            .then(response => {
+                console.log('게시물 수정 성공:', response.data);
+                router.push('/guest/community'); // 게시판 페이지로 이동
+            })
+            .catch(error => {
+                console.error('게시물 수정 오류:', error);
+            });
+    };
+
     // 입력 폼의 값을 업데이트하는 함수
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -46,27 +87,12 @@ const BoardWrite = () => {
         });
     };
 
-    // 게시물을 서버에 등록하는 함수
-    const handlePostBoard = () => {
-        const token = localStorage.getItem('token')
-        axios.post(`http://localhost:8081/guest/community/add`, formData,{
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        }) // 게시물 데이터를 서버에 POST 요청으로 보냄
-            .then(response => {
-                console.log('게시물 등록 성공:', response.data);
-                router.push('/guest/community'); // 게시판 페이지로 이동
-            })
-            .catch(error => {
-                console.error('게시물 등록 오류:', error);
-            });
-    };
-
-    return (
+    return(
+        <>
+        <Header />
         <Container>
-            <Title>자유게시판 등록</Title>
-            <Content>
+        <Title>자유게시판 수정</Title>
+        <Content>
                 <Row>
                     <div>
                         <div>카테고리</div>
@@ -105,16 +131,17 @@ const BoardWrite = () => {
                 </Row>
             </Content>
             <ButtonContainer>
-                <Button onClick={handlePostBoard}>등록</Button>
-                <Button onClick={() => router.back()}>이전</Button>
+            <Button onClick={handlePostBoard}>수정</Button>
+            <Button onClick={() => router.back()}>이전</Button>
             </ButtonContainer>
         </Container>
-    );
+        </>
+    )
 }
 
-export default BoardWrite;
+export default boardUpdate;
 
-BoardWrite.getLayout = function getLayout(page) {
+boardUpdate.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
