@@ -31,15 +31,21 @@ const DocRadarChart = () => {
 
     const docConfirmCount = doc.docConfirmCount;
     console.log("승인!@!@!@", doc.docConfirmCount);
+
     const docDoingCount = doc.docDoingCount;
     console.log("진행!@!@!@", doc.docDoingCount);
+
     const docReturnCount = doc.docReturnCount;
     console.log("반려!@!@!@", doc.docReturnCount);
+
     const docNewCount = doc.docNewCount;
     console.log("진행전!@!@!@", doc.docNewCount);
+
     const docLaterCount = doc.docLaterCount;
     console.log("임시!@!@!@", doc.docLaterCount);
-    const 
+
+    const allDocCount = doc.allDocCount;
+    console.log("총!@!@!@", doc.allDocCount);
 
     const data = {
         labels: ['결재완료', '결재진행중', '결재반려', '결재진행전', '임시저장'],
@@ -71,6 +77,9 @@ const DocRadarChart = () => {
     return (
         <div>
             <h2>전자결재</h2>
+            <div>
+                <div style={totalStyle}>총계: {allDocCount}</div>
+            </div>
             <div style={{ width: '300px', height: '300px' }}>
                 <Pie data={data} />
             </div>
@@ -79,3 +88,10 @@ const DocRadarChart = () => {
 
 };
 export default DocRadarChart;
+
+const totalStyle = {
+    fontSize: '24px',
+    fontWeight: 'bold',
+    margin: '20px 0',
+    color: '#007bff', // 원하는 색상으로 변경
+};
