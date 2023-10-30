@@ -125,9 +125,10 @@ const MyInfoEdit = () => {
                             <TableCell>
                                 <input 
                                 type="text" 
-                                name="profile" 
-                                value={memberInfo.profile}
+                                name="sign" 
+                                value={memberInfo.sign}
                                 onChange={MemberInfoChange}
+                                readOnly
                                 />
                             </TableCell>
                         </TableRow>
@@ -173,6 +174,7 @@ const MyInfoEdit = () => {
                                 name="depart_name" 
                                 value={memberInfo.depart_name}
                                 onChange={MemberInfoChange}
+                                readOnly
                                 />
                             </TableCell>
                         </TableRow>
@@ -184,6 +186,7 @@ const MyInfoEdit = () => {
                                 name="team_name" 
                                 value={memberInfo.team_name}
                                 onChange={MemberInfoChange}
+                                readOnly
                                 />
                             </TableCell>
                         </TableRow>
@@ -195,6 +198,7 @@ const MyInfoEdit = () => {
                                 name="id" 
                                 value={memberInfo.id}
                                 onChange={MemberInfoChange}
+                                readOnly
                                 />
                             </TableCell>
                         </TableRow>
@@ -206,6 +210,7 @@ const MyInfoEdit = () => {
                                 name="rank" 
                                 value={memberInfo.rank}
                                 onChange={MemberInfoChange}
+                                readOnly
                                 />
                             </TableCell>
                         </TableRow>
@@ -250,6 +255,7 @@ const MyInfoEdit = () => {
                                 name="resident" 
                                 value={memberInfo.resident}
                                 onChange={MemberInfoChange}
+                                readOnly
                                 />
                             </TableCell>
                         </TableRow>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 
 const BoardWrite = () => {
     const router = useRouter();
@@ -40,15 +41,22 @@ const BoardWrite = () => {
     // 입력 폼의 값을 업데이트하는 함수
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        const currentDate = moment().format(); // 현재 날짜 가져오기
         setFormData({
             ...formData,
             [name]: value,
+            date: currentDate
         });
     };
 
     // 게시물을 서버에 등록하는 함수
     const handlePostBoard = () => {
         const token = localStorage.getItem('token')
+        const currentDate = moment().format(); // 현재 날짜 가져오기
+        setFormData({
+            ...formData,
+            date: currentDate
+        });
         axios.post(`http://localhost:8081/guest/community/add`, formData,{
             headers: {
                 'Authorization': `Bearer ${token}`

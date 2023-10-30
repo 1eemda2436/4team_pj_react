@@ -43,6 +43,7 @@ const BoardDetails = () => {
     //게시글 불러오기
     useEffect(() => {
         const token = localStorage.getItem('token');
+        const currentDate = moment().format('YYYY-MM-DD'); // 현재 날짜 가져오기
         if (board_id) {
             axios.get(`http://localhost:8081/guest/community/boardFind/${board_id}`, {
                 headers: {
@@ -51,6 +52,7 @@ const BoardDetails = () => {
             })
             .then(response => {
                 setBoardData(response.data[0]); // 첫 번째 게시글을 가져오도록 수정
+                console.log(response.data);
             })
             .catch(error => {
                 console.error('데이터를 불러오는 중 오류 발생:', error);
