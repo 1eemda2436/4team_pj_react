@@ -39,6 +39,7 @@ const DocRadarChart = () => {
     console.log("진행전!@!@!@", doc.docNewCount);
     const docLaterCount = doc.docLaterCount;
     console.log("임시!@!@!@", doc.docLaterCount);
+    const 
 
     const data = {
         labels: ['결재완료', '결재진행중', '결재반려', '결재진행전', '임시저장'],
