@@ -15,6 +15,7 @@ const Doc = () => {
     const [samples, setSamples] = useState({
         doc_title: '',
         doc_content: '',
+        doc_date: null,
     });
 
     useEffect(() => {
@@ -63,7 +64,7 @@ const Doc = () => {
         const token = localStorage.getItem('token')
         
         if(id) {
-            axios.put(`http://localhost:8081/guest/doc/update/${id}`, updateSamples, {
+            axios.put(`http://localhost:8081/guest/doc/updateIng/${id}`, updateSamples, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -82,17 +83,19 @@ const Doc = () => {
         setSelectedCategory(event.target.value);
     };
 
+    // 날짜 변환
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp);
+        const formattedDate = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        });
+        return formattedDate;
+      };
+
     return(
         <Container>
-            <ApprovalLine>
-                <table>
-                    <tr>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                    </tr>
-                </table>
-            </ApprovalLine>
             <Title>
                 <H1>업무 기안서</H1>
             </Title>
@@ -114,13 +117,7 @@ const Doc = () => {
                         <tr>
                             <th>기안일</th>
                             <td>
-                                <input
-                                type="date"
-                                name="doc_date"
-                                readOnly
-                                value={samples.doc_date}
-                                onChange={handleInputChange}
-                                />
+                                {samples.doc_date}
                             </td>
                         </tr>
                         <tr>
@@ -132,8 +129,6 @@ const Doc = () => {
                                 value={samples.name}
                                 onChange={handleInputChange}
                                 />
-                            </td>
-                            <td>
                                 <input 
                                 type="hidden"
                                 name="doc_status"

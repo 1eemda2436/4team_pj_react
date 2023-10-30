@@ -10,158 +10,142 @@ import MyCalendar from "@/components/calendar/MyCalendar";
 
 
 const Workspace = () => {
-    const [departmentList, setDepartmentList] = useState([]);
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
-    const [teams, setTeams] = useState([]);
+    const [isProjectModalOpen, setProjectModalOpen] = useState(false);
+    const [isProjectEditModalOpen, setProjectEditModalOpen] = useState(false);
+    const [isWorkModalOpen, setWorkModalOpen] = useState(false);
+    const [isWorkEditModalOpen, setWorkEditModalOpen] = useState(false);
+    // const [teams, setTeams] = useState([]);
+
+    const [showWork, setShowWork] = useState(false);
     
     useEffect(() => {
         const token = localStorage.getItem('token')
+        const company_id = localStorage.getItem('company_id')
+        const team_id = localStorage.getItem('team_id')
 
-        axios
-            .get("http://localhost:8081/guest/department",{
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then((response) => {
-                console.log(response.data)
-                setDepartmentList(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-        axios
-            .get("http://localhost:8081/guest/project",{
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then((response) => {
-                setProjectList(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-        axios
-            .get("http://localhost:8081/guest/projectwork",{
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then((response) => {
-                setProjectworkList(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        
-        axios
-            .get("http://localhost:8081/guest/team",{
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => {
-                console.log(response.data)
-                setTeams(response.data);
-            })
-            .catch(error => {
-                console.error("Error fetching teams:", error);
-            });
-
+        axios.get(`http://localhost:8081/guest/project/list/${team_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            setProjectList(response.data);
+            console.log('!!', response.data)
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }, []);
 
     const router = useRouter();
 
-    
+    const projectWorkToggle = (pj_id) => {
+        const token = localStorage.getItem('token')
+
+        axios.get(`http://localhost:8081/guest/projectwork/list/${pj_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            setProjectworkList(response.data)
+            setShowWork(true)
+            console.log('??', response.data)
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
 
     return (
-        <Component>
+        <>
             <Header/>
-            <CalendarContainer>
-                <MyCalendar />
-            </CalendarContainer>
-            {/* 부서별 사원 */}
-            <table style={tableStyle}>
-                <thead>
-                    <tr>
-                        <th style={cellStyle}>부서ID</th>
-                        <th style={cellStyle}>부서명</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {departmentList.map((dp) => (
-                    <tr key={dp[0]}>
-                        <td style={cellStyle}>{dp[0]}</td>
-                        <td style={cellStyle}>{dp[1]}</td>
-                    </tr>
-                    ))}
-                    
-                </tbody>
-            </table>
-            <br/>
-            <br/>
+            <MainContainer>
+                <ProjectContainer>
+                    <ProjectListContainer>
+                        <PTitle>프로젝트</PTitle>
+                        {projectList.length > 0 ? (
+                            projectList.map((pj) => (
+                                <ProjectBox key={pj.pj_id} onClick={() => projectWorkToggle(pj.pj_id)}>
+                                    <ProjectDate>{moment(pj.deadline_s).format('YY-MM-DD')} ~ {moment(pj.deadline_e).format('YY-MM-DD')}</ProjectDate>
+                                    <ProjectTitle>{pj.pj_name}</ProjectTitle>
+                                </ProjectBox>
+                            ))
+                        ) : (
+                            <NoTitle>아직 등록된 프로젝트가 없습니다.</NoTitle>
+                        )}
+                    </ProjectListContainer>
 
-            {/* 프로젝트 현황(목록) */}
-            <table style={tableStyle}>
-                <thead>
-                    <tr>
-                        <th style={cellStyle}>PJ_ID</th>
-                        <th style={cellStyle}>프로젝트명</th>
-                        <th style={cellStyle}>기한(시작일)/기한(종료일)</th>
-                        <th style={cellStyle}>담당 팀</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {projectList.map((pj) => (
-                    <tr key={pj.pj_id}>
-                        <td style={cellStyle}>{pj.pj_id}</td> 
-                        <td style={cellStyle}>
-                            <Link href="/guest/workspace/Project/ProjectDetail/[id]" as={`/guest/workspace/Project/ProjectDetail/${pj.pj_id}`}>
-                                {pj.pj_name}
-                            </Link>
-                        </td>
-                        <td style={cellStyle}>{moment(pj.deadline_s).format('YYYY-MM-DD')} ~ {moment(pj.deadline_e).format('YYYY-MM-DD')}</td>
-                        <td style={cellStyle}>{teams.team_name}</td>
-                    </tr>
-                    ))}
-                </tbody>
-            </table>
-            <div>
-            <button onClick={() => router.push('/guest/workspace/Project/ProjectAdd')}>추가</button>
-            </div>
-            <br/>
-            <br/>
-            
-            {/* 할일list */}
-            <table style={tableStyle}>
-                <thead>
-                    <tr>
-                        <th style={cellStyle}>PW_ID</th>
-                        <th style={cellStyle}>프로젝트업무명</th>
-                        <th style={cellStyle}>기한(시작일)/기한(종료일)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {projectworkList.map((pjw) => (
-                    <tr key={pjw.pw_id}>
-                        <td style={cellStyle}>{pjw.pw_id}</td>
-                        <td style={cellStyle}>
-                            <Link href="/guest/workspace/ProjectWork/ProjectWorkDetail/[id]" as={`/guest/workspace/ProjectWork/ProjectWorkDetail/${pjw.pw_id}`}>
-                                {pjw.pw_name}
-                            </Link></td>
-                        <td style={cellStyle}>{moment(pjw.pw_deadline_s).format('YYYY-MM-DD')} ~ {moment(pjw.pw_deadline_e).format('YYYY-MM-DD')}</td>
-                    </tr>
-                    ))}
-                </tbody>
-            </table>
-            <div>
-            <button onClick={() => router.push('/guest/workspace/ProjectWork/ProjectWorkAdd')}>추가</button>
-            </div>
-        </Component>
+                    {showWork && (<ProjectWorkContainer>
+                        <PTitle>업무</PTitle>
+                        {projectworkList.length > 0 ? (
+                            projectworkList.map((pjw) => (
+                                <ProjectBox key={pjw.pw_id}>
+                                    <ProjectDate>{moment(pjw.pw_deadline_s).format('YY-MM-DD')} ~ {moment(pjw.pw_deadline_e).format('YY-MM-DD')}</ProjectDate>
+                                    <ProjectTitle>{pjw.pw_name}</ProjectTitle>
+                                </ProjectBox>
+                            ))
+                        ) : (
+                            <NoTitle>아직 등록된 업무가 없습니다.</NoTitle>
+                        )}
+                    </ProjectWorkContainer>)}
+                    
+                    <TeamContainer>
+                        <ToggleBox>
+                            <MyBoardBtn onClick={() => router.push('/guest/workspace/Project/ProjectAdd')}>프로젝트 추가</MyBoardBtn>
+                            <AddBoardBtn onClick={() => router.push('/guest/workspace/ProjectWork/ProjectWorkAdd')}>업무 추가</AddBoardBtn>
+                        </ToggleBox>
+
+                        <TeamBox>
+                            {/* {teams.map((t) => (
+                                <TeamUser>
+                                    <UserName></UserName>
+                                </TeamUser>
+                            ))} */}
+                        </TeamBox>
+                    </TeamContainer>
+                </ProjectContainer>
+
+                <CalendarContainer>
+                    <MyCalendar height={750} />
+                </CalendarContainer>
+
+                {isProjectModalOpen && (
+                    <ProjectAddModal
+                        onClose={handleModalClose}
+                        onSave={handleModalSave}
+                    />
+                )}
+
+                {isProjectEditModalOpen && (
+                    <ProjectEditModal
+                        onClose={handleEditModalClose}
+                        onSave={handleEditModalSave}
+                        depart_id={selectedDepartInfo.depart_id}
+                        depart_name={selectedDepartInfo.depart_name}
+                    />
+                )}
+
+                {isWorkModalOpen && (
+                    <WorkAddModal
+                        onClose={handleModalClose}
+                        onSave={handleModalSave}
+                    />
+                )}
+
+                {isWorkEditModalOpen && (
+                    <WorkEditModal
+                        onClose={handleEditModalClose}
+                        onSave={handleEditModalSave}
+                        depart_id={selectedDepartInfo.depart_id}
+                        depart_name={selectedDepartInfo.depart_name}
+                    />
+                )}
+                
+            </MainContainer>
+        </>
     )
     
 }
@@ -172,26 +156,120 @@ Workspace.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-const Component = styled.div`
-    height: 100%;
+const MainContainer = styled.div`
+    width: 100%;
+    height: 90%;
+    padding: 50px;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+`;
+
+const InfoContainer = styled.div`
+    width: 100%;
+    display: flex;
+`;
+
+const ProjectContainer = styled.div`
+    display: flex;
+`;
+
+const ProjectListContainer = styled.div`
+    border: 2px solid #eee;
+    border-radius: 8px;
+    padding: 10px 5px;
+`;
+
+const ProjectWorkContainer = styled(ProjectListContainer)`
+    margin-left: 30px;
+`;
+
+const PTitle = styled.div`
+    font-weight: 700;
+    font-size: 20px;
+    margin-left: 5px;
+    margin-bottom: 30px;
+    color: #005FC5;
+    cursor: default;
+`;
+
+const NoTitle = styled.div`
+    color: gray;
+    padding: 0px 100px;
+    white-space: nowrap;
+    
+`;
+
+const ProjectBox = styled.div`
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 15px 0px;
+    margin: 10px 20px;
+    cursor: pointer;
+    
+    &:hover {
+        background: #eff1f6;
+        transition: 0.5s;
+    }
+`;
+
+const ProjectDate = styled.div`
+    color: gray;
+    margin-right: 150px;
+    padding-left: 20px;
+    font-size: 14px;
+    word-wrap: break-word;
+`;
+
+const ProjectTitle = styled.div`
+    font-size: 18px;
+    padding-right: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+`;
+
+const ToggleBox = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    width: 300px;
     align-items: center;
+    margin-left: 30px;
 `;
 
-const cellStyle = {
-    border: "2px solid black",
-    padding: "8px",
-};
+const MyBoardBtn = styled.div`
+    cursor: pointer;
+    background: #007BFF;
+    padding: 15px 0px;
+    width: 100%;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    text-align: center;
 
-const tableStyle = {
-    borderCollapse: "collapse",
-    width: "800px",
-    marginTop: "50px",
-};
+    &:hover {
+        background: #005CBF;
+    }
+`;
+const AddBoardBtn = styled(MyBoardBtn)`
+    margin-top: 20px;
+`
 
 const CalendarContainer = styled.div`
-    margin-top: 350px;
-    width: 100% /* 원하는 크기로 조절 */
+    width: 40%;
+    display: flex;
+    padding: 20px;
+    box-sizing: border-box;
 `;
+
+const TeamContainer = styled.div``;
+
+const UserContainer = styled.div``;
+
+const TeamBox = styled.div``;
+
+const TeamUser = styled.div``;
+
+const UserName = styled.div``;

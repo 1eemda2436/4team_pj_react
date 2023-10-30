@@ -16,7 +16,10 @@ const Doc = () => {
     };
 
     const [samples, setSamples] = useState([]);
+    console.log('samples.sign:', samples.sign)
+    console.log('samples.admin_sign:', samples.admin_sign)
     const [imageSrc, setImageSrc] = useState("");
+    const [imageSrc2, setImageSrc2] = useState('');
 
     
     useEffect(() => {
@@ -30,8 +33,9 @@ const Doc = () => {
             })
             .then((response) => {
                 setSamples(response.data);
-                console.log(response.data);
+                console.log('response.data:', response.data);
                 setImageSrc(`http://localhost:8081/myimage/${response.data.sign}`);
+                setImageSrc2(`http://localhost:8081/myimage/${response.data.admin_sign}`);
             })
             .catch((error) => {
                 console.log(error);
@@ -93,15 +97,23 @@ const Doc = () => {
                 <table>
                     <tr>
                         <td>
-                        {imageSrc && (
-                        <img
-                            src={imageSrc}
-                            alt="미리보기"
-                            style={{ width: "100px", height: "100px" }}
-                        />
-                        )}
+                            {imageSrc && (
+                                <img
+                                    src={imageSrc}
+                                    alt="기안자사인"
+                                    style={{ width: "100px", height: "100px" }}
+                                />
+                            )}
                         </td>           
-                        <td></td>
+                        <td>
+                            {imageSrc2 && (
+                                <img 
+                                    src={imageSrc2}
+                                    alt="관리자사인"
+                                    style={{width: "100px", height: "100px"}}
+                                />
+                            )}
+                        </td>
                     </tr>
                 </table>
             </ApprovalLine>

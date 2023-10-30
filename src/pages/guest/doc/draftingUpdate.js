@@ -88,15 +88,6 @@ const Doc = () => {
 
     return(
         <Container>
-            <ApprovalLine>
-                <table>
-                    <tr>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                        <td onClick={() => router.push('/guest/doc/approvalLine')}></td>
-                    </tr>
-                </table>
-            </ApprovalLine>
             <Title>
                 <H1>업무 기안서</H1>
             </Title>
@@ -135,8 +126,6 @@ const Doc = () => {
                                 value={samples.name}
                                 onChange={handleInputChange}
                                 />
-                            </td>
-                            <td>
                                 <input 
                                 type="hidden"
                                 name="doc_status"

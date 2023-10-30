@@ -2,10 +2,8 @@ import styled from "styled-components"
 import ArrowL from '../../../public/asset/icons/arrowLeft.svg'
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Input from "@/components/form/input";
 
 export default function Join() {
-    const token = localStorage.getItem('token')
     const router = useRouter();
     const [step, setStep] = useState(1);
 
@@ -197,3 +195,5 @@ const TitleBox = styled.div``;
 const ColorTitle = styled.div``;
 
 const InputForm = styled.div``;
+
+const Input = styled.input``;

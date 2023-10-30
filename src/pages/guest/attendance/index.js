@@ -112,9 +112,7 @@ function Attendance () {
                 
                 <AttenBoxBottom>
                     <AttenCal>
-                        <div style={{ border: "3px solid black", borderRadius: "20px", width: "100%", height: "100%", display: "flex"}}>
-                            <MyCalendar />
-                        </div>
+                        <MyCalendar height={550} />
                     </AttenCal>
                     
                     <AttenWeekWork>
