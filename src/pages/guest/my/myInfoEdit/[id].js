@@ -1,65 +1,9 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import TextField from '@mui/material/TextField'; // 필요한 라이브러리를 import
 import styled from "styled-components";
 import Header from '@/components/common/header';
 import MainLayout from "@/components/layout/mainLayout";
-
-const tableStyle = {
-    borderCollapse: "collapse",
-    width: "800px",
-};
-
-const Component = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-
-const TableRow = styled.tr`
-    &:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-`;
-
-const TableCell = styled.td`
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-`;
-
-const Button = styled.button`
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-
-    &:hover {
-        background-color: #0056b3;
-    }
-`;
-
-const TableWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
-`;
-
-const LeftTable = styled.table`
-    width: 45%;
-    border-collapse: collapse;
-`;
-
-const RightTable = styled.table`
-    width: 45%;
-    border-collapse: collapse;
-`;
 
 const MyInfoEdit = () => {
     const [memberInfo, setMemberInfo] = useState({});
@@ -118,6 +62,7 @@ const MyInfoEdit = () => {
     return (
         <MainLayout>
             <Header />
+            <Title>마이페이지</Title>
             <TableWrapper>
                 <LeftTable>
                     <tbody>
@@ -139,6 +84,7 @@ const MyInfoEdit = () => {
                                 name="name" 
                                 value={memberInfo.name}
                                 onChange={MemberInfoChange}
+                                readOnly
                                 />
                                 </TableCell>
                         </TableRow>
@@ -280,4 +226,53 @@ const MyInfoEdit = () => {
 }
 
 export default MyInfoEdit;
+
+const TableRow = styled.tr`
+    &:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+`;
+
+const TableCell = styled.td`
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+`;
+
+const Button = styled.button`
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+`;
+
+const TableWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+`;
+
+const LeftTable = styled.table`
+    width: 45%;
+    border-collapse: collapse;
+`;
+
+const RightTable = styled.table`
+    width: 45%;
+    border-collapse: collapse;
+`;
+
+const Title = styled.div`
+    font-size: 26px;
+    font-weight: 700;
+    color: #007bff;
+    margin: 20px 20px;
+`;
             

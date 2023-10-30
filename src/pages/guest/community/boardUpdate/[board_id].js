@@ -16,8 +16,14 @@ const boardUpdate = () => {
         title: "",
         content: "",
         board_id: board_id,
-        date: new Date().toISOString().slice(0, 10), // 현재 날짜를 ISO 형식으로 가져오기
+        reg_date: new Date().toISOString().slice(0, 10), // 오늘 날짜를 ISO 형식으로 가져오기 (YYYY-MM-DD),
     });
+
+    useEffect(() => {
+        setFormData(prevState => ({
+            ...prevState,
+        }));
+    }, []); // 컴포넌트가 마운트될 때만 실행
     
     const [categories, setCategories] = useState([]); // 카테고리 목록을 저장할 상태
 
@@ -47,12 +53,21 @@ const boardUpdate = () => {
                 'Authorization': `Bearer ${token}`
             }
         }) // 서버의 게시글 목록 API 엔드포인트를 사용
-            .then(response => {
-                console.log(response.data[0])
-                response.data[0].reg_date = new Date(response.data[0].reg_date).toISOString()
-                    const { category_id, id, title, content, date } = response.data[0];
-                    console.log(category_id, id, title, content, date)
-                    setFormData({ category_id, id, title, content, date });
+        .then(response => {
+            const { category_id, id, title, content, reg_date } = response.data[0];
+            // reg_date 값을 Date 객체로 변환합니다.
+            const formattedDate = new Date(reg_date);
+            // 필요한 형식으로 날짜를 포맷팅합니다.
+            const formattedDateString = formattedDate.toISOString().slice(0, 10);
+            // reg_date 값을 상태로 설정합니다.
+            setFormData(prevState => ({
+                ...prevState,
+                category_id,
+                id,
+                title,
+                content,
+                reg_date: formattedDateString, // 포맷팅된 날짜를 설정합니다.
+                }));
             })
             .catch(error => {
                 console.error('게시글 가져오기 오류:', error);
@@ -90,8 +105,8 @@ const boardUpdate = () => {
     return(
         <>
         <Header />
-        <Container>
         <Title>자유게시판 수정</Title>
+        <Container>
         <Content>
                 <Row>
                     <div>
@@ -120,7 +135,7 @@ const boardUpdate = () => {
                     </div>
                     <div>
                         <div>작성일</div>
-                        <Input type="date" name="date" value={formData.date} readOnly />
+                        <Input type="date" name="reg_date" value={formData.reg_date} readOnly />
                     </div>
                 </Row>
                 <Row>
@@ -160,13 +175,6 @@ const Container = styled.div`
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 `;
 
-const Title = styled.h1`
-    font-size: 24px;
-    margin: 0;
-    padding: 10px 0;
-    text-align: center;
-`;
-
 const Content = styled.div`
     display: flex;
     flex-direction: column;
@@ -200,11 +208,20 @@ const ButtonContainer = styled.div`
 `;
 
 const Button = styled.button`
-    padding: 10px 20px;
+    padding: 5px 10px;
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 13px;
+    margin-right: 20px;
+    text-align: center;
+`;
+
+const Title = styled.div`
+    font-size: 26px;
+    font-weight: 700;
+    color: #000000;
+    margin: 20px 20px;
 `;

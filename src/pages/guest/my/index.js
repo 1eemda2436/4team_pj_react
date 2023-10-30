@@ -4,57 +4,6 @@ import { useRouter } from 'next/router';
 import MainLayout from "@/components/layout/mainLayout";
 import Header from "@/components/common/header";
 import styled from "styled-components";
-import rootStore from "@/stores/rootStore";
-
-const Table = styled.table`
-    width: 80%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-`;
-
-const TableRow = styled.tr`
-    &:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-`;
-
-const TableCell = styled.td`
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-`;
-
-const Button = styled.button`
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-
-    &:hover {
-        background-color: #0056b3;
-    }
-`;
-
-const TableWrapper = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
-`;
-
-const LeftTable = styled.table`
-    width: 45%;
-    border-collapse: collapse;
-`;
-
-const RightTable = styled.table`
-    width: 45%;
-    border-collapse: collapse;
-`;
-
-
 
 const my = () => {
     const [member, setMember] = useState({});
@@ -85,6 +34,8 @@ const my = () => {
     return (
         <MainLayout>
             <Header />
+            <Title>마이페이지</Title>
+            <br/>
             <TableWrapper>
                 <LeftTable>
                     <tbody>
@@ -143,6 +94,7 @@ const my = () => {
                     </tbody>
                 </RightTable>
             </TableWrapper>
+            <br/>
             <Button onClick={() => router.push(`/guest/my/myInfoEdit/{id}`)}>수정</Button>
         </MainLayout>
     );
@@ -151,3 +103,53 @@ const my = () => {
 }
 
 export default my;
+
+const Title = styled.div`
+    font-size: 26px;
+    font-weight: 700;
+    color: #000000;
+    margin: 20px 20px;
+`;
+
+const TableRow = styled.tr`
+    &:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+`;
+
+const TableCell = styled.td`
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+`;
+
+const Button = styled.button`
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+`;
+
+const TableWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+`;
+
+const LeftTable = styled.table`
+    width: 45%;
+    border-collapse: collapse;
+    
+`;
+
+const RightTable = styled.table`
+    width: 45%;
+    border-collapse: collapse;
+`;

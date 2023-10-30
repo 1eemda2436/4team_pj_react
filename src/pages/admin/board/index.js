@@ -146,7 +146,7 @@ const Notice = () => {
 
     return (
         <MainComponent>
-            <Title>게시판관리</Title>
+            <MainTitle>게시판관리</MainTitle>
             <Section>
                 <CommunityHeader>
                     <Title>공지사항</Title>
@@ -187,7 +187,8 @@ const Notice = () => {
                     </tbody>
                 </Table>
             </Section>
-
+            <br/>
+            <br/>
             <Section>
                 <CommunityHeader>
                     <BoardTitle>자유게시판</BoardTitle>
@@ -245,11 +246,16 @@ const MainComponent = styled.div`
     padding: 40px;
     box-sizing: border-box;
 `;
+const MainTitle = styled.h2`
+    font-size: 26px;
+    font-weight: 700;
+    color: #007bff;
+`;
 
 const Title = styled.h2`
     font-size: 26px;
     font-weight: 700;
-    color: #007bff;
+    color: #000000;
 `;
 
 const Container = styled.div`
@@ -298,10 +304,10 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const Title = styled.div`
+const BoardTitle = styled.div`
   font-size: 26px;
   font-weight: 700;
-  color: #007bff;
+  color: #000000;
 `;
 
 const BoardItemTitle = styled.div`
