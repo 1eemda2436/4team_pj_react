@@ -134,6 +134,7 @@ const Title = styled.div`
   font-size: 26px;
   font-weight: 700;
   color: #007bff;
+  text-align: center;
 `;
 
 const PersonalMenu = styled.div`

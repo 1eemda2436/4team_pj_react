@@ -69,6 +69,9 @@ const Doc = () => {
       <>
       <Header />
       <MainContainer>
+          <Title>
+            전자 결재
+          </Title>
           <PersonalMenu>
             <Button type="button" onClick={() => router.push('/guest/doc/list/draftingList')}>기안 문서함</Button>
             <Button type="button" onClick={() => router.push('/guest/doc/list/circularList')}>회람 문서함</Button>
@@ -141,6 +144,8 @@ const Title = styled.div`
   font-size: 26px;
   font-weight: 700;
   color: #007bff;
+  text-align: center;
+  margin-bottom: 30px;
 `;
 
 const PersonalMenu = styled.div`

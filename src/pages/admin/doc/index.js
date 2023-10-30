@@ -80,6 +80,7 @@ const Doc = () => {
                   <th>문서번호</th>
                   <th>제목</th>
                   <th>기안자</th>
+                  <th>회사번호</th>
                   <th>결재일</th>
                 </tr>
               </thead>
@@ -95,6 +96,7 @@ const Doc = () => {
                     <td>{adminTotal.doc_id}</td>
                     <td>{adminTotal.doc_title}</td>
                     <td>{adminTotal.name}</td>
+                    <td>{adminTotal.company_id}</td>
                     <td>{formatDate(adminTotal.doc_date)}</td>
                   </tr>
                 )}
