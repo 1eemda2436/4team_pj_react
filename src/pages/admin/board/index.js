@@ -145,7 +145,8 @@ const Notice = () => {
     };
 
     return (
-        <Container>
+        <MainComponent>
+            <Title>게시판관리</Title>
             <Section>
                 <CommunityHeader>
                     <Title>공지사항</Title>
@@ -189,7 +190,7 @@ const Notice = () => {
 
             <Section>
                 <CommunityHeader>
-                    <Title>자유게시판</Title>
+                    <BoardTitle>자유게시판</BoardTitle>
                     <Button onClick={goToBoardWrite}>글쓰기</Button>
                     <Button onClick={handleSelectAll}>전체 선택</Button>
                     <Button onClick={communitydeleteSelectedItems}>선택 삭제</Button>
@@ -228,7 +229,7 @@ const Notice = () => {
                     </tbody>
                 </Table>
             </Section>
-        </Container>
+        </MainComponent>
     );
 }
 
@@ -238,15 +239,25 @@ Notice.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
 
+const MainComponent = styled.div`
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+`;
+
+const Title = styled.h2`
+    font-size: 26px;
+    font-weight: 700;
+    color: #007bff;
+`;
+
 const Container = styled.div`
-    font-family: Arial, sans-serif;
+    height: 100%;
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 `;
 
 const CommunityHeader = styled.div`

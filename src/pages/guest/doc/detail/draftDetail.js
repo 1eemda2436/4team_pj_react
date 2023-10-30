@@ -13,8 +13,8 @@ const Doc = () => {
     
     const [samples, setSamples] = useState([]);
     console.log('samples.sign:', samples.sign)
-    const [imageSrc, setImageSrc] = useState("");
 
+    const [imageSrc, setImageSrc] = useState("");
     
     const CategoryChange = (event) => {
         setSelectedCategory(event.target.value);

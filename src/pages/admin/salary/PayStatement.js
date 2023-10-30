@@ -12,7 +12,7 @@ const PayStatement = () => {
     
     useEffect(() => {
       const token = localStorage.getItem('token')
-      if (id) {
+      if (id) { 
         console.log(id)
         axios.get(`http://localhost:8081/admin/salary/PayStatement/${id}`, {
           headers: {

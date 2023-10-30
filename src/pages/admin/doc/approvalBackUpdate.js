@@ -27,7 +27,6 @@ const Doc = () => {
             axios.get(`http://localhost:8081/guest/doc/detail/${id}`)
             .then((response) => {
                 const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content } = response.data;
-
                 let date = new Date();
                 let year = date.getFullYear();
                 let month = ("0" + (1 + date.getMonth())).slice(-2);
@@ -44,7 +43,6 @@ const Doc = () => {
                     category_id,
                     doc_title,
                     doc_content,
-
                     approval_date: yyyymmdd,
                 });
                 setSelectedCategory(category_id);
@@ -79,7 +77,7 @@ const Doc = () => {
         const token = localStorage.getItem('token')
         
         if(id) {
-            axios.put(`http://localhost:8081/guest/doc/update/${id}`, updateSamples, {
+            axios.put(`http://localhost:8081/admin/doc/updateBack/${id}`, updateSamples, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

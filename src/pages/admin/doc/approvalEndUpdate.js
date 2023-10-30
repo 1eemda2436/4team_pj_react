@@ -8,14 +8,14 @@ import axios from "axios";
 const Doc = () => {
     const router = useRouter();
     const {id} = router.query; // ID를 추출
-    console.log(id);
+    console.log('id:', id);
+    const userId = localStorage.getItem('user_id')
 
     const handleBack = () => {
         router.back(); // 이전 페이지로 이동
     };
 
     const [selectedCategory, setSelectedCategory] = useState('');
-
     const [imageSrc, setImageSrc] = useState("");
     const [insertImageSrc, setInsertImageSrc] = useState('');
     const [samples, setSamples] = useState({
@@ -29,7 +29,6 @@ const Doc = () => {
         if(id) {
             axios.get(`http://localhost:8081/admin/doc/adminDetail/${id}`)
             .then((response) => {
-
                 const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content, sign, admin_sign } = response.data;
                 let date = new Date();
                 let year = date.getFullYear();
@@ -38,7 +37,6 @@ const Doc = () => {
             
                 let yyyymmdd = year + "-" + month + "-" + day;
                 console.log('response.data:', response.data);
-
                 setSamples({
                     doc_id,
                     doc_date,
@@ -48,7 +46,6 @@ const Doc = () => {
                     category_id,
                     doc_title,
                     doc_content,
-
                     approval_date: yyyymmdd,
                     sign,
                     admin_sign,
@@ -64,18 +61,56 @@ const Doc = () => {
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
-        setSamples((prevSamples) => ({
-        ...prevSamples,
+        setSamples((samples) => ({
+        ...samples,
         [name]: value,
         }));
     };
 
-    const handleFileChange = (f) => {
-        const file = f.target.files[0];
-        setSamples((samples) => ({
-        ...samples,
-        doc_attachment: file,
-        }));
+    // const handleFileChange = (f) => {
+    //     const file = f.target.files[0];
+    //     setSamples((samples) => ({
+    //     ...samples,
+    //     admin_sign: file,
+    //     }));
+    // };
+
+    const handleInsertSign = () => {
+        console.log('samples.admin_sign:',samples.admin_sign);
+        if(samples.admin_sign) {
+        const insertSamples = new FormData();
+        insertSamples.append('name', samples.name);
+        insertSamples.append('doc_status', samples.doc_status);
+        insertSamples.append('doc_attachment', samples.doc_attachment);
+        insertSamples.append('category_id', samples.category_id);
+        insertSamples.append('doc_title', samples.doc_title);
+        insertSamples.append('doc_content', samples.doc_content);
+        insertSamples.append('approval_date', samples.approval_date);
+        insertSamples.append('sign', samples.sign);
+        insertSamples.append('admin_sign1', samples.admin_sign);
+        insertSamples.append('id', userId);
+        console.log('insertSamples:', insertSamples);
+        console.log('samples:', samples);
+        console.log('insertSamples:', insertSamples);
+        
+        const token = localStorage.getItem('token')
+        
+
+        axios.post("http://localhost:8081/admin/doc/insert", insertSamples, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            alert('결재사인 등록');
+            hanldeUpdate();
+        })
+        .catch((error) => {
+            console.error('사인등록 실패', error)
+        });
+        } else {
+        console.error('admin_sign 없음', samples.admin_sign)
+        }
     };
 
     const hanldeUpdate = () => {
@@ -83,14 +118,10 @@ const Doc = () => {
         updateSamples.append('doc_status', '완료');
         updateSamples.append('approval_date', samples.approval_date);
         updateSamples.append('approval_content', samples.approval_content);
-
-        updateSamples.append('admin_sign', samples.admin_sign);
-        updateSamples.append('sign2', samples.sign);
         const token = localStorage.getItem('token')
-        console.log('samples.admin_sign:',samples.admin_sign);
         
         if(id) {
-            axios.put(`http://localhost:8081/admin/doc/update/${id}`, updateSamples, {
+            axios.put(`http://localhost:8081/admin/doc/updateEnd/${id}`, updateSamples, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -109,14 +140,15 @@ const Doc = () => {
         setSelectedCategory(event.target.value);
     };
 
-
     const encodeFileToBase64 = (fileBlob) => {
         // 첨부파일 전송을 위해 셋팅 
         const file = fileBlob;
+        console.log('fileBlob:',fileBlob);
         setSamples((samples) => ({
         ...samples,
         admin_sign: file,
         }));
+        
 
         // 미리보기
         const reader = new FileReader();
@@ -135,13 +167,13 @@ const Doc = () => {
                 <table>
                     <tr>
                         <td>
-                        {imageSrc && (
-                        <img
-                            src={imageSrc}
-                            alt="사원사인"
-                            style={{ width: "100px", height: "100px" }}
-                        />
-                        )}
+                            {imageSrc && (
+                                <img
+                                    src={imageSrc}
+                                    alt="사원사인"
+                                    style={{ width: "100px", height: "100px" }}
+                                />
+                            )}
                         </td>
                         <td>
                             {insertImageSrc && <img src={insertImageSrc} alt="관리자사인" style={{width: '100px', height: '100px'}} />}
@@ -154,7 +186,7 @@ const Doc = () => {
                         <td>
                             <input 
                             type="file"
-                            name="signFile"
+                            name="admin_sign2"
                             onChange={(e) => {
                                 encodeFileToBase64(e.target.files[0]);
                                 }
@@ -274,7 +306,7 @@ const Doc = () => {
                 </select>
             </CategoryTable>
             <ButtonStyle>
-                <button type="button" onClick={hanldeUpdate}>결재</button>
+                <button type="button" onClick={handleInsertSign}>결재</button>
                 <button type="button" onClick={handleBack}>취소</button>
             </ButtonStyle>
         </Container>
@@ -282,7 +314,6 @@ const Doc = () => {
 }
 
 export default Doc;
-
 
 Doc.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
@@ -310,6 +341,7 @@ const ApprovalLine = styled.div`
         height: 100px;
     }
 `;
+
 
 const Title = styled.div`
 text-align: center;

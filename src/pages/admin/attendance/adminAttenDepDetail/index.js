@@ -9,7 +9,8 @@ import axios from "axios";
 function AdminAttenDepDetail() {
     // 테두리 스타일을 정의합니다.
     const [attendance, setAttendance] = useState([]);
-    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [departments, setDepartments] = useState([]);
+    const [selectedDepartment, setSelectedDepartment] = useState('1');
     const router = useRouter();
 
     useEffect(() => {
@@ -30,16 +31,38 @@ function AdminAttenDepDetail() {
             });
     }, [selectedDepartment]);
     
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        console.log(token)
+        const company_id = localStorage.getItem('company_id')
+        axios.get(`http://localhost:8081/admin/department/find/${company_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            setDepartments(response.data);
+            console.log("얘도보자!@!@", response.data);
+        })
+        .catch(error => {
+            console.error('부서 정보 가져오기 오류', error);
+        });
+
+    }, []);
 
     return (
         <div align="center">
-            <select value={selectedDepartment} onChange={(e) => setSelectedDepartment(e.target.value)}>
-                <option value="">부서 선택</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
+            <select
+                name="depart_id"
+                value={selectedDepartment}
+                onChange={(e) => setSelectedDepartment(e.target.value)}
+            >
+                <option value="">부서를 선택하세요</option>
+                {departments.map(department => (
+                    <option key={department.depart_id} value={department.depart_id}>
+                    {department.depart_name}
+                    </option>
+                ))}
             </select>
             <div>
             <TblComponent>

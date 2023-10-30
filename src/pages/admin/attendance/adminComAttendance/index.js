@@ -1,14 +1,37 @@
 import CompanyStickChart from "@/components/chart/CompanyStickChart";
 import DepartRadarChart from "@/components/chart/DepartRadarChart";
 import AdminLayout from "@/components/layout/adminLayout";
+import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const AdminAttendanceCom = () => {
     const router = useRouter();
 
+    const [departments, setDepartments] = useState([]);
     const [selectedCompany, setSelectedCompany] = useState(''); // 선택한 전사 상태
     const [selectedDepartment, setSelectedDepartment] = useState(''); // 선택한 부서 상태
+
+    // 부서 목록 가져오기
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        console.log(token)
+        const company_id = localStorage.getItem('company_id')
+        setSelectedCompany(company_id)
+        axios.get(`http://localhost:8081/admin/department/find/${company_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            setDepartments(response.data);
+            console.log("얘도보자!@!@", response.data);
+        })
+        .catch(error => {
+            console.error('부서 정보 가져오기 오류', error);
+        });
+
+    }, []);
 
     const handleSelectCompn = (e) => {
         const selectedCom = e.target.value;
@@ -26,7 +49,7 @@ const AdminAttendanceCom = () => {
         <div>
             <div style={{ display: "flex", cursor: 'pointer' }}>
                 <div
-                    style={{
+                    style={{    
                         flex: "1",
                         borderRadius: "20px",
                         border: "3px solid black",
@@ -59,31 +82,19 @@ const AdminAttendanceCom = () => {
                         fontSize: "1.2rem", // 폰트 크기 추가
                     }}
                 >
-                    <div>
-                        <select
-                            onChange={handleSelectCompn} // 선택 변경 핸들러 추가
-                            value={selectedCompany}
-                        >
-                            <option value="">전사 선택</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
                     
                     <div>
                         <select
-                            onChange={handleSelectDepart} // 선택 변경 핸들러 추가
+                            name="depart_id"
                             value={selectedDepartment}
+                            onChange={(e) => setSelectedDepartment(e.target.value)}
                         >
-                            <option value="">부서 선택</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
+                            <option value="">부서를 선택하세요</option>
+                            {departments.map(department => (
+                                <option key={department.depart_id} value={department.depart_id}>
+                                {department.depart_name}
+                                </option>
+                            ))}
                         </select>
                     </div>
 

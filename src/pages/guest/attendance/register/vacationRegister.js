@@ -57,6 +57,7 @@ function VacationRegister () {
     const [vaca, setVaca] = useState({
         id: localStorage.getItem('user_id'),
         name: localStorage.getItem('user_name'),
+        company_id: localStorage.getItem('company_id'),
         vacation_title: '',
         vacation_start: '',
         vacation_end: '',
@@ -76,6 +77,7 @@ function VacationRegister () {
 const handleAnnualSubmit = () => {
         const token = localStorage.getItem('token');
         const id = localStorage.getItem('user_id');
+        const company_id = localStorage.getItem('company_id');
         const name = localStorage.getItem('user_name');
 
         axios
@@ -114,6 +116,9 @@ const handleAnnualSubmit = () => {
                 </div>
             </AttenCal>
             <br/><br/><hr/><br/><br/>
+            <div style={{display: "none"}}>
+                <input type="text" name="company_id" size={30} value={vaca.company_id} onChange={handleInputChange} readOnly/>
+            </div>
             <div>
                 <table style={tableStyle}>
                     <tbody>

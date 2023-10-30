@@ -7,6 +7,7 @@ import MyCalendar from "@/components/calendar/MyCalendar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+
 const WeeklyWorkButton = styled.a`
     cursor: pointer;
     background-color: #005FC5;
@@ -19,6 +20,34 @@ const WeeklyWorkButton = styled.a`
     &:hover {
     background-color: #003F85;
     }
+`;
+
+const SectionHeader = styled.div`
+    font-size: 24px;
+    font-weight: bold;
+    color: #005FC5;
+    margin-top: 20px;
+`;
+
+const SectionText = styled.div`
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px;
+`;
+
+const SectionValue = styled.div`
+    font-size: 20px;
+    color: #005FC5;
+    font-weight: bold;
+    margin-top: 5px;
+`;
+
+const SectionContainer = styled.div`
+    background-color: #F6F8FA;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: center;
 `;
 
 
@@ -110,24 +139,34 @@ function Attendance () {
                 
                 <AttenBoxBottom>
                     <AttenCal>
-                        <div style={{ border: "3px solid black", borderRadius: "20px", width: "100%", height: "100%", display: "flex"}}>
-                            <MyCalendar />
-                        </div>
+                        <MyCalendar height={550} />
                     </AttenCal>
                     
                     <AttenWeekWork>
                         <div className="work-hours">
-                            <WeeklyWorkButton onClick={() => router.push('/guest/attendance/detail/')}>
-                                쭈강 긍무 형황
-                            </WeeklyWorkButton>
+                            {localStorage.getItem('auth') !== 'ROLE_ADMIN' && (
+                                <WeeklyWorkButton onClick={() => router.push('/guest/attendance/detail/')}>
+                                    쭈강 긍무 형황
+                                </WeeklyWorkButton>
+                            )}
                         </div>
                         <br/>
-                        <div>[ 총 근무 시간 ]</div>
-                        <div>{weeklyWork.totalWeekWork}</div>
-                        <div>[ 총 연장 근무 시간 ]</div>
-                        <div>{weeklyWork.totalWeekOver}</div>
-                        <div>[ 남은 최소 근무 시간 ]</div>
-                        <div>{weeklyWork.remainWeekTime}</div>
+                        <SectionContainer>
+                            <SectionHeader>총 근무 시간</SectionHeader>
+                            <SectionText>이번 주 동안 근무한 시간</SectionText>
+                            <SectionValue>{weeklyWork.totalWeekWork}</SectionValue>
+                        </SectionContainer>
+                        <SectionContainer>
+                            <SectionHeader>총 연장 근무 시간</SectionHeader>
+                            <SectionText>이번 주 동안 연장 근무한 시간</SectionText>
+                            <SectionValue>{weeklyWork.totalWeekOver}</SectionValue>
+                        </SectionContainer>
+                        <SectionContainer>
+                            <SectionHeader>남은 최소 근무 시간</SectionHeader>
+                            <SectionText>남은 최소 근무 시간</SectionText>
+                            <SectionValue>{weeklyWork.remainWeekTime}</SectionValue>
+                        </SectionContainer>
+
                     </AttenWeekWork>
                 </AttenBoxBottom>
             </AttenComponent>
