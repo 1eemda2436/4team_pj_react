@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import MyCalendar from "@/components/calendar/MyCalendar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 
 const WeeklyWorkButton = styled.a`
@@ -153,18 +154,21 @@ function Attendance () {
                         <br/>
                         <SectionContainer>
                             <SectionHeader>총 근무 시간</SectionHeader>
-                            <SectionText>이번 주 동안 근무한 시간</SectionText>
-                            <SectionValue>{weeklyWork.totalWeekWork}</SectionValue>
+                            <br/>
+                            <SectionValue>{weeklyWork.totalWeekWork} H</SectionValue>
                         </SectionContainer>
                         <SectionContainer>
                             <SectionHeader>총 연장 근무 시간</SectionHeader>
-                            <SectionText>이번 주 동안 연장 근무한 시간</SectionText>
-                            <SectionValue>{weeklyWork.totalWeekOver}</SectionValue>
+                            <SectionValue>{weeklyWork.totalWeekOver} H</SectionValue>
+                            <br/>
+                            <ProgressBar bgColor="#005FC5" completed={(weeklyWork.totalWeekOver / 12).toFixed(2) * 100} maxCompleted={100} />
+
                         </SectionContainer>
                         <SectionContainer>
                             <SectionHeader>남은 최소 근무 시간</SectionHeader>
-                            <SectionText>남은 최소 근무 시간</SectionText>
-                            <SectionValue>{weeklyWork.remainWeekTime}</SectionValue>
+                            <SectionValue>{weeklyWork.remainWeekTime} H</SectionValue>
+                            <br/>
+                            <ProgressBar bgColor="#005FC5" completed={((weeklyWork.totalWeekOver + weeklyWork.totalWeekWork) / 40).toFixed(2) * 100} maxCompleted={100} />
                         </SectionContainer>
 
                     </AttenWeekWork>

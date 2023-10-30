@@ -174,6 +174,7 @@ const Doc = () => {
                     </tr>
                 </TableAttachment>
             </TblContent>
+
             </TblComponent>
             
             <ButtonStyle>

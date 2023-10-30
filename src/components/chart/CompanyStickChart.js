@@ -7,6 +7,7 @@ Chart.register(...registerables);
 
 const CompanyStickChart = ({ selectedCompany }) => {
     const [comList, setComList] = useState([]);
+    const [selectedCompany, setSelectedCompany] = useState('');
     const router = useRouter();
 
     useEffect(() => {
