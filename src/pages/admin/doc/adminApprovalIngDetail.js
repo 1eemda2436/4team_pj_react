@@ -18,10 +18,6 @@ const Doc = () => {
         router.back(); // 이전 페이지로 이동
     };
 
-    const handleBack = () => {
-        router.back(); // 이전 페이지로 이동
-    };
-
     
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -121,8 +117,8 @@ const Doc = () => {
                             <TableTd>{samples.name}</TableTd>
                         </TableTr>
                         <TableTr>
-                            <TableTh>결재일</TableTh>
-                            <TableTd>{formatDate(samples.approval_date)}</TableTd>
+                            <TableTh>기안일</TableTh>
+                            <TableTd>{formatDate(samples.doc_date)}</TableTd>
                         </TableTr>
                     </Table>
                 </DocstyleLeft>

@@ -231,23 +231,6 @@ const InputBox = styled.div`
   column-gap: 60px;
 `;
 
-const InputAccordion = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 35%;
-  background: white;
-  border: 1px solid #999;
-  border-radius: 5px;
-  padding: 10px 20px;
-  color: gray;
-  margin: 0px 5px;
-`;
-
-const KeyboardArrowDownIconStyle = styled(KeyboardArrowDownIcon)`
-  cursor: pointer;
-`;
-
 const HowToRegIconStyle = styled(HowToRegIcon)`
   cursor: pointer;
   margin-left: 30px;

@@ -1,26 +1,87 @@
-import MainLayout from "@/components/layout/mainLayout"
 import styled from "styled-components";
+import Header from "@/components/common/header";
+import MainLayout from "@/components/layout/mainLayout";
+import { useRouter } from 'next/router';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
-const Salary = () => {
-    return(
-        <Container>
-            <Title>급여관리 - 명세서</Title>
-            <SubTitle>직책</SubTitle>
-            <SubTitle>이름</SubTitle>
+const PayStatement = () => {
+    const router = useRouter();
+    //const id = router.query.id; // ID를 추출
+    const id = localStorage.getItem('user_id')
+    
+    const [PayStatementData, setPayStatementData] = useState([]);
+    
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        console.log(id)
+        axios.get(`http://localhost:8081/guest/salary/PayStatement/${id}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+        })
+        .then((response) => {
+            setPayStatementData(response.data);
+        })
+        .catch((error) => {
+            console.error("Error fetching data", error);
+        });
+    }, [id]);
 
-            <SubTitle>2023년 10월 명세서</SubTitle>
-            <HeaderRow>
-                <div>지급일자</div>
-                <div>이메일</div>
-                <div>직책/이름</div>
-            </HeaderRow>
-            <Table>
+    // 공제계 합계 계산
+    const deductionTotal = (
+        PayStatementData.income_tax +
+        PayStatementData.local_tax +
+        PayStatementData.national_pension +
+        PayStatementData.health_insurance +
+        PayStatementData.c_health_insurance +
+        PayStatementData.employment_insurance
+    );
+
+  // 지급계 합계 계산
+    const paymentTotal = (
+        PayStatementData.salary +
+        PayStatementData.bonus +
+        PayStatementData.overtime_pay +
+        PayStatementData.allowance +
+        PayStatementData.food_pay +
+        PayStatementData.t_pay
+    );
+
+    // 합계
+    const totalMathPayment = paymentTotal - deductionTotal;
+        
+    // 지급 총액 1000단위 올림
+    const totalPayment = Math.ceil(totalMathPayment / 10000) * 10000
+
+    return (
+        <>
+        <Header/>
+        <MainContainer>
+        <PayContainer>
+        <SubTitle>2023년 10월 명세서</SubTitle>
+
+        <TitleBox>
+            <SubTitleBox>
+            <span>직책</span>
+            <div>{PayStatementData.rank}</div>
+            </SubTitleBox>
+            <SubTitleBox>
+            <span>이름</span>
+            <div>{PayStatementData.name}</div>
+            </SubTitleBox>
+        </TitleBox>
+
+        <Table>
+            <thead>
                 <TableHeader>
-                    <TableCell colSpan={4}>지급내역(과세)</TableCell>
-                    <TableCell colSpan={2}>지급내역(비과세)</TableCell>
-                    <TableCell rowSpan={2}>지급액</TableCell>
-                    <TableCell rowSpan={7}>지급총액</TableCell>
+                <TableCell colSpan={4}>지급내역(과세)</TableCell>
+                <TableCell colSpan={2}>지급내역(비과세)</TableCell>
+                <TableCell rowSpan={2}>지급액</TableCell>
+                <TableCell rowSpan={7}>지급총액</TableCell>
                 </TableHeader>
+            </thead>
+            <tbody>
                 <tr>
                     <TableCell>기본금</TableCell>
                     <TableCell>상여금</TableCell>
@@ -29,14 +90,14 @@ const Salary = () => {
                     <TableCell>식비</TableCell>
                     <TableCell>교통비</TableCell>
                 </tr>
-                {/* 나머지 테이블 로우들 */}
                 <tr>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
+                    <TableCell>{PayStatementData.salary}</TableCell>
+                    <TableCell>{PayStatementData.bonus}</TableCell>
+                    <TableCell>{PayStatementData.overtime_pay}</TableCell>
+                    <TableCell>{PayStatementData.allowance}</TableCell>
+                    <TableCell>{PayStatementData.food_pay}</TableCell>
+                    <TableCell>{PayStatementData.t_pay}</TableCell>
+                    <TableCell>{paymentTotal}</TableCell>
                 </tr>
                 <tr>
                     <TableCell colSpan={6}>공제내역</TableCell>
@@ -51,65 +112,78 @@ const Salary = () => {
                     <TableCell>고용보험</TableCell>
                 </tr>
                 <tr>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
-                    <TableCell></TableCell>
+                    <TableCell>{PayStatementData.income_tax}</TableCell>
+                    <TableCell>{PayStatementData.local_tax}</TableCell>
+                    <TableCell>{PayStatementData.national_pension}</TableCell>
+                    <TableCell>{PayStatementData.health_insurance}</TableCell>
+                    <TableCell>{PayStatementData.c_health_insurance}</TableCell>
+                    <TableCell>{PayStatementData.employment_insurance}</TableCell>
+                    <TableCell>{deductionTotal}</TableCell>
                 </tr>
                 <tr>
-                    <TableCell colSpan={7}>합 계</TableCell>
+                    <TableCell colSpan={6}>합 계</TableCell>
+                    <TableCell>{totalMathPayment}</TableCell>
+                    <TableCell>{totalPayment}</TableCell>
                 </tr>
-            </Table>
-        </Container>
+            </tbody>
+        </Table>
+        </PayContainer>
+        </MainContainer>
+        </>
     );
 }
 
-export default Salary;
+export default PayStatement;
 
-Salary.getLayout = function getLayout(page) {
+PayStatement.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    max-width: 800px;
+const MainContainer = styled.div`
+    width: 100%;
+    height: 90%;
+    padding: 40px;
+    box-sizing: border-box;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 `;
 
-const Title = styled.h2`
-    font-size: 24px;
-    margin: 0;
-    padding: 10px 0;
-    text-align: center;
+const PayContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    margin-top: -80px;
+`;
+
+const TitleBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 30%;
+`;
+
+const SubTitleBox = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    cursor: default;
 `;
 
 const SubTitle = styled.div`
-    font-size: 18px;
-    margin: 10px 0;
-`;
-
-const HeaderRow = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 100px;
+    width: 100%;
+    text-align: center;
+    cursor: default;
 `;
 
 const Table = styled.table`
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    cursor: default;
 `;
 
 const TableHeader = styled.tr`
@@ -137,4 +211,5 @@ const Button = styled.button`
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: 600;
 `;

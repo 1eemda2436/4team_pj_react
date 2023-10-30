@@ -57,6 +57,7 @@ function AnnualRegister () {
     const [annual, setAnnual] = useState({
         id: localStorage.getItem('user_id'),
         name: localStorage.getItem('user_name'),
+        company_id: localStorage.getItem('company_id'),
         annual_title: '',
         annual_start: '',
         annual_end: '',
@@ -76,6 +77,7 @@ function AnnualRegister () {
 const handleAnnualSubmit = () => {
         const token = localStorage.getItem('token');
         const id = localStorage.getItem('user_id');
+        const company_id = localStorage.getItem('company_id');
         const name = localStorage.getItem('user_name');
 
         axios
@@ -112,8 +114,11 @@ const handleAnnualSubmit = () => {
                 <div style={{ border: "3px solid black", borderRadius: "20px", width: "100%", height: "100%", display: "flex"}}>
                     <MyCalendar />
                 </div>
-            </AttenCal>0
+            </AttenCal>
             <br/><br/><hr/><br/><br/>
+            <div style={{display: "none"}}>
+                <input type="text" name="company_id" size={30} value={annual.company_id} onChange={handleInputChange} readOnly/>
+            </div>
             <div>
                 <table style={tableStyle}>
                     <tbody>
