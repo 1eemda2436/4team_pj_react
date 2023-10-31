@@ -74,7 +74,12 @@ function AttendanceDetail () {
             })
             .then((response) => {
                 setVacat(response.data);
-            });
+                console.log('이거나오나??', setVacat);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+            ;
     }, []);
 
     return (
