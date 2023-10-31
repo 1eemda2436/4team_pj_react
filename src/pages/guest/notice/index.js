@@ -36,44 +36,44 @@ const notice = () => {
 
     const router = useRouter();
     return(
-        <Component>
+        <MainComponent>
             <Header/>
             <Title>공지사항</Title>
-            {(authority == "ROLE_MANAGER" || authority == "ROLE_ADMIN") && (
+            <TblComponent>
+                <TblHeader>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>글번호</th>
+                                <th>제목</th>
+                                <th>작성일</th>
+                            </tr>
+                        </thead>
+                    </Table>
+                </TblHeader>
+
+                <TblContent>
+                    <NoticeTableTOP>
+                        <tbody>
+                            {data.map(item => (
+                                <tr key={item.notice_id}>
+                                    <td>{item.notice_id}</td>
+                                    <td>
+                                        <BoardItemTitle onClick={() => router.push(`notice/noticeDetail/${item.notice_id}`)}>
+                                            {item.title}
+                                        </BoardItemTitle>
+                                    </td>
+                                    <td>{moment(item.reg_date).format('YYYY-MM-DD')}</td>
+                                </tr>
+                        ))}
+                        </tbody>
+                    </NoticeTableTOP>
+                </TblContent>
+            </TblComponent>
+            {(authority == "ROLE_ADMIN") && (
             <Button onClick={() => router.push('/admin/board/noticeWrite')}>글쓰기</Button>
                 )}
-        <Container>
-        <Section>
-        <CommunityHeader>
-        
-        
-        </CommunityHeader>
-        <Table>
-        <thead>
-                    <TableRow>
-                        <TableHeader>글번호</TableHeader>
-                        <TableHeader>제목</TableHeader>
-                        <TableHeader>작성일</TableHeader>
-                    </TableRow>
-                </thead>
-                <tbody>
-                    {data.map(item => (
-                        <TableRow key={item.notice_id}>
-                            <TableCell>{item.notice_id}</TableCell>
-                            <TableCell>
-                                <BoardItemTitle onClick={() => router.push(`notice/noticeDetail/${item.notice_id}`)}>
-                                    {item.title}
-                                </BoardItemTitle>
-                            </TableCell>
-                            <TableCell>{moment(item.reg_date).format('YYYY-MM-DD')}</TableCell>
-                            
-                        </TableRow>
-                    ))}
-                </tbody>
-        </Table>
-        </Section>
-    </Container>
-    </Component>
+    </MainComponent>
     )
 }
 
@@ -83,67 +83,92 @@ notice.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-const Container = styled.div`
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
+const MainComponent = styled.div`
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+`;
+
+const Title = styled.h2`
+    font-size: 26px;
+    font-weight: 700;
+    color: #000000;
+`;
+const TblComponent = styled.div`
+    border: 1px solid #E5E5E5;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    margin-top: 40px;
 `;
 
-const Section = styled.div`
-    margin: 20px 0;
+const TblHeader = styled.div`
+    padding: 0px 15px;
+    background: #F6F8FA;
+    border-radius: 5px 5px 0px 0px;
 `;
 
-const CommunityHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+const TblContent = styled.div`
+    height: 600px;
+    overflow-x: auto;
+    padding: 0px 15px;
+
+    &::-webkit-scrollbar {
+    width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    &::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
 `;
 
 const Table = styled.table`
     width: 100%;
+    table-layout: fixed;
+    font-size: 0.9em;
+    width: 100%;
+    min-width: 650px;
     border-collapse: collapse;
+
+    th {
+    padding: 20px 15px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    }
+
+    td {
+    padding: 15px;
+    vertical-align: middle;
+    font-size: 13px;
+    border-bottom: solid 1px #E5E5E5;
+    text-align: center;
+    word-wrap: break-word;
+    }
 `;
 
-const TableRow = styled.tr`
-    border-bottom: 1px solid #ccc;
-    border-radius: 10px; /* 각 행에 둥근 모서리 스타일 추가 */
-`;
+const NoticeTableTOP = styled(Table)``;
 
-const TableHeader = styled.th`
-    padding: 10px;
+const Button = styled.button`
+    padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
-`;
-
-const TableCell = styled.td`
-    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 20px;
 `;
 
 const BoardItemTitle = styled.div`
     cursor: pointer;
-    color: #007bff;
-    font-weight: bold;
+    color: #000000;
 `;
 
-const Button = styled.button`
-    padding: 15px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: auto;
-`;
-const Title = styled.div`
-  font-size: 26px;
-  font-weight: 700;
-  color: #007bff;
-  margin: 20px 20px;
-`;
-
-const Component = styled.div`
-
-`;

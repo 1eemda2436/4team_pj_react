@@ -62,27 +62,33 @@ const NoticeEdit = () => {
     };
 
     return (
+        <>
+        <Title>공지사항 수정</Title>
         <Container>
-            <Title>공지사항 수정</Title>
-            <Content>
-                <div>
-                    <div>제목</div>
-                    <Input type="text" name="title" onChange={handleInputChange} value={formData.title} />
-                </div>
-                <div>
-                    <div>내용</div>
-                    <TextArea name="content" onChange={handleInputChange} value={formData.content} rows="10" cols="50" />
-                </div>
-                <div>
-                    <div>작성일</div>
-                    <Input type="date" name="reg_date" onChange={handleInputChange} value={formData.reg_date} readOnly />
-                </div>
-            </Content>
-            <ButtonContainer>
+            <Table>
+                <tbody>
+                    <TableRow>
+                        <TableCell>제목</TableCell>
+                        <TableCell><Input type="text" name="title" onChange={handleInputChange} value={formData.title} /></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>내용</TableCell>
+                        <TableCell><TextArea name="content" onChange={handleInputChange} value={formData.content} rows="10" cols="50" /></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>작성일</TableCell>
+                        <TableCell><Input type="date" name="reg_date" onChange={handleInputChange} value={formData.reg_date} readOnly /></TableCell>
+                    </TableRow>
+                </tbody>
+            </Table>
+            <BtnContainer>
                 <Button onClick={handleEditBoard}>수정</Button>
                 <Button onClick={() => router.push('/admin/board')}>취소</Button>
-            </ButtonContainer>
+            </BtnContainer>
         </Container>
+        </>
+        
+        
     );
 }
 
@@ -92,20 +98,6 @@ NoticeEdit.getLayout = function getLayout(page) {
     return <AdminLayout>{page}</AdminLayout>;
 };
 
-const Content = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-`;
-
-const Input = styled.input`
-    padding: 8px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-`;
-
 const TextArea = styled.textarea`
     padding: 8px;
     width: 100%;
@@ -114,43 +106,78 @@ const TextArea = styled.textarea`
     margin-bottom: 10px;
 `;
 
-const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
+const Table = styled.table`
     width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    th {
+    padding: 20px 15px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    }
+
+    td {
+        padding: 15px;
+        vertical-align: middle;
+        font-size: 13px;
+        border-bottom: solid 1px #E5E5E5;
+        text-align: center;
+        word-wrap: break-word;
+    }
 `;
 
+const TableRow = styled.tr`
+    border-bottom: 1px solid #ccc;
+    &:last-child {
+        border-bottom: none; // 마지막 행의 border-bottom을 제거합니다.
+    }
+`;
+
+const TableCell = styled.td`
+    padding: 8px;
+    
+`;
+
+const BtnContainer = styled.div`
+    display: flex;
+    margin-top: 70px;
+    align-items: center;
+
+`;
 
 const Container = styled.div`
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 30%;
+    padding: 40px;
+    box-sizing: border-box;
 `;
 
+const Title = styled.div`
+    font-size: 26px;
+    font-weight: 700;
+    color: #007bff;
+    margin: 20px 20px;
+`;
+
+const Input = styled.input`
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+`;
+
+
 const Button = styled.button`
-    padding: 5px 10px;
+    padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    margin-right: 20px;
 `;
-
-const Title = styled.h1`
-    font-size: 24px;
-    margin: 0;
-    padding: 10px 0;
-    text-align: center;
-`;
-
-const BoardItemTitle = styled.div`
-    cursor: pointer;
-    color: #007bff;
-    font-weight: bold;
-`;
-

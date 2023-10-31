@@ -102,7 +102,7 @@ const Community = () => {
         const user_id = localStorage.getItem('user_id');
         //router.push(`/guest/community/BoardWrite/`);
         router.push({
-            pathname: '/guest/community/BoardWrite',
+            pathname: '/guest/community/boardWrite',
             query: { id: user_id }
         });
         
