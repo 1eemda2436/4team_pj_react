@@ -30,6 +30,7 @@ function Guest () {
     
     return(
         <div>
+
             <div>
                 <Header />
                 <DocRadarChart />
@@ -38,6 +39,7 @@ function Guest () {
             <div>
                 <ProgressBar bgColor="red" completed={(prg.complete_count / prg.pw_id_count) * 100} maxCompleted={100} />
             </div>
+
         </div>
     )
 };
