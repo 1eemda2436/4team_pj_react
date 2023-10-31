@@ -4,6 +4,7 @@ import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { BASE_URL } from "@/api/apiPath";
 
 const PayStatement = () => {
     const router = useRouter();
@@ -15,7 +16,7 @@ const PayStatement = () => {
     useEffect(() => {
         const token = localStorage.getItem('token')
         console.log(id)
-        axios.get(`http://localhost:8081/guest/salary/PayStatement/${id}`, {
+        axios.get(`${BASE_URL}/guest/salary/PayStatement/${id}`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }

@@ -7,6 +7,7 @@ import MyCalendar from "@/components/calendar/MyCalendar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ProgressBar from "@ramonak/react-progress-bar";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const WeeklyWorkButton = styled.a`
@@ -62,7 +63,7 @@ function Attendance () {
         const token = localStorage.getItem('token');
         const id = localStorage.getItem('user_id');
         axios
-            .get(`http://localhost:8081/guest/attendance/myAttenCount/${id}`, {
+            .get(`${BASE_URL}/guest/attendance/myAttenCount/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -77,7 +78,7 @@ function Attendance () {
         const token = localStorage.getItem('token');
         const id = localStorage.getItem('user_id');
         axios
-            .get(`http://localhost:8081/guest/attendance/weeklyWorkTime/${id}`, {
+            .get(`${BASE_URL}/guest/attendance/weeklyWorkTime/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

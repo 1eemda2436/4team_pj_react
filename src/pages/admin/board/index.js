@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import moment from 'moment';
+import { BASE_URL } from "@/api/apiPath";
 
 const Notice = () => {
     const [data, setData] = useState([]);
@@ -58,7 +59,7 @@ const Notice = () => {
 
         const token = localStorage.getItem('token');
         const deletePromises = selectedItems.map(itemId => {
-            return axios.delete(`http://localhost:8081/admin/notice/deleteNotice/${itemId}`, {
+            return axios.delete(`${BASE_URL}/admin/notice/deleteNotice/${itemId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -83,7 +84,7 @@ const Notice = () => {
 
         const token = localStorage.getItem('token');
         const deletePromises = selectedItems.map(board_id => {
-            return axios.delete(`http://localhost:8081/guest/community/boardDelete/${board_id}`, {
+            return axios.delete(`${BASE_URL}/guest/community/boardDelete/${board_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -102,7 +103,7 @@ const Notice = () => {
 
     const refreshData = () => {
         const token = localStorage.getItem('token');
-        axios.get('http://localhost:8081/guest/community/list', {
+        axios.get(`${BASE_URL}/guest/community/list`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -114,7 +115,7 @@ const Notice = () => {
             console.error('데이터를 가져오는 중 오류 발생:', err);
         });
 
-        axios.get('http://localhost:8081/guest/notice/noticeList', {
+        axios.get(`${BASE_URL}/guest/notice/noticeList`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

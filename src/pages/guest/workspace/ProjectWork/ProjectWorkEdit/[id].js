@@ -6,6 +6,7 @@ import Header from '@/components/common/header';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import moment from "moment";
+import { BASE_URL } from "@/api/apiPath";
 
 const tableStyle = {
     borderCollapse: "collapse",
@@ -31,7 +32,7 @@ const ProjectWorkEdit = () => {
 
         //프로젝트ID 불러오기 위함
         axios
-            .get("http://localhost:8081/guest/project",{
+            .get(`${BASE_URL}/guest/project`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -51,7 +52,7 @@ const ProjectWorkEdit = () => {
 
         if (id) {
             axios
-                .get(`http://localhost:8081/guest/projectwork/${id}`,{
+                .get(`${BASE_URL}/guest/projectwork/${id}`,{
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -95,7 +96,7 @@ const ProjectWorkEdit = () => {
         console.log('[saveProjectWork] projectwork', projectwork)
 
         axios
-            .post("http://localhost:8081/guest/projectwork", projectwork,{
+            .post(`${BASE_URL}/guest/projectwork`, projectwork,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

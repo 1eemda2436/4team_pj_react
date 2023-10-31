@@ -9,6 +9,7 @@ import Header from '@/components/common/header';
 import MyCalendar from "@/components/calendar/MyCalendar";
 import ProjectAddModal from "./Project/projectAddModal";
 import WorkAddModal from './ProjectWork/WorkAddModal';
+import { BASE_URL } from "@/api/apiPath";
 
 const Workspace = () => {
     const [projectList, setProjectList] = useState([]);
@@ -57,7 +58,7 @@ const Workspace = () => {
         const token = localStorage.getItem('token')
         const team_id = localStorage.getItem('team_id')
 
-        axios.get(`http://localhost:8081/guest/project/list/${team_id}`, {
+        axios.get(`${BASE_URL}/guest/project/list/${team_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -78,7 +79,7 @@ const Workspace = () => {
         setPj_id(pj_id)
 
         try {
-            axios.get(`http://localhost:8081/guest/projectwork/list/${pj_id}`, {
+            axios.get(`${BASE_URL}/guest/projectwork/list/${pj_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -92,7 +93,7 @@ const Workspace = () => {
                 console.log(error);
             });
 
-            axios.get(`http://localhost:8081/guest/project/${pj_id}`, {
+            axios.get(`${BASE_URL}/guest/project/${pj_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -117,7 +118,7 @@ const Workspace = () => {
         const newCompletedValue = completed === 'Y' ? 'N' : 'Y';
         console.log(newCompletedValue)
     
-        axios.put(`http://localhost:8081/guest/projectwork/complete/${pw_id}`, newCompletedValue, {
+        axios.put(`${BASE_URL}/guest/projectwork/complete/${pw_id}`, newCompletedValue, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -144,7 +145,7 @@ const Workspace = () => {
 
     const projectClose = (pj_id) => {
         const token = localStorage.getItem('token');
-        axios.put(`http://localhost:8081/guest/project/update/${pj_id}`, null, {
+        axios.put(`${BASE_URL}/guest/project/update/${pj_id}`, null, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

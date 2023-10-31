@@ -3,6 +3,7 @@ import MainLayout from "@/components/layout/mainLayout";
 import axios from "axios";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import { BASE_URL } from "@/api/apiPath";
 
 const PageContainer = styled.div`
     display: flex;
@@ -59,7 +60,7 @@ function GuestAnnualList() {
     useEffect(() => {
         const token = localStorage.getItem('token')
         axios
-            .get(`http://localhost:8081/guest/attendance/annualGuestList/${annual_id}`, {
+            .get(`${BASE_URL}/guest/attendance/annualGuestList/${annual_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

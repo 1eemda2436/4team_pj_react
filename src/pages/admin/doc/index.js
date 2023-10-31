@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const Doc = () => {
@@ -21,7 +22,7 @@ const Doc = () => {
     const token = localStorage.getItem('token')
 
       axios
-      .get("http://localhost:8081/admin/doc/adminTotal", {
+      .get(`${BASE_URL}/admin/doc/adminTotal`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

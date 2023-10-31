@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { router, useRouter } from 'next/router';
+import { BASE_URL } from '@/api/apiPath';
 
 const TeamUpdateModal = ({ onClose, onUpdate, team_id, team_name,depart_id }) => {
     const router = useRouter();
@@ -17,7 +18,7 @@ const TeamUpdateModal = ({ onClose, onUpdate, team_id, team_name,depart_id }) =>
         const token = localStorage.getItem('token');
         try {
             // PUT 요청을 보냅니다.
-            axios.put(`http://localhost:8081/admin/team/TeamUpdate`, updatedTeamData, {
+            axios.put(`${BASE_URL}/admin/team/TeamUpdate`, updatedTeamData, {
                 headers: {
                     'Authorization': `Bearer ${token}`, // 토큰을 헤더에 추가
                 },

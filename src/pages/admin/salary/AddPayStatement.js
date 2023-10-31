@@ -3,6 +3,7 @@ import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { BASE_URL } from "@/api/apiPath";
 
 const PayStatement = () => {
     const router = useRouter();
@@ -51,7 +52,7 @@ const PayStatement = () => {
             t_pay: transportationPay,
         };
     
-        axios.put(`http://localhost:8081/admin/salary/calculateTaxes`, calculationData, {
+        axios.put(`${BASE_URL}/admin/salary/calculateTaxes`, calculationData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

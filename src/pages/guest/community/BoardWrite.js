@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from "@/components/common/header";
+import { BASE_URL } from "@/api/apiPath";
 
 const BoardWrite = () => {
     const router = useRouter();
@@ -24,7 +25,7 @@ const BoardWrite = () => {
         
         const token = localStorage.getItem('token')
         // 서버에서 카테고리 목록을 가져오는 요청
-        axios.get('http://localhost:8081/guest/community/categories', {
+        axios.get(`${BASE_URL}/guest/community/categories`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -50,7 +51,7 @@ const BoardWrite = () => {
     // 게시물을 서버에 등록하는 함수
     const handlePostBoard = () => {
         const token = localStorage.getItem('token')
-        axios.post(`http://localhost:8081/guest/community/add`, formData,{
+        axios.post(`${BASE_URL}/guest/community/add`, formData,{
             headers: {
                 'Authorization': `Bearer ${token}`
             }

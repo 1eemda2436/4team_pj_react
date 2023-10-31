@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styled from "styled-components";
+import { BASE_URL } from '@/api/apiPath';
 
 const ProjectAddModal = ({ onClose, onSave }) => {
     const team_id = localStorage.getItem('team_id')
@@ -17,7 +18,7 @@ const ProjectAddModal = ({ onClose, onSave }) => {
 
         try {
             console.log(formData.depart_name);
-            await axios.post(`http://localhost:8081/guest/project/pjadd`, formData, {
+            await axios.post(`${BASE_URL}/guest/project/pjadd`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

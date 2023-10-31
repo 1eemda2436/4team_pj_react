@@ -3,6 +3,7 @@ import AdminLayout from "@/components/layout/adminLayout"
 import axios from "axios";
 import React, {useEffect ,useState } from "react";
 import moment from 'moment';
+import { BASE_URL } from "@/api/apiPath";
 
 const admin = () => {
     const [companyData, setCompanyData] = useState([]);
@@ -15,7 +16,7 @@ const admin = () => {
 
         async function fetchData() {
             try {
-                const companyRes = await axios.get(`http://localhost:8081/admin/company/${company_id}`, {
+                const companyRes = await axios.get(`${BASE_URL}/admin/company/${company_id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -28,7 +29,7 @@ const admin = () => {
                     console.log("Error", err);
                 });
 
-                const roleRes = await axios.get(`http://localhost:8081/admin/auth/${id}`, {
+                const roleRes = await axios.get(`${BASE_URL}/admin/auth/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

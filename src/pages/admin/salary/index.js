@@ -3,6 +3,7 @@ import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { BASE_URL } from "@/api/apiPath";
 
 const AdminPayManagement = () => {
 
@@ -13,7 +14,7 @@ const AdminPayManagement = () => {
   useEffect(() => {
     const token = localStorage.getItem('token')
     // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-    axios.get('http://localhost:8081/admin/salary/salaryMain', {
+    axios.get(`${BASE_URL}/admin/salary/salaryMain`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

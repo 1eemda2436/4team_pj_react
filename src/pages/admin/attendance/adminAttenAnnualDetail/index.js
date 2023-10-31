@@ -4,6 +4,7 @@ import AttenCalendar from "@/components/calendar/AttenCalendar";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { BASE_URL } from "@/api/apiPath";
 
 // 관리자 부서별 근태 통계(상세)
 const AdminAttenAnnualDetail = () => {
@@ -18,7 +19,7 @@ const AdminAttenAnnualDetail = () => {
         const token = localStorage.getItem('token');
     
         axios
-            .get(`http://localhost:8081/admin/attendance/departmentAlign/${selectedDepartment}`, {
+            .get(`${BASE_URL}/admin/attendance/departmentAlign/${selectedDepartment}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

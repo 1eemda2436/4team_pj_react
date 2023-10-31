@@ -3,6 +3,7 @@ import styled from "styled-components";
 import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const Doc = () => {
@@ -66,7 +67,7 @@ const Doc = () => {
       
       const token = localStorage.getItem('token')
 
-      axios.post("http://localhost:8081/guest/doc/insert", insertSamples, {
+      axios.post(`${BASE_URL}/guest/doc/insert`, insertSamples, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -94,7 +95,7 @@ const Doc = () => {
   
       const token = localStorage.getItem('token');
   
-      axios.post("http://localhost:8081/guest/doc/temporarySave", temporarySaveData, {
+      axios.post(`${BASE_URL}/guest/doc/temporarySave`, temporarySaveData, {
           headers: {
               'Authorization': `Bearer ${token}`
           }

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { BASE_URL } from "@/api/apiPath";
 
 const EmployeeModification = () => {
     const router = useRouter();
@@ -23,7 +24,7 @@ const EmployeeModification = () => {
         const depart_id = e.target.value;
         // 선택한 부서에 대한 팀 정보 가져오기
         const token = localStorage.getItem('token')
-        axios.get(`http://localhost:8081/admin/department/teamsFind/${depart_id}`, {
+        axios.get(`${BASE_URL}/admin/department/teamsFind/${depart_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -40,7 +41,7 @@ const EmployeeModification = () => {
         const token = localStorage.getItem('token')
         console.log(token)
         const company_id = localStorage.getItem('company_id')
-        axios.get(`http://localhost:8081/admin/department/find/${company_id}`, {
+        axios.get(`${BASE_URL}/admin/department/find/${company_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -58,7 +59,7 @@ const EmployeeModification = () => {
 
         if (id) {
             // id를 사용하여 해당 id에 해당하는 사원 데이터를 서버에서 가져옵니다.
-            axios.get(`http://localhost:8081/admin/personnel/EmployeeModification/${id}`, {
+            axios.get(`${BASE_URL}/admin/personnel/EmployeeModification/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -92,7 +93,7 @@ const EmployeeModification = () => {
             tel: employeeData.tel,
         };
 
-        axios.put(`http://localhost:8081/admin/personnel/EmployeeUpdate/${id}`, updatedData, {
+        axios.put(`${BASE_URL}/admin/personnel/EmployeeUpdate/${id}`, updatedData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

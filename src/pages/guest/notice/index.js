@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '@/components/common/header';
 import moment from 'moment';
+import { BASE_URL } from "@/api/apiPath";
 
 const notice = () => {
     const [data, setData] = useState([]);
@@ -17,7 +18,7 @@ const notice = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token')
-        axios.get('http://localhost:8081/guest/notice/noticeList',{
+        axios.get(`${BASE_URL}/guest/notice/noticeList`,{
             headers: {
                 Authorization: `Bearer ${token}`
             }

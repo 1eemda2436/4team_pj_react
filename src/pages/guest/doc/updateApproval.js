@@ -3,6 +3,7 @@ import styled from "styled-components";
 import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const Doc = () => {
@@ -20,7 +21,7 @@ const Doc = () => {
 
     useEffect(() => {
         if(id) {
-            axios.get(`http://localhost:8081/guest/doc/detail/${id}`)
+            axios.get(`${BASE_URL}/guest/doc/detail/${id}`)
             .then((response) => {
                 const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content } = response.data;
                 setSamples({
@@ -64,7 +65,7 @@ const Doc = () => {
         const token = localStorage.getItem('token')
         
         if(id) {
-            axios.put(`http://localhost:8081/guest/doc/updateIng/${id}`, updateSamples, {
+            axios.put(`${BASE_URL}/guest/doc/updateIng/${id}`, updateSamples, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -87,12 +88,12 @@ const Doc = () => {
     const formatDate = (timestamp) => {
         const date = new Date(timestamp);
         const formattedDate = date.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
         });
         return formattedDate;
-      };
+    };
 
     return(
         <MainContainer>

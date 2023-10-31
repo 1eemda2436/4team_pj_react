@@ -2,6 +2,7 @@ import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from "next/router";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from "@/api/apiPath";
 
 const cellStyle = {
     border: "1px solid #ddd",
@@ -62,7 +63,7 @@ function GuestVacationConfirm() {
 
         if (vacation_id) {
             axios
-                .get(`http://localhost:8081/all/attendance/vacationDetail/${vacation_id}`, {
+                .get(`${BASE_URL}/all/attendance/vacationDetail/${vacation_id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

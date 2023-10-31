@@ -3,6 +3,7 @@ import AdminLayout from "@/components/layout/adminLayout";
 import axios from "axios";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import { BASE_URL } from "@/api/apiPath";
 
 const PageContainer = styled.div`
     display: flex;
@@ -59,7 +60,7 @@ function AdminVacationList() {
         const token = localStorage.getItem('token');
         const company_id = localStorage.getItem('company_id')
         axios
-            .get(`http://localhost:8081/all/attendance/vacationRequestsList/${company_id}`, {
+            .get(`${BASE_URL}/all/attendance/vacationRequestsList/${company_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "@/components/common/header";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const Doc = () => {
@@ -22,7 +23,7 @@ const Doc = () => {
   useEffect(() => {
     const token = localStorage.getItem('token')
     axios
-      .get("http://localhost:8081/guest/doc/approvalSelect", {
+      .get(`${BASE_URL}/guest/doc/approvalSelect`, {
         headers: {
           'Authorization': `Bearer ${token}`
       }

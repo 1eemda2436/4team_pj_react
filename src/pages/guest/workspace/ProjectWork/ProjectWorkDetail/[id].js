@@ -6,6 +6,7 @@ import moment from 'moment';
 import axios from 'axios';
 import Link from "next/link";
 import Header from '@/components/common/header';
+import { BASE_URL } from "@/api/apiPath";
 
 const Table = styled.table`
     width: 80%;
@@ -51,7 +52,7 @@ const ProjectWorkDetail = () => {
 
         if (id) {
             axios
-                .get(`http://localhost:8081/guest/projectwork/${id}`, {
+                .get(`${BASE_URL}/guest/projectwork/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -71,7 +72,7 @@ const ProjectWorkDetail = () => {
         const token = localStorage.getItem('token')
 
         axios
-            .delete(`http://localhost:8081/guest/projectwork/${id}`, {
+            .delete(`${BASE_URL}/guest/projectwork/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

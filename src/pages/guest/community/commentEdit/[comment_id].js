@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { BASE_URL } from '@/api/apiPath';
 
 const CommentEdit = () => {
     const router = useRouter();
@@ -11,7 +12,7 @@ const CommentEdit = () => {
     useEffect(() => {
         if (comment_id) {
             // 댓글 ID를 사용하여 해당 댓글 데이터를 불러옴
-            axios.get(`http://localhost:8081/guest/comment/commentFind/${board_id}`)
+            axios.get(`${BASE_URL}/guest/comment/commentFind/${board_id}`)
                 .then(response => {
                     setEditedComment(response.data.content);
                 })
@@ -28,7 +29,7 @@ const CommentEdit = () => {
         };
 
         // 댓글 ID를 사용하여 댓글 업데이트 요청을 보냄
-        axios.put(`http://localhost:8081/guest/comment/editComment/${comment_id}`, updatedComment, {
+        axios.put(`${BASE_URL}/guest/comment/editComment/${comment_id}`, updatedComment, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

@@ -1,3 +1,4 @@
+import { BASE_URL } from "@/api/apiPath";
 import DepartStickChart from "@/components/chart/DepartStickChart";
 import TeamRadarChart from "@/components/chart/TeamRadarChart";
 import AdminLayout from "@/components/layout/adminLayout";
@@ -18,7 +19,7 @@ const AdminAttendanceDep = () => {
         const depart_id = e.target.value;
         // 선택한 부서에 대한 팀 정보 가져오기
         const token = localStorage.getItem('token')
-        axios.get(`http://localhost:8081/admin/department/teamsFind/${depart_id}`, {
+        axios.get(`${BASE_URL}/admin/department/teamsFind/${depart_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -37,7 +38,7 @@ const AdminAttendanceDep = () => {
         const token = localStorage.getItem('token')
         console.log(token)
         const company_id = localStorage.getItem('company_id')
-        axios.get(`http://localhost:8081/admin/department/find/${company_id}`, {
+        axios.get(`${BASE_URL}/admin/department/find/${company_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

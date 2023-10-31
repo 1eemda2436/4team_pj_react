@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styled from "styled-components";
+import { BASE_URL } from '@/api/apiPath';
 
 const DepartmentRegistrationModal = ({ onClose, onSave }) => {
     const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ const DepartmentRegistrationModal = ({ onClose, onSave }) => {
 
         try {
             console.log(formData.depart_name);
-            await axios.post(`http://localhost:8081/admin/department/DepartmentInsert`, formData, {
+            await axios.post(`${BASE_URL}/admin/department/DepartmentInsert`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

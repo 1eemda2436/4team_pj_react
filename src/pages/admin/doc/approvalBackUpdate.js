@@ -3,6 +3,7 @@ import styled from "styled-components";
 import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const Doc = () => {
@@ -24,7 +25,7 @@ const Doc = () => {
 
     useEffect(() => {
         if(id) {
-            axios.get(`http://localhost:8081/guest/doc/detail/${id}`)
+            axios.get(`${BASE_URL}/guest/doc/detail/${id}`)
             .then((response) => {
                 const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content } = response.data;
                 let date = new Date();
@@ -69,7 +70,7 @@ const Doc = () => {
         const token = localStorage.getItem('token')
         
         if(id) {
-            axios.put(`http://localhost:8081/admin/doc/updateBack/${id}`, updateSamples, {
+            axios.put(`${BASE_URL}/admin/doc/updateBack/${id}`, updateSamples, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

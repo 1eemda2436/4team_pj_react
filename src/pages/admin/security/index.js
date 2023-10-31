@@ -5,6 +5,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useEffect, useState } from "react";
 import SelectBox from "@/components/form/selectBox";
 import axios from "axios";
+import { BASE_URL } from "@/api/apiPath";
 
 const AdminSecurityManagement = () => {
 
@@ -31,7 +32,7 @@ const AdminSecurityManagement = () => {
     const token = localStorage.getItem('token')
     const company_id = localStorage.getItem('company_id')
     // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-    axios.get(`http://localhost:8081/admin/personnel/employeeSelectAll/${company_id}`, {
+    axios.get(`${BASE_URL}/admin/personnel/employeeSelectAll/${company_id}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -102,7 +103,7 @@ const AdminSecurityManagement = () => {
 
       console.log(transformedAuthorityStatus)
 
-      axios.post(`http://localhost:8081/admin/auth/update`, transformedAuthorityStatus, {
+      axios.post(`${BASE_URL}/admin/auth/update`, transformedAuthorityStatus, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

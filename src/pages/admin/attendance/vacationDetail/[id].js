@@ -2,6 +2,7 @@ import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from "next/router";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from "@/api/apiPath";
 
 const cellStyle = {
     border: "1px solid #ddd",
@@ -62,7 +63,7 @@ function AdminVacationConfirm() {
         if (vacation_id) {
         console.log(vacation_id)
         axios
-            .get(`http://localhost:8081/all/attendance/vacationDetail/${vacation_id}`, {
+            .get(`${BASE_URL}/all/attendance/vacationDetail/${vacation_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -80,7 +81,7 @@ function AdminVacationConfirm() {
     const handleConfirm = () => {
         const token = localStorage.getItem('token');
         axios
-            .put(`http://localhost:8081/admin/attendance/vacationConfirm/${vacation_id}`, {
+            .put(`${BASE_URL}/admin/attendance/vacationConfirm/${vacation_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -99,7 +100,7 @@ function AdminVacationConfirm() {
     const handleReturn = () => {
         const token = localStorage.getItem('token');
         axios
-            .put(`http://localhost:8081/admin/attendance/vacationReturn/${vacation_id}`, {
+            .put(`${BASE_URL}/admin/attendance/vacationReturn/${vacation_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

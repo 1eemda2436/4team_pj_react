@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import styled from "styled-components";
 import Header from '@/components/common/header';
 import MainLayout from "@/components/layout/mainLayout";
+import { BASE_URL } from '@/api/apiPath';
 
 const MyInfoEdit = () => {
     const [memberInfo, setMemberInfo] = useState({});
@@ -15,7 +16,7 @@ const MyInfoEdit = () => {
         const token = localStorage.getItem('token')
             
             axios
-                .get(`http://localhost:8081/guest/my/member/${id}`, {
+                .get(`${BASE_URL}/guest/my/member/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -46,7 +47,7 @@ const MyInfoEdit = () => {
         console.log('[saveMemberInfo] memberInfo', memberInfo)
 
         axios
-            .put("http://localhost:8081/guest/my/memberModify/${id}", memberInfo,{
+            .put(`${BASE_URL}/guest/my/memberModify/${id}`, memberInfo,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

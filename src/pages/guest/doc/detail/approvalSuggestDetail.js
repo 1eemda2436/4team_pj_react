@@ -3,6 +3,7 @@ import styled from "styled-components";
 import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const Doc = () => {
@@ -23,7 +24,7 @@ const Doc = () => {
         const token = localStorage.getItem('token')
         if (id) {
             console.log(id);
-            axios.get(`http://localhost:8081/admin/doc/adminDetail/${id}`, {
+            axios.get(`${BASE_URL}/admin/doc/adminDetail/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -31,7 +32,7 @@ const Doc = () => {
             .then((response) => {
                 setSamples(response.data);
                 console.log('response.data', response.data);
-                setImageSrc(`http://localhost:8081/myimage/${response.data.sign}`);
+                setImageSrc(`${BASE_URL}/myimage/${response.data.sign}`);
             })
             .catch((error) => {
                 console.log(error);
@@ -43,7 +44,7 @@ const Doc = () => {
     const downloadFile = (fileName) => {
         const token = localStorage.getItem('token');
         // API를 통해 파일 다운로드 요청
-        return axios.get(`http://localhost:8081/guest/doc/download/${fileName}`, {
+        return axios.get(`${BASE_URL}/guest/doc/download/${fileName}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             },

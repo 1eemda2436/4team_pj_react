@@ -1,3 +1,4 @@
+import { BASE_URL } from "@/api/apiPath";
 import Header from "@/components/common/header";
 import MainLayout from "@/components/layout/mainLayout";
 import axios from "axios";
@@ -37,7 +38,7 @@ function AttendanceDetail () {
         const token = localStorage.getItem('token');
         const id = localStorage.getItem('user_id');
         axios
-            .get(`http://localhost:8081/guest/attendance/myWorkDetail/${id}`, {
+            .get(`${BASE_URL}/guest/attendance/myWorkDetail/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -52,7 +53,7 @@ function AttendanceDetail () {
         const id = localStorage.getItem('user_id');
 
         axios
-            .get(`http://localhost:8081/guest/attendance/myCurrentAnnual/${id}`, {
+            .get(`${BASE_URL}/guest/attendance/myCurrentAnnual/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -67,7 +68,7 @@ function AttendanceDetail () {
         const id = localStorage.getItem('user_id');
 
         axios
-            .get(`http://localhost:8081/guest/attendance/myVacationPre/${id}`, {
+            .get(`${BASE_URL}/guest/attendance/myVacationPre/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

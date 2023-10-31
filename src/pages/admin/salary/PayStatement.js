@@ -3,6 +3,7 @@ import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { BASE_URL } from "@/api/apiPath";
 
 const PayStatement = () => {
     const router = useRouter();
@@ -14,7 +15,7 @@ const PayStatement = () => {
       const token = localStorage.getItem('token')
       if (id) { 
         console.log(id)
-        axios.get(`http://localhost:8081/admin/salary/PayStatement/${id}`, {
+        axios.get(`${BASE_URL}/admin/salary/PayStatement/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import MainLayout from "@/components/layout/mainLayout";
 import Header from "@/components/common/header";
 import styled from "styled-components";
+import { BASE_URL } from '@/api/apiPath';
 
 const my = () => {
     const [member, setMember] = useState({});
@@ -16,7 +17,7 @@ const my = () => {
         console.log(id);
 
             axios
-                .get(`http://localhost:8081/guest/my/member/${id}`, {
+                .get(`${BASE_URL}/guest/my/member/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

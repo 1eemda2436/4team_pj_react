@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from "styled-components";
+import { BASE_URL } from '@/api/apiPath';
 
 const EditDepartmentModal = ({ onClose, onSave, depart_id, depart_name }) => {
     const [formData, setFormData] = useState({
@@ -14,7 +15,7 @@ const EditDepartmentModal = ({ onClose, onSave, depart_id, depart_name }) => {
         //setDepartNumber(depart_id)
         console.log(depart_id)
         const token = localStorage.getItem('token');
-        axios.get(`http://localhost:8081/admin/department/GetDepartmentById/${depart_id}`, {
+        axios.get(`${BASE_URL}/admin/department/GetDepartmentById/${depart_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -38,7 +39,7 @@ const EditDepartmentModal = ({ onClose, onSave, depart_id, depart_name }) => {
 
         try {
             console.log(formData.depart_id);
-            await axios.put(`http://localhost:8081/admin/department/DepartmentUpdate`, formData, {
+            await axios.put(`${BASE_URL}/admin/department/DepartmentUpdate`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

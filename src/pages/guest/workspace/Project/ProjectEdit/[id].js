@@ -6,6 +6,7 @@ import Header from '@/components/common/header';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import moment from "moment";
+import { BASE_URL } from "@/api/apiPath";
 
 const tableStyle = {
     borderCollapse: "collapse",
@@ -33,7 +34,7 @@ const ProjectEdit = () => {
         const token = localStorage.getItem('token')
         if (id) {
             axios
-                .get(`http://localhost:8081/guest/project/${id}`,{
+                .get(`${BASE_URL}/guest/project/${id}`,{
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -61,7 +62,7 @@ const ProjectEdit = () => {
         const token = localStorage.getItem('token')
 
         axios
-            .get("http://localhost:8081/guest/department",{
+            .get(`${BASE_URL}/guest/department`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -76,7 +77,7 @@ const ProjectEdit = () => {
 
         // 팀 정보 가져오기
         axios
-            .get("http://localhost:8081/guest/team",{
+            .get(`${BASE_URL}/guest/team`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -110,7 +111,7 @@ const ProjectEdit = () => {
         console.log('[saveProject] project', project)
 
         axios
-            .post("http://localhost:8081/guest/project", project,{
+            .post(`${BASE_URL}/guest/project`, project,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

@@ -2,6 +2,7 @@ import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from "next/router";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from "@/api/apiPath";
 
 const cellStyle = {
     border: "1px solid #ddd",
@@ -68,7 +69,7 @@ function GuestAnnualModify() {
 
         if (annual_id) {
             axios
-                .get(`http://localhost:8081/all/attendance/annualDetail/${annual_id}`, {
+                .get(`${BASE_URL}/all/attendance/annualDetail/${annual_id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -86,7 +87,7 @@ function GuestAnnualModify() {
         const token = localStorage.getItem('token')
 
         axios
-            .put(`http://localhost:8081/guest/attendance/annualDetail/${annual_id}`, annual, {
+            .put(`${BASE_URL}/guest/attendance/annualDetail/${annual_id}`, annual, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

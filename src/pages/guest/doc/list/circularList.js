@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Header from "@/components/common/header";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const Doc = () => {
@@ -18,7 +19,7 @@ const Doc = () => {
       const token = localStorage.getItem('token')
 
         axios
-        .get("http://localhost:8081/guest/doc/view",{
+        .get(`${BASE_URL}/guest/doc/view`,{
           headers: {
             'Authorization': `Bearer ${token}`
           }

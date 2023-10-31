@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { RouterTwoTone } from '@mui/icons-material';
 import moment from 'moment';
 import Header from '@/components/common/header';
+import { BASE_URL } from '@/api/apiPath';
 
 const BoardDetails = () => {
     const [comments, setComments] = useState([]);
@@ -24,7 +25,7 @@ const BoardDetails = () => {
     useEffect(() => {
         const token = localStorage.getItem('token')
         // 서버에서 카테고리 목록을 가져오는 요청
-        axios.get('http://localhost:8081/guest/community/categories', {
+        axios.get(`${BASE_URL}/guest/community/categories`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -48,7 +49,7 @@ const BoardDetails = () => {
         const token = localStorage.getItem('token');
         const currentDate = moment().format('YYYY-MM-DD'); // 현재 날짜 가져오기
         if (board_id) {
-            axios.get(`http://localhost:8081/guest/community/boardFind/${board_id}`, {
+            axios.get(`${BASE_URL}/guest/community/boardFind/${board_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -62,7 +63,7 @@ const BoardDetails = () => {
             });
             
             //댓글 불러오기
-            axios.get(`http://localhost:8081/guest/comment/commentFind/${board_id}`, {
+            axios.get(`${BASE_URL}/guest/comment/commentFind/${board_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -79,7 +80,7 @@ const BoardDetails = () => {
     const handleCommentSubmit = () => {
         const token = localStorage.getItem('token');
         const currentDate = moment().format('YYYY-MM-DD'); // 현재 날짜 가져오기
-        axios.post(`http://localhost:8081/guest/comment/addComment`, {
+        axios.post(`${BASE_URL}/guest/comment/addComment`, {
             content: formData.content,
             board_id: board_id,
             reg_date: currentDate,
@@ -90,7 +91,7 @@ const BoardDetails = () => {
         })
         .then(response => {
             // 댓글을 성공적으로 등록한 경우, 댓글 목록을 다시 불러옵니다.
-            axios.get(`http://localhost:8081/guest/comment/commentFind/${board_id}`, {
+            axios.get(`${BASE_URL}/guest/comment/commentFind/${board_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -112,7 +113,7 @@ const BoardDetails = () => {
     //게시글 삭제
     const handleDelete = () => {
         const token = localStorage.getItem('token');
-        axios.delete(`http://localhost:8081/guest/community/boardDelete/${board_id}`, {
+        axios.delete(`${BASE_URL}/guest/community/boardDelete/${board_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -133,7 +134,7 @@ const BoardDetails = () => {
 
     const handleCommentDelete = (comment_id) => {
         const token = localStorage.getItem('token');
-        axios.delete(`http://localhost:8081/guest/comment/deleteComment/${comment_id}`, {
+        axios.delete(`${BASE_URL}/guest/comment/deleteComment/${comment_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

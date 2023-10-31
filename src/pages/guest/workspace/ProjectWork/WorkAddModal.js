@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styled from "styled-components";
+import { BASE_URL } from '@/api/apiPath';
 
 const WorkAddModal = ({ onClose, onSave, pj_id }) => {
     const [formData, setFormData] = useState({
@@ -18,7 +19,7 @@ const WorkAddModal = ({ onClose, onSave, pj_id }) => {
 
         try {
             console.log(formData.depart_name);
-            await axios.post(`http://localhost:8081/guest/projectwork/workadd`, formData, {
+            await axios.post(`${BASE_URL}/guest/projectwork/workadd`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

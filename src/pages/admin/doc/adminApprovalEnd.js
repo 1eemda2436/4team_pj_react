@@ -1,3 +1,4 @@
+import { BASE_URL } from "@/api/apiPath";
 import AdminLayout from "@/components/layout/adminLayout";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -20,7 +21,7 @@ const Doc = () => {
   useEffect(() => {
     const token = localStorage.getItem('token')
       axios
-      .get("http://localhost:8081/admin/doc/approvalEnd", {
+      .get(`${BASE_URL}/admin/doc/approvalEnd`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

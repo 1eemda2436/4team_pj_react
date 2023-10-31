@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/common/header';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { BASE_URL } from "@/api/apiPath";
 
 
 const tableStyle = {
@@ -31,7 +32,7 @@ const ProjectWorkAdd = () => {
         const token = localStorage.getItem('token')
         //프로젝트ID 불러오기 위함
         axios
-            .get("http://localhost:8081/guest/project",{
+            .get(`${BASE_URL}/guest/project`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -59,7 +60,7 @@ const ProjectWorkAdd = () => {
         console.log('[saveProjectwork] projectwork', projectwork)
 
         axios
-            .post("http://localhost:8081/guest/projectwork", projectwork,{
+            .post(`${BASE_URL}/guest/projectwork`, projectwork,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

@@ -6,6 +6,7 @@ import axios from 'axios';
 import DepartmentRegistrationModal from './DepartmentRegistrationModal'; // 모달 컴포넌트 임포트
 import EditDepartmentModal from './EditDepartmentModal';
 import TeamManagement from './TeamManagement'; 
+import { BASE_URL } from "@/api/apiPath";
 
 
 const DepartmentManagement = () => {
@@ -23,7 +24,7 @@ const DepartmentManagement = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-    axios.get('http://localhost:8081/admin/department/DepartmentManagement', {
+    axios.get(`${BASE_URL}/admin/department/DepartmentManagement`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -86,7 +87,7 @@ const handleEditModalSave = () => {
     const result = confirm('정말로 삭제하시겠습니까? (예/아니오)');
     if(result){
       try {
-        await axios.put(`http://localhost:8081/admin/department/DepartmentDelete/${depart_id}`, null, {
+        await axios.put(`${BASE_URL}/admin/department/DepartmentDelete/${depart_id}`, null, {
           headers: {
             'Authorization': `Bearer ${token}`
         }})

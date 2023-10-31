@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/common/header';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { BASE_URL } from "@/api/apiPath";
 
 const ProjectAdd = () => {
     const [project, setProject] = useState({})
@@ -17,7 +18,7 @@ const ProjectAdd = () => {
         const token = localStorage.getItem('token')
 
         axios
-            .get("http://localhost:8081/guest/department",{
+            .get(`${BASE_URL}/guest/department`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -32,7 +33,7 @@ const ProjectAdd = () => {
 
         // 팀 정보 가져오기
         axios
-            .get("http://localhost:8081/guest/team",{
+            .get(`${BASE_URL}/guest/team`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -61,7 +62,7 @@ const ProjectAdd = () => {
         console.log('[saveProject] project', project)
 
         axios
-            .post("http://localhost:8081/guest/project", project,{
+            .post(`${BASE_URL}/guest/project`, project,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

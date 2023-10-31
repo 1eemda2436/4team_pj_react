@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { BASE_URL } from "@/api/apiPath";
 
 const AdminPersonnel = () => {
     const router = useRouter();
@@ -63,7 +64,7 @@ const AdminPersonnel = () => {
     const handleEmployeeDelete = (id) => {
       const token = localStorage.getItem('token')
       if (window.confirm('사원을 삭제하시겠습니까?')) {
-        axios.delete(`http://localhost:8081/admin/personnel/delete/${id}`, {
+        axios.delete(`${BASE_URL}/admin/personnel/delete/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

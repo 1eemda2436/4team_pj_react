@@ -4,6 +4,7 @@ import styled from "styled-components";
 import MyCalendar from "@/components/calendar/MyCalendar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { BASE_URL } from "@/api/apiPath";
 
 const cellStyle = {
     border: "1px solid #ddd",
@@ -81,7 +82,7 @@ const handleAnnualSubmit = () => {
         const name = localStorage.getItem('user_name');
 
         axios
-            .post('http://localhost:8081/guest/attendance/annualRegister', annual, {
+            .post(`${BASE_URL}/guest/attendance/annualRegister`, annual, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

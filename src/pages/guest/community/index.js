@@ -8,6 +8,7 @@ import Header from "@/components/common/header";
 import SelectBox from "@/components/form/selectBox";
 import UserIcon from '../../../../public/asset/icons/user.svg';
 import NewsCrawling from "@/components/crawling/news";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const Community = () => {
@@ -20,7 +21,7 @@ const Community = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        axios.get(`http://localhost:8081/guest/community/list`, {
+        axios.get(`${BASE_URL}/guest/community/list`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -84,7 +85,7 @@ const Community = () => {
         setSelectedCategory(category_id);
         const token = localStorage.getItem('token');
         // API 요청을 보내서 선택한 카테고리에 해당하는 게시글 목록을 가져옴
-        axios.get(`http://localhost:8081/guest/community/list?category=${category_id}`, {
+        axios.get(`${BASE_URL}/guest/community/list?category=${category_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

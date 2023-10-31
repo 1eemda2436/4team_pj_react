@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { BASE_URL } from '@/api/apiPath';
 
 const TeamRegistrationModal = ({ onClose, onSave, depart_id }) => {
     const [teamData, setFormData] = useState({
@@ -12,7 +13,7 @@ const TeamRegistrationModal = ({ onClose, onSave, depart_id }) => {
         const token = localStorage.getItem('token')
         try {
           // PUT 요청을 보냅니다.
-            await axios.post('http://localhost:8081/admin/team/add', teamData,{
+            await axios.post(`${BASE_URL}/admin/team/add`, teamData,{
                 headers: {
                     'Authorization': `Bearer ${token}`, // 토큰을 헤더에 추가
                 }

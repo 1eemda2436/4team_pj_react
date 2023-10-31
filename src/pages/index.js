@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import { observer } from "mobx-react";
 import rootStore from "@/stores/rootStore";
+import { BASE_URL } from "@/api/apiPath";
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -25,12 +26,11 @@ const Login = () => {
     e.preventDefault();
 
     const { id, pwd } = loginData;
-    const apiUrl = 'http://localhost:8081/'; // 백엔드 API 엔드포인트 URL로 수정
 
     // 요청 본문 데이터
     const data = { id, pwd };
 
-    axios.post(apiUrl, data)
+    axios.post(`${BASE_URL}/`, data)
       .then((response) => {
         alert("로그인 성공")
         console.log('로그인 성공:', response.data);

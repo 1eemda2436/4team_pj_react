@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import styled from "styled-components";
+import { BASE_URL } from "@/api/apiPath";
 
 const EmployeeRegistration = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const EmployeeRegistration = () => {
     const token = localStorage.getItem('token')
     try {
       // Make a POST request to your Spring Boot API
-      await axios.post('http://localhost:8081/admin/personnel/employeeInsert', formData, {
+      await axios.post(`${BASE_URL}/admin/personnel/employeeInsert`, formData, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

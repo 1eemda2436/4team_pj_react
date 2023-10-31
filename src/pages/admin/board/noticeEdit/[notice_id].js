@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import styled from "styled-components";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { BASE_URL } from "@/api/apiPath";
 
 const NoticeEdit = () => {
     const router = useRouter();
@@ -19,7 +20,7 @@ const NoticeEdit = () => {
     useEffect(() => {
         if (notice_id) {
             // API 호출을 통해 기존 데이터를 불러오기
-            axios.get(`http://localhost:8081/guest/notice/noticeFind/${notice_id}`)
+            axios.get(`${BASE_URL}/guest/notice/noticeFind/${notice_id}`)
                 .then(response => {
                     console.log(response.data[0])
                     response.data[0].reg_date = new Date(response.data[0].reg_date).toISOString()
@@ -46,7 +47,7 @@ const NoticeEdit = () => {
         event.preventDefault();
         const token = localStorage.getItem('token');
         if (notice_id) {
-            axios.put(`http://localhost:8081/admin/notice/editNotice/${notice_id}`, formData, {
+            axios.put(`${BASE_URL}/admin/notice/editNotice/${notice_id}`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

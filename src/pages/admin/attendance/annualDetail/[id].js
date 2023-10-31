@@ -2,6 +2,7 @@ import AdminLayout from "@/components/layout/adminLayout";
 import { useRouter } from "next/router";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from "@/api/apiPath";
 
 const cellStyle = {
     border: "1px solid #ddd",
@@ -59,7 +60,7 @@ function AdminAnnualConfirm() {
         const token = localStorage.getItem('token');
         if (annual_id) {
             axios
-                .get(`http://localhost:8081/all/attendance/annualDetail/${annual_id}`, {
+                .get(`${BASE_URL}/all/attendance/annualDetail/${annual_id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -76,7 +77,7 @@ function AdminAnnualConfirm() {
     const handleConfirm = () => {
         const token = localStorage.getItem('token');
         axios
-            .put(`http://localhost:8081/admin/attendance/annualConfirm/${annual_id}`, {
+            .put(`${BASE_URL}/admin/attendance/annualConfirm/${annual_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -94,7 +95,7 @@ function AdminAnnualConfirm() {
     const handleReturn = () => {
         const token = localStorage.getItem('token');
         axios
-            .put(`http://localhost:8081/admin/attendance/annualReturn/${annual_id}`, {
+            .put(`${BASE_URL}/admin/attendance/annualReturn/${annual_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TeamRegistrationModal from './TeamRegistrationModal';
 import TeamUpdateModal from "./TeamUpdateModal";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const TeamManagement = () => {
@@ -28,7 +29,7 @@ const TeamManagement = () => {
         // depart_id가 존재할 때에만 데이터를 가져오도록 조건문을 사용합니다.
         if (depart_id) {
             // Axios를 사용하여 데이터를 가져오는 요청을 보냅니다.
-            axios.get(`http://localhost:8081/admin/team/select/${depart_id}`,{
+            axios.get(`${BASE_URL}/admin/team/select/${depart_id}`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }})

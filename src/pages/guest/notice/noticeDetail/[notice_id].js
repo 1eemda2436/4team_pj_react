@@ -5,6 +5,7 @@ import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from 'next/router';
 import Header from '@/components/common/header';
 import moment from 'moment';
+import { BASE_URL } from '@/api/apiPath';
 
 const NoticeDetails = () => {
     const [noticeData, setNoticeData] = useState({}); // 빈 객체로 초기화
@@ -21,7 +22,7 @@ const NoticeDetails = () => {
         console.log("notice_id:", notice_id);
         const token = localStorage.getItem('token');
         if (notice_id) {
-            axios.get(`http://localhost:8081/guest/notice/noticeFind/${notice_id}`, {
+            axios.get(`${BASE_URL}/guest/notice/noticeFind/${notice_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -37,7 +38,7 @@ const NoticeDetails = () => {
         event.preventDefault();
         const token = localStorage.getItem('token')
     // 여러 아이템을 삭제할 때는 배열 형태로 서버에 전달합니다.
-    axios.delete(`http://localhost:8081/admin/notice/deleteNotice/${notice_id}`, {
+    axios.delete(`${BASE_URL}/admin/notice/deleteNotice/${notice_id}`, {
         headers: {
             'Authorization': `Bearer ${token}`
         }

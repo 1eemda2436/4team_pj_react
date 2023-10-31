@@ -25,7 +25,7 @@ const NoticeWrite = () => {
     // 게시물을 서버에 등록하는 함수
     const handlePostBoard = () => {
         const token = localStorage.getItem('token')
-        axios.post('http://localhost:8081/admin/notice/addNotice', formData,{
+        axios.post(`${BASE_URL}/admin/notice/addNotice`, formData,{
             headers: {
                 'Authorization': `Bearer ${token}`
             }

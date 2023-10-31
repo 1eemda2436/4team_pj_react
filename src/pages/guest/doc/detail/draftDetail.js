@@ -3,6 +3,7 @@ import styled from "styled-components";
 import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const Doc = () => {
@@ -26,14 +27,14 @@ const Doc = () => {
     
             if (id) {
                 try {
-                    const response = await axios.get(`http://localhost:8081/guest/doc/detail/${id}`, {
+                    const response = await axios.get(`${BASE_URL}/guest/doc/detail/${id}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
                     });
                     setSamples(response.data);
                     console.log('response.data:', response.data);
-                    setImageSrc(`http://localhost:8081/myimage/${response.data.sign}`);
+                    setImageSrc(`${BASE_URL}/myimage/${response.data.sign}`);
                 } catch (error) {
                     console.error(error);
                 }
@@ -47,7 +48,7 @@ const Doc = () => {
     const downloadFile = (fileName) => {
         const token = localStorage.getItem('token');
         // API를 통해 파일 다운로드 요청
-        return axios.get(`http://localhost:8081/guest/doc/download/${fileName}`, {
+        return axios.get(`${BASE_URL}/guest/doc/download/${fileName}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             },
@@ -84,7 +85,7 @@ const Doc = () => {
         const token = localStorage.getItem("token");
 
         if(id) {
-            axios.delete(`http://localhost:8081/guest/doc/delete/${id}`, {
+            axios.delete(`${BASE_URL}/guest/doc/delete/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

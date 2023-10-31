@@ -4,6 +4,7 @@ import styled from "styled-components";
 import AttenCalendar from "@/components/calendar/AttenCalendar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { BASE_URL } from "@/api/apiPath";
 
 // 관리자 부서별 근태 현황(상세)
 function AdminAttenDepDetail() {
@@ -20,7 +21,7 @@ function AdminAttenDepDetail() {
             setSelectedDepartment(1);
     
         axios
-            .get(`http://localhost:8081/admin/attendance/departmentAtDetails/${selectedDepartment}`, {
+            .get(`${BASE_URL}/admin/attendance/departmentAtDetails/${selectedDepartment}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -35,7 +36,7 @@ function AdminAttenDepDetail() {
         const token = localStorage.getItem('token')
         console.log(token)
         const company_id = localStorage.getItem('company_id')
-        axios.get(`http://localhost:8081/admin/department/find/${company_id}`, {
+        axios.get(`${BASE_URL}/admin/department/find/${company_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

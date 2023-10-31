@@ -1,3 +1,4 @@
+import { BASE_URL } from "@/api/apiPath";
 import CompanyStickChart from "@/components/chart/CompanyStickChart";
 import DepartRadarChart from "@/components/chart/DepartRadarChart";
 import AdminLayout from "@/components/layout/adminLayout";
@@ -18,7 +19,7 @@ const AdminAttendanceCom = () => {
         console.log(token)
         const company_id = localStorage.getItem('company_id')
         setSelectedCompany(company_id)
-        axios.get(`http://localhost:8081/admin/department/find/${company_id}`, {
+        axios.get(`${BASE_URL}/admin/department/find/${company_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

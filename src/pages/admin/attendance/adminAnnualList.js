@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import { BASE_URL } from "@/api/apiPath";
 
 const PageContainer = styled.div`
     display: flex;
@@ -60,7 +61,7 @@ function AdminAnnualList() {
         const company_id = localStorage.getItem('company_id');
         console.log("값좀 보자", company_id);
         axios
-            .get(`http://localhost:8081/all/attendance/annualRequestsList/${company_id}`, {
+            .get(`${BASE_URL}/all/attendance/annualRequestsList/${company_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

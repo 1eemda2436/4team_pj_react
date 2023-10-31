@@ -3,6 +3,7 @@ import styled from "styled-components";
 import React, {useEffect, useState} from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { BASE_URL } from "@/api/apiPath";
 
 
 const Doc = () => {
@@ -27,7 +28,7 @@ const Doc = () => {
 
     useEffect(() => {
         if(id) {
-            axios.get(`http://localhost:8081/admin/doc/adminDetail/${id}`)
+            axios.get(`${BASE_URL}/admin/doc/adminDetail/${id}`)
             .then((response) => {
                 const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content, sign, admin_sign } = response.data;
                 let date = new Date();
@@ -50,7 +51,7 @@ const Doc = () => {
                     sign,
                     admin_sign,
                 });
-                setImageSrc(`http://localhost:8081/myimage/${response.data.sign}`);
+                setImageSrc(`${BASE_URL}/myimage/${response.data.sign}`);
                 setSelectedCategory(category_id);
             })
             .catch((error) => {
@@ -88,7 +89,7 @@ const Doc = () => {
         const token = localStorage.getItem('token')
         
 
-        axios.post("http://localhost:8081/admin/doc/insert", insertSamples, {
+        axios.post(`${BASE_URL}/admin/doc/insert`, insertSamples, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -113,7 +114,7 @@ const Doc = () => {
         const token = localStorage.getItem('token')
         
         if(id) {
-            axios.put(`http://localhost:8081/admin/doc/updateEnd/${id}`, updateSamples, {
+            axios.put(`${BASE_URL}/admin/doc/updateEnd/${id}`, updateSamples, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

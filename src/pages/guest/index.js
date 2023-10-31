@@ -6,6 +6,7 @@ import axios from "axios";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { BASE_URL } from "@/api/apiPath";
 
 function Guest () {
 
@@ -17,7 +18,7 @@ function Guest () {
         const team_id = localStorage.getItem('team_id');
 
         axios
-            .get(`http://localhost:8081/guest/projectwork/progress/${team_id}`, {
+            .get(`${BASE_URL}/guest/projectwork/progress/${team_id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

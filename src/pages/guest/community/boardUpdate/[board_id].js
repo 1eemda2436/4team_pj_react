@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from "@/components/common/header";
+import { BASE_URL } from "@/api/apiPath";
 
 const boardUpdate = () => {
     const router = useRouter();
@@ -30,7 +31,7 @@ const boardUpdate = () => {
     useEffect(() => {
         const token = localStorage.getItem('token')
         // 서버에서 카테고리 목록을 가져오는 요청
-        axios.get('http://localhost:8081/guest/community/categories', {
+        axios.get(`${BASE_URL}/guest/community/categories`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -48,7 +49,7 @@ const boardUpdate = () => {
         if(board_id) {
         const token = localStorage.getItem('token')
         // 게시글 목록을 가져오는 요청
-        axios.get(`http://localhost:8081/guest/community/boardFind/${board_id}`, {
+        axios.get(`${BASE_URL}/guest/community/boardFind/${board_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -79,7 +80,7 @@ const boardUpdate = () => {
     const handlePostBoard = () => {
         const token = localStorage.getItem('token')
         formData.board_id = board_id
-        axios.put(`http://localhost:8081/guest/community/edit/${board_id}`, formData,{
+        axios.put(`${BASE_URL}/guest/community/edit/${board_id}`, formData,{
             headers: {
                 'Authorization': `Bearer ${token}`
             }
