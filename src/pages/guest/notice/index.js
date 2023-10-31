@@ -56,15 +56,15 @@ const notice = () => {
                     <NoticeTableTOP>
                         <tbody>
                             {data.map(item => (
-                            <tr key={item.notice_id}>
-                                <td>{item.notice_id}</td>
-                                <td>
-                                    <BoardItemTitle onClick={() => router.push(`notice/noticeDetail/${item.notice_id}`)}>
-                                        {item.title}
-                                    </BoardItemTitle>
-                                </td>
-                                <td>{moment(item.reg_date).format('YYYY-MM-DD')}</td>
-                            </tr>
+                                <tr key={item.notice_id}>
+                                    <td>{item.notice_id}</td>
+                                    <td>
+                                        <BoardItemTitle onClick={() => router.push(`notice/noticeDetail/${item.notice_id}`)}>
+                                            {item.title}
+                                        </BoardItemTitle>
+                                    </td>
+                                    <td>{moment(item.reg_date).format('YYYY-MM-DD')}</td>
+                                </tr>
                         ))}
                         </tbody>
                     </NoticeTableTOP>

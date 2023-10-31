@@ -46,7 +46,7 @@ const MyInfoEdit = () => {
         console.log('[saveMemberInfo] memberInfo', memberInfo)
 
         axios
-            .post("http://localhost:8081/guest/my/memberModify", memberInfo,{
+            .put("http://localhost:8081/guest/my/memberModify/${id}", memberInfo,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

@@ -10,6 +10,7 @@ const Notice = () => {
     const [noticeData, setNoticeData] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [selectAll, setSelectAll] = useState(false); // 전체 선택 상태를 저장하는 state
+    const [authority, setAuthority] = useState('');
     const router = useRouter();
 
     // 체크박스를 토글하는 함수
@@ -151,8 +152,13 @@ const Notice = () => {
                 <CommunityHeader>
                     <Title>공지사항</Title>
                     <Button onClick={goToNoticeWrite}>글쓰기</Button>
-                    <Button onClick={noticehandleSelectAll}>전체 선택</Button>
-                    <Button onClick={deleteSelectedItems}>선택 삭제</Button>
+                    {(authority === "ROLE_ADMIN") && (
+                        <Button onClick={noticehandleSelectAll}>전체 선택</Button>
+                    )}
+                    {(authority === "ROLE_ADMIN") && (
+                        <Button onClick={deleteSelectedItems}>선택 삭제</Button>
+                    )}                    
+                    
                 </CommunityHeader>
                 <Table>
                     <thead>
@@ -193,8 +199,13 @@ const Notice = () => {
                 <CommunityHeader>
                     <BoardTitle>자유게시판</BoardTitle>
                     <Button onClick={goToBoardWrite}>글쓰기</Button>
-                    <Button onClick={handleSelectAll}>전체 선택</Button>
-                    <Button onClick={communitydeleteSelectedItems}>선택 삭제</Button>
+                    {(authority === "ROLE_ADMIN") && (
+                        <Button onClick={handleSelectAll}>전체 선택</Button>
+                    )}                
+                    {(authority === "ROLE_ADMIN") && (
+                        <Button onClick={communitydeleteSelectedItems}>선택 삭제</Button>
+                    )}
+                    
                 </CommunityHeader>
 
                 <Table>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Header from "@/components/common/header";
 
 const BoardWrite = () => {
     const router = useRouter();
@@ -63,18 +64,21 @@ const BoardWrite = () => {
             });
     };
 
-    return (
+    return(
+        <>
+        <Header />
+        <Title>자유게시판 등록</Title>
         <Container>
-            <Title>자유게시판 등록</Title>
-            <Content>
-                <Row>
-                    <div>
-                        <div>카테고리</div>
-                        {/* <Input type="text" name="category_id" onChange={handleInputChange} value={formData.category_id} /> */}
+            <Table>
+                <tbody>
+                    <TableRow>
+                        <TableCell1>카테고리 선택</TableCell1>
+                        <TableCell>
                         <select
                             name="category_id"
                             value={formData.category_id}
                             onChange={handleInputChange}
+                            style={{ width: '100%', height: '40px', borderRadius: '5px' }}
                         >
                             <option value="">카테고리 선택</option>
                             {categories.map(category => (
@@ -83,33 +87,35 @@ const BoardWrite = () => {
                                 </option>
                             ))}
                         </select>
-                    </div>
-                    <div>
-                        <div>작성자</div>
-                        <Input type="text" name="id" value={formData.id} readOnly />
-                    </div>
-                    <div>
-                        <div>제목</div>
-                        <Input type="text" name="title" onChange={handleInputChange} value={formData.title} />
-                    </div>
-                    <div>
-                        <div>작성일</div>
-                        <Input type="date" name="reg_date" value={formData.reg_date} readOnly />
-                    </div>
-                </Row>
-                <Row>
-                    <div>
-                        <div>글내용</div>
-                        <TextArea name="content" onChange={handleInputChange} value={formData.content} rows="30" cols="100"/>
-                    </div>
-                </Row>
-            </Content>
-            <ButtonContainer>
+                        </TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell1>작성자</TableCell1>
+                        <TableCell1><Input type="text" name="id" value={formData.id} readOnly /></TableCell1>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell1>제목</TableCell1>
+                        <TableCell1><Input type="text" name="title" onChange={handleInputChange} value={formData.title} /></TableCell1>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell1>작성일</TableCell1>
+                        <TableCell1><Input type="date" name="reg_date" value={formData.reg_date} readOnly /></TableCell1>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell1>글내용</TableCell1>
+                        <TableCell1><TextArea name="content" onChange={handleInputChange} value={formData.content} rows="30" cols="100"/></TableCell1>
+                    </TableRow>
+                </tbody>
+            </Table>
+            <BtnContainer>
                 <Button onClick={handlePostBoard}>등록</Button>
                 <Button onClick={() => router.back()}>이전</Button>
-            </ButtonContainer>
+            </BtnContainer>
         </Container>
-    );
+        </>
+
+        
+    )
 }
 
 export default BoardWrite;
@@ -118,38 +124,59 @@ BoardWrite.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-`;
-
-const Title = styled.h1`
-    font-size: 24px;
-    margin: 0;
-    padding: 10px 0;
-    text-align: center;
-`;
-
-const Content = styled.div`
-    display: flex;
-    flex-direction: column;
+const Table = styled.table`
+    width: 100%;
+    border-collapse: collapse;
     margin-top: 20px;
+
+    th {
+    padding: 20px 15px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    }
+
+    td {
+        padding: 15px;
+        vertical-align: middle;
+        font-size: 13px;
+        border-bottom: solid 1px #E5E5E5;
+        text-align: center;
+        word-wrap: break-word;
+    }
 `;
 
-const Row = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
+const TableRow = styled.tr`
+    border-bottom: 1px solid #ccc;
+    &:last-child {
+        border-bottom: none; // 마지막 행의 border-bottom을 제거합니다.
+    }
+`;
+
+const TableCell = styled.td`
+    padding: 8px;
+    
+`;
+
+const TableCell1 = styled.td`
+    padding: 8px;
+    font-weight: bold;
+`;
+
+const Container = styled.div`
+    width: 100%;
+    height: 30%;
+    padding: 40px;
+    box-sizing: border-box;
+`;
+
+const Title = styled.div`
+    font-size: 26px;
+    font-weight: 700;
+    color: #000000;
+    margin: 20px 20px;
 `;
 
 const Input = styled.input`
@@ -159,18 +186,6 @@ const Input = styled.input`
     border-radius: 5px;
 `;
 
-const TextArea = styled.textarea`
-    padding: 8px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-`;
-
-const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-`;
 
 const Button = styled.button`
     padding: 10px 20px;
@@ -180,4 +195,20 @@ const Button = styled.button`
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    margin-right: 20px;
+`;
+
+const BtnContainer = styled.div`
+    display: flex;
+    margin-top: 70px;
+    align-items: center;
+
+`;
+
+const TextArea = styled.textarea`
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
 `;

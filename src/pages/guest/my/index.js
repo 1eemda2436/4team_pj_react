@@ -95,7 +95,7 @@ const my = () => {
                 </RightTable>
             </TableWrapper>
             <br/>
-            <Button onClick={() => router.push(`/guest/my/myInfoEdit/{id}`)}>수정</Button>
+            <Button onClick={() => router.push(`/guest/my/myInfoEdit/${member.id}`)}>수정</Button>
         </MainLayout>
     );
 
