@@ -133,9 +133,9 @@ const Notice = () => {
 
     const goToBoardWrite = () => {
         const user_id = localStorage.getItem('user_id');
-        //router.push(`/guest/community/BoardWrite/`);
+        //router.push(`/guest/community/boardWrite/`);
         router.push({
-            pathname: '/guest/community/BoardWrite',
+            pathname: '/guest/community/boardWrite',
             query: { id: user_id }
         });
         
