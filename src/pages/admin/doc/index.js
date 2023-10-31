@@ -8,6 +8,9 @@ import axios from "axios";
 const Doc = () => {
 
   const router = useRouter();
+  const id = localStorage.getItem('user_id');
+  console.log('id확인:',id);
+  const company_id = localStorage.getItem('company_id');
   const [samples, setSamples] = useState([]);
   const [filteredSamples, setFilteredSamples] = useState([]);
   const [page, setPage] = useState(1);
@@ -26,7 +29,7 @@ const Doc = () => {
       .then((response) => {
         setSamples(response.data);
         const statuses = ['완료', '진행', '반려']
-        const filteredSamples = response.data.filter(adminTotal => statuses.includes(adminTotal.doc_status));
+        const filteredSamples = response.data.filter(adminTotal => statuses.includes(adminTotal.doc_status) && adminTotal.company_id === company_id);
         const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
         setSamples(sortedSamples);
         setFilteredSamples(sortedSamples);
