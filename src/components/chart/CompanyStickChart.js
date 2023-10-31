@@ -5,9 +5,9 @@ import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 Chart.register(...registerables);
 
-const CompanyStickChart = ({ selectedCompany }) => {
+const CompanyStickChart = ({selectedCompany}) => {
     const [comList, setComList] = useState([]);
-    const [selectedCompany, setSelectedCompany] = useState('');
+    // const [selectedCompany, setSelectedCompany] = useState('');
     const router = useRouter();
 
     useEffect(() => {
