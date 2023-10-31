@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from "styled-components";
 
-const ProjectAddModal = ({ onClose, onSave }) => {
-    const team_id = localStorage.getItem('team_id')
+const WorkAddModal = ({ onClose, onSave, pj_id }) => {
     const [formData, setFormData] = useState({
-        team_id : team_id,
-        content : '',
-        deadline_s : new Date().toISOString().slice(0, 10), // 현재 날짜를 ISO 형식으로 가져오기
-        deadline_e : '',
+        pj_id : pj_id,
+        pw_name : '',
+        // duties : '',
+        pw_deadline_s : new Date().toISOString().slice(0, 10), // 현재 날짜를 ISO 형식으로 가져오기
+        pw_deadline_e : '',
+        complete : 'N'
     });
     
     const handleFormSubmit = async (e) => {
@@ -17,14 +18,13 @@ const ProjectAddModal = ({ onClose, onSave }) => {
 
         try {
             console.log(formData.depart_name);
-            await axios.post(`http://localhost:8081/guest/project/pjadd`, formData, {
+            await axios.post(`http://localhost:8081/guest/projectwork/workadd`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
         // 성공 처리
         onSave(); // 저장 후 처리
-        //window.location.reload();
         } catch (error) {
         // 오류 처리
         }
@@ -38,35 +38,35 @@ const ProjectAddModal = ({ onClose, onSave }) => {
     return (
         <ModalWrapper>
             <ModalContent>
-                <Title>프로젝트 등록</Title>
+                <Title>업무등록</Title>
                 <Form onSubmit={handleFormSubmit}>
                     <label>
-                        프로젝트 명 :
+                        제목 :
                         <input
                             required
                             type="text"
-                            name="pj_name"
-                            placeholder="프로젝트 이름을 적어주세요"
+                            name="pw_name"
+                            placeholder="프로젝트 업무명을 입력해주세요"
                             onChange={handleInputChange}
                         />
                     </label>
-                    <label>
-                        프로젝트 설명 :
+                    {/* <label>
+                        업무 :
                         <input
                             required
                             type="text"
-                            name="content"
-                            placeholder="프로젝트 이름을 적어주세요"
+                            name="duties"
+                            placeholder="담당업무를 입력해주세요"
                             onChange={handleInputChange}
                         />
-                    </label>
+                    </label> */}
                     <label>
-                        Start :
+                        시작일 :
                         <input
                             required
                             type="date"
-                            name="deadline_s"
-                            value={formData.deadline_s}
+                            name="pw_deadline_s"
+                            value={formData.pw_deadline_s}
                             onChange={handleInputChange}
                         />
                     </label>
@@ -75,7 +75,7 @@ const ProjectAddModal = ({ onClose, onSave }) => {
                         <input
                             required
                             type="date"
-                            name="deadline_e"
+                            name="pw_deadline_e"
                             onChange={handleInputChange}
                         />
                     </label>
@@ -89,7 +89,7 @@ const ProjectAddModal = ({ onClose, onSave }) => {
     );
 };
 
-export default ProjectAddModal;
+export default WorkAddModal;
 
     const ModalWrapper = styled.div`
     position: fixed;

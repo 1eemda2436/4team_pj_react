@@ -7,19 +7,49 @@ import axios from "axios";
 import moment from 'moment';
 import Header from '@/components/common/header';
 import MyCalendar from "@/components/calendar/MyCalendar";
-
+import ProjectAddModal from "./Project/projectAddModal";
+import WorkAddModal from './ProjectWork/WorkAddModal';
 
 const Workspace = () => {
     const [projectList, setProjectList] = useState([]);
     const [projectworkList, setProjectworkList] = useState([]);
     const [project, setProject] = useState([]);
+    const [pj_id, setPj_id] = useState();
 
-    // modal
-    const [isProjectModalOpen, setProjectModalOpen] = useState(false);
-    const [isProjectEditModalOpen, setProjectEditModalOpen] = useState(false);
+    //프로젝트 추가 모달
+    const [isProjectModalOpen,setModalOpen] = useState(false);
+
+    const projectModalOpen = () => {
+        setModalOpen(true);
+    };
+
+    const projectModalClose = () => {
+        setModalOpen(false);
+    };
+
+    const projectModalSave = () => {
+        // 모달에서 저장 버튼을 눌렀을 때의 로직 추가
+        setModalOpen(false); 
+        window.location.reload();
+        //router.push('/admin/department-team/'); // 부서 현황 화면으로 리디렉션
+    };
+
+    //업무 추가 모달
     const [isWorkModalOpen, setWorkModalOpen] = useState(false);
-    const [isWorkEditModalOpen, setWorkEditModalOpen] = useState(false);
-    // const [teams, setTeams] = useState([]);
+
+    const workModalOpen = () => {
+        setWorkModalOpen(true);
+    };
+
+    const workModalClose = () => {
+        setWorkModalOpen(false);
+    };
+
+    const workModalSave = () => {
+        // 모달에서 저장 버튼을 눌렀을 때의 로직 추가
+        setWorkModalOpen(false); 
+        //router.push('/admin/department-team/'); // 부서 현황 화면으로 리디렉션
+    };
 
     const [showWork, setShowWork] = useState(false);
     
@@ -45,6 +75,7 @@ const Workspace = () => {
 
     const projectWorkToggle = (pj_id) => {
         const token = localStorage.getItem('token')
+        setPj_id(pj_id)
 
         try {
             axios.get(`http://localhost:8081/guest/projectwork/list/${pj_id}`, {
@@ -111,6 +142,22 @@ const Workspace = () => {
         });
     };
 
+    const projectClose = (pj_id) => {
+        const token = localStorage.getItem('token');
+        axios.put(`http://localhost:8081/guest/project/update/${pj_id}`, null, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((response) => {
+            console.log(response)
+            window.location.reload();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
     return (
         <>
             <Header/>
@@ -154,16 +201,17 @@ const Workspace = () => {
                                         <ProjectTitle>{pjw.pw_name}</ProjectTitle>
                                     </ProjectBox>
                                 ))
-                            ) : (
-                                <NoTitle>아직 등록된 업무가 없습니다.</NoTitle>
-                            )}
+                                ) : (
+                                    <NoTitle>아직 등록된 업무가 없습니다.</NoTitle>
+                                    )}
+                            <AddBoardBtn onClick={() => workModalOpen(pj_id)}>업무 추가</AddBoardBtn>
+                            <AddBoardBtn onClick={() => projectClose(pj_id)}>프로젝트 종료</AddBoardBtn>
                         </ProjectWorkContainer>
                     )}
                     
                     <TeamContainer>
                         <ToggleBox>
-                            <MyBoardBtn onClick={() => router.push('/guest/workspace/Project/ProjectAdd')}>프로젝트 추가</MyBoardBtn>
-                            <AddBoardBtn onClick={() => router.push('/guest/workspace/ProjectWork/ProjectWorkAdd')}>업무 추가</AddBoardBtn>
+                            <MyBoardBtn onClick={projectModalOpen}>프로젝트 추가</MyBoardBtn>
                         </ToggleBox>
 
                         <TeamBox>
@@ -180,37 +228,45 @@ const Workspace = () => {
                     <MyCalendar height={750} />
                 </CalendarContainer>
 
-                {isProjectModalOpen && (
+                {/* {isProjectModalOpen && (
                     <ProjectAddModal
                         onClose={handleModalClose}
                         onSave={handleModalSave}
                     />
+                )} */}
+                {/* 프로젝트 추가 */}
+                {isProjectModalOpen && (
+                <ProjectAddModal
+                    onClose={projectModalClose} // Close the modal
+                    onSave={projectModalSave} // Save the modal
+                />
                 )}
 
-                {isProjectEditModalOpen && (
+                {/* {isProjectEditModalOpen && (
                     <ProjectEditModal
                         onClose={handleEditModalClose}
                         onSave={handleEditModalSave}
                         depart_id={selectedDepartInfo.depart_id}
                         depart_name={selectedDepartInfo.depart_name}
                     />
-                )}
-
+                )} */}
+                {/* 업무 추가 */}
                 {isWorkModalOpen && (
                     <WorkAddModal
-                        onClose={handleModalClose}
-                        onSave={handleModalSave}
+                        onClose={workModalClose}
+                        onSave={workModalSave}
+                        pj_id={pj_id}
                     />
                 )}
 
-                {isWorkEditModalOpen && (
+                {/* {isWorkEditModalOpen && (
                     <WorkEditModal
                         onClose={handleEditModalClose}
                         onSave={handleEditModalSave}
                         depart_id={selectedDepartInfo.depart_id}
                         depart_name={selectedDepartInfo.depart_name}
                     />
-                )}
+                )} */}
                 
             </MainContainer>
         </>

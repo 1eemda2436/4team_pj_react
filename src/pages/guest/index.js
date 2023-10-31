@@ -7,7 +7,9 @@ const Guest = () => {
     return(
         <div>
             <Header />
+
             <DocRadarChart />
+
             <Weather />
         </div>
     )
