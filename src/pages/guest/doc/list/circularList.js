@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Header from "@/components/common/header";
 
 
 const Doc = () => {
@@ -58,6 +59,8 @@ const Doc = () => {
     };
 
     return(
+      <>
+        <Header />
         <MainContainer>
           <Title>
             회람 문서함
@@ -78,7 +81,6 @@ const Doc = () => {
                         <th>문서 제목</th>
                         <th>작성자</th>
                         <th>기안일</th>
-                        <th>조회여부</th>
                     </tr>
                 </thead>
               </DocTableTop>
@@ -93,7 +95,6 @@ const Doc = () => {
                       <td>{view.doc_title}</td>
                       <td>{view.name}</td>
                       <td>{formatDate(view.doc_date)}</td>
-                      <td>{view.doc_read}</td>
                     </tr>
                   )}
                 </tbody>
@@ -110,6 +111,7 @@ const Doc = () => {
           )}
           </TblComponent>
         </MainContainer>
+        </>
     )
 }
 
@@ -121,7 +123,7 @@ Doc.getLayout = function getLayout(page) {
 
 const MainContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 90%;
   padding: 40px;
   box-sizing: border-box;
 `;
@@ -130,6 +132,7 @@ const Title = styled.div`
   font-size: 26px;
   font-weight: 700;
   color: #007bff;
+  text-align: center;
 `;
 
 const PersonalMenu = styled.div`
@@ -164,7 +167,7 @@ const TblHeader = styled.div`
 `;
 
 const TblContent = styled.div`
-  height: 600px;
+  height: 520px;
   overflow-x: auto;
   padding: 0px 15px;
 
@@ -218,7 +221,7 @@ const PageButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin: 20px 0px;
 
   button {
     margin: 0 10px;

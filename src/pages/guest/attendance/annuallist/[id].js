@@ -101,6 +101,18 @@ return (
         ))}
     </tbody>
     </Table>
+    <br/><br/>
+    <div>
+        <input type="button" value={"글 쓰기"} style={{
+            cursor: 'pointer',
+            backgroundColor: "#007BFF",
+            color: "white",
+            border: "none",
+            padding: "10px 20px",
+            borderRadius: "20px",
+            fontSize: "1rem",
+        }} onClick={() => router.push('/guest/attendance/register/annualRegister')} />
+    </div>
 </PageContainer>
 );
 }

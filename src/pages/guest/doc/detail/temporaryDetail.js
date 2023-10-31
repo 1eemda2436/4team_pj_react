@@ -107,7 +107,10 @@ const Doc = () => {
     };
 
     return(
-        <Container>
+        <MainContainer>
+            <Title>
+                임시 저장 문서
+            </Title>
             <ApprovalLine>
                 <table>
                     <tr>
@@ -124,62 +127,58 @@ const Doc = () => {
                     </tr>
                 </table>
             </ApprovalLine>
-            <Title>
-                <H1>임시 저장 문서</H1>
-            </Title>
-            <Docstyle1>
-                <DocstyleLeft>
-                    <Table>
-                        <div>
-                        <TableTr>
-                            <TableTh>문서번호</TableTh>
-                            <TableTd component="" scope="detail">{samples.doc_id}</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>기안일</TableTh>
-                            <TableTd>{formatDate(samples.doc_date)}</TableTd>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh>기안자</TableTh>
-                            <TableTd>{samples.name}</TableTd>
-                        </TableTr>
-                        </div>
-                    </Table>
-                </DocstyleLeft>
-                
-            </Docstyle1>
-            <Docstyle2>
-                <Table>
-                    <div>
-                        <TableTr>
-                            <TableTh3>제목</TableTh3>
-                            <TableTh2>{samples.doc_title}</TableTh2>
-                        </TableTr>
-                        <TableTr>
-                                <TableTd2 colSpan={2}>{samples.doc_content}</TableTd2>
-                        </TableTr>
-                    </div>
-                </Table>
-                <br></br>
-                <Table>
-                    <div>
-                        <TableTr>
-                            <TableTd3> </TableTd3>
-                        </TableTr>
-                        <TableTr>
-                            <TableTh3>첨부파일</TableTh3>
-                            <TableTd3>{samples.doc_attachment}</TableTd3>
-                            <button type="button" onClick={handleDownload}>파일 다운로드</button>
-                        </TableTr>
-                    </div>
-                </Table>
-            </Docstyle2>
+            
+            <TblComponent>
+                <TblHeader>
+                    <DocstyleRow>
+                        <DocstyleLeft>
+                            <Table>
+                                <tr>
+                                    <th>문서번호</th>
+                                    <td component="" scope="detail">{samples.doc_id}</td>
+                                </tr>
+                                <tr>
+                                    <th>기안일</th>
+                                    <td>{formatDate(samples.doc_date)}</td>
+                                </tr>
+                                <tr>
+                                    <th>기안자</th>
+                                    <td>{samples.name}</td>
+                                </tr>
+                            </Table>
+                        </DocstyleLeft>
+                    </DocstyleRow>
+                </TblHeader>
+
+                <TblContent>
+                    <TableContent>
+                            <tr>
+                                <th>제목</th>
+                                <td>{samples.doc_title}</td>
+                            </tr>
+                            <tr>
+                                <ContentTd colSpan={2}>{samples.doc_content}</ContentTd>
+                            </tr>
+                    </TableContent>
+                    <TableAttachment>
+                            <tr>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <th>첨부파일</th>
+                                <td>{samples.doc_attachment}</td>
+                                <Button type="button" onClick={handleDownload}>파일 다운로드</Button>
+                            </tr>
+                    </TableAttachment>
+                </TblContent>
+            </TblComponent>
+
             <ButtonStyle>
-                <button type="button" onClick={() => router.push(`/guest/doc/temporaryUpdate?id=${samples.doc_id}`)}>문서작성</button>
-                <button type="button" onClick={handleDelete}>문서삭제</button>
-                <button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>돌아가기</button>
+                <Button type="button" onClick={() => router.push(`/guest/doc/temporaryUpdate?id=${samples.doc_id}`)}>문서작성</Button>
+                <Button type="button" onClick={handleDelete}>문서삭제</Button>
+                <Button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>돌아가기</Button>
             </ButtonStyle>
-        </Container>
+        </MainContainer>
     )
 }
 
@@ -189,44 +188,123 @@ Doc.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-const Container = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+const MainContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px;
+  display: flex;
+flex-direction: column;
+justify-content: center;
+  box-sizing: border-box;
+`;
+
+const Title = styled.div`
+  font-size: 26px;
+  font-weight: 700;
+  color: #007bff;
 `;
 
 const ApprovalLine = styled.div`
     text-align: right;
     margin-bottom: 20px;
     margin-left: auto;
+    margin-right: 20%;
     tr {
-        border: solid 1px;
+        border: 1px solid #E5E5E5;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,.10);
+        box-sizing: border-box;
     };
 
     td {
-        border: solid 1px;
+        border: 1px solid #E5E5E5;
+        border-radius: 5px;
         width: 100px;
         height: 100px;
+        box-shadow: 0 2px 5px rgba(0,0,0,.10);
+        box-sizing: border-box;
     }
 `;
 
-const Title = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-`;
-const Docstyle1 = styled.div`
+const DocstyleRow = styled.div`
     display: flex;
-    justify-content: space-between;
-    margin: 10px;
+    align-items: flex-start;
 `;
 
-const Docstyle2 = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
+const TblComponent = styled.div`
+  border: 1px solid #E5E5E5;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,.10);
+  box-sizing: border-box;
+  margin-top: 40px;
+`;
+
+const TblHeader = styled.div`
+  padding: 0px 15px;
+  background: #F6F8FA;
+  border-radius: 5px 5px 0px 0px;
+`;
+
+const Button = styled.button`
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 20px;
+`;
+
+const TblContent = styled.div`
+    margin: 20px;
+
+`;
+
+const TableContent = styled.table`
+    border: 1px solid #E5E5E5;
+    width: 100%;
+    margin-top: 10px;
+
+    th {
+        padding: 20px 25px;  // 내용이 넉넉하게 나오도록 패딩을 조정합니다.
+        border: solid 1px #E5E5E5;
+        font-size: 16px;
+        text-align: left;  // 텍스트를 왼쪽 정렬로 변경합니다.
+        word-wrap: break-word;
+        font-weight: 500;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+`;
+
+const ContentTd = styled.td`
+    height: 500px;
+    padding: 25px;  // 내용이 넉넉하게 나오도록 패딩을 조정합니다.
+    border: solid 1px #E5E5E5;
+    font-size: 16px;
+    text-align: left;  // 텍스트를 왼쪽 정렬로 변경합니다.
+    word-wrap: break-word;
+`;
+
+const TableAttachment = styled.table`
+    border: 1px solid #E5E5E5;
+    width: 100%;
+    margin-top: 10px;
+
+    th, td {
+        padding: 15px 20px;
+        border: solid 1px #E5E5E5;
+        font-size: 16px;
+        text-align: center;
+        word-wrap: break-word;
+    }
+
+    th {
+        font-weight: 500;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
 `;
 
 const DocstyleLeft = styled.div`
@@ -234,79 +312,39 @@ const DocstyleLeft = styled.div`
 `;
 
 const DocstyleRight = styled.div`
-    margin-right: 10px;
-`;
-
-const H1 = styled.h1`
-    font-size: 30px;
+    margin-left: auto;
+    text-align: center;
+    padding-right: 10px;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 `;
 
 const Table = styled.table`
     border: 1px solid;
-`;
 
-const TableTr = styled.tr`
-    border: 1px solid;
-`;
+    th {
+        padding: 20px 15px;
+        border: solid 1px #E5E5E5;
+        font-weight: 500;
+        font-size: 15px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
 
-const TableTh = styled.th`
-    border: 1px solid;
-    padding: 5px;
-`;
-
-const TableTh2 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 600px;
-`;
-
-const TableTh3 = styled.th`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 60px;
-`;
-
-const TableTd = styled.td`
-    border: 1px solid;
-    width: 80px;
-`;
-
-const TableTd2 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 200px;
-    height: 300px;
-`;
-
-const TableTd3 = styled.td`
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 600px;
+    td {
+        padding: 15px;
+        border: solid 1px #E5E5E5;
+        vertical-align: middle;
+        font-size: 15px;
+        text-align: center;
+        word-wrap: break-word;
+    }
 `;
 
 const ButtonStyle = styled.div`
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-
-    button {
-        border: solid 1px;
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: gray;
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin: 1px;
-    }
-
-`;
-
-const CategoryTable = styled.div`
-    display: flex;
-    justify-content: flex-end;
+    margin-top: 40px;
 `;

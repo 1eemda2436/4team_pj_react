@@ -2,6 +2,7 @@ import styled from "styled-components";
 import AdminLayout from "@/components/layout/adminLayout"
 import axios from "axios";
 import React, {useEffect ,useState } from "react";
+import moment from 'moment';
 
 const admin = () => {
     const [companyData, setCompanyData] = useState([]);
@@ -65,11 +66,11 @@ const admin = () => {
                 </InfoDiv>
                 <InfoDiv>
                     <InfoTitle>Work-In</InfoTitle>
-                    <InfoValue>{companyData.work_in}</InfoValue>
+                    <InfoValue>AM {moment(companyData.work_in).format('H')}시</InfoValue>
                 </InfoDiv>
                 <InfoDiv>
                     <InfoTitle>Work-Out</InfoTitle>
-                    <InfoValue>{companyData.work_out}</InfoValue>
+                    <InfoValue>PM {moment(companyData.work_out).format('H')}시</InfoValue>
                 </InfoDiv>
             </CompanyInfoBox>
             <ControllerBox>

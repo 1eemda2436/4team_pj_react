@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Header from "@/components/common/header";
 
 
 const Doc = () => {
@@ -10,36 +11,52 @@ const Doc = () => {
   const router = useRouter();
   const id = localStorage.getItem('user_id');
   console.log('id확인:',id);
+  const user_name = localStorage.getItem('user_name');
   const [samples, setSamples] = useState([]);
   const [filteredSamples, setFilteredSamples] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState('');
+
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   
   useEffect(() => {
     const token = localStorage.getItem('token')
     axios
-      .get("http://localhost:8081/guest/doc/approvalIng2", {
+      .get("http://localhost:8081/guest/doc/approvalSelect", {
         headers: {
           'Authorization': `Bearer ${token}`
       }
       })
       .then((response) => {
-          setSamples(response.data);
-          const filteredSamples = response.data.filter(approvalIng => approvalIng.doc_status === '진행');
-          const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
-          setSamples(sortedSamples);
-          setFilteredSamples(sortedSamples);
-          console.log('sortedSamples:', sortedSamples)
+        const allDocuments = response.data;
+        const filteredDocuments = allDocuments.filter(document => document.id === id && document.name === user_name);
+        setSamples(allDocuments); // 모든 문서 데이터 저장
+        setFilteredSamples(filteredDocuments); // 필터링된 문서 데이터 저장
       })
       .catch((error) => {
-          console.log(error);
+        console.log(error);
       });
   }, []);
+
+  const handleChange = (e) => {
+    setSelectedStatus(e.target.value); // select 요소의 변경에 따라 상태 업데이트
+  };
+
+  useEffect(() => {
+    const filteredResults = samples.filter(approvalIng => {
+      if (selectedStatus === '') {
+        return approvalIng.name  == user_name;
+      }
+      return approvalIng.doc_status === selectedStatus && approvalIng.name == user_name;
+    });
+    console.log('filteredResult', filteredResults)
+    const sortedResults = filteredResults.sort((a, b) => b.doc_id - a.doc_id);
+    setFilteredSamples(sortedResults);
+  }, [selectedStatus, samples, user_name]);
 
   const indexOfLastItem = page * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredSamples.slice(indexOfFirstItem, indexOfLastItem);
-
   const totalPage = Math.ceil(filteredSamples.length / itemsPerPage);
 
   const handleClick = (type) => {
@@ -62,6 +79,8 @@ const Doc = () => {
   };
 
   return(
+    <>
+      <Header />
       <MainContainer>
           <Title>
               진행 문서함
@@ -72,6 +91,16 @@ const Doc = () => {
             <Button type="button" onClick={() => router.push('/guest/doc/save/temporarySave')}>임시 저장목록</Button>
             <Button type="button" onClick={() => router.push('/guest/doc/list/approvalSuggestList')}>결재 요청목록</Button>
           </PersonalMenu>
+
+          <FilterContainer>
+            <label>문서 상태:</label>
+            <select value={selectedStatus} onChange={handleChange}>
+              <option value="">모든 상태</option>
+              <option value="진행">진행</option>
+              <option value="완료">완료</option>
+              <option value="반려">반려</option>
+            </select>
+          </FilterContainer>
 
           <TblComponent>
             <TblHeader>
@@ -113,6 +142,7 @@ const Doc = () => {
           )}
         </TblComponent>
       </MainContainer>
+      </>
   )
 }
 
@@ -124,7 +154,7 @@ Doc.getLayout = function getLayout(page) {
 
 const MainContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 90%;
   padding: 40px;
   box-sizing: border-box;
 `;
@@ -133,12 +163,28 @@ const Title = styled.div`
   font-size: 26px;
   font-weight: 700;
   color: #007bff;
+  text-align: center;
 `;
 
 const PersonalMenu = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 40px;
+`;
+
+const FilterContainer = styled.div`
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+
+  label {
+    margin-right: 10px;
+  }
+
+  select {
+    padding: 10px;
+    font-size: 16px;
+  }
 `;
 
 const Button = styled.button`
@@ -167,7 +213,7 @@ const TblHeader = styled.div`
 `;
 
 const TblContent = styled.div`
-  height: 600px;
+  height: 520px;
   overflow-x: auto;
   padding: 0px 15px;
 
@@ -221,7 +267,7 @@ const PageButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin: 20px 0px;
 
   button {
     margin: 0 10px;

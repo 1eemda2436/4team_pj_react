@@ -6,19 +6,6 @@ import Header from '@/components/common/header';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
-const tableStyle = {
-    borderCollapse: "collapse",
-    width: "800px",
-};
-
-const Component = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-
 const ProjectAdd = () => {
     const [project, setProject] = useState({})
     const [departmentList, setDepartmentList] = useState([]);

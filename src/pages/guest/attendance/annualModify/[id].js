@@ -93,7 +93,7 @@ function GuestAnnualModify() {
             })
             .then((response) => {
                 console.log("신청 완료:", response.data);
-                router.push('/guest/attendance/annuallist');
+                router.push(`/guest/attendance/annuallist/${annual.id}`);
             })
             .catch((error) => {
                 console.log("Error:", error);
@@ -195,7 +195,7 @@ function GuestAnnualModify() {
                         fontSize: "1rem",
                         margin: "10px",
                     }}
-                    onClick={() => router.push('/guest/attendance/annuallist')}
+                    onClick={() => router.push(`/guest/attendance/annuallist/${annual.id}`)}
                 >
                     취소
                 </button>

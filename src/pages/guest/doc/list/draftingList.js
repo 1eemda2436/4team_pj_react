@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Header from "@/components/common/header";
 
 const Doc = () => {
   const router = useRouter();
@@ -63,6 +64,8 @@ const Doc = () => {
     };
 
     return (
+      <>
+      <Header />
       <MainContainer>
         <Title>
           기안 문서함
@@ -104,7 +107,7 @@ const Doc = () => {
                     <td>{draft.doc_status}</td>
                     {/* 마우스 클릭이벤트가 안으로 전달되지 않게 하는 함수 */}
                     <td onClick={(e)=> {e.stopPropagation()}}>
-                      <button type="button" onClick={() => router.push(`/guest/doc/updateApproval?id=${draft.doc_id}`)}>결재요청</button>
+                      <Button type="button" onClick={() => router.push(`/guest/doc/updateApproval?id=${draft.doc_id}`)}>결재요청</Button>
                     </td>
                   </tr>
                 )}
@@ -125,6 +128,7 @@ const Doc = () => {
         )}
       </TblComponent>
     </MainContainer>
+    </>
   );
 };
 
@@ -136,7 +140,7 @@ Doc.getLayout = function getLayout(page) {
 
 const MainContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 90%;
   padding: 40px;
   box-sizing: border-box;
 `;
@@ -145,6 +149,7 @@ const Title = styled.div`
   font-size: 26px;
   font-weight: 700;
   color: #007bff;
+  text-align: center;
 `;
 
 const PersonalMenu = styled.div`
@@ -179,7 +184,7 @@ const TblHeader = styled.div`
 `;
 
 const TblContent = styled.div`
-  height: 600px;
+  height: 480px;
   overflow-x: auto;
   padding: 0px 15px;
 
@@ -233,7 +238,7 @@ const PageButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin: 20px 0px;
 
   button {
     margin: 0 10px;
