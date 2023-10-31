@@ -10,6 +10,7 @@ const Doc = () => {
   const router = useRouter();
   const id = localStorage.getItem('user_id');
   console.log('id확인:',id);
+  const company_id = localStorage.getItem('company_id');
   const [samples, setSamples] = useState([]);
   const [filteredSamples, setFilteredSamples] = useState([]);
   const [page, setPage] = useState(1);
@@ -25,9 +26,8 @@ const Doc = () => {
       })
       .then((response) => {
           setSamples(response.data);
-          const filteredSamples = response.data.filter(approvalIng => approvalIng.doc_status === '진행');
+          const filteredSamples = response.data.filter(approvalIng => approvalIng.doc_status === '진행' && approvalIng.company_id === company_id);
           const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
-          setSamples(sortedSamples);
           setFilteredSamples(sortedSamples);
           console.log('sortedSamples:', sortedSamples)
       })
@@ -81,6 +81,7 @@ const Doc = () => {
                       <th>문서번호</th>
                       <th>문서 제목</th>
                       <th>작성자</th>
+                      <th>회사번호</th>
                       <th>기안일</th>
                   </tr>
               </thead>
@@ -96,6 +97,7 @@ const Doc = () => {
                     <td>{approvalIng.doc_id}</td>
                     <td isTitle>{approvalIng.doc_title}</td>
                     <td>{approvalIng.name}</td>
+                    <td>{approvalIng.company_id}</td>
                     <td>{formatDate(approvalIng.doc_date)}</td>
                   </tr>
                 )}
