@@ -143,7 +143,7 @@ const Notice = () => {
     }
 
     const goToNoticeWrite = () => {
-        router.push('/admin/board/noticeWrite');
+        router.push('/admin/board/NoticeWrite');
     };
 
     return (
