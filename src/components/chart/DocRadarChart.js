@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/api/apiPath';
 import axios from 'axios';
 import { Chart, registerables } from 'chart.js';
 import { useRouter } from 'next/router';
@@ -15,7 +16,7 @@ const DocRadarChart = () => {
             const company_id = localStorage.getItem('company_id');
             console.log('전사ID????', company_id);
             try {
-                const response = await axios.get(`http://localhost:8081/guest/doc/docChart/${company_id}`, {
+                const response = await axios.get(`${BASE_URL}/guest/doc/docChart/${company_id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

@@ -6,6 +6,7 @@ import Header from '../common/header';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import moment from 'moment';
+import { BASE_URL } from '@/api/apiPath';
 
 function AttenCalendar ({ height }) {
     // 여기에서 달력 옵션을 정의합니다
@@ -20,7 +21,7 @@ function AttenCalendar ({ height }) {
     useEffect(() => {
         const token = localStorage.getItem('token')
         axios
-            .get('http://localhost:8081/all/attendance/anConfirmList', {
+            .get(`${BASE_URL}/all/attendance/anConfirmList`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

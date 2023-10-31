@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import AdminMain from '../../../public/asset/icons/adminMain.svg';
+import AdminMain from '../../../public/asset/icons/AdminMain.svg';
 import CyberSecurity from '../../../public/asset/icons/CyberSecurity.svg';
 import SalaryMale from '../../../public/asset/icons/SalaryMale.svg';
 import People from '../../../public/asset/icons/People.svg';

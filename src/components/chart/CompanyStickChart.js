@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/api/apiPath';
 import axios from 'axios';
 import { Chart, registerables } from 'chart.js';
 import { useRouter } from 'next/router';
@@ -15,7 +16,7 @@ const CompanyStickChart = ({selectedCompany}) => {
             if (selectedCompany) {
                 const token = localStorage.getItem('token');
                 try {
-                    const response = await axios.get(`http://localhost:8081/admin/attendance/companyStatus/${selectedCompany}`, {
+                    const response = await axios.get(`${BASE_URL}/admin/attendance/companyStatus/${selectedCompany}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }

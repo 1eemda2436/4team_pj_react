@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/api/apiPath';
 import axios from 'axios';
 import { Chart, registerables } from 'chart.js';
 import { useRouter } from 'next/router';
@@ -16,7 +17,7 @@ const TeamPieChart = ({ selectedTeam }) => {
             if (selectedTeam) {
                 const token = localStorage.getItem('token');
                 try {
-                    const response = await axios.get(`http://localhost:8081/admin/attendance/teamAttendanceStatus/${selectedTeam}`, {
+                    const response = await axios.get(`${BASE_URL}/admin/attendance/teamAttendanceStatus/${selectedTeam}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }
