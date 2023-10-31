@@ -25,6 +25,7 @@ const Input = ({ type, label, name, onChange, placeholder, value }) => {
                 value={value}
                 onChange={handleChange}
                 placeholder={placeholder}
+                focused={focused}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
             />
@@ -64,13 +65,14 @@ const Label = styled.div`
     color: ${({ focused }) => (focused ? "#005FC5" : "#000")};
     font-weight: 600;
     transition: color 0.1s;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     padding: 0px 5px;
     box-sizing: border-box;
+    font-size: 18px;
 `;
 
 const InputForm = styled.input`
-    padding: 15px 10px;
+    padding: 20px 10px;
     border: 1px solid #A6A6A6;
     border-radius: 5px;
     outline: none;

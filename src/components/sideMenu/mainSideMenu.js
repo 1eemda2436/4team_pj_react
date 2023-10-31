@@ -37,7 +37,7 @@ export default function MainSideMenu() {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const auth = localStorage.getItem('auth');
-            if (auth === ROLE_ADMIN) {
+            if (auth === 'ROLE_ADMIN') {
                 setAuth(true);
             }
         }
