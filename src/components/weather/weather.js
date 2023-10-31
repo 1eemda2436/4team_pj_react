@@ -44,6 +44,10 @@ const WeatherContainer = styled.div`
     text-align: center;
     background-color: #f0f0f0;
     padding: 20px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    box-sizing: border-box;
 `;
 
 const WeatherHeader = styled.h1`
