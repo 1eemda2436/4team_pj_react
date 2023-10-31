@@ -17,6 +17,9 @@ const BoardDetails = () => {
     const [categories, setCategories] = useState([]); // 카테고리 목록을 저장할 상태
     
     const [formData, setFormData] = useState({});
+    
+    const user_name = localStorage.getItem('user_name');
+    console.log('user_name', user_name);
 
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -43,6 +46,7 @@ const BoardDetails = () => {
     //게시글 불러오기
     useEffect(() => {
         const token = localStorage.getItem('token');
+        const currentDate = moment().format('YYYY-MM-DD'); // 현재 날짜 가져오기
         if (board_id) {
             axios.get(`http://localhost:8081/guest/community/boardFind/${board_id}`, {
                 headers: {
@@ -51,6 +55,7 @@ const BoardDetails = () => {
             })
             .then(response => {
                 setBoardData(response.data[0]); // 첫 번째 게시글을 가져오도록 수정
+                console.log(response.data);
             })
             .catch(error => {
                 console.error('데이터를 불러오는 중 오류 발생:', error);
@@ -153,34 +158,34 @@ const BoardDetails = () => {
     return (
         <>
         <Header />
-        <Container>
-            <Title>자유게시판 상세</Title>
-            <Content>
-                <Row>
-                    <div>
-                        <div>카테고리</div>
-                        <div>{boardData.category_id}</div>
-                    </div>
-                    <div>
-                        <div>작성자</div>
-                        <div>{boardData.id}</div>
-                    </div>
-                    <div>
-                        <div>제목</div>
-                        <div>{boardData.title}</div>
-                    </div>
-                    <div>
-                        <div>작성일</div>
-                        <div>{moment(boardData.reg_date).format('YYYY-MM-DD')}</div>
-                    </div>
-                </Row>
-                <Row>
-                    <div>
-                        <div>글내용</div>
-                        <div>{boardData.content}</div>
-                    </div>
-                </Row>
-            </Content>
+        <Title>자유게시판 상세</Title>
+        <Container>            
+            <Table>
+                <tbody>
+                    <TableRow>
+                        <TableCell1>카테고리</TableCell1>
+                        <TableCell>{boardData.category_id}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell1>작성자</TableCell1>
+                        <TableCell>{boardData.id}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell1>제목</TableCell1>
+                        <TableCell>{boardData.title}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell1>작성일</TableCell1>
+                        <TableCell>{moment(boardData.reg_date).format('YYYY-MM-DD')}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell1>글내용</TableCell1>
+                        <TableCell>{boardData.content}</TableCell>
+                    </TableRow>
+                </tbody>
+            </Table>
+            <br/>
+
             <div>
             <Button onClick={() => router.push('/guest/community')}>목록</Button>
             <Button onClick={() => router.push(`/guest/community/boardUpdate/${board_id}`)}>수정</Button>
@@ -188,7 +193,13 @@ const BoardDetails = () => {
             <Button onClick={handleDelete}>삭제</Button>
             )}
             </div>
+            </Container>
+            <br/>
+            <br/>
+            <br/>
 
+            <Container>
+            <Title>댓글</Title>
             <Input
             type="text"
             name="content"
@@ -196,34 +207,35 @@ const BoardDetails = () => {
             onChange={handleInputChange}
             value={formData.content}
             />
+            <br/>
+            <br/>
             <Button onClick={handleCommentSubmit}>댓글 등록</Button>
             <Table>
                 <thead>
                     <TableRow>
-                        <TableCell>작성자</TableCell>
-                        <TableCell>글내용</TableCell>
-                        <TableCell>작성일</TableCell>
-                        {/* <TableCell>좋아요</TableCell> */}
-                        <TableCell>작업</TableCell> {/* 수정 및 삭제 버튼을 표시할 열 추가 */}
+                        <TableCell1>작성자</TableCell1>
+                        <TableCell1>글내용</TableCell1>
+                        <TableCell1>작성일</TableCell1>
+                        <TableCell1>삭제</TableCell1> 
                     </TableRow>
                 </thead>
                 <tbody>
                     {comments.map(item => (
                         <TableRow key={item.comment_id}>
-                            <TableCell>{item.writer}</TableCell>
+                            <TableCell>{user_name}</TableCell>
                             <TableCell>{item.content}</TableCell>
                             <TableCell>{moment(item.reg_date).format('YYYY-MM-DD')}</TableCell>
-                            {/* <TableCell>{item.likes}</TableCell> */}
                             <TableCell>
-                                {/* <Button onClick={() => handleCommentEdit(item.comment_id)}>수정</Button> */}
                                 <Button onClick={() => handleCommentDelete(item.comment_id)}>삭제</Button>
                             </TableCell>
                         </TableRow>
                     ))}
                 </tbody>
             </Table>
+
+            </Container>
             
-        </Container>
+        
         </>
     );
 }
@@ -234,75 +246,59 @@ BoardDetails.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-
-const BackButton = styled.div`
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 24px;
-`;
-
 const Table = styled.table`
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+
+    th {
+    padding: 20px 15px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    }
+
+    td {
+        padding: 15px;
+        vertical-align: middle;
+        font-size: 13px;
+        border-bottom: solid 1px #E5E5E5;
+        text-align: center;
+        word-wrap: break-word;
+    }
 `;
 
 const TableRow = styled.tr`
     border-bottom: 1px solid #ccc;
+    &:last-child {
+        border-bottom: none; // 마지막 행의 border-bottom을 제거합니다.
+    }
 `;
 
 const TableCell = styled.td`
     padding: 8px;
     
 `;
-const ContentContainer = styled.div`
-    background-color: #fff;
-    padding: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 10px;
-    max-height: 400px; /* 최대 높이 설정 */
-    overflow-y: auto; /* 세로 스크롤 표시, 내용이 넘칠 때만 스크롤이 나타납니다 */
-    white-space: pre-wrap;
-    word-wrap: break-word;
+
+const TableCell1 = styled.td`
+    padding: 8px;
+    font-weight: bold;
 `;
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 30%;
+    padding: 40px;
+    box-sizing: border-box;
 `;
 
-const Title = styled.h1`
-    font-size: 24px;
-    margin: 0;
-    padding: 10px 0;
-    text-align: center;
-`;
-
-const Content = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-`;
-
-const Row = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
+const Title = styled.div`
+    font-size: 26px;
+    font-weight: 700;
+    color: #000000;
+    margin: 20px 20px;
 `;
 
 const Input = styled.input`
@@ -312,25 +308,15 @@ const Input = styled.input`
     border-radius: 5px;
 `;
 
-const TextArea = styled.textarea`
-    padding: 8px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-`;
-
-const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-`;
 
 const Button = styled.button`
-    padding: 10px 20px;
+    padding: 5px 10px;
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 13px;
+    margin-right: 20px;
+    text-align: center;
 `;

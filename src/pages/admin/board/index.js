@@ -10,6 +10,7 @@ const Notice = () => {
     const [noticeData, setNoticeData] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [selectAll, setSelectAll] = useState(false); // 전체 선택 상태를 저장하는 state
+    const [authority, setAuthority] = useState('');
     const router = useRouter();
 
     // 체크박스를 토글하는 함수
@@ -146,13 +147,18 @@ const Notice = () => {
 
     return (
         <MainComponent>
-            <Title>게시판관리</Title>
+            <MainTitle>게시판관리</MainTitle>
             <Section>
                 <CommunityHeader>
                     <Title>공지사항</Title>
                     <Button onClick={goToNoticeWrite}>글쓰기</Button>
-                    <Button onClick={noticehandleSelectAll}>전체 선택</Button>
-                    <Button onClick={deleteSelectedItems}>선택 삭제</Button>
+                    {(authority === "ROLE_ADMIN") && (
+                        <Button onClick={noticehandleSelectAll}>전체 선택</Button>
+                    )}
+                    {(authority === "ROLE_ADMIN") && (
+                        <Button onClick={deleteSelectedItems}>선택 삭제</Button>
+                    )}                    
+                    
                 </CommunityHeader>
                 <Table>
                     <thead>
@@ -187,13 +193,19 @@ const Notice = () => {
                     </tbody>
                 </Table>
             </Section>
-
+            <br/>
+            <br/>
             <Section>
                 <CommunityHeader>
                     <BoardTitle>자유게시판</BoardTitle>
                     <Button onClick={goToBoardWrite}>글쓰기</Button>
-                    <Button onClick={handleSelectAll}>전체 선택</Button>
-                    <Button onClick={communitydeleteSelectedItems}>선택 삭제</Button>
+                    {(authority === "ROLE_ADMIN") && (
+                        <Button onClick={handleSelectAll}>전체 선택</Button>
+                    )}                
+                    {(authority === "ROLE_ADMIN") && (
+                        <Button onClick={communitydeleteSelectedItems}>선택 삭제</Button>
+                    )}
+                    
                 </CommunityHeader>
 
                 <Table>
@@ -245,11 +257,16 @@ const MainComponent = styled.div`
     padding: 40px;
     box-sizing: border-box;
 `;
+const MainTitle = styled.h2`
+    font-size: 26px;
+    font-weight: 700;
+    color: #007bff;
+`;
 
 const Title = styled.h2`
     font-size: 26px;
     font-weight: 700;
-    color: #007bff;
+    color: #000000;
 `;
 
 const Container = styled.div`
@@ -298,10 +315,10 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const Title = styled.div`
+const BoardTitle = styled.div`
   font-size: 26px;
   font-weight: 700;
-  color: #007bff;
+  color: #000000;
 `;
 
 const BoardItemTitle = styled.div`

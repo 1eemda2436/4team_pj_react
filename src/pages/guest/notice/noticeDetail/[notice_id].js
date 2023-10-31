@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import MainLayout from "@/components/layout/mainLayout";
 import { useRouter } from 'next/router';
 import Header from '@/components/common/header';
+import moment from 'moment';
 
 const NoticeDetails = () => {
     const [noticeData, setNoticeData] = useState({}); // 빈 객체로 초기화
@@ -63,39 +64,34 @@ const NoticeDetails = () => {
 
     return (
         <>
-            <Header />
-            <Container>
-                <Title>공지사항 상세</Title>
-
-                <Table>
-                    <thead>
-                        <TableRow>
-                            <TableCell>제목</TableCell>
-                            <TableCell>{noticeData.title}</TableCell>
-                        </TableRow>
-                    </thead>
-                    <tbody>
-                        {noticeData.content && (
-                            <TableRow key={noticeData.notice_id}>
-                                <TableCell>글내용</TableCell>
-                                <TableCell>
-                                    <ContentContainer>
-                                        {noticeData.content}
-                                    </ContentContainer>
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </tbody>
-                </Table>
-                <ButtonContainer>
-                    <Button onClick={() => router.push('/guest/notice')}>목록</Button>
-                    {(authority === "ROLE_MANAGER" || authority === "ROLE_ADMIN") && (
-                        <Button onClick={() => router.push(`/admin/board/noticeEdit/${noticeData.notice_id}`)}>수정</Button>
-                    )}
-                    {(authority === "ROLE_MANAGER" || authority === "ROLE_ADMIN") && (
-                        <Button onClick={deleteNotice}>삭제</Button>
-                    )}
-                </ButtonContainer>
+        <Header/>
+        <Title>공지사항 상세보기</Title>
+        <Container>
+            <Table>
+                <tbody>
+                    <TableRow>
+                        <TableCell>제목</TableCell>
+                        <TableCell>{noticeData.title}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>내용</TableCell>
+                        <TableCell>{noticeData.content}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>작성일</TableCell>
+                        <TableCell>{moment(noticeData.reg_date).format('YYYY-MM-DD')}</TableCell>
+                    </TableRow>
+                </tbody>
+            </Table>
+            <BtnContainer>
+                <Button onClick={() => router.push('/guest/notice')}>목록</Button>
+                {(authority === "ROLE_ADMIN") && (
+                    <Button onClick={() => router.push(`/admin/board/noticeEdit/${noticeData.notice_id}`)}>수정</Button>
+                )}
+                {(authority === "ROLE_ADMIN") && (
+                    <Button onClick={deleteNotice}>삭제</Button>
+                )}
+            </BtnContainer>
             </Container>
         </>
     );
@@ -107,62 +103,86 @@ NoticeDetails.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
 
-const Container = styled.div`
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f5f5f5;
+const TextArea = styled.textarea`
+    padding: 8px;
+    width: 100%;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
 `;
 
 const Table = styled.table`
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-top: 20px;
+
+    th {
+    padding: 20px 15px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 15px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    }
+
+    td {
+        padding: 15px;
+        vertical-align: middle;
+        font-size: 13px;
+        border-bottom: solid 1px #E5E5E5;
+        text-align: center;
+        word-wrap: break-word;
+    }
 `;
 
 const TableRow = styled.tr`
-    &:nth-child(even) {
-        background-color: #f2f2f2; /* 흰색 배경색 */
-    }
-
-    &:nth-child(odd) {
-        background-color: #ffffff; /* 파란색 배경색 */
+    border-bottom: 1px solid #ccc;
+    &:last-child {
+        border-bottom: none; // 마지막 행의 border-bottom을 제거합니다.
     }
 `;
 
 const TableCell = styled.td`
-    padding: 10px;
+    padding: 8px;
+    
+`;
+
+const BtnContainer = styled.div`
+    display: flex;
+    margin-top: 70px;
+    align-items: center;
+
+`;
+
+const Container = styled.div`
+    width: 100%;
+    height: 30%;
+    padding: 40px;
+    box-sizing: border-box;
 `;
 
 const Title = styled.div`
-  font-size: 26px;
-  font-weight: 700;
-  color: #007bff;
+    font-size: 26px;
+    font-weight: 700;
+    color: #007bff;
+    margin: 20px 20px;
 `;
 
-const ContentContainer = styled.div`
-    background-color: #fff;
+const Input = styled.input`
+    padding: 8px;
+    width: 100%;
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 10px;
 `;
 
-const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-`;
 
 const Button = styled.button`
-    margin-left: 10px;
-    padding: 5px 10px;
+    padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    margin-right: 20px;
 `;
