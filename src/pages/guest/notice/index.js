@@ -72,7 +72,7 @@ const notice = () => {
                 </TblContent>
             </TblComponent>
             {(authority == "ROLE_ADMIN") && (
-            <Button onClick={() => router.push('/admin/board/noticeWrite')}>글쓰기</Button>
+            <Button onClick={() => router.push('/admin/board/NoticeWrite')}>글쓰기</Button>
                 )}
     </MainComponent>
     )
