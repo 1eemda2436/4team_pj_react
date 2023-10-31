@@ -100,7 +100,7 @@ function Attendance () {
                             <span>{attendance.name}</span>
                         </UserIconBox>
                         <UserContent>
-                            {attendance.id}
+                            사원번호 : {attendance.id}
                         </UserContent>
                     </AttenBoxUser>
                     
@@ -148,7 +148,7 @@ function Attendance () {
                         <div className="work-hours">
                             {localStorage.getItem('auth') !== 'ROLE_ADMIN' && (
                                 <WeeklyWorkButton onClick={() => router.push('/guest/attendance/detail/')}>
-                                    쭈강 긍무 형황
+                                    주간 근무 현황
                                 </WeeklyWorkButton>
                             )}
                         </div>
