@@ -1,18 +1,21 @@
 import AdminLayout from "@/components/layout/adminLayout";
-import { useRouter } from "next/router";
+import { useRouter } from "next/router";  // next.js 라우터 기능 사용
 import styled from "styled-components";
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react"; // react hook을 사용하여 state 관리
 import axios from "axios";
 
 
 const Doc = () => {
 
   const router = useRouter();
+  // 로컬스토리지에서 id와 회사 id가져오기
   const id = localStorage.getItem('user_id');
   console.log('id확인:',id);
   const company_id = localStorage.getItem('company_id');
+  // 서버에서 받은 데이터와 필터링한 데이터 상태로 관리
   const [samples, setSamples] = useState([]);
   const [filteredSamples, setFilteredSamples] = useState([]);
+  // 페이징 처리를 위한 페이지 상태 설정
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -30,6 +33,7 @@ const Doc = () => {
         setSamples(response.data);
         const statuses = ['완료', '진행', '반려']
         const filteredSamples = response.data.filter(adminTotal => statuses.includes(adminTotal.doc_status) && adminTotal.company_id === company_id);
+        // doc_id 내림차순으로 배열
         const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
         setSamples(sortedSamples);
         setFilteredSamples(sortedSamples);
@@ -39,7 +43,7 @@ const Doc = () => {
           console.log(error);
       });
   }, []);
-  
+  // 페이징 처리
   const indexOfLastItem = page * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredSamples.slice(indexOfFirstItem, indexOfLastItem);

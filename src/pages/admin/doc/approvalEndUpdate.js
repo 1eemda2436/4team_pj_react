@@ -6,15 +6,17 @@ import axios from "axios";
 
 
 const Doc = () => {
+    // Next.js의 useRouter 훅을 사용하여 라우터 객체 생성
     const router = useRouter();
     const {id} = router.query; // ID를 추출
     console.log('id:', id);
     const userId = localStorage.getItem('user_id')
 
     const handleBack = () => {
-        router.back(); // 이전 페이지로 이동
+        router.back(); 
     };
 
+    // 상태 변수 및 이벤트 핸들러 설정
     const [selectedCategory, setSelectedCategory] = useState('');
     const [imageSrc, setImageSrc] = useState("");
     const [insertImageSrc, setInsertImageSrc] = useState('');
@@ -29,12 +31,12 @@ const Doc = () => {
         if(id) {
             axios.get(`http://localhost:8081/admin/doc/adminDetail/${id}`)
             .then((response) => {
+                // API 응답 데이터에서 필요한 정보 추출
                 const {doc_id, doc_date, name, doc_status, doc_attachment, category_id, doc_title, doc_content, sign, admin_sign } = response.data;
                 let date = new Date();
                 let year = date.getFullYear();
                 let month = ("0" + (1 + date.getMonth())).slice(-2);
                 let day = ("0" + date.getDate()).slice(-2);
-            
                 let yyyymmdd = year + "-" + month + "-" + day;
                 console.log('response.data:', response.data);
                 setSamples({
@@ -50,6 +52,7 @@ const Doc = () => {
                     sign,
                     admin_sign,
                 });
+                // 이미지 url 업데이트
                 setImageSrc(`http://localhost:8081/myimage/${response.data.sign}`);
                 setSelectedCategory(category_id);
             })
@@ -59,6 +62,7 @@ const Doc = () => {
         }
     }, [id]);
 
+    // 상태 업데이용 이벤트 핸들러
     const handleInputChange = (e) => {
         const {name, value} = e.target;
         setSamples((samples) => ({
@@ -67,6 +71,7 @@ const Doc = () => {
         }));
     };
 
+    // 결재 사인 등록 및 API 호출
     const handleInsertSign = () => {
         console.log('samples.admin_sign:',samples.admin_sign);
         if(samples.admin_sign) {
@@ -142,7 +147,7 @@ const Doc = () => {
         }));
         
 
-        // 미리보기
+        // 미리보기를 위해 FileReader사용
         const reader = new FileReader();
         reader.readAsDataURL(fileBlob);
         return new Promise((resolve) => {

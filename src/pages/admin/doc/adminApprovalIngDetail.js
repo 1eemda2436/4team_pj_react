@@ -11,11 +11,12 @@ const Doc = () => {
     const id = router.query.id; // ID를 추출
     console.log(id)
 
+    // 문서정보와 사인 미리보기 상태 변수
     const [samples, setSamples] = useState([]);
     const [imageSrc, setImageSrc] = useState("");
 
     const handleBack = () => {
-        router.back(); // 이전 페이지로 이동
+        router.back();
     };
 
     

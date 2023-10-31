@@ -6,13 +6,13 @@ import axios from "axios";
 
 
 const Doc = () => {
+    // Next.js의 useRouter 훅을 사용하여 라우터 객체 생성
     const router = useRouter();
-    // const {id} = router.query;
     const id = localStorage.getItem('user_id');
     console.log('id가뭐야',id);
     
+    // State 변수 선언
     const [selectedCategory, setSelectedCategory] = useState('');
-
     const [samples, setSamples] = useState({
       doc_id: '',
       doc_date: '',
@@ -27,6 +27,7 @@ const Doc = () => {
 
     const [imageSrc, setImageSrc] = useState('');
 
+    // useEffect 훅을 사용하여 사용자 이름을 State에 업데이트
     useEffect(() => {
       const user_name = localStorage.getItem('user_name');
       setSamples({
@@ -35,6 +36,7 @@ const Doc = () => {
       })
     }, [id]);
 
+    // input 요소의 값 변경 시 State 업데이트를 위한 핸들러 함수
     const handleInputChange = (e) => {
       const {name, value} = e.target;
       setSamples((samples) => ({
@@ -43,6 +45,7 @@ const Doc = () => {
       }));
     };
 
+    // 파일 첨부 시 State 업데이트를 위한 핸들러 함수
     const handleFileChange = (f) => {
       const file = f.target.files[0];
       setSamples((samples) => ({
@@ -53,7 +56,6 @@ const Doc = () => {
 
     const handleInsert = () => {
       const insertSamples = new FormData();
-      // insertSamples.append('doc_id', samples.doc_id);
       insertSamples.append('doc_date', samples.doc_date);
       insertSamples.append('name', samples.name);
       insertSamples.append('doc_title', samples.doc_title);
@@ -80,6 +82,7 @@ const Doc = () => {
       });
     };
 
+    // 임시저장
     const handleTemporarySave = () => {
       const temporarySaveData = new FormData();
       temporarySaveData.append('doc_date', samples.doc_date);

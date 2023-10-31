@@ -6,6 +6,7 @@ import axios from "axios";
 
 
 const Doc = () => {
+    // Next.js의 useRouter 훅을 사용하여 라우터 객체 생성
     const router = useRouter();
     const {id} = router.query; // ID를 추출
     console.log(id);
@@ -43,18 +44,11 @@ const Doc = () => {
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
+        // 현재 상태값을 복사하고 변경된 필드만 업데이트하여 새로운 상태값 설정
         setSamples((prevSamples) => ({
         ...prevSamples,
         [name]: value,
 
-        }));
-    };
-
-    const handleFileChange = (f) => {
-        const file = f.target.files[0];
-        setSamples((samples) => ({
-        ...samples,
-        doc_attachment: file,
         }));
     };
 
@@ -197,6 +191,10 @@ const Doc = () => {
 }
 
 export default Doc;
+
+Doc.getLayout = function getLayout(page) {
+    return <MainLayout>{page}</MainLayout>;
+};
 
 const MainContainer = styled.div`
   width: 100%;

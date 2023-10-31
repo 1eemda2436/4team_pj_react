@@ -7,6 +7,7 @@ import Header from "@/components/common/header";
 
 
 const Doc = () => {
+    // Next.js의 useRouter 훅을 사용하여 라우터 객체 생성
     const router = useRouter();
     const id = localStorage.getItem('user_id');
     const user_name = localStorage.getItem('user_name');

@@ -27,6 +27,7 @@ const Doc = () => {
       .then((response) => {
           setSamples(response.data);
           const filteredSamples = response.data.filter(approvalIng => approvalIng.doc_status === '진행' && approvalIng.company_id === company_id);
+          // 문서번호를 기준으로 내림차순정렬
           const sortedSamples = filteredSamples.sort((a,b) => b.doc_id - a.doc_id);
           setFilteredSamples(sortedSamples);
           console.log('sortedSamples:', sortedSamples)
@@ -35,7 +36,7 @@ const Doc = () => {
           console.log(error);
       });
   }, []);
-
+  // 현재 페이지에 해당하는 항목의 시작 및 끝 인덱스 계산
   const indexOfLastItem = page * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredSamples.slice(indexOfFirstItem, indexOfLastItem);

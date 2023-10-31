@@ -7,7 +7,7 @@ import Header from "@/components/common/header";
 
 
 const Doc = () => {
-
+  // // useRouter 훅을 사용하여 라우터 객체를 생성=
   const router = useRouter();
   const id = localStorage.getItem('user_id');
   console.log('id확인:',id);
@@ -43,6 +43,7 @@ const Doc = () => {
   };
 
   useEffect(() => {
+    // 선택된 상태에 따라 문서 데이터 필터링
     const filteredResults = samples.filter(approvalIng => {
       if (selectedStatus === '') {
         return approvalIng.name  == user_name;
@@ -50,6 +51,7 @@ const Doc = () => {
       return approvalIng.doc_status === selectedStatus && approvalIng.name == user_name;
     });
     console.log('filteredResult', filteredResults)
+    // 문서번호 내림차순정렬
     const sortedResults = filteredResults.sort((a, b) => b.doc_id - a.doc_id);
     setFilteredSamples(sortedResults);
   }, [selectedStatus, samples, user_name]);
