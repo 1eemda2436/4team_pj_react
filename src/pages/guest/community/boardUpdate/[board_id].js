@@ -129,7 +129,7 @@ const boardUpdate = () => {
                         </TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell1>작성자</TableCell1>
+                        <TableCell1>작성자ID</TableCell1>
                         <TableCell1><Input type="text" name="id" value={formData.id} readOnly /></TableCell1>
                     </TableRow>
                     <TableRow>

@@ -16,7 +16,7 @@ const MyInfoEdit = () => {
         const token = localStorage.getItem('token')
             
             axios
-                .get(`${BASE_URL}/guest/my/member/${id}`, {
+                .get(`${BASE_URL}/guest/personnel/member/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -47,13 +47,13 @@ const MyInfoEdit = () => {
         console.log('[saveMemberInfo] memberInfo', memberInfo)
 
         axios
-            .put(`${BASE_URL}/guest/my/memberModify/${id}`, memberInfo,{
+            .put(`${BASE_URL}/guest/personnel/memberModify/${id}`, memberInfo,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
             .then((response) => {
-                router.push('/guest/my');
+                router.push('/guest/personnel');
             })
             .catch((error) => {
                 console.log(error);
@@ -68,26 +68,10 @@ const MyInfoEdit = () => {
                 <LeftTable>
                     <tbody>
                         <TableRow>
-                            <TableCell>
-                                <input 
-                                type="text" 
-                                name="sign" 
-                                value={memberInfo.sign}
-                                onChange={MemberInfoChange}
-                                readOnly
-                                />
-                            </TableCell>
+                            <TableCell>{memberInfo.sign}</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableCell>
-                                <input 
-                                type="text" 
-                                name="name" 
-                                value={memberInfo.name}
-                                onChange={MemberInfoChange}
-                                readOnly
-                                />
-                                </TableCell>
+                            <TableCell>{memberInfo.name}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>
@@ -115,62 +99,23 @@ const MyInfoEdit = () => {
                     <tbody>
                         <TableRow>
                             <TableCell>부서명</TableCell>
-                            <TableCell>
-                                <input 
-                                type="text" 
-                                name="depart_name" 
-                                value={memberInfo.depart_name}
-                                onChange={MemberInfoChange}
-                                readOnly
-                                />
-                            </TableCell>
+                            <TableCell>{memberInfo.depart_name}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>팀명</TableCell>
-                            <TableCell>
-                                <input 
-                                type="text" 
-                                name="team_name" 
-                                value={memberInfo.team_name}
-                                onChange={MemberInfoChange}
-                                readOnly
-                                />
-                            </TableCell>
+                            <TableCell>{memberInfo.team_name}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>사원 번호</TableCell>
-                            <TableCell>
-                                <input 
-                                type="text" 
-                                name="id" 
-                                value={memberInfo.id}
-                                onChange={MemberInfoChange}
-                                readOnly
-                                />
-                            </TableCell>
+                            <TableCell>{memberInfo.id}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>직급</TableCell>
-                            <TableCell>
-                                <input 
-                                type="text" 
-                                name="rank" 
-                                value={memberInfo.rank}
-                                onChange={MemberInfoChange}
-                                readOnly
-                                />
-                            </TableCell>
+                            <TableCell>{memberInfo.rank}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>이름</TableCell>
-                            <TableCell>
-                                <input 
-                                type="text" 
-                                name="name" 
-                                value={memberInfo.name}
-                                onChange={MemberInfoChange}
-                                />
-                            </TableCell>
+                            <TableCell>{memberInfo.name}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>이메일</TableCell>
@@ -196,15 +141,7 @@ const MyInfoEdit = () => {
                         </TableRow>
                         <TableRow>
                             <TableCell>주민번호</TableCell>
-                            <TableCell>
-                                <input 
-                                type="text" 
-                                name="resident" 
-                                value={memberInfo.resident}
-                                onChange={MemberInfoChange}
-                                readOnly
-                                />
-                            </TableCell>
+                            <TableCell>{memberInfo.resident}</TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell>계좌</TableCell>
@@ -221,7 +158,7 @@ const MyInfoEdit = () => {
                 </RightTable>
             </TableWrapper>
             <Button onClick = {saveMemberInfo}>수정</Button>
-            <Button onClick = {() => router.push('/guest/my')}>취소</Button>
+            <Button onClick = {() => router.push('/guest/personnel')}>취소</Button>
         </MainLayout>
     )    
 }

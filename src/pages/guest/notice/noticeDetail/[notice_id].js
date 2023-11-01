@@ -85,7 +85,7 @@ const NoticeDetails = () => {
                 </tbody>
             </Table>
             <BtnContainer>
-                <Button onClick={() => router.push('/guest/notice')}>목록</Button>
+                <Button onClick={() => router.back()}>목록</Button>
                 {(authority === "ROLE_ADMIN") && (
                     <Button onClick={() => router.push(`/admin/board/noticeEdit/${noticeData.notice_id}`)}>수정</Button>
                 )}

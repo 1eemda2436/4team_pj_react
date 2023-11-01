@@ -32,7 +32,7 @@ const Header = ({isNoticeShow = true, isUserShow = true}) => {
                 )}
 
                 {isUserShow && (
-                    <UserBox onClick={() => router.push('/guest/my')}>
+                    <UserBox>                    
                         <User width="45" height="45" />
                         <UserStatus />
                         <UserContent>

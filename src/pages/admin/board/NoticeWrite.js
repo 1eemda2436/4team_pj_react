@@ -4,6 +4,7 @@ import styled from "styled-components";
 import React, { useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
+import { BASE_URL } from "@/api/apiPath";
 
 
 const NoticeWrite = () => {

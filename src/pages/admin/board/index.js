@@ -1,104 +1,99 @@
-import AdminLayout from "@/components/layout/adminLayout";
-import styled from "styled-components";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import moment from 'moment';
-import { BASE_URL } from "@/api/apiPath";
+import styled from 'styled-components';
+import AdminLayout from '@/components/layout/adminLayout';
+import { BASE_URL } from '@/api/apiPath';
 
 const Notice = () => {
     const [data, setData] = useState([]);
     const [noticeData, setNoticeData] = useState([]);
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [selectAll, setSelectAll] = useState(false); // 전체 선택 상태를 저장하는 state
+    const [selectedNoticeItems, setSelectedNoticeItems] = useState([]);
+    const [selectedCommunityItems, setSelectedCommunityItems] = useState([]);
+    const [noticeSelectAll, setNoticeSelectAll] = useState(false);
+    const [communitySelectAll, setCommunitySelectAll] = useState(false);
     const [authority, setAuthority] = useState('');
     const router = useRouter();
 
-    // 체크박스를 토글하는 함수
-    const handleCheckboxChange = (itemId) => {
+    useEffect(() => {
+        setAuthority(localStorage.getItem('auth'));
+    }, []);
+
+    const handleCheckboxChange = (itemId, isNoticeTable) => {
         const itemIdInt = parseInt(itemId, 10);
-        if (isSelected(itemId)) {
-            setSelectedItems(selectedItems.filter(item => item !== itemIdInt));
+        if (isNoticeTable) {
+            setSelectedNoticeItems(prevState => {
+                if (prevState.includes(itemIdInt)) {
+                    return prevState.filter(item => item !== itemIdInt);
+                } else {
+                    return [...prevState, itemIdInt];
+                }
+            });
         } else {
-            setSelectedItems([...selectedItems, itemIdInt]);
+            setSelectedCommunityItems(prevState => {
+                if (prevState.includes(itemIdInt)) {
+                    return prevState.filter(item => item !== itemIdInt);
+                } else {
+                    return [...prevState, itemIdInt];
+                }
+            });
         }
     };
 
-    // 전체 선택 체크박스를 토글하는 함수(공지사항)
-    const noticehandleSelectAll = () => {
-        if (selectAll) {
-            setSelectedItems([]); // 전체 선택 해제
+    const handleNoticeSelectAll = () => {
+        if (noticeSelectAll) {
+            setSelectedNoticeItems([]);
         } else {
-            // 모든 항목의 ID를 배열에 넣어 전체 선택
             const allItemIds = noticeData.map(item => item.notice_id);
-            setSelectedItems(allItemIds);
+            setSelectedNoticeItems(allItemIds);
         }
-        setSelectAll(!selectAll); // 전체 선택 상태를 토글
+        setNoticeSelectAll(prevState => !prevState);
     };
-    
-    // 전체 선택 체크박스를 토글하는 함수(게시판)
-    const handleSelectAll = () => {
-        if (selectAll) {
-            setSelectedItems([]); // 전체 선택 해제
+
+    const handleCommunitySelectAll = () => {
+        if (communitySelectAll) {
+            setSelectedCommunityItems([]);
         } else {
-            // 모든 항목의 ID를 배열에 넣어 전체 선택
             const allItemIds = data.map(item => item.board_id);
-            setSelectedItems(allItemIds);
+            setSelectedCommunityItems(allItemIds);
         }
-        setSelectAll(!selectAll); // 전체 선택 상태를 토글
+        setCommunitySelectAll(prevState => !prevState);
     };
 
-    const isSelected = (itemId) => selectedItems.includes(itemId);
+    const isSelected = (itemId, isNoticeTable) => {
+        if (isNoticeTable) {
+            return selectedNoticeItems.includes(itemId);
+        } else {
+            return selectedCommunityItems.includes(itemId);
+        }
+    };
 
-    // 선택된 항목 삭제 함수
-    const deleteSelectedItems = () => {
-        if (selectedItems.length === 0) {
+    const deleteSelectedItems = async (isNoticeTable) => {
+        const token = localStorage.getItem('token');
+        const selectedItemsToDelete = isNoticeTable ? selectedNoticeItems : selectedCommunityItems;
+        if (selectedItemsToDelete.length === 0) {
             alert('선택된 항목이 없습니다.');
             return;
         }
-
-        const token = localStorage.getItem('token');
-        const deletePromises = selectedItems.map(itemId => {
-            return axios.delete(`${BASE_URL}/admin/notice/deleteNotice/${itemId}`, {
+        const deletePromises = selectedItemsToDelete.map(itemId => {
+            const url = isNoticeTable
+                ? `${BASE_URL}/admin/notice/deleteNotice/${itemId}`
+                : `${BASE_URL}/guest/community/boardDelete/${itemId}`;
+            return axios.delete(url, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
         });
 
-        Promise.all(deletePromises)
-            .then(() => {
-                setSelectedItems([]);
-                refreshData();
-            })
-            .catch(err => {
-                console.error('선택한 항목 삭제 중 오류 발생:', err);
-            });
-    };
-
-    const communitydeleteSelectedItems = () => {
-        if (selectedItems.length === 0) {
-            alert('선택된 항목이 없습니다.');
-            return;
+        try {
+            await Promise.all(deletePromises);
+            alert('삭제되었습니다.');
+            refreshData();
+        } catch (error) {
+            console.error('선택한 항목 삭제 중 오류 발생:', error);
         }
-
-        const token = localStorage.getItem('token');
-        const deletePromises = selectedItems.map(board_id => {
-            return axios.delete(`${BASE_URL}/guest/community/boardDelete/${board_id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-        });
-
-        Promise.all(deletePromises)
-            .then(() => {
-                setSelectedItems([]);
-                refreshData();
-            })
-            .catch(err => {
-                console.error('선택한 항목 삭제 중 오류 발생:', err);
-            });
     };
 
     const refreshData = () => {
@@ -134,13 +129,11 @@ const Notice = () => {
 
     const goToBoardWrite = () => {
         const user_id = localStorage.getItem('user_id');
-        //router.push(`/guest/community/BoardWrite/`);
         router.push({
             pathname: '/guest/community/BoardWrite',
             query: { id: user_id }
         });
-        
-    }
+    };
 
     const goToNoticeWrite = () => {
         router.push('/admin/board/NoticeWrite');
@@ -152,12 +145,14 @@ const Notice = () => {
             <Section>
                 <CommunityHeader>
                     <Title>공지사항</Title>
-                    <Button onClick={goToNoticeWrite}>글쓰기</Button>
                     {(authority === "ROLE_ADMIN") && (
-                        <Button onClick={noticehandleSelectAll}>전체 선택</Button>
+                        <Button onClick={goToNoticeWrite}>글쓰기</Button>
                     )}
                     {(authority === "ROLE_ADMIN") && (
-                        <Button onClick={deleteSelectedItems}>선택 삭제</Button>
+                        <Button onClick={handleNoticeSelectAll}>전체 선택</Button>
+                    )}
+                    {(authority === "ROLE_ADMIN") && (
+                        <Button onClick={() => deleteSelectedItems(true)}>선택 삭제</Button>
                     )}                    
                     
                 </CommunityHeader>
@@ -185,8 +180,8 @@ const Notice = () => {
                                 <TableCell>
                                     <input
                                         type="checkbox"
-                                        onChange={() => handleCheckboxChange(item.notice_id)}
-                                        checked={isSelected(item.notice_id)}
+                                        onChange={() => handleCheckboxChange(item.notice_id, true)}
+                                        checked={isSelected(item.notice_id, true)}
                                     />
                                 </TableCell>
                             </TableRow>
@@ -201,10 +196,10 @@ const Notice = () => {
                     <BoardTitle>자유게시판</BoardTitle>
                     <Button onClick={goToBoardWrite}>글쓰기</Button>
                     {(authority === "ROLE_ADMIN") && (
-                        <Button onClick={handleSelectAll}>전체 선택</Button>
+                        <Button onClick={handleCommunitySelectAll}>전체 선택</Button>
                     )}                
                     {(authority === "ROLE_ADMIN") && (
-                        <Button onClick={communitydeleteSelectedItems}>선택 삭제</Button>
+                        <Button onClick={() => deleteSelectedItems(false)}>선택 삭제</Button>
                     )}
                     
                 </CommunityHeader>
@@ -215,7 +210,7 @@ const Notice = () => {
                             <TableHeader>글번호</TableHeader>
                             <TableHeader>제목</TableHeader>
                             <TableHeader>글내용</TableHeader>
-                            <TableHeader>작성자</TableHeader>
+                            <TableHeader>작성자ID</TableHeader>
                             <TableHeader>선택</TableHeader>
                         </TableRow>
                     </thead>
@@ -233,8 +228,8 @@ const Notice = () => {
                                 <TableCell>
                                     <input
                                         type="checkbox"
-                                        onChange={() => handleCheckboxChange(item.board_id)}
-                                        checked={isSelected(item.board_id)}
+                                        onChange={() => handleCheckboxChange(item.board_id, false)}
+                                        checked={isSelected(item.board_id, false)}
                                     />
                                 </TableCell>
                             </TableRow>

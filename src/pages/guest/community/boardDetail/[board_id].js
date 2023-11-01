@@ -168,7 +168,7 @@ const BoardDetails = () => {
                         <TableCell>{boardData.category_id}</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell1>작성자</TableCell1>
+                        <TableCell1>작성자ID</TableCell1>
                         <TableCell>{boardData.id}</TableCell>
                     </TableRow>
                     <TableRow>
@@ -188,7 +188,7 @@ const BoardDetails = () => {
             <br/>
 
             <div>
-            <Button onClick={() => router.push('/guest/community')}>목록</Button>
+            <Button onClick={() => router.back()}>목록</Button>
             <Button onClick={() => router.push(`/guest/community/boardUpdate/${board_id}`)}>수정</Button>
             {(authority == "ROLE_MANAGER" || authority == "ROLE_ADMIN" || authority == "ROLE_USER") && (
             <Button onClick={handleDelete}>삭제</Button>
