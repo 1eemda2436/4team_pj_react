@@ -5,6 +5,7 @@ import styled from "styled-components";
 import moment from 'moment';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { BASE_URL } from '@/api/apiPath';
 
 const MyCalendar = ({ height }) => {
     const [projectList, setProjectList] = useState([]);
@@ -19,19 +20,19 @@ const MyCalendar = ({ height }) => {
         // 비동기 함수를 이용해 데이터를 불러옴
         async function fetchData() {
             try {
-                const projectResponse = await fetch(`http://localhost:8081/guest/project/list/${team_id}`, {
+                const projectResponse = await fetch(`${BASE_URL}/guest/project/list/${team_id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
 
-                const attenResponse = await fetch("http://localhost:8081/all/attendance/anConfirmList", {
+                const attenResponse = await fetch(`${BASE_URL}/all/attendance/anConfirmList`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
 
-                const vacaResponse = await fetch("http://localhost:8081/all/attendance/vaConfirmList", {
+                const vacaResponse = await fetch(`${BASE_URL}/all/attendance/vaConfirmList`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

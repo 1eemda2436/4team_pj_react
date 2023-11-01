@@ -106,7 +106,7 @@ function AttendanceDetail () {
                                 <td>{vacat.vacation_title}</td>
                                 <td>{formatDateFromTimestamp(vacat.vacation_start)}</td>
                                 <td>{formatDateFromTimestamp(vacat.vacation_end)}</td>
-                                <td>{vacat.vacationTerm}</td>
+                                <td>{vacat.vacationTerm} Mths</td>
                                 <td>{vacat.vacation_content}</td>
                                 </tr>
                             </tbody>
