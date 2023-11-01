@@ -7,6 +7,7 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { BASE_URL } from "@/api/apiPath";
+import styled from "styled-components";
 
 function Guest () {
 
@@ -24,24 +25,20 @@ function Guest () {
                 }
             })
             .then((response) => {
-                console.log("진척값", response.data);
                 setPrg(response.data);
             });
     }, []);
     
     return(
-        <div>
-
-            <div>
-                <Header />
-                <DocRadarChart />
+        <>
+            <Header />
+            <MainContainer>
                 <Weather />
-            </div>
-            <div>
-                <ProgressBar bgColor="red" completed={(prg.complete_count / prg.pw_id_count) * 100} maxCompleted={100} />
-            </div>
-
-        </div>
+                <ChartContainer>
+                    <DocRadarChart />
+                </ChartContainer>
+            </MainContainer>
+        </>
     )
 };
 
@@ -54,3 +51,20 @@ export default Guest;
 Guest.getLayout = function getLayout(page) {
     return <MainLayout>{page}</MainLayout>;
 };
+
+const MainContainer = styled.div`
+    width: 100%;
+    height: 91.7%;
+    background: url('/img/GuestMain.jpg');
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+`;
+
+const ChartContainer = styled.div`
+    width: 20%;
+    height: 50%;
+    margin-left: 120px;
+`;
