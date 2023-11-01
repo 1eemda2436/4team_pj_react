@@ -68,49 +68,50 @@ const Doc = () => {
         }));
     };
 
-    const handleInsertSign = () => {
-        console.log('samples.admin_sign:',samples.admin_sign);
-        if(samples.admin_sign) {
-        const insertSamples = new FormData();
-        insertSamples.append('name', samples.name);
-        insertSamples.append('doc_status', samples.doc_status);
-        insertSamples.append('doc_attachment', samples.doc_attachment);
-        insertSamples.append('category_id', samples.category_id);
-        insertSamples.append('doc_title', samples.doc_title);
-        insertSamples.append('doc_content', samples.doc_content);
-        insertSamples.append('approval_date', samples.approval_date);
-        insertSamples.append('sign', samples.sign);
-        insertSamples.append('admin_sign1', samples.admin_sign);
-        insertSamples.append('id', userId);
-        console.log('insertSamples:', insertSamples);
-        console.log('samples:', samples);
-        console.log('insertSamples:', insertSamples);
+    // const handleInsertSign = () => {
+    //     console.log('samples.admin_sign:',samples.admin_sign);
+    //     if(samples.admin_sign) {
+    //     const insertSamples = new FormData();
+    //     insertSamples.append('name', samples.name);
+    //     insertSamples.append('doc_status', samples.doc_status);
+    //     insertSamples.append('doc_attachment', samples.doc_attachment);
+    //     insertSamples.append('category_id', samples.category_id);
+    //     insertSamples.append('doc_title', samples.doc_title);
+    //     insertSamples.append('doc_content', samples.doc_content);
+    //     insertSamples.append('approval_date', samples.approval_date);
+    //     insertSamples.append('sign', samples.sign);
+    //     insertSamples.append('admin_sign1', samples.admin_sign);
+    //     insertSamples.append('id', userId);
+    //     console.log('insertSamples:', insertSamples);
+    //     console.log('samples:', samples);
+    //     console.log('insertSamples:', insertSamples);
         
-        const token = localStorage.getItem('token')
+    //     const token = localStorage.getItem('token')
         
 
-        axios.post(`${BASE_URL}/admin/doc/insert`, insertSamples, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then((response) => {
-            alert('결재사인 등록');
-            hanldeUpdate();
-        })
-        .catch((error) => {
-            console.error('사인등록 실패', error)
-        });
-        } else {
-        console.error('admin_sign 없음', samples.admin_sign)
-        }
-    };
+    //     axios.post(`${BASE_URL}/admin/doc/insert`, insertSamples, {
+    //         headers: {
+    //             'Authorization': `Bearer ${token}`
+    //         }
+    //     })
+    //     .then((response) => {
+    //         alert('결재사인 등록');
+    //         hanldeUpdate();
+    //     })
+    //     .catch((error) => {
+    //         console.error('사인등록 실패', error)
+    //     });
+    //     } else {
+    //     console.error('admin_sign 없음', samples.admin_sign)
+    //     }
+    // };
 
     const hanldeUpdate = () => {
         const updateSamples = new FormData();
         updateSamples.append('doc_status', '완료');
         updateSamples.append('approval_date', samples.approval_date);
         updateSamples.append('approval_content', samples.approval_content);
+        updateSamples.append('admin_sign1', samples.admin_sign);
         const token = localStorage.getItem('token')
         
         if(id) {
@@ -305,7 +306,7 @@ const Doc = () => {
             </TblComponent>
 
             <ButtonStyle>
-                <Button type="button" onClick={handleInsertSign}>결재</Button>
+                <Button type="button" onClick={hanldeUpdate}>결재</Button>
                 <Button type="button" onClick={handleBack}>취소</Button>
             </ButtonStyle>
         </MainContainer>

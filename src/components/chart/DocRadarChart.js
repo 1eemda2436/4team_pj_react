@@ -4,6 +4,7 @@ import { Chart, registerables } from 'chart.js';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
+import styled from 'styled-components';
 Chart.register(...registerables);
 
 const DocRadarChart = () => {
@@ -77,11 +78,11 @@ const DocRadarChart = () => {
 
     return (
         <div>
-            <h2>전자결재</h2>
+            <Title>전자결재</Title>
             <div>
                 <div style={totalStyle}>총계: {allDocCount}</div>
             </div>
-            <div style={{ width: '300px', height: '300px' }}>
+            <div style={{ width: '100%', height: '100%' }}>
                 <Pie data={data} />
             </div>
         </div>
@@ -89,6 +90,12 @@ const DocRadarChart = () => {
 
 };
 export default DocRadarChart;
+
+const Title = styled.div`
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+`;
 
 const totalStyle = {
     fontSize: '24px',
