@@ -33,7 +33,7 @@ const ClockContainer = styled.div`
     text-align: center;
     font-family: "Digital-7", sans-serif;
     font-size: 150px;
-    padding: 60px;
+    /* padding: 60px; */
     color: #FFFFFF;
     width: 1000px;
     margin: 0 auto;
