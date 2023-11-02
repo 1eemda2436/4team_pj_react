@@ -61,9 +61,9 @@ const Login = () => {
 
   return (
       <Component>
-        <Logo2 />
+        <Logo src='/img/Logo.png' />
         <LoginInputBox>
-          <LoginInput name="id" placeholder="ID" type="text" onChange={onChangeHandler} />
+          <LoginInput name="id" placeholder="사번" type="text" onChange={onChangeHandler} />
           <LoginInput name="pwd" placeholder="PASSWORD" type="password" onChange={onChangeHandler} />
 
           <LoginBtn onClick={(e) => onSubmitLogin(e)}> login </LoginBtn>
@@ -133,4 +133,9 @@ const JoinBtn = styled.div`
   font-weight: 700;
   margin-top: 21px;
   cursor: pointer;
+`;
+
+const Logo = styled.img`
+  width: 200px;
+  margin-bottom: 20px;
 `;
