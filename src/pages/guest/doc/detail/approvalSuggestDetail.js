@@ -34,7 +34,9 @@ const Doc = () => {
                 setSamples(response.data);
                 console.log('response.data', response.data);
                 setImageSrc(`${BASE_URL}/myimage/${response.data.sign}`);
+            if (response.data.doc_status === '완료') {
                 setImageSrc2(`${BASE_URL}/myimage/${response.data.admin_sign}`)
+            }
             })
             .catch((error) => {
                 console.log(error);
@@ -108,10 +110,9 @@ const Doc = () => {
                         )}
                         </td>           
                         <td>
-                            {imageSrc2 && (
+                            {imageSrc2 !== "" && (
                                 <img 
                                     src={imageSrc2}
-                                    alt="관리자사인"
                                     style={{width: "100px", height: "100px"}}
                                 />
                             )}
