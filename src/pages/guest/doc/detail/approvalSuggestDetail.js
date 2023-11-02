@@ -14,6 +14,7 @@ const Doc = () => {
 
     const [samples, setSamples] = useState([]);
     const [imageSrc, setImageSrc] = useState("");
+    const [imageSrc2, setImageSrc2] = useState('');
 
     const handleBack = () => {
         router.back(); // 이전 페이지로 이동
@@ -33,6 +34,7 @@ const Doc = () => {
                 setSamples(response.data);
                 console.log('response.data', response.data);
                 setImageSrc(`${BASE_URL}/myimage/${response.data.sign}`);
+                setImageSrc2(`${BASE_URL}/myimage/${response.data.admin_sign}`)
             })
             .catch((error) => {
                 console.log(error);
@@ -105,7 +107,15 @@ const Doc = () => {
                         />
                         )}
                         </td>           
-                        <td></td>
+                        <td>
+                            {imageSrc2 && (
+                                <img 
+                                    src={imageSrc2}
+                                    alt="관리자사인"
+                                    style={{width: "100px", height: "100px"}}
+                                />
+                            )}
+                        </td>
                     </tr>
                 </table>
             </ApprovalLine>
