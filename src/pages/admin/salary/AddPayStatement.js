@@ -76,7 +76,7 @@ const PayStatement = () => {
             <SubTitle>직책</SubTitle>
             <SubTitle>이름</SubTitle>
 
-            <SubTitle>2023년 10월 명세서</SubTitle>
+            <SubTitle>2023년 11월 명세서</SubTitle>
             <HeaderRow>
                 <div>{name ? name : ''}</div>
                 <div>{rank ? rank : ''}</div>
