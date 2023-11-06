@@ -11,6 +11,7 @@ import Time from '../../../public/asset/icons/Time.svg';
 import Video_Conference from '../../../public/asset/icons/Video_Conference.svg';
 import Working_Together from '../../../public/asset/icons/Working_Together.svg';
 import Logout from '../../../public/asset/icons/logout.svg'
+import HomeIcon from '@mui/icons-material/Home';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -46,6 +47,12 @@ export default function MainSideMenu() {
 
     //메뉴 요소 배열 
     const menus = [
+        {
+            id: 0,
+            icon: <HomeIconStyle />,
+            value: '홈',
+            path: '/guest'
+        },
         {
             id: 1,
             icon: <Video_Conference />,
@@ -166,3 +173,8 @@ const LogoutIcon = styled(Logout)`
     position: absolute;
     bottom: 13px;
 `; 
+
+const HomeIconStyle = styled(HomeIcon)`
+    font-size: 30px;
+    color: #fff;
+`;
