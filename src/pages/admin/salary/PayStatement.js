@@ -60,7 +60,7 @@ const PayStatement = () => {
           <Title>급여관리 - 명세서</Title>
 
           <PayContainer>
-            <SubTitle>2023년 10월 명세서</SubTitle>
+            <SubTitle>2023년 11월 명세서</SubTitle>
 
             <TitleBox>
               <SubTitleBox>

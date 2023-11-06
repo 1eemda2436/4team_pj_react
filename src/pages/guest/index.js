@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { BASE_URL } from "@/api/apiPath";
 import styled from "styled-components";
+import GuestClock from "@/components/clock/GuestClock";
 
 function Guest () {
 
@@ -33,6 +34,7 @@ function Guest () {
         <>
             <Header />
             <MainContainer>
+                <GuestClock />
                 <Weather />
                 <ChartContainer>
                     <DocRadarChart />
@@ -68,3 +70,4 @@ const ChartContainer = styled.div`
     height: 50%;
     margin-left: 120px;
 `;
+

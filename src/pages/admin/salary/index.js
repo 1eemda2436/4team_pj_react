@@ -58,7 +58,7 @@ const AdminPayManagement = () => {
             <PayTableTop>
               <thead>
                 <tr>
-                  <th>+</th>
+                  {/* <th>+</th> */}
                   <th>사번</th>
                   <th>이름</th>
                   <th>주민번호</th>
@@ -80,7 +80,7 @@ const AdminPayManagement = () => {
               <tbody>
                 {data.map(item => (
                   <tr key={item.s_id}>
-                    <td>{item.s_id}</td>
+                    {/* <td>{item.s_id}</td> */}
                     <td>{item.id}</td>
                     <td>{item.name}</td>
                     <td>{item.resident}</td>

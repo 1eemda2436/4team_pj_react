@@ -4,6 +4,7 @@ import axios from "axios";
 import React, {useEffect ,useState } from "react";
 import moment from 'moment';
 import { BASE_URL } from "@/api/apiPath";
+import AdminClock from "@/components/clock/AdminClock";
 
 const admin = () => {
     const [companyData, setCompanyData] = useState([]);
@@ -56,6 +57,7 @@ const admin = () => {
 
     return(
         <MainComponent>
+            <AdminClock/>
             <CompanyInfoBox>
                 <InfoDiv>
                     <InfoTitle>License</InfoTitle>
@@ -74,6 +76,7 @@ const admin = () => {
                     <InfoValue>PM {moment(companyData.work_out).format('H')}시</InfoValue>
                 </InfoDiv>
             </CompanyInfoBox>
+            
             <ControllerBox>
                 <ContentBox>프로젝트</ContentBox>
                 <ContentBox>회사규모 ({companyData.employees})</ContentBox>

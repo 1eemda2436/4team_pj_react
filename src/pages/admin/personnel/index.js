@@ -16,7 +16,7 @@ const AdminPersonnel = () => {
       const token = localStorage.getItem('token')
       const company_id = localStorage.getItem('company_id')
       // Axios를 사용하여 Spring Boot 백엔드에서 데이터 가져오기
-      axios.get(`http://localhost:8081/admin/personnel/employeeSelectAll/${company_id}`, {
+      axios.get(`${BASE_URL}/admin/personnel/employeeSelectAll/${company_id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -41,7 +41,7 @@ const AdminPersonnel = () => {
     const handleEmployeeRegistration = async () => {
       const token = localStorage.getItem('token')
       try {
-        const response = await axios.get('http://localhost:8081/admin/personnel/maxId', {
+        const response = await axios.get(`${BASE_URL}/admin/personnel/maxId`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -95,12 +95,14 @@ const AdminPersonnel = () => {
     const handleUpload = () => {
       if (file) {
         const formData = new FormData();
+        const token = localStorage.getItem('token')
         formData.append('excelFile', file);
-
-        axios.post('http://localhost:8081/admin/excel/upload', formData, {
+        
+        axios.post(`${BASE_URL}/admin/excel/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data', // 이 부분이 중요합니다.
-          },
+            'Authorization': `Bearer ${token}`
+          }
         })
           .then((response) => {
             // 서버에서의 응답 처리
@@ -115,8 +117,13 @@ const AdminPersonnel = () => {
 
     const downloadExcel = async () => {
       try {
-        const response = await axios.get('http://localhost:8081/admin/excel/download', {
+        const token = localStorage.getItem('token')
+        const response = await axios.get(`${BASE_URL}/admin/excel/download`, {
           responseType: 'blob', // 응답 데이터 형식을 Blob으로 설정
+        }, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
     
         // Blob 데이터를 파일로 변환
