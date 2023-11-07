@@ -66,7 +66,7 @@ const MainContainer = styled.div`
 `;
 
 const ChartContainer = styled.div`
-    width: 20%;
+    width: 15%;
     height: 50%;
     margin-left: 120px;
 `;

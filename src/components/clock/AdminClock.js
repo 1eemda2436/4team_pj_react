@@ -41,6 +41,7 @@ const ClockContainer = styled.div`
 
 const DigitalClock = styled.div`
     font-weight: bold;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-    font-size: 100px;
+    /* text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); */
+    font-size: 86px;
+    color: black;
 `;
