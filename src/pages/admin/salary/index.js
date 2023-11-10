@@ -89,7 +89,7 @@ const AdminPayManagement = () => {
                     <td>{item.rank}</td>
                     <td>{item.state}</td>
                     <td>{item.estate}</td>
-                    <td>{item.salary}</td>
+                    <td>{item.salary.toLocaleString()}</td>
                     <td onClick={() => onInsertHandle(item)}>수정</td>
                     <td onClick={() => router.push(`/admin/salary/PayStatement?id=${item.id}`)}>상세</td>
                   </tr>
@@ -100,7 +100,7 @@ const AdminPayManagement = () => {
 
           <TotalBox>
             <TotalTitle>합계</TotalTitle>
-            <TotalResult>{totalSalary}</TotalResult>
+            <TotalResult>{totalSalary.toLocaleString()}</TotalResult>
           </TotalBox>
         </TblComponent>
     </MainComponent>

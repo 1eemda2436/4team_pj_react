@@ -99,53 +99,71 @@ const PayStatement = () => {
                 <tr>
                     <TableCell>
                         <input
-                            type="number"
-                            value={basicSalary}
-                            onChange={(e) => setBasicSalary(Number(e.target.value))}
-                            placeholder="기본급을 입력하세요"
+                        type="number"
+                        //value={basicSalary}
+                        onChange={(e) => setBasicSalary(Number(e.target.value))}
+                        placeholder="기본급을 입력하세요"
                         />
+                        {basicSalary !== 0 && (
+                            <div>{basicSalary.toLocaleString()}</div>
+                        )}
                     </TableCell>
                     <TableCell>
                         <input
                             type="number"
-                            value={bonus}
+                            //value={bonus}
                             onChange={(e) => setBonus(Number(e.target.value))}
                             placeholder="상여금을 입력하세요"
                         /> 
+                        {bonus !== 0 && (
+                        <div>{bonus.toLocaleString()}</div>
+                        )}
                     </TableCell>
                     <TableCell>
                         <input
                             type="number"
-                            value={overtimePay}
+                            //value={overtimePay}
                             onChange={(e) => setOvertimePay(Number(e.target.value))}
                             placeholder="야근수당을 입력하세요"
                         />
+                        {overtimePay !== 0 && (
+                        <div>{overtimePay.toLocaleString()}</div>
+                        )}
                     </TableCell>
                     <TableCell>
                         <input
                             type="number"
-                            value={allowance}
+                            //value={allowance}
                             onChange={(e) => setAllowance(Number(e.target.value))}
                             placeholder="연차수당을 입력하세요"
                         />
+                        {allowance !== 0 && (
+                        <div>{allowance.toLocaleString()}</div>
+                        )}
                     </TableCell>
                     <TableCell>
                         <input
                             type="number"
-                            value={foodPay}
+                            //value={foodPay}
                             onChange={(e) => setFoodPay(Number(e.target.value))}
                             placeholder="식비를 입력하세요"
                         />
+                        {foodPay !== 0 && (
+                        <div>{foodPay.toLocaleString()}</div>
+                        )}
                     </TableCell>
                     <TableCell>
                         <input
                             type="number"
-                            value={transportationPay}
+                            //value={transportationPay}
                             onChange={(e) => setTransportationPay(Number(e.target.value))}
                             placeholder="교통비를 입력하세요"
                         />
+                        {transportationPay !== 0 && (
+                        <div>{transportationPay.toLocaleString()}</div>
+                        )}
                     </TableCell>
-                    <TableCell>{totalEarnings}</TableCell>
+                    <TableCell>{totalEarnings.toLocaleString()}</TableCell>
                 </tr>
                 <tr>
                     <TableCell colSpan={6}>공제내역</TableCell>
@@ -160,18 +178,18 @@ const PayStatement = () => {
                     <TableCell>고용보험</TableCell>
                 </tr>
                 <tr>
-                    <TableCell>{PayStatementData.income_tax}</TableCell>
-                    <TableCell>{PayStatementData.local_tax}</TableCell>
-                    <TableCell>{PayStatementData.national_pension}</TableCell>
-                    <TableCell>{PayStatementData.health_insurance}</TableCell>
-                    <TableCell>{PayStatementData.c_health_insurance}</TableCell>
-                    <TableCell>{PayStatementData.employment_insurance}</TableCell>
-                    <TableCell>{totalDeductions}</TableCell>
+                    <TableCell>{PayStatementData.income_tax ? PayStatementData.income_tax.toLocaleString() : ''}</TableCell>
+                    <TableCell>{PayStatementData.local_tax ? PayStatementData.local_tax.toLocaleString() : ''}</TableCell>
+                    <TableCell>{PayStatementData.national_pension ? PayStatementData.national_pension.toLocaleString() : ''}</TableCell>
+                    <TableCell>{PayStatementData.health_insurance ? PayStatementData.health_insurance.toLocaleString() : ''}</TableCell>
+                    <TableCell>{PayStatementData.c_health_insurance ? PayStatementData.c_health_insurance.toLocaleString() : ''}</TableCell>
+                    <TableCell>{PayStatementData.employment_insurance ? PayStatementData.employment_insurance.toLocaleString() : ''}</TableCell>
+                    <TableCell>{totalDeductions.toLocaleString()}</TableCell>
                 </tr>
                 <tr>
                     <TableCell colSpan={6}>합 계</TableCell>
-                    <TableCell>{totalMathPayment}</TableCell>
-                    <TableCell>{totalPayment}</TableCell>
+                    <TableCell>{totalMathPayment.toLocaleString()}</TableCell>
+                    <TableCell>{totalPayment.toLocaleString()}</TableCell>
                 </tr>
             </Table>
             <ButtonContainer>

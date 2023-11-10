@@ -92,13 +92,13 @@ const PayStatement = () => {
                     <TableCell>교통비</TableCell>
                 </tr>
                 <tr>
-                    <TableCell>{PayStatementData.salary}</TableCell>
-                    <TableCell>{PayStatementData.bonus}</TableCell>
-                    <TableCell>{PayStatementData.overtime_pay}</TableCell>
-                    <TableCell>{PayStatementData.allowance}</TableCell>
-                    <TableCell>{PayStatementData.food_pay}</TableCell>
-                    <TableCell>{PayStatementData.t_pay}</TableCell>
-                    <TableCell>{paymentTotal}</TableCell>
+                    <TableCell>{PayStatementData.salary.toLocaleString()}</TableCell>
+                    <TableCell>{PayStatementData.bonus.toLocaleString()}</TableCell>
+                    <TableCell>{PayStatementData.overtime_pay.toLocaleString()}</TableCell>
+                    <TableCell>{PayStatementData.allowance.toLocaleString()}</TableCell>
+                    <TableCell>{PayStatementData.food_pay.toLocaleString()}</TableCell>
+                    <TableCell>{PayStatementData.t_pay.toLocaleString()}</TableCell>
+                    <TableCell>{paymentTotal.toLocaleString()}</TableCell>
                 </tr>
                 <tr>
                     <TableCell colSpan={6}>공제내역</TableCell>
@@ -113,18 +113,18 @@ const PayStatement = () => {
                     <TableCell>고용보험</TableCell>
                 </tr>
                 <tr>
-                    <TableCell>{PayStatementData.income_tax}</TableCell>
-                    <TableCell>{PayStatementData.local_tax}</TableCell>
-                    <TableCell>{PayStatementData.national_pension}</TableCell>
-                    <TableCell>{PayStatementData.health_insurance}</TableCell>
-                    <TableCell>{PayStatementData.c_health_insurance}</TableCell>
-                    <TableCell>{PayStatementData.employment_insurance}</TableCell>
-                    <TableCell>{deductionTotal}</TableCell>
+                    <TableCell>{PayStatementData.income_tax.toLocaleString()}</TableCell>
+                    <TableCell>{PayStatementData.local_tax.toLocaleString()}</TableCell>
+                    <TableCell>{PayStatementData.national_pension.toLocaleString()}</TableCell>
+                    <TableCell>{PayStatementData.health_insurance.toLocaleString()}</TableCell>
+                    <TableCell>{PayStatementData.c_health_insurance.toLocaleString()}</TableCell>
+                    <TableCell>{PayStatementData.employment_insurance.toLocaleString()}</TableCell>
+                    <TableCell>{deductionTotal.toLocaleString()}</TableCell>
                 </tr>
                 <tr>
                     <TableCell colSpan={6}>합 계</TableCell>
-                    <TableCell>{totalMathPayment}</TableCell>
-                    <TableCell>{totalPayment}</TableCell>
+                    <TableCell>{totalMathPayment.toLocaleString()}</TableCell>
+                    <TableCell>{totalPayment.toLocaleString()}</TableCell>
                 </tr>
             </tbody>
         </Table>
