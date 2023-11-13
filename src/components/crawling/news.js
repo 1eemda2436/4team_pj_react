@@ -37,7 +37,7 @@ function NewsCrawling() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:5000/api/news");
+                const response = await axios.get("http://43.202.221.91:5000/api/news");
 
                 const newsData = response.data;
                 setNews(newsData);
